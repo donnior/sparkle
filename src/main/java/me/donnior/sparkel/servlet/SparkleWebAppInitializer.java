@@ -1,4 +1,4 @@
-package pomtask.rest.web;
+package me.donnior.sparkel.servlet;
 
 import java.util.Set;
 

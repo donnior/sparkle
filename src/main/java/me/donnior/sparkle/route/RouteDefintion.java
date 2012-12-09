@@ -4,12 +4,12 @@ public class RouteDefintion {
 
     public String getControllerName() {
         // TODO Auto-generated method stub
-        return null;
+        return "users";
     }
 
     public String getActionName() {
         // TODO Auto-generated method stub
-        return null;
+        return "index";
     }
 
 }
