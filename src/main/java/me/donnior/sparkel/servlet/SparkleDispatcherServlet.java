@@ -12,7 +12,7 @@ import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.SparkleActionExecutor;
 import me.donnior.sparkle.route.RouteDefintion;
 import me.donnior.sparkle.route.RouteMachters;
-import me.donnior.sparkle.route.Router;
+import me.donnior.sparkle.route.RouterImpl;
 import me.donnior.sparkle.view.JSPViewResolver;
 import me.donnior.sparkle.view.ViewResolver;
 

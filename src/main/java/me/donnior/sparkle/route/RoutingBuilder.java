@@ -1,27 +1,50 @@
 package me.donnior.sparkle.route;
 
+import java.util.List;
+
 import me.donnior.sparkle.HTTPMethod;
 
-public class HTTPSensoredRouter {
+public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion{
     
     private HTTPMethod httpMethod;
     private String actionName;
     private String controllerName;
 
-    public HTTPSensoredRouter withGet(){
+    public RoutingBuilder() {
+        
+    }
+    
+    public RoutingBuilder(Router router, List<Object> elements, Object source, String path) {
+        this.httpMethod = HTTPMethod.GET;
+    }
+    
+    @Override
+    public RoutingBuilder withGet(){
         this.httpMethod = HTTPMethod.GET ;
         return this;
     }
     
-    public HTTPSensoredRouter withPost(){
+//    @Override
+    public RoutingBuilder withPost(){
         this.httpMethod = HTTPMethod.POST ;
         return this;
     }
     
-    public HTTPSensoredRouter to(String route){
+    @Override
+    public void to(String route){
         this.controllerName = extractController(route);
         this.actionName = extractAction(route);
-        return this;
+//        return this;
+    }
+    
+    @Override
+    public String getActionName() {
+        return this.actionName;
+    }
+    
+    @Override
+    public String getControllerName() {
+        return this.controllerName;
     }
 
     private String extractController(String route) {
