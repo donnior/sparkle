@@ -1,6 +1,8 @@
 package me.donnior.sparkel.servlet;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,11 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.SparkleActionExecutor;
+import me.donnior.sparkle.annotation.Controller;
 import me.donnior.sparkle.route.RouteDefintion;
 import me.donnior.sparkle.route.RouteMachters;
-import me.donnior.sparkle.route.RouterImpl;
 import me.donnior.sparkle.view.JSPViewResolver;
 import me.donnior.sparkle.view.ViewResolver;
+
+import org.reflections.Reflections;
 
 public class SparkleDispatcherServlet extends HttpServlet {
     
@@ -25,9 +29,25 @@ public class SparkleDispatcherServlet extends HttpServlet {
         //initialize Sparkle framework component
         //Scan controllers and stored their name and class
         this.viewResolver = new JSPViewResolver();
+        scanControllers();
     }
     
     
+    private void scanControllers() {
+        System.out.println("Scanning controllers ...");
+        Reflections reflections = new Reflections("me.donnior.sparkle.demo");
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Controller.class);
+        for(Class clz : annotated){
+            Controller controller = (Controller)clz.getAnnotation(Controller.class);
+            System.out.println("founded annotated controller " + controller.value() + " with class " + clz.getName());
+        }
+        Set<Class<? extends ApplicationController>> inherited = reflections.getSubTypesOf(ApplicationController.class);
+        for(Class clz : inherited){
+            System.out.println("founded inherited controller " + clz.getName());
+        }
+    }
+
+
     protected void doService(HttpServletRequest request, HttpServletResponse response, HTTPMethod method){
         //RouteDefintion rd = Router.getInstance().getRouteDefinition(request.getServletPath());
         RouteDefintion rd = RouteMachters.match(request);

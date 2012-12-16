@@ -15,7 +15,8 @@ public class JSPViewResolver implements ViewResolver {
     @Override
     public void resovleView(String result, HttpServletRequest request,
             HttpServletResponse response) {
-        String viewPath = this.viewPathPrefix + result + viewPathSuffix;   
+        String viewPath = this.viewPathPrefix + result + viewPathSuffix;
+//        System.out.println("got view path : " +viewPath);
         try {
             request.getRequestDispatcher(viewPath).forward(request, response);
         } catch (ServletException e) {

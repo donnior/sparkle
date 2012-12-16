@@ -1,6 +1,6 @@
 package me.donnior.sparkel.servlet;
 
-import me.donnior.sparkel.demo.UserController;
+import me.donnior.sparkle.demo.UserController;
 
 public class ControllerFactory {
 
