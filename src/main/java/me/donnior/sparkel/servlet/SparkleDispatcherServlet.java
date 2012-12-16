@@ -2,6 +2,7 @@ package me.donnior.sparkel.servlet;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -13,6 +14,8 @@ import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.SparkleActionExecutor;
 import me.donnior.sparkle.annotation.Controller;
+import me.donnior.sparkle.internal.ControllerScanner;
+import me.donnior.sparkle.internal.ControllersHolder;
 import me.donnior.sparkle.route.RouteDefintion;
 import me.donnior.sparkle.route.RouteMachters;
 import me.donnior.sparkle.view.JSPViewResolver;
@@ -24,26 +27,21 @@ public class SparkleDispatcherServlet extends HttpServlet {
     
     
     private ViewResolver viewResolver;
+    private ControllersHolder controllersHolder;
     
     public SparkleDispatcherServlet() {
         //initialize Sparkle framework component
         //Scan controllers and stored their name and class
         this.viewResolver = new JSPViewResolver();
+        this.controllersHolder = new ControllersHolder();
         scanControllers();
     }
     
     
     private void scanControllers() {
-        System.out.println("Scanning controllers ...");
-        Reflections reflections = new Reflections("me.donnior.sparkle.demo");
-        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Controller.class);
-        for(Class clz : annotated){
-            Controller controller = (Controller)clz.getAnnotation(Controller.class);
-            System.out.println("founded annotated controller " + controller.value() + " with class " + clz.getName());
-        }
-        Set<Class<? extends ApplicationController>> inherited = reflections.getSubTypesOf(ApplicationController.class);
-        for(Class clz : inherited){
-            System.out.println("founded inherited controller " + clz.getName());
+        this.controllersHolder.addControllers(new ControllerScanner().scanControllers("me.donnior.sparkle.demo"), true);
+        for(Map.Entry<String, Class<?>> entry : this.controllersHolder.namedControllers().entrySet()){
+            System.out.println(entry.getKey() +":" + entry.getValue());
         }
     }
 
