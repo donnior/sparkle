@@ -25,6 +25,7 @@ import org.reflections.Reflections;
 
 public class SparkleDispatcherServlet extends HttpServlet {
     
+    public static final String   INCLUDE_REQUEST_URI_ATTRIBUTE = "javax.servlet.include.request_uri";
     
     private ViewResolver viewResolver;
     private ControllersHolder controllersHolder;
@@ -33,7 +34,7 @@ public class SparkleDispatcherServlet extends HttpServlet {
         //initialize Sparkle framework component
         //Scan controllers and stored their name and class
         this.viewResolver = new JSPViewResolver();
-        this.controllersHolder = new ControllersHolder();
+        this.controllersHolder = ControllersHolder.getInstance();
         scanControllers();
     }
     
@@ -47,15 +48,19 @@ public class SparkleDispatcherServlet extends HttpServlet {
 
 
     protected void doService(HttpServletRequest request, HttpServletResponse response, HTTPMethod method){
+
         //RouteDefintion rd = Router.getInstance().getRouteDefinition(request.getServletPath());
         RouteDefintion rd = RouteMachters.match(request);
-        if(rd == null){
-            //TODO dealing with miss match
-            return; 
-        }
+        
+        
         String controllerName = rd.getControllerName();
         String actionName = rd.getActionName();
         Object controller = ControllerFactory.getController(controllerName);
+        if(controller == null){
+            System.out.println("can't find controller with name : " + controllerName);
+            return;
+        }
+        
         if(controller instanceof ApplicationController){
             ((ApplicationController)controller).setRequest(request);
             ((ApplicationController)controller).setResponse(response);
@@ -63,9 +68,18 @@ public class SparkleDispatcherServlet extends HttpServlet {
         Object result = new SparkleActionExecutor(request, response).invokeAction(controller, actionName);
         if(result instanceof String){
             //TODO wrap the request and response to interface 'Context' for more view resolvers
-            this.viewResolver.resovleView((String)result, request, response);
+            try {
+                this.viewResolver.resovleView((String)result, request, response);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
         }
         //invoke action on controller with proper argument, first should resovled argument
+
+         
     }
     
     @Override

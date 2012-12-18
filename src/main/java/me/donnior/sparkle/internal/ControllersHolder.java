@@ -7,6 +7,8 @@ public class ControllersHolder {
     
     private Map<String, Class<?>> controllers = new HashMap<String, Class<?>>();
     
+    private final static ControllersHolder instance = new ControllersHolder();
+    
     public Map<String, Class<?>> namedControllers(){
         return this.controllers;
     }
@@ -35,6 +37,10 @@ public class ControllersHolder {
                 this.controllers.put(controller.getKey(), controller.getValue());
             }
         }
+    }
+
+    public static ControllersHolder getInstance() {
+        return instance;
     }
     
 }
