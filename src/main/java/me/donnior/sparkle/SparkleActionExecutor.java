@@ -44,8 +44,6 @@ public class SparkleActionExecutor {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-//        System.out.println(methods);
-//        return "user/index";
         return null;
     }
 

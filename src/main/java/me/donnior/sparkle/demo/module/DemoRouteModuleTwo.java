@@ -7,7 +7,7 @@ public class DemoRouteModuleTwo extends  AbstractRouteModule {
 
     @Override
     public void config(Router router) {
-        router.route("/session/destroy").to("session#destroy");
+        router.route("/user/index").to("user#index");
     }
 
 }

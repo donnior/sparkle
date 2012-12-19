@@ -25,6 +25,8 @@ import me.donnior.sparkle.view.ViewResolver;
 
 public class SparkleDispatcherServlet extends HttpServlet {
     
+    private static final long serialVersionUID = 1L;
+
     public static final String   INCLUDE_REQUEST_URI_ATTRIBUTE = "javax.servlet.include.request_uri";
     
     private ViewResolver viewResolver;
@@ -65,27 +67,15 @@ public class SparkleDispatcherServlet extends HttpServlet {
 //        System.out.println("servlet path : "+request.getServletPath());
 //        System.out.println("request uri : "+request.getRequestURI());
 //        System.out.println("path info: "+request.getPathInfo());
-//        
         
-        String contextPath = request.getContextPath();
-        String servletPath = request.getServletPath();
-        String pathInfo = request.getPathInfo();
-        String cAndActionString = pathInfo;
+
         
-        if(pathInfo == null){
-            System.out.println("wild servlet mapping like / or *.do");
-            cAndActionString = request.getServletPath();
-        } else {
-            System.out.println("normal mapping like /cms/*");
-//            cAndActionString = request.getServletPath();
+        RouteDefintion rd = RouteMachters.match(request, this.router);
+        
+        if(rd == null){
+            response.setStatus(404);
+            return;
         }
-        
-        System.out.println("c&a string : " + cAndActionString);
-        
-        //RouteDefintion rd = Router.getInstance().getRouteDefinition(request.getServletPath());
-        RouteDefintion rd = RouteMachters.match(request);
-        
-        
         String controllerName = rd.getControllerName();
         String actionName = rd.getActionName();
         Object controller = ControllerFactory.getController(controllerName);

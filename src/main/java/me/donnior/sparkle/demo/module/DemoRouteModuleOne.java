@@ -8,7 +8,8 @@ public class DemoRouteModuleOne implements RouteModule {
 
     @Override
     public void config(Router router) {
-        router.route("/session/create").to("projects#index");
+        router.route("/").to("home#index");
+        router.route("/projects").to("projects#index");
     }
 
 }

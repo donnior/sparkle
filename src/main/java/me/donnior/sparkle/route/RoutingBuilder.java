@@ -9,6 +9,7 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     private HTTPMethod httpMethod;
     private String actionName;
     private String controllerName;
+    private String routePattern;
 
     public RoutingBuilder() {
         
@@ -57,6 +58,14 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     private String extractAction(String route) {
         // TODO deal route without action, means to default action 'index'
         return route.split("#")[1];
+    }
+
+    public void setRoutePattern(String url) {
+        this.routePattern = url;
+    }
+    
+    public String getRoutePattern() {
+        return routePattern;
     }
 
 }

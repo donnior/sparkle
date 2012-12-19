@@ -28,6 +28,7 @@ public class RouterImpl implements Router {
         // TODO maps this url to the following router, 
         logger.debug("registering new route {}", url);
         RoutingBuilder rb = new RoutingBuilder();
+        rb.setRoutePattern(url);
         this.routeBuilders.add(rb);
         return rb;
     }
@@ -36,5 +37,15 @@ public class RouterImpl implements Router {
     public void install(RouteModule module) {
         logger.debug("install route module for {}", module.getClass() );
         module.config(this);
+    }
+    
+    @Override
+    public RoutingBuilder match(String cAndActionString) {
+        for(RoutingBuilder rb : this.routeBuilders){
+            if(rb.getRoutePattern().equals(cAndActionString)){
+                return rb;
+            }
+        }
+        return null;
     }
 }
