@@ -1,9 +1,8 @@
 package me.donnior.sparkel.servlet;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,15 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.SparkleActionExecutor;
-import me.donnior.sparkle.annotation.Controller;
 import me.donnior.sparkle.internal.ControllerScanner;
 import me.donnior.sparkle.internal.ControllersHolder;
+import me.donnior.sparkle.internal.RouteModuleScanner;
 import me.donnior.sparkle.route.RouteDefintion;
 import me.donnior.sparkle.route.RouteMachters;
+import me.donnior.sparkle.route.RouteModule;
+import me.donnior.sparkle.route.Router;
+import me.donnior.sparkle.route.RouterImpl;
 import me.donnior.sparkle.view.JSPViewResolver;
 import me.donnior.sparkle.view.ViewResolver;
-
-import org.reflections.Reflections;
 
 public class SparkleDispatcherServlet extends HttpServlet {
     
@@ -29,16 +29,28 @@ public class SparkleDispatcherServlet extends HttpServlet {
     
     private ViewResolver viewResolver;
     private ControllersHolder controllersHolder;
+    private Router router;
     
     public SparkleDispatcherServlet() {
         //initialize Sparkle framework component
         //Scan controllers and stored their name and class
         this.viewResolver = new JSPViewResolver();
         this.controllersHolder = ControllersHolder.getInstance();
+        router = RouterImpl.getInstance();
         scanControllers();
+        installRouter();
     }
     
     
+    private void installRouter() {
+        List<? extends RouteModule> routtingModules = new RouteModuleScanner().scanRouteModule();
+        for(RouteModule module : routtingModules){
+            this.router.install(module);
+        }
+        
+    }
+
+
     private void scanControllers() {
         this.controllersHolder.addControllers(new ControllerScanner().scanControllers("me.donnior.sparkle.demo"), true);
         for(Map.Entry<String, Class<?>> entry : this.controllersHolder.namedControllers().entrySet()){
@@ -48,7 +60,28 @@ public class SparkleDispatcherServlet extends HttpServlet {
 
 
     protected void doService(HttpServletRequest request, HttpServletResponse response, HTTPMethod method){
-
+        
+//        System.out.println("context path : "+request.getContextPath());
+//        System.out.println("servlet path : "+request.getServletPath());
+//        System.out.println("request uri : "+request.getRequestURI());
+//        System.out.println("path info: "+request.getPathInfo());
+//        
+        
+        String contextPath = request.getContextPath();
+        String servletPath = request.getServletPath();
+        String pathInfo = request.getPathInfo();
+        String cAndActionString = pathInfo;
+        
+        if(pathInfo == null){
+            System.out.println("wild servlet mapping like / or *.do");
+            cAndActionString = request.getServletPath();
+        } else {
+            System.out.println("normal mapping like /cms/*");
+//            cAndActionString = request.getServletPath();
+        }
+        
+        System.out.println("c&a string : " + cAndActionString);
+        
         //RouteDefintion rd = Router.getInstance().getRouteDefinition(request.getServletPath());
         RouteDefintion rd = RouteMachters.match(request);
         
