@@ -27,12 +27,16 @@ public class RouterImpl implements Router {
         // TODO deal the path variables in the url like '/user/:username/pictures'
         // TODO maps this url to the following router, 
         logger.debug("registering new route {}", url);
-        RoutingBuilder rb = new RoutingBuilder();
-        rb.setRoutePattern(url);
+        if(!new RouteChecker().isCorrectRoute(url)){
+            //TODO the checker may throw exception when route is incorrect, so this if clauses will not be executed.
+            logger.error("{} is not an correct route pattern", url);
+        }
+        RoutingBuilder rb = new RoutingBuilder(url);
+//        rb.setRoutePattern(url);
         this.routeBuilders.add(rb);
         return rb;
     }
-    
+
     @Override
     public void install(RouteModule module) {
         logger.debug("install route module for {}", module.getClass() );
@@ -42,10 +46,11 @@ public class RouterImpl implements Router {
     @Override
     public RoutingBuilder match(String cAndActionString) {
         for(RoutingBuilder rb : this.routeBuilders){
-            if(rb.getRoutePattern().equals(cAndActionString)){
+            if(rb.match(cAndActionString)){
                 return rb;
             }
         }
         return null;
     }
+    
 }

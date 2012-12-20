@@ -10,6 +10,8 @@ public class DemoRouteModuleOne implements RouteModule {
     public void config(Router router) {
         router.route("/").to("home#index");
         router.route("/projects").to("projects#index");
+        router.route("/accounts/{name}").to("projects#index");
+//        router.route("/ages/{age").to("projects#index");
     }
 
 }

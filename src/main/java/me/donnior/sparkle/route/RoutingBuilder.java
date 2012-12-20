@@ -14,6 +14,10 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     public RoutingBuilder() {
         
     }
+
+    public RoutingBuilder(String url){
+        this.routePattern = url;
+    }
     
     public RoutingBuilder(Router router, List<Object> elements, Object source, String path) {
         this.httpMethod = HTTPMethod.GET;
@@ -37,6 +41,11 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
         this.actionName = extractAction(route);
 //        return this;
     }
+    
+    public boolean match(String url){
+        return this.getRoutePattern().equals(url);
+    }
+    
     
     @Override
     public String getActionName() {
