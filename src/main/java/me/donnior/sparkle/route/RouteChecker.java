@@ -3,12 +3,14 @@ package me.donnior.sparkle.route;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import me.donnior.sparkle.util.Strings;
+
 public class RouteChecker {
 
     private Pattern p = Pattern.compile("\\{(.*?)\\}");
     
     public boolean isCorrectRoute(String src){
-        if(this.count(src, "{") != this.count(src, "}")){
+        if(Strings.count(src, "{") != Strings.count(src, "}")){
             System.out.println("{ and } not match in " + src);
             throw new RuntimeException("{ and } not match in " + src);
         }
@@ -27,8 +29,6 @@ public class RouteChecker {
         return matched.matches("\\w*");
     }
     
-    public int count(String input, String countString){
-        return input.split("\\Q"+countString+"\\E", -1).length - 1;
-    }
+
     
 }
