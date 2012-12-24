@@ -8,11 +8,12 @@ public class RouteCheckerTest {
 
     @Test
     public void test() {
-        RouteChecker c = new RouteChecker();
+        RouteChecker c = new RouteChecker("/{name}/{action}/name");
         
         
         assertTrue(c.isCorrectRoute("/{name}/{action}/name"));
         
+        c = new RouteChecker("/name/action/name");
         assertTrue(c.isCorrectRoute("/name/action/name"));
         
         try {
@@ -23,6 +24,7 @@ public class RouteCheckerTest {
         }
 
         try {
+            c = new RouteChecker("/{name/action}/name");
             c.isCorrectRoute("/{name/action}/name");
             fail();
         } catch (RuntimeException e) {
@@ -31,6 +33,7 @@ public class RouteCheckerTest {
 
         
         try {
+            c = new RouteChecker("Item(s): {item1.test},{item2.qa},{item3.production}");
             c.isCorrectRoute("Item(s): {item1.test},{item2.qa},{item3.production}");
             fail();
         } catch (RuntimeException e) {

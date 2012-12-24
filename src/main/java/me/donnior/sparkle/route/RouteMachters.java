@@ -23,21 +23,6 @@ public class RouteMachters {
         
         RoutingBuilder result = router.match(cAndActionString);
         return result;
-        
-        //get route definitioin from router cache and got the controller and action name
-        
-//        final String controllerName = request.getRequestURI();
-//        RouteDefintion rd = new RoutingBuilder(){ //just demo
-//            @Override
-//            public String getControllerName() {
-//                return controllerName.substring(1);
-//            }
-//            @Override
-//            public String getActionName() {
-//                return "index";
-//            }
-//        };
-//        return rd;
     }
 
 }

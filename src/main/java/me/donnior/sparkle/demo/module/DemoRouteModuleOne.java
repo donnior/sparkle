@@ -11,7 +11,6 @@ public class DemoRouteModuleOne implements RouteModule {
         router.route("/").to("home#index");
         router.route("/projects").to("projects#index");
         router.route("/accounts/{name}").to("projects#index");
-//        router.route("/ages/{age").to("projects#index");
     }
 
 }

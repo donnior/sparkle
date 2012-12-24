@@ -1,6 +1,10 @@
 package me.donnior.sparkle.route;
 
 import java.util.List;
+import java.util.regex.Pattern;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import me.donnior.sparkle.HTTPMethod;
 
@@ -10,17 +14,29 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     private String actionName;
     private String controllerName;
     private String routePattern;
+    private List<String> pathVariables;
+    private Pattern matchPatten;
+    
+    private final static Logger logger = LoggerFactory.getLogger(RoutingBuilder.class);
 
     public RoutingBuilder() {
         
     }
 
     public RoutingBuilder(String url){
+        RouteChecker checker = new RouteChecker(url);
+        this.pathVariables = checker.pathVariables();
         this.routePattern = url;
+        this.matchPatten = Pattern.compile(checker.matcherRegexPatten());
+        logger.debug("successfully resovled route definition [source={}, pattern={}, pathVariables={}] ", new Object[]{this.routePattern, this.matchPatten.pattern(), this.pathVariables});
     }
     
     public RoutingBuilder(Router router, List<Object> elements, Object source, String path) {
         this.httpMethod = HTTPMethod.GET;
+    }
+    
+    public Pattern getMatchPatten() {
+        return matchPatten;
     }
     
     @Override
@@ -43,7 +59,12 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     }
     
     public boolean match(String url){
-        return this.getRoutePattern().equals(url);
+//        return this.getRoutePattern().equals(url);
+        logger.debug("matching url {} using regex patthen {} ", url, this.matchPatten.pattern());
+        boolean b = this.matchPatten.matcher(url).matches();
+        
+        logger.debug("matched {}", b);
+        return b;
     }
     
     

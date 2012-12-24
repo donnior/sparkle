@@ -1,5 +1,7 @@
 package me.donnior.sparkle.route;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,7 +9,49 @@ import me.donnior.sparkle.util.Strings;
 
 public class RouteChecker {
 
-    private Pattern p = Pattern.compile("\\{(.*?)\\}");
+    private static final Pattern p = Pattern.compile("\\{(.*?)\\}");
+    
+    private List<String> pathVariables = new ArrayList<String>();
+    private String matcherRegexPatten = null;
+    
+    public RouteChecker(String src) {
+        if(Strings.count(src, "{") != Strings.count(src, "}")){
+            System.out.println("{ and } not match in " + src);
+            throw new RuntimeException("{ and } not match in " + src);
+        }
+        Matcher m = p.matcher(src);
+        while(m.find()) {
+            String matched = m.group(1);
+            if(!isCharacterOrDigit(matched)){
+                System.out.println(matched + " is invalid");
+                throw new RuntimeException(matched + " is invalid in " + src);
+            } else {
+                this.pathVariables .add(matched);
+            }
+        }
+        
+        constructMatcherRegexPattern(src);
+    }
+    
+    
+    
+    private void constructMatcherRegexPattern(String source) {
+//        String source = "/projects/{id}/members/{name}";
+        String result = source;
+        for(String v : this.pathVariables){
+            result = result.replaceAll("\\{"+v+"\\}", "([^/]+)");
+        }
+        this.matcherRegexPatten = result;
+    }
+
+    public String matcherRegexPatten() {
+        return matcherRegexPatten;
+    }
+
+
+    public List<String> pathVariables() {
+        return pathVariables;
+    }
     
     public boolean isCorrectRoute(String src){
         if(Strings.count(src, "{") != Strings.count(src, "}")){
@@ -17,15 +61,17 @@ public class RouteChecker {
         Matcher m = p.matcher(src);
         while(m.find()) {
             String matched = m.group(1);
-            if(!isValid(matched)){
+            if(!isCharacterOrDigit(matched)){
                 System.out.println(matched + " is invalid");
                 throw new RuntimeException(matched + " is invalid in " + src);
+            } else {
+                
             }
         }
         return true;
     }
 
-    private boolean isValid(String matched) {
+    private boolean isCharacterOrDigit(String matched) {
         return matched.matches("\\w*");
     }
     

@@ -16,5 +16,11 @@
     <a href='<c:url value="/" />' >Home Page</a> <br />
     <a href='<c:url value="/projects" />' >Projects Page</a>  <br />
     <a href='<c:url value="/user/index" />' >Users Page</a>  <br />
+    
+    
+    <br />
+    
+    <a href='<c:url value="/accounts/donnior" />' >account donnior Page</a>  <br />
+    <a href='<c:url value="/accounts/javeer" />' >account javeer Page</a>  <br />
 </body>
 </html>
