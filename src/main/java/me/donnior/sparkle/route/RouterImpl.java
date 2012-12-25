@@ -2,6 +2,9 @@ package me.donnior.sparkle.route;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import me.donnior.sparkle.util.AntPathMatcher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +47,8 @@ public class RouterImpl implements Router {
         for(RoutingBuilder rb : this.routeBuilders){
             if(rb.match(cAndActionString)){
                 logger.debug("founded matched RoutingBuilder for {}", cAndActionString);
+                Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getRoutePattern(), cAndActionString);
+                logger.debug("extracted path variables {}", uriVariables);
                 return rb;
             }
         }

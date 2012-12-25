@@ -22,5 +22,7 @@
     
     <a href='<c:url value="/accounts/donnior" />' >account donnior Page</a>  <br />
     <a href='<c:url value="/accounts/javeer" />' >account javeer Page</a>  <br />
+    <a href='<c:url value="/users/donnior/topics/1" />' >users donnior's topic 1</a>  <br />
+    <a href='<c:url value="/users/javeer/topics/2" />' >users javeer's topic 2</a>  <br />
 </body>
 </html>
