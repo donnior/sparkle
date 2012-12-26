@@ -27,11 +27,7 @@ public class RouterImpl implements Router {
     }
     
     public RoutingBuilder route(String url){
-        // TODO deal the path variables in the url like '/user/:username/pictures'
-        // TODO maps this url to the following router, 
-//        logger.debug("registering new route {}", url);
         RoutingBuilder rb = new RoutingBuilder(url);
-//        rb.setRoutePattern(url);
         this.routeBuilders.add(rb);
         return rb;
     }
@@ -46,7 +42,8 @@ public class RouterImpl implements Router {
     public RoutingBuilder match(String cAndActionString) {
         for(RoutingBuilder rb : this.routeBuilders){
             if(rb.match(cAndActionString)){
-                logger.debug("founded matched RoutingBuilder for {}", cAndActionString);
+                // logger.debug("founded matched RoutingBuilder (route: {}, pattern: {}) for {}", 
+                //     new Object[]{rb.getRoutePattern(), rb.getMatchPatten().pattern(), cAndActionString});
                 Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getRoutePattern(), cAndActionString);
                 logger.debug("extracted path variables {}", uriVariables);
                 return rb;

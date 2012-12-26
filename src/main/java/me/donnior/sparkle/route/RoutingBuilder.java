@@ -17,6 +17,9 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     private List<String> pathVariables;
     private Pattern matchPatten;
     
+    //the rules for 'to' of the route: the controller can't be empty, only one '#' or zero, the action can be ommit
+    private final static String toRegex = "\\w+#{0,1}\\w*";
+
     private final static Logger logger = LoggerFactory.getLogger(RoutingBuilder.class);
 
     public RoutingBuilder() {
@@ -53,17 +56,21 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     
     @Override
     public void to(String route){
+        // TODO check route is correct, it should not empty and contains only one #
+        // if(route == null || route.trim().equals("")){
+        //     throw new RuntimeException("The controller name is empty, you can't bind route to it");
+        // }
+        if(route == null || !route.matches(toRegex)){
+            throw new RuntimeException("route's 'to' part '" + route + "'' is illegal, it must be 'controller#action' or just 'controller'");
+        }
         this.controllerName = extractController(route);
         this.actionName = extractAction(route);
-//        return this;
     }
     
     public boolean match(String url){
-//        return this.getRoutePattern().equals(url);
-        logger.debug("matching url {} using regex patthen {} ", url, this.matchPatten.pattern());
+        // logger.debug("matching ur {} using regex patthen {} ", url, this.matchPatten.pattern());
         boolean b = this.matchPatten.matcher(url).matches();
-        
-        logger.debug("matched {}", b);
+        logger.debug("match uri {} using pattern {} {}", new Object[]{url, this.matchPatten.pattern(), b?" success":" failed"});
         return b;
     }
     
@@ -79,15 +86,13 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     }
 
     private String extractController(String route) {
-        if(route == null || route.trim().equals("")){
-            throw new RuntimeException("The controller name is empty, you can't bind route to it");
-        }
         return route.split("#")[0];
     }
 
     private String extractAction(String route) {
-        // TODO deal route without action, means to default action 'index'
-        return route.split("#")[1];
+        final String defaultAction = "index";
+        String[] strs = route.split("#");
+        return strs.length > 1 ? strs[1] : defaultAction;
     }
 
     public void setRoutePattern(String url) {
