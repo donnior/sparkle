@@ -1,4 +1,4 @@
-package me.donnior.sparkel.servlet;
+package me.donnior.sparkle.servlet;
 
 import java.util.Set;
 
