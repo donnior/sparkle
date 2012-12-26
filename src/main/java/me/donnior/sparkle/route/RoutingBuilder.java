@@ -31,6 +31,7 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
         this.pathVariables = checker.pathVariables();
         this.routePattern = url;
         this.matchPatten = Pattern.compile(checker.matcherRegexPatten());
+        this.httpMethod = HTTPMethod.GET;
         logger.debug("successfully resovled route definition [source={}, pattern={}, pathVariables={}] ", new Object[]{this.routePattern, this.matchPatten.pattern(), this.pathVariables});
     }
     
@@ -43,12 +44,17 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     }
     
     @Override
+    public HTTPMethod getHttpMethod() {
+        return this.httpMethod;
+    }
+    
+    @Override
     public RoutingBuilder withGet(){
         this.httpMethod = HTTPMethod.GET ;
         return this;
     }
     
-//    @Override
+    @Override
     public RoutingBuilder withPost(){
         this.httpMethod = HTTPMethod.POST ;
         return this;
@@ -90,9 +96,25 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     }
 
     private String extractAction(String route) {
-        final String defaultAction = "index";
         String[] strs = route.split("#");
-        return strs.length > 1 ? strs[1] : defaultAction;
+        return strs.length > 1 ? strs[1] : defaultActionForMethod(this.httpMethod);
+    }
+
+    //TODO should it only set default action for GET? 
+    private String defaultActionForMethod(HTTPMethod httpMethod) {
+        if(HTTPMethod.DELETE == httpMethod){
+            return "destroy";
+        }
+        if(HTTPMethod.POST == httpMethod){
+            return "save";
+        }
+        if(HTTPMethod.PUT == httpMethod){
+            return "update";
+        }
+        if(HTTPMethod.GET == httpMethod){
+            return "index";
+        }
+        return null;
     }
 
     public void setRoutePattern(String url) {

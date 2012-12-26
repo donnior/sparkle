@@ -1,6 +1,7 @@
 package me.donnior.sparkle.route;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,11 @@ public class RouterImpl implements Router {
     public static RouterImpl getInstance() {
         return instance;
     }
+    
+    @Override
+    public List<RoutingBuilder> getAllRouteBuilders() {
+        return Collections.unmodifiableList(this.routeBuilders);
+    }
 
     public RouteDefintion getRouteDefinition(String servletPath) {
         RouteDefintion rd = new RoutingBuilder();
@@ -31,7 +37,7 @@ public class RouterImpl implements Router {
         this.routeBuilders.add(rb);
         return rb;
     }
-
+    
     @Override
     public void install(RouteModule module) {
         logger.debug("install route module for {}", module.getClass() );

@@ -68,9 +68,7 @@ public class SparkleDispatcherServlet extends HttpServlet {
 //        System.out.println("request uri : "+request.getRequestURI());
 //        System.out.println("path info: "+request.getPathInfo());
         
-
-        
-        RouteDefintion rd = RouteMachters.match(request, this.router);
+        RouteDefintion rd = new RouteMachters().match(request, this.router);
         
         if(rd == null){
             response.setStatus(404);
@@ -101,8 +99,6 @@ public class SparkleDispatcherServlet extends HttpServlet {
             
         }
         //invoke action on controller with proper argument, first should resovled argument
-
-         
     }
     
     @Override

@@ -24,5 +24,11 @@
     <a href='<c:url value="/accounts/javeer" />' >account javeer Page</a>  <br />
     <a href='<c:url value="/users/donnior/topics/1" />' >users donnior's topic 1</a>  <br />
     <a href='<c:url value="/users/javeer/topics/2" />' >users javeer's topic 2</a>  <br />
+    
+    <form action='<c:url value="/projects/donnior" />' method="post">
+        <input type="text" name="f1" />
+        <input type="submit" />
+    </form>
+    
 </body>
 </html>

@@ -4,4 +4,6 @@ public interface HttpScoppedRoutingBuilder extends LinkedRoutingBuilder {
 
     LinkedRoutingBuilder withGet();
     
+    LinkedRoutingBuilder withPost();
+    
 }

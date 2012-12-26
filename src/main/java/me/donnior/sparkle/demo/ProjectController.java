@@ -8,5 +8,10 @@ public class ProjectController {
     public String index(){
         return "projects/index";
     }
+    
+    public String save(){
+        System.out.println("projects save called");
+        return "projects/index";
+    }
 
 }
