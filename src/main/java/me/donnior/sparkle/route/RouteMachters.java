@@ -33,7 +33,7 @@ public class RouteMachters {
         
         List<RoutingBuilder> rbs = router.getAllRouteBuilders();
         
-        FList<RoutingBuilder> pathAndMethodMatched = FLists.create(rbs).select(new Predict<RoutingBuilder>() {
+/*        FList<RoutingBuilder> pathAndMethodMatched = FLists.create(rbs).select(new Predict<RoutingBuilder>() {
             @Override
             public boolean apply(RoutingBuilder rb) {
                 return rb.matchPath(path);
@@ -44,7 +44,8 @@ public class RouteMachters {
                 return rb.getHttpMethod() == method;
             }
         });
-        
+*/
+        /*  this solution is wrong 
         //after path and method matched, it may get more than one RoutingBuilders which has different conditions matched.
         if(pathAndMethodMatched.size() > 1){
             Collections.sort(pathAndMethodMatched, new Comparator<RoutingBuilder>(){
@@ -63,11 +64,25 @@ public class RouteMachters {
                 }
             });
         }
+        */
         
-        RoutingBuilder rb = pathAndMethodMatched.first();
+        FList<RoutingBuilder> matched = FLists.create(rbs).select(new Predict<RoutingBuilder>() {
+            @Override
+            public boolean apply(RoutingBuilder rb) {
+                return rb.matchPath(path) && 
+                       (rb.getHttpMethod() == method) && 
+                       rb.matchHeader(request) && 
+                       rb.matchParam(request) &&
+                       rb.matchConsume(request);
+            }
+        });
+        
+        RoutingBuilder rb = matched.first();
         if(rb != null){
             Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getRoutePattern(), path);
             logger.debug("extracted path variables {}", uriVariables);            
+        } else {
+            logger.debug("can't find RoutingBuilder for {}", path);
         }
         return rb;
               

@@ -45,7 +45,7 @@ public class RouterImpl implements Router {
     }
     
     @Override
-    public RoutingBuilder match(String cAndActionString) {
+    public RouteMatchRules match(String cAndActionString) {
         for(RoutingBuilder rb : this.routeBuilders){
             if(rb.match(cAndActionString)){
                 // logger.debug("founded matched RoutingBuilder (route: {}, pattern: {}) for {}", 

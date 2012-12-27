@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import me.donnior.sparkle.HTTPMethod;
 
-public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion{
+public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion, RouteMatchRule, RouteMatchRules{
     
     private HTTPMethod httpMethod;
     private String actionName;
@@ -83,6 +83,7 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
         return b;
     }
     
+    @Override
     public boolean matchPath(String path){
         // logger.debug("matching ur {} using regex patthen {} ", url, this.matchPatten.pattern());
         boolean b = this.matchPatten.matcher(path).matches();
@@ -94,7 +95,47 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
         return new MatchedCondition[]{};
     }
     
+    @Override
+    public boolean matchHeader(HttpServletRequest request){
+        if(hasHeaderCondition()){
+            //TODO match header 
+            return true;
+        }
+        return true;
+    }
     
+    private boolean hasHeaderCondition() {
+        return false;
+    }
+
+    @Override
+    public boolean matchParam(HttpServletRequest request){
+        if(hasParamCondition()){
+            //TODO match param
+            if(request.getParameter("a") != null){  //just for demo
+                return request.getParameter("a").equals("a");
+            }
+        }
+        return true;
+    }
+    
+    private boolean hasParamCondition() {
+        return true;
+    }
+
+    @Override
+    public boolean matchConsume(HttpServletRequest request){
+        if(hasConsumeCondition()){
+            //TODO match consumer 
+            return true;
+        }
+        return true;
+    }
+    
+    private boolean hasConsumeCondition() {
+        return false;
+    }
+
     @Override
     public String getActionName() {
         return this.actionName;
