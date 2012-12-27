@@ -11,6 +11,7 @@ public class DemoRouteModuleOne implements RouteModule {
         router.route("/").to("home#index");
         router.route("/projects").to("projects#index");
         router.route("/projects/{name}").withPost().to("projects#save");
+        router.route("/projects/{name}").to("projects#index");
         router.route("/accounts/{name}").to("projects#index");
         router.route("/users/{name}/topics/{id}").to("projects");
     }
