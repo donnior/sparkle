@@ -1,12 +1,14 @@
 package me.donnior.sparkle.route;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import me.donnior.fava.FList;
 import me.donnior.fava.Predict;
@@ -14,11 +16,16 @@ import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.util.AntPathMatcher;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.collect.Sets;
+
 public class RouteMachters {
 
     private final static Logger logger = LoggerFactory.getLogger(RouteMachters.class);
     
-    public  RouteDefintion match(HttpServletRequest request, Router router) {
+    public  RouteDefintion match(final HttpServletRequest request, Router router) {
         //TODO match route defenition with request's servlet path, request headers, etc.
 
         final String path = extractPath(request);
@@ -29,7 +36,7 @@ public class RouteMachters {
         FList<RoutingBuilder> pathAndMethodMatched = FLists.create(rbs).select(new Predict<RoutingBuilder>() {
             @Override
             public boolean apply(RoutingBuilder rb) {
-                return rb.match(path);
+                return rb.matchPath(path);
             }
         }).select(new Predict<RoutingBuilder>() {
             @Override
@@ -37,6 +44,25 @@ public class RouteMachters {
                 return rb.getHttpMethod() == method;
             }
         });
+        
+        //after path and method matched, it may get more than one RoutingBuilders which has different conditions matched.
+        if(pathAndMethodMatched.size() > 1){
+            Collections.sort(pathAndMethodMatched, new Comparator<RoutingBuilder>(){
+                @Override
+                public int compare(RoutingBuilder one, RoutingBuilder two) {
+                    MatchedCondition[] mc1 = one.matchCondition(request);
+                    MatchedCondition[] mc2 = two.matchCondition(request);
+
+                    Set<MatchedCondition> s1 = new HashSet<MatchedCondition>(Arrays.asList(mc1));
+                    Set<MatchedCondition> s2 = new HashSet<MatchedCondition>(Arrays.asList(mc2));
+                    
+                    Set<MatchedCondition> unioned = Sets.union(s1, s2);
+                    
+                    //if two RoutingBuilder have unioned matched conditions, choose the one has more condition matched
+                    return (s1.size()-unioned.size()) - (s2.size()-unioned.size());
+                }
+            });
+        }
         
         RoutingBuilder rb = pathAndMethodMatched.first();
         if(rb != null){

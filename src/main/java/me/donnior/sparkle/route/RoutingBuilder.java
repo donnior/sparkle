@@ -3,6 +3,8 @@ package me.donnior.sparkle.route;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,11 +75,23 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
         this.actionName = extractAction(route);
     }
     
+    //TODO how to deal this match? it should match path and method first, if both match then match conditions
     public boolean match(String url){
         // logger.debug("matching ur {} using regex patthen {} ", url, this.matchPatten.pattern());
         boolean b = this.matchPatten.matcher(url).matches();
-        logger.debug("match uri {} using pattern {} {}", new Object[]{url, this.matchPatten.pattern(), b?" success":" failed"});
+//        logger.debug("match uri {} using pattern {} {}", new Object[]{url, this.matchPatten.pattern(), b?" success":" failed"});
         return b;
+    }
+    
+    public boolean matchPath(String path){
+        // logger.debug("matching ur {} using regex patthen {} ", url, this.matchPatten.pattern());
+        boolean b = this.matchPatten.matcher(path).matches();
+//        logger.debug("match uri {} using pattern {} {}", new Object[]{path, this.matchPatten.pattern(), b?" success":" failed"});
+        return b;
+    }
+    
+    public MatchedCondition[] matchCondition(HttpServletRequest request){
+        return new MatchedCondition[]{};
     }
     
     
