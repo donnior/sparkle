@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.SparkleActionExecutor;
@@ -27,11 +30,13 @@ public class SparkleDispatcherServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
 
-    public static final String   INCLUDE_REQUEST_URI_ATTRIBUTE = "javax.servlet.include.request_uri";
+    public static final String INCLUDE_REQUEST_URI_ATTRIBUTE = "javax.servlet.include.request_uri";
     
     private ViewResolver viewResolver;
     private ControllersHolder controllersHolder;
     private Router router;
+
+    private final static Logger logger = LoggerFactory.getLogger(SparkleDispatcherServlet.class);
     
     public SparkleDispatcherServlet() {
         //initialize Sparkle framework component
@@ -54,7 +59,9 @@ public class SparkleDispatcherServlet extends HttpServlet {
 
 
     private void scanControllers() {
-        this.controllersHolder.addControllers(new ControllerScanner().scanControllers("me.donnior.sparkle.demo"), true);
+        // String controllerPackage = "me.donnior.sparkle.demo";
+        String controllerPackage = "";
+        this.controllersHolder.addControllers(new ControllerScanner().scanControllers(controllerPackage), true);
         for(Map.Entry<String, Class<?>> entry : this.controllersHolder.namedControllers().entrySet()){
             System.out.println(entry.getKey() +":" + entry.getValue());
         }
@@ -67,7 +74,7 @@ public class SparkleDispatcherServlet extends HttpServlet {
 //        System.out.println("servlet path : "+request.getServletPath());
 //        System.out.println("request uri : "+request.getRequestURI());
 //        System.out.println("path info: "+request.getPathInfo());
-        
+        long start = System.currentTimeMillis();
         RouteDefintion rd = new RouteMachters().match(request, this.router);
         
         if(rd == null){
@@ -87,10 +94,17 @@ public class SparkleDispatcherServlet extends HttpServlet {
             ((ApplicationController)controller).setResponse(response);
         }
         Object result = new SparkleActionExecutor(request, response).invokeAction(controller, actionName);
+
+        long actionEnd = System.currentTimeMillis();
+
         if(result instanceof String){
             //TODO wrap the request and response to interface 'Context' for more view resolvers
             try {
                 this.viewResolver.resovleView((String)result, request, response);
+
+                long viewEnd = System.currentTimeMillis();
+                logger.info("completed request within {} ms (Action: {} ms | View: {} ms)" , 
+                    new Object[]{viewEnd - start, actionEnd - start, viewEnd - actionEnd });
             } catch (ServletException e) {
                 e.printStackTrace();
             } catch (IOException e) {
