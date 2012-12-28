@@ -10,12 +10,12 @@ import org.slf4j.LoggerFactory;
 
 import me.donnior.sparkle.HTTPMethod;
 
-public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion, RouteMatchRule, RouteMatchRules{
+public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule, RouteMatchRules{
     
     private HTTPMethod httpMethod;
     private String actionName;
     private String controllerName;
-    private String routePattern;
+    private String pathPattern;
     private List<String> pathVariables;
     private Pattern matchPatten;
     
@@ -31,10 +31,10 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     public RoutingBuilder(String url){
         RouteChecker checker = new RouteChecker(url);
         this.pathVariables = checker.pathVariables();
-        this.routePattern = url;
+        this.pathPattern = url;
         this.matchPatten = Pattern.compile(checker.matcherRegexPatten());
         this.httpMethod = HTTPMethod.GET;
-        logger.debug("successfully resovled route definition [source={}, pattern={}, pathVariables={}] ", new Object[]{this.routePattern, this.matchPatten.pattern(), this.pathVariables});
+        logger.debug("successfully resovled route definition [source={}, pattern={}, pathVariables={}] ", new Object[]{this.pathPattern, this.matchPatten.pattern(), this.pathVariables});
     }
     
     public RoutingBuilder(Router router, List<Object> elements, Object source, String path) {
@@ -45,7 +45,6 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
         return matchPatten;
     }
     
-    @Override
     public HTTPMethod getHttpMethod() {
         return this.httpMethod;
     }
@@ -75,14 +74,6 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
         this.actionName = extractAction(route);
     }
     
-    //TODO how to deal this match? it should match path and method first, if both match then match conditions
-    public boolean match(String url){
-        // logger.debug("matching ur {} using regex patthen {} ", url, this.matchPatten.pattern());
-        boolean b = this.matchPatten.matcher(url).matches();
-//        logger.debug("match uri {} using pattern {} {}", new Object[]{url, this.matchPatten.pattern(), b?" success":" failed"});
-        return b;
-    }
-    
     @Override
     public boolean matchPath(String path){
         // logger.debug("matching ur {} using regex patthen {} ", url, this.matchPatten.pattern());
@@ -96,12 +87,12 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     }
     
     @Override
-    public boolean matchHeader(HttpServletRequest request){
+    public ConditionMatchResult matchHeader(HttpServletRequest request){
         if(hasHeaderCondition()){
             //TODO match header 
-            return true;
+            return ConditionMatchs.EXPLICIT;
         }
-        return true;
+        return ConditionMatchs.DEFAULT;
     }
     
     private boolean hasHeaderCondition() {
@@ -109,39 +100,40 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
     }
 
     @Override
-    public boolean matchParam(HttpServletRequest request){
+    public ConditionMatchResult matchParam(HttpServletRequest request){
         if(hasParamCondition()){
             //TODO match param
             if(request.getParameter("a") != null){  //just for demo
-                return request.getParameter("a").equals("a");
+                boolean matched = request.getParameter("a").equals("a");
+                return matched ? ConditionMatchs.EXPLICIT : ConditionMatchs.FAILED ;
+            } else {
+            	return  ConditionMatchs.FAILED;
             }
         }
-        return true;
+        return ConditionMatchs.DEFAULT;
     }
     
     private boolean hasParamCondition() {
-        return true;
+        return false;
     }
 
     @Override
-    public boolean matchConsume(HttpServletRequest request){
+    public ConditionMatchResult matchConsume(HttpServletRequest request){
         if(hasConsumeCondition()){
             //TODO match consumer 
-            return true;
+        	return ConditionMatchs.EXPLICIT;
         }
-        return true;
+        return ConditionMatchs.DEFAULT;
     }
     
     private boolean hasConsumeCondition() {
         return false;
     }
 
-    @Override
     public String getActionName() {
         return this.actionName;
     }
     
-    @Override
     public String getControllerName() {
         return this.controllerName;
     }
@@ -172,12 +164,12 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteDefintion
         return null;
     }
 
-    public void setRoutePattern(String url) {
-        this.routePattern = url;
+    public void setPathPattern(String url) {
+        this.pathPattern = url;
     }
     
-    public String getRoutePattern() {
-        return routePattern;
+    public String getPathPattern() {
+        return pathPattern;
     }
 
 }

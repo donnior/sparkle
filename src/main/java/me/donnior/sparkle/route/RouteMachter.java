@@ -11,27 +11,63 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.fava.FList;
+import me.donnior.fava.Function;
 import me.donnior.fava.Predict;
 import me.donnior.fava.util.FLists;
-import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.util.AntPathMatcher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Sets;
+public class RouteMachter {
 
-public class RouteMachters {
-
-    private final static Logger logger = LoggerFactory.getLogger(RouteMachters.class);
+    private final static Logger logger = LoggerFactory.getLogger(RouteMachter.class);
     
-    public  RouteDefintion match(final HttpServletRequest request, Router router) {
+    public  RoutingBuilder match(final HttpServletRequest request, Router router) {
         //TODO match route defenition with request's servlet path, request headers, etc.
 
         final String path = extractPath(request);
-        final HTTPMethod method = extractMethod(request);
         
         List<RoutingBuilder> rbs = router.getAllRouteBuilders();
+        
+        FList<RouteBuilderMatcher> rbms = FLists.create(rbs).collect(new Function<RoutingBuilder, RouteBuilderMatcher>(){
+			@Override
+			public RouteBuilderMatcher apply(RoutingBuilder e) {
+				return new RouteBuilderMatcher(e, request);
+			}
+        	
+        });
+        
+        FList<RouteBuilderMatcher> matched = rbms.select(new Predict<RouteBuilderMatcher>() {
+            @Override
+            public boolean apply(RouteBuilderMatcher rbm) {
+                return rbm.match();
+            }
+        });
+        
+        for(RouteBuilderMatcher m : matched){
+        	System.out.println("founded rb with : " + m.getBuilder().getPathPattern() + " with method " + m.getBuilder().getHttpMethod());
+        }
+        
+        if(matched.size() > 1){
+            Collections.sort(matched, new Comparator<RouteBuilderMatcher>(){
+                @Override
+                public int compare(RouteBuilderMatcher one, RouteBuilderMatcher two) {
+                    MatchedCondition[] mc1 = one.matchedExplicitConditions();
+                    MatchedCondition[] mc2 = two.matchedExplicitConditions();
+
+                    Set<MatchedCondition> s1 = new HashSet<MatchedCondition>(Arrays.asList(mc1));
+                    Set<MatchedCondition> s2 = new HashSet<MatchedCondition>(Arrays.asList(mc2));
+                    
+                    return s1.size() - s2.size();
+                    
+//                    Set<MatchedCondition> unioned = Sets.union(s1, s2);
+                    
+                    //if two RoutingBuilder have unioned matched conditions, choose the one has more condition matched
+//                    return (s1.size()-unioned.size()) - (s2.size()-unioned.size());
+                }
+            });
+        }
         
 /*        FList<RoutingBuilder> pathAndMethodMatched = FLists.create(rbs).select(new Predict<RoutingBuilder>() {
             @Override
@@ -66,36 +102,28 @@ public class RouteMachters {
         }
         */
         
-        FList<RoutingBuilder> matched = FLists.create(rbs).select(new Predict<RoutingBuilder>() {
-            @Override
-            public boolean apply(RoutingBuilder rb) {
-                return rb.matchPath(path) && 
-                       (rb.getHttpMethod() == method) && 
-                       rb.matchHeader(request) && 
-                       rb.matchParam(request) &&
-                       rb.matchConsume(request);
-            }
-        });
-        
-        RoutingBuilder rb = matched.first();
-        if(rb != null){
-            Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getRoutePattern(), path);
+//        FList<RoutingBuilder> matched = FLists.create(rbs).select(new Predict<RoutingBuilder>() {
+//            @Override
+//            public boolean apply(RoutingBuilder rb) {
+//                return rb.matchPath(path) && 
+//                       (rb.getHttpMethod() == method) && 
+//                       rb.matchHeader(request) && 
+//                       rb.matchParam(request) &&
+//                       rb.matchConsume(request);
+//            }
+//        });
+//        
+        RouteBuilderMatcher rbm = matched.first();
+        RoutingBuilder rb = null;
+        if(rbm != null){
+        	rb = rbm.getBuilder();
+            Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getPathPattern(), path);
             logger.debug("extracted path variables {}", uriVariables);            
         } else {
             logger.debug("can't find RoutingBuilder for {}", path);
         }
         return rb;
               
-    }
-
-    private HTTPMethod extractMethod(HttpServletRequest request) {
-        if("get".equals(request.getMethod().toLowerCase())){
-            return HTTPMethod.GET;
-        }
-        if("post".equals(request.getMethod().toLowerCase())){
-            return HTTPMethod.POST;
-        }
-        return HTTPMethod.GET;
     }
 
     private String extractPath(HttpServletRequest request) {

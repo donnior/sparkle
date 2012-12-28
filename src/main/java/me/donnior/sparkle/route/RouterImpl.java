@@ -26,11 +26,6 @@ public class RouterImpl implements Router {
     public List<RoutingBuilder> getAllRouteBuilders() {
         return Collections.unmodifiableList(this.routeBuilders);
     }
-
-    public RouteDefintion getRouteDefinition(String servletPath) {
-        RouteDefintion rd = new RoutingBuilder();
-        return rd;
-    }
     
     public RoutingBuilder route(String url){
         RoutingBuilder rb = new RoutingBuilder(url);
@@ -42,20 +37,6 @@ public class RouterImpl implements Router {
     public void install(RouteModule module) {
         logger.debug("install route module for {}", module.getClass() );
         module.config(this);
-    }
-    
-    @Override
-    public RouteMatchRules match(String cAndActionString) {
-        for(RoutingBuilder rb : this.routeBuilders){
-            if(rb.match(cAndActionString)){
-                // logger.debug("founded matched RoutingBuilder (route: {}, pattern: {}) for {}", 
-                //     new Object[]{rb.getRoutePattern(), rb.getMatchPatten().pattern(), cAndActionString});
-                Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getRoutePattern(), cAndActionString);
-                logger.debug("extracted path variables {}", uriVariables);
-                return rb;
-            }
-        }
-        return null;
     }
     
 }

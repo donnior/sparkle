@@ -8,7 +8,6 @@ public interface Router {
 
     void install(RouteModule module);
 
-    RouteMatchRules match(String cAndActionString);
 
     List<RoutingBuilder> getAllRouteBuilders();
     

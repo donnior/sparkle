@@ -9,22 +9,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.SparkleActionExecutor;
 import me.donnior.sparkle.internal.ControllerScanner;
 import me.donnior.sparkle.internal.ControllersHolder;
 import me.donnior.sparkle.internal.RouteModuleScanner;
-import me.donnior.sparkle.route.RouteDefintion;
-import me.donnior.sparkle.route.RouteMachters;
+import me.donnior.sparkle.route.RouteMachter;
 import me.donnior.sparkle.route.RouteModule;
 import me.donnior.sparkle.route.Router;
 import me.donnior.sparkle.route.RouterImpl;
+import me.donnior.sparkle.route.RoutingBuilder;
 import me.donnior.sparkle.view.JSPViewResolver;
 import me.donnior.sparkle.view.ViewResolver;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SparkleDispatcherServlet extends HttpServlet {
     
@@ -75,7 +75,7 @@ public class SparkleDispatcherServlet extends HttpServlet {
 //        System.out.println("request uri : "+request.getRequestURI());
 //        System.out.println("path info: "+request.getPathInfo());
         long start = System.currentTimeMillis();
-        RouteDefintion rd = new RouteMachters().match(request, this.router);
+        RoutingBuilder rd = new RouteMachter().match(request, this.router);
         
         if(rd == null){
             response.setStatus(404);

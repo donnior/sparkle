@@ -6,10 +6,10 @@ public interface RouteMatchRules {
 
     public abstract boolean matchPath(String path);
 
-    public abstract boolean matchHeader(HttpServletRequest request);
+    public abstract ConditionMatchResult matchHeader(HttpServletRequest request);
 
-    public abstract boolean matchParam(HttpServletRequest request);
+    public abstract ConditionMatchResult matchParam(HttpServletRequest request);
 
-    public abstract boolean matchConsume(HttpServletRequest request);
+    public abstract ConditionMatchResult matchConsume(HttpServletRequest request);
 
 }
