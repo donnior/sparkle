@@ -62,6 +62,22 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
     }
     
     @Override
+    public ConditionalRoutingBuilder matchParams(String... params) {
+    	return this;
+    }
+    
+    @Override
+    public ConditionalRoutingBuilder matchHeaders(String... params) {
+    	return null;
+    }
+    
+    @Override
+    public ConditionalRoutingBuilder matchConsumes(String... params) {
+    	return null;
+    }
+    
+    
+    @Override
     public void to(String route){
         // TODO check route is correct, it should not empty and contains only one #
         // if(route == null || route.trim().equals("")){
