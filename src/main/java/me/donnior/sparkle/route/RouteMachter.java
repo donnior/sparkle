@@ -45,78 +45,31 @@ public class RouteMachter {
             }
         });
         
-        for(RouteBuilderMatcher m : matched){
-        	System.out.println("founded rb with : " + m.getBuilder().getPathPattern() + " with method " + m.getBuilder().getHttpMethod());
-        }
+//        for(RouteBuilderMatcher m : matched){
+//        	    System.out.println("founded rb with : " + m.getBuilder().getPathPattern() + " with method " + m.getBuilder().getHttpMethod());
+//        }
         
         if(matched.size() > 1){
+            System.out.println("found more than one matched route builder, now trying to get the closest one");
             Collections.sort(matched, new Comparator<RouteBuilderMatcher>(){
                 @Override
                 public int compare(RouteBuilderMatcher one, RouteBuilderMatcher two) {
                     MatchedCondition[] mc1 = one.matchedExplicitConditions();
                     MatchedCondition[] mc2 = two.matchedExplicitConditions();
-
+                    
                     Set<MatchedCondition> s1 = new HashSet<MatchedCondition>(Arrays.asList(mc1));
                     Set<MatchedCondition> s2 = new HashSet<MatchedCondition>(Arrays.asList(mc2));
                     
-                    return s1.size() - s2.size();
-                    
-//                    Set<MatchedCondition> unioned = Sets.union(s1, s2);
-                    
-                    //if two RoutingBuilder have unioned matched conditions, choose the one has more condition matched
-//                    return (s1.size()-unioned.size()) - (s2.size()-unioned.size());
+                    return s2.size() - s1.size();
                 }
             });
         }
         
-/*        FList<RoutingBuilder> pathAndMethodMatched = FLists.create(rbs).select(new Predict<RoutingBuilder>() {
-            @Override
-            public boolean apply(RoutingBuilder rb) {
-                return rb.matchPath(path);
-            }
-        }).select(new Predict<RoutingBuilder>() {
-            @Override
-            public boolean apply(RoutingBuilder rb) {
-                return rb.getHttpMethod() == method;
-            }
-        });
-*/
-        /*  this solution is wrong 
-        //after path and method matched, it may get more than one RoutingBuilders which has different conditions matched.
-        if(pathAndMethodMatched.size() > 1){
-            Collections.sort(pathAndMethodMatched, new Comparator<RoutingBuilder>(){
-                @Override
-                public int compare(RoutingBuilder one, RoutingBuilder two) {
-                    MatchedCondition[] mc1 = one.matchCondition(request);
-                    MatchedCondition[] mc2 = two.matchCondition(request);
-
-                    Set<MatchedCondition> s1 = new HashSet<MatchedCondition>(Arrays.asList(mc1));
-                    Set<MatchedCondition> s2 = new HashSet<MatchedCondition>(Arrays.asList(mc2));
-                    
-                    Set<MatchedCondition> unioned = Sets.union(s1, s2);
-                    
-                    //if two RoutingBuilder have unioned matched conditions, choose the one has more condition matched
-                    return (s1.size()-unioned.size()) - (s2.size()-unioned.size());
-                }
-            });
-        }
-        */
-        
-//        FList<RoutingBuilder> matched = FLists.create(rbs).select(new Predict<RoutingBuilder>() {
-//            @Override
-//            public boolean apply(RoutingBuilder rb) {
-//                return rb.matchPath(path) && 
-//                       (rb.getHttpMethod() == method) && 
-//                       rb.matchHeader(request) && 
-//                       rb.matchParam(request) &&
-//                       rb.matchConsume(request);
-//            }
-//        });
-//        
         RouteBuilderMatcher rbm = matched.first();
         RoutingBuilder rb = null;
         if(rbm != null){
-        	rb = rbm.getBuilder();
+        	    rb = rbm.getBuilder();
+        	    logger.debug("founded route builder matched closest {}", rb);
             Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getPathPattern(), path);
             logger.debug("extracted path variables {}", uriVariables);            
         } else {

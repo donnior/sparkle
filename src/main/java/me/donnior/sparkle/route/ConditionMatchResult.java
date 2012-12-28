@@ -1,6 +1,6 @@
 package me.donnior.sparkle.route;
 
-public interface ConditionMatchResult {
+public interface ConditionMatchResult extends MatchedCondition{
 
 	boolean succeed();
 

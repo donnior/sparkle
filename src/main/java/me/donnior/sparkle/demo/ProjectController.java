@@ -9,6 +9,10 @@ public class ProjectController {
         return "projects/index";
     }
     
+    public String index2(){
+        return "projects/index2";
+    }
+    
     public String save(){
         System.out.println("projects save called");
         return "projects/index";

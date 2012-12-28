@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import me.donnior.sparkle.HTTPMethod;
 
-public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule, RouteMatchRules{
+public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     
     private HTTPMethod httpMethod;
     private String actionName;
@@ -18,6 +18,9 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
     private String pathPattern;
     private List<String> pathVariables;
     private Pattern matchPatten;
+    private AbstractCondition paramCondition;
+    private AbstractCondition headerCondition;
+    private AbstractCondition consumeCondition;
     
     //the rules for 'to' of the route: the controller can't be empty, only one '#' or zero, the action can be ommit
     private final static String toRegex = "\\w+#{0,1}\\w*";
@@ -63,17 +66,27 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
     
     @Override
     public ConditionalRoutingBuilder matchParams(String... params) {
-    	return this;
+        //TODO how to deal this method called many times
+        if(params != null){
+            this.paramCondition = new ParamCondition(params);
+        }
+    	    return this;
     }
     
     @Override
     public ConditionalRoutingBuilder matchHeaders(String... params) {
-    	return null;
+        if(params != null){
+            this.headerCondition = new ParamCondition(params);
+        }
+        return this;
     }
     
     @Override
     public ConditionalRoutingBuilder matchConsumes(String... params) {
-    	return null;
+        if(params != null){
+            this.consumeCondition = new ParamCondition(params);
+        }
+        return this;
     }
     
     
@@ -105,45 +118,37 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
     @Override
     public ConditionMatchResult matchHeader(HttpServletRequest request){
         if(hasHeaderCondition()){
-            //TODO match header 
-            return ConditionMatchs.EXPLICIT;
+            return this.headerCondition.match(request) ? ConditionMatchs.EXPLICIT : ConditionMatchs.FAILED;
         }
         return ConditionMatchs.DEFAULT;
     }
     
     private boolean hasHeaderCondition() {
-        return false;
+        return this.headerCondition != null;
     }
 
     @Override
     public ConditionMatchResult matchParam(HttpServletRequest request){
         if(hasParamCondition()){
-            //TODO match param
-            if(request.getParameter("a") != null){  //just for demo
-                boolean matched = request.getParameter("a").equals("a");
-                return matched ? ConditionMatchs.EXPLICIT : ConditionMatchs.FAILED ;
-            } else {
-            	return  ConditionMatchs.FAILED;
-            }
+            return this.paramCondition.match(request) ? ConditionMatchs.EXPLICIT : ConditionMatchs.FAILED;
         }
         return ConditionMatchs.DEFAULT;
     }
     
     private boolean hasParamCondition() {
-        return false;
+        return this.paramCondition != null;
     }
 
     @Override
     public ConditionMatchResult matchConsume(HttpServletRequest request){
         if(hasConsumeCondition()){
-            //TODO match consumer 
-        	return ConditionMatchs.EXPLICIT;
+            return this.consumeCondition.match(request) ? ConditionMatchs.EXPLICIT : ConditionMatchs.FAILED;
         }
         return ConditionMatchs.DEFAULT;
     }
     
     private boolean hasConsumeCondition() {
-        return false;
+        return this.consumeCondition != null;
     }
 
     public String getActionName() {
@@ -186,6 +191,19 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
     
     public String getPathPattern() {
         return pathPattern;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("RouteBuilder:[");
+        sb.append("path=>"+this.pathPattern);
+        sb.append(","+"method=>"+this.httpMethod);
+        if(this.hasParamCondition()){
+            sb.append(","+"params=>"+this.paramCondition.toString());
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
 }
