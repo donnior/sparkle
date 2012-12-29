@@ -1,13 +1,12 @@
 package me.donnior.sparkle.demo.module;
 
 import me.donnior.sparkle.route.AbstractRouteModule;
-import me.donnior.sparkle.route.Router;
 
 public class DemoRouteModuleTwo extends  AbstractRouteModule {
 
     @Override
-    public void config(Router router) {
-        router.route("/user/index").to("user#index");
+    public void configure() {
+        get("/user/index").to("user#index");
     }
 
 }
