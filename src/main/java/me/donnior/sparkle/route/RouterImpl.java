@@ -10,7 +10,7 @@ import me.donnior.sparkle.util.AntPathMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RouterImpl implements Router {
+public class RouterImpl implements Router, RouteBuilderHolder, RouteModuleInstallable {
 
     private static RouterImpl instance = new RouterImpl();
     
@@ -22,8 +22,7 @@ public class RouterImpl implements Router {
         return instance;
     }
     
-    @Override
-    public List<RoutingBuilder> getAllRouteBuilders() {
+    public List<RoutingBuilder> getRegisteredRouteBuilders() {
         return Collections.unmodifiableList(this.routeBuilders);
     }
     

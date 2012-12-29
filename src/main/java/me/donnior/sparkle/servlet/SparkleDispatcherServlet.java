@@ -17,7 +17,6 @@ import me.donnior.sparkle.internal.ControllersHolder;
 import me.donnior.sparkle.internal.RouteModuleScanner;
 import me.donnior.sparkle.route.RouteMachter;
 import me.donnior.sparkle.route.RouteModule;
-import me.donnior.sparkle.route.Router;
 import me.donnior.sparkle.route.RouterImpl;
 import me.donnior.sparkle.route.RoutingBuilder;
 import me.donnior.sparkle.view.JSPViewResolver;
@@ -34,7 +33,7 @@ public class SparkleDispatcherServlet extends HttpServlet {
     
     private ViewResolver viewResolver;
     private ControllersHolder controllersHolder;
-    private Router router;
+    private RouterImpl router;
 
     private final static Logger logger = LoggerFactory.getLogger(SparkleDispatcherServlet.class);
     
@@ -43,15 +42,15 @@ public class SparkleDispatcherServlet extends HttpServlet {
         //Scan controllers and stored their name and class
         this.viewResolver = new JSPViewResolver();
         this.controllersHolder = ControllersHolder.getInstance();
-        router = RouterImpl.getInstance();
+        this.router = RouterImpl.getInstance();
         scanControllers();
         installRouter();
     }
     
     
     private void installRouter() {
-        List<? extends RouteModule> routtingModules = new RouteModuleScanner().scanRouteModule();
-        for(RouteModule module : routtingModules){
+        List<? extends RouteModule> routeModules = new RouteModuleScanner().scanRouteModule();
+        for(RouteModule module : routeModules){
             this.router.install(module);
         }
         
@@ -75,7 +74,7 @@ public class SparkleDispatcherServlet extends HttpServlet {
 //        System.out.println("request uri : "+request.getRequestURI());
 //        System.out.println("path info: "+request.getPathInfo());
         long start = System.currentTimeMillis();
-        RoutingBuilder rd = new RouteMachter().match(request, this.router);
+        RoutingBuilder rd = new RouteMachter(this.router).match(request);
         
         if(rd == null){
             response.setStatus(404);

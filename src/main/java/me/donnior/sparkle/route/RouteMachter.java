@@ -22,13 +22,18 @@ import org.slf4j.LoggerFactory;
 public class RouteMachter {
 
     private final static Logger logger = LoggerFactory.getLogger(RouteMachter.class);
+    private RouteBuilderHolder routeBuilderHolder;
     
-    public  RoutingBuilder match(final HttpServletRequest request, Router router) {
+    public RouteMachter(RouteBuilderHolder router) {
+        this.routeBuilderHolder = router;
+    }
+
+    public  RoutingBuilder match(final HttpServletRequest request) {
         //TODO match route defenition with request's servlet path, request headers, etc.
 
         final String path = extractPath(request);
         
-        List<RoutingBuilder> rbs = router.getAllRouteBuilders();
+        List<RoutingBuilder> rbs = this.routeBuilderHolder.getRegisteredRouteBuilders();
         
         FList<RouteBuilderMatcher> rbms = FLists.create(rbs).collect(new Function<RoutingBuilder, RouteBuilderMatcher>(){
 			@Override
