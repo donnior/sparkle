@@ -2,7 +2,6 @@ package me.donnior.sparkle.servlet;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.SparkleActionExecutor;
+import me.donnior.sparkle.internal.ActionMethodDefinition;
+import me.donnior.sparkle.internal.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.internal.ControllerScanner;
 import me.donnior.sparkle.internal.ControllersHolder;
 import me.donnior.sparkle.internal.RouteModuleScanner;
@@ -49,11 +50,8 @@ public class SparkleDispatcherServlet extends HttpServlet {
     
     
     private void installRouter() {
-        List<? extends RouteModule> routeModules = new RouteModuleScanner().scanRouteModule();
-        for(RouteModule module : routeModules){
-            this.router.install(module);
-        }
-        
+        List<RouteModule> routeModules = new RouteModuleScanner().scanRouteModule();
+        this.router.install(routeModules);
     }
 
 
@@ -61,9 +59,14 @@ public class SparkleDispatcherServlet extends HttpServlet {
         // String controllerPackage = "me.donnior.sparkle.demo";
         String controllerPackage = "";
         this.controllersHolder.addControllers(new ControllerScanner().scanControllers(controllerPackage), true);
-        for(Map.Entry<String, Class<?>> entry : this.controllersHolder.namedControllers().entrySet()){
-            System.out.println(entry.getKey() +":" + entry.getValue());
-        }
+        
+//        FMap<String, Class<?>> maps = new FHashMap<String, Class<?>>(this.controllersHolder.namedControllers());
+//        maps.each(new MFunction<String, Class<?>>() {
+//            public void apply(String key, Class<?> value) {
+//                System.out.println(key +":" + value);
+//            }
+//        });
+        
     }
 
 
@@ -92,8 +95,11 @@ public class SparkleDispatcherServlet extends HttpServlet {
             ((ApplicationController)controller).setRequest(request);
             ((ApplicationController)controller).setResponse(response);
         }
-        Object result = new SparkleActionExecutor(request, response).invokeAction(controller, actionName);
-
+        
+        ActionMethodDefinition adf = new ActionMethodDefinitionFinder().find(controller.getClass(), actionName);
+        
+        Object result = new SparkleActionExecutor().invoke(adf, controller, request);
+        
         long actionEnd = System.currentTimeMillis();
 
         if(result instanceof String){

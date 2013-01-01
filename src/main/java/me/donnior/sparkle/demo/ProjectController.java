@@ -5,13 +5,16 @@ import me.donnior.sparkle.annotation.Controller;
 @Controller("projects")
 public class ProjectController {
     
-    public String index(){
+    public String index(String a){
+        System.out.println("a is " + a);
         return "projects/index";
     }
+    
     
     public String index2(){
         return "projects/index2";
     }
+    
     
     public String save(){
         System.out.println("projects save called");

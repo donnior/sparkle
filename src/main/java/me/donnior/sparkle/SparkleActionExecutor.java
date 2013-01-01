@@ -2,46 +2,44 @@ package me.donnior.sparkle;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Set;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.reflections.Reflections;
-
-import com.google.common.base.Predicates;
+import me.donnior.sparkle.internal.ActionMethodDefinition;
+import me.donnior.sparkle.internal.ActionParamDefinition;
+import me.donnior.sparkle.internal.DefaultParamResolver;
+import me.donnior.sparkle.internal.ParamResolver;
 
 public class SparkleActionExecutor {
 
     private HttpServletRequest request;
     private HttpServletResponse response;
     
-    public SparkleActionExecutor(HttpServletRequest request,
-            HttpServletResponse response) {
-        this.request = request;
-        this.response = response;
-    }
+    //TODO should refactord this params resolver, make it support multi resolvers so programmers can create theire own
+    // param resolver like param with class type 'Project'; so it should be List<ParamResolver>
+    private ParamResolver paramResolver = new DefaultParamResolver();
 
-    public Object invokeAction(Object controller, String actionName) {
-        //get action method using Java reflections, resolve its arguments, and call it on the controller object.
-        //TODO how to dealing 'method overloading'? means two methods with same action method name but different arguments
-        Set<Method> methods = Reflections.getAllMethods(controller.getClass(), Predicates.and(Reflections.withModifier(Modifier.PUBLIC),Reflections.withName(actionName)));
-        if(methods.isEmpty()){
-            //can't find action method
-            throw new RuntimeException("can't find action one controller");
+    public Object invoke(ActionMethodDefinition adf, Object controller, HttpServletRequest request) {
+        Method method = adf.method();
+        List<ActionParamDefinition> apds = adf.paramDefinitions();
+        
+        System.out.println("action " + adf.actionName() + " is expecting " + apds.size() + " params");
+        Object[] params = new Object[apds.size()];
+        for(int i = 0; i< apds.size(); i++){
+            ActionParamDefinition apd = apds.get(i);
+            
+            params[i] = this.paramResolver.resolve(apd, request);
         }
-        Method method = methods.iterator().next();
         try {
-            return method.invoke(controller, null);
+            System.out.println("invoke action with params " + params.length);
+            return method.invoke(controller, params);
         } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return null;

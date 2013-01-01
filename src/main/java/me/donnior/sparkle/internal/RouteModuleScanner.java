@@ -15,7 +15,7 @@ public class RouteModuleScanner {
     
     private final static Logger logger = LoggerFactory.getLogger(RouteModuleScanner.class);
 
-    public List<? extends RouteModule> scanRouteModule() {
+    public List<RouteModule> scanRouteModule() {
         List<RouteModule> routeModuleInstances = new ArrayList<RouteModule>();
         Reflections reflections = new Reflections("");
         Set<Class<? extends RouteModule>> inherited = reflections.getSubTypesOf(RouteModule.class);
