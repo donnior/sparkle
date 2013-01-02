@@ -7,6 +7,11 @@ public class ProjectController {
     
     public String index(String a){
         System.out.println("a is " + a);
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         return "projects/index";
     }
     

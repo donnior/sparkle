@@ -26,6 +26,8 @@ import me.donnior.sparkle.view.ViewResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Stopwatch;
+
 public class SparkleDispatcherServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
@@ -39,6 +41,9 @@ public class SparkleDispatcherServlet extends HttpServlet {
     private final static Logger logger = LoggerFactory.getLogger(SparkleDispatcherServlet.class);
     
     public SparkleDispatcherServlet() {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
+        
         //initialize Sparkle framework component
         //Scan controllers and stored their name and class
         this.viewResolver = new JSPViewResolver();
@@ -46,6 +51,8 @@ public class SparkleDispatcherServlet extends HttpServlet {
         this.router = RouterImpl.getInstance();
         scanControllers();
         installRouter();
+
+        logger.info("sparkle framework started succeed within {} ms", stopwatch.elapsedMillis());
     }
     
     
@@ -71,12 +78,13 @@ public class SparkleDispatcherServlet extends HttpServlet {
 
 
     protected void doService(HttpServletRequest request, HttpServletResponse response, HTTPMethod method){
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
         
 //        System.out.println("context path : "+request.getContextPath());
 //        System.out.println("servlet path : "+request.getServletPath());
 //        System.out.println("request uri : "+request.getRequestURI());
 //        System.out.println("path info: "+request.getPathInfo());
-        long start = System.currentTimeMillis();
         RoutingBuilder rd = new RouteMachter(this.router).match(request);
         
         if(rd == null){
@@ -100,16 +108,21 @@ public class SparkleDispatcherServlet extends HttpServlet {
         
         Object result = new SparkleActionExecutor().invoke(adf, controller, request);
         
-        long actionEnd = System.currentTimeMillis();
-
+        long actionTime = stopwatch.elapsedMillis();
+        
+        stopwatch.reset();
+        stopwatch.start();
         if(result instanceof String){
             //TODO wrap the request and response to interface 'Context' for more view resolvers
             try {
                 this.viewResolver.resovleView((String)result, request, response);
 
-                long viewEnd = System.currentTimeMillis();
+                long viewTime = stopwatch.stop().elapsedMillis();
+                
+//                logger.info("completed request within {} ms (Action: {} ms | View: {} ms)" , 
+//                    new Object[]{viewEnd - start, actionEnd - start, viewEnd - actionEnd });
                 logger.info("completed request within {} ms (Action: {} ms | View: {} ms)" , 
-                    new Object[]{viewEnd - start, actionEnd - start, viewEnd - actionEnd });
+                      new Object[]{viewTime + actionTime, actionTime, viewTime });
             } catch (ServletException e) {
                 e.printStackTrace();
             } catch (IOException e) {
