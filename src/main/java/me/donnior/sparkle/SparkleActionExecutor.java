@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.sparkle.internal.ActionMethodDefinition;
 import me.donnior.sparkle.internal.ActionParamDefinition;
-import me.donnior.sparkle.internal.DefaultParamResolver;
-import me.donnior.sparkle.internal.ParamResolver;
+import me.donnior.sparkle.internal.DefaultParamResolversManager;
+import me.donnior.sparkle.internal.ParamResolversManager;
 
 public class SparkleActionExecutor {
 
@@ -19,7 +19,7 @@ public class SparkleActionExecutor {
     
     //TODO should refactord this params resolver, make it support multi resolvers so programmers can create theire own
     // param resolver like param with class type 'Project'; so it should be List<ParamResolver>
-    private ParamResolver paramResolver = new DefaultParamResolver();
+    private ParamResolversManager paramResolver = new DefaultParamResolversManager();
 
     public Object invoke(ActionMethodDefinition adf, Object controller, HttpServletRequest request) {
         Method method = adf.method();

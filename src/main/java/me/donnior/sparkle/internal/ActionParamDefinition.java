@@ -11,6 +11,6 @@ public interface ActionParamDefinition {
     
     public List<Annotation> annotions();
     
-    public boolean hasAnnotation(Annotation annotation);
+    public boolean hasAnnotation(Class annotationType);
     
 }

@@ -49,8 +49,14 @@ public class ActionMethodDefinitionFinder {
                         }
                         
                         @Override
-                        public boolean hasAnnotation(Annotation annotation) {
-                            return this.annotions().contains(annotation);
+                        public boolean hasAnnotation(Class annotationType) {
+                            for(Annotation a : this.annotions()){
+                                if(a.annotationType().equals(annotationType)){
+                                    return true;
+                                }
+                            }
+                            return false;
+//                            return this.annotions().contains(annotation);
                         }
                         
                         @Override
