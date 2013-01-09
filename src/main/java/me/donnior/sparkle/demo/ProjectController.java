@@ -6,7 +6,7 @@ import me.donnior.sparkle.annotation.Param;
 @Controller("projects")
 public class ProjectController {
     
-    public String index(@Param("a") String a, @Param("b") String b, @Param("c") String c){
+    public String index(@Param("a") String a, @Param("b") Integer b, @Param("c") String[] c){
         System.out.println("a is " + a);
         System.out.println("b is " + b);
         System.out.println("c is " + c);

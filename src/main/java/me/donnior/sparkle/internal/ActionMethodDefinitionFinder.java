@@ -63,6 +63,10 @@ public class ActionMethodDefinitionFinder {
                         public List<Annotation> annotions() {
                             return Lists.newArrayList(annotaions);
                         }
+                        
+                        public String toString() {
+                            return "ActionParamDefinition:[type=>"+this.paramType()+"]";
+                        };
                     };
                     
                     apds.add(apd);
