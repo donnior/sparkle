@@ -26,16 +26,16 @@ public abstract class AbstractRouteModule implements RouteModule {
         return router;
     }
 
-    protected HttpScoppedRoutingBuilder route(String path) {
-        return router().route(path);
+    protected HttpScoppedRoutingBuilder match(String path) {
+        return router().match(path);
     }
     
     protected LinkedRoutingBuilder get(String path) {
-        return router().route(path).withGet();
+        return router().match(path).withGet();
     }
     
     protected LinkedRoutingBuilder post(String path) {
-        return router().route(path).withPost();
+        return router().match(path).withPost();
     }
 
 }

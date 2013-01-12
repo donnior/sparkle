@@ -9,19 +9,19 @@ public class DemoRouteModuleOne implements RouteModule {
     @Override
     public void config(Router router) {
         
-        router.route("/").to("home#index");
+        router.match("/").to("home#index");
         
-        router.route("/projects").to("projects#index");
+        router.match("/projects").to("projects#index");
         
-        router.route("/projects").matchParams("a=1","b=2").to("projects#index2");
+        router.match("/projects").matchParams("a=1","b=2").to("projects#index2");
         
-        router.route("/projects/{name}").withPost().to("projects#save");
+        router.match("/projects/{name}").withPost().to("projects#save");
         
-        router.route("/projects/{name}").to("projects#index");
+        router.match("/projects/{name}").to("projects#index");
         
-        router.route("/accounts/{name}").to("projects#index");
+        router.match("/accounts/{name}").to("projects#index");
         
-        router.route("/users/{name}/topics/{id}").to("projects");
+        router.match("/users/{name}/topics/{id}").to("projects");
 
     }
 

@@ -24,7 +24,7 @@ public class RouterImpl implements Router, RouteBuilderHolder, RouteModuleInstal
         return Collections.unmodifiableList(this.routeBuilders);
     }
     
-    public RoutingBuilder route(String url){
+    public RoutingBuilder match(String url){
         RoutingBuilder rb = new RoutingBuilder(url);
         this.routeBuilders.add(rb);
         return rb;
