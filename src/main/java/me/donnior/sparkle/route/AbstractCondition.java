@@ -2,26 +2,36 @@ package me.donnior.sparkle.route;
 
 import javax.servlet.http.HttpServletRequest;
 
+import me.donnior.fava.FList;
+import me.donnior.fava.Predict;
+import me.donnior.fava.util.FLists;
+
 import com.google.common.base.Joiner;
 
 public abstract  class AbstractCondition {
 
     protected String[] params;
+    private FList<ConditionItem> conditionItems = FLists.newEmptyList();
 
     public AbstractCondition(String[] params) {
         this.params = params;
+        parseParams(params);
+    }
+    
+    private void parseParams(String[] params){
+        for(String param : params){
+            this.conditionItems.add(ConditionItemFactory.createItem(param));
+        }
     }
 
-    public boolean match(HttpServletRequest request) {
-        for(String param : params){
-            String[] kv  = param.split("=");
-            String expected = kv[1];
-            String real = this.getConditionValueFromRequest(request, kv[0]);
-            if(!expected.equals(real)){
-                return false;
+    public boolean match(final HttpServletRequest request) {
+        return this.conditionItems.all(new Predict<ConditionItem>() {
+            @Override
+            public boolean apply(ConditionItem item) {
+                String real = getConditionValueFromRequest(request, item.getKey());
+                return item.match(real);
             }
-        }
-        return true;
+        });
     }
 
     @Override
@@ -30,5 +40,5 @@ public abstract  class AbstractCondition {
     }
 
     public abstract String getConditionValueFromRequest(HttpServletRequest request, String key);
-
+    
 }

@@ -19,4 +19,8 @@ public class FLists {
 		return list;
 	}
 	
+    public static <T> FList<T> newEmptyList(){
+        return new FArrayList<T>();
+    }	
+	
 }

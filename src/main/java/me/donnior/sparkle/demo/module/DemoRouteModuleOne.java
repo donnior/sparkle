@@ -13,7 +13,7 @@ public class DemoRouteModuleOne implements RouteModule {
         
         router.match("/projects").to("projects#index");
         
-        router.match("/projects").matchParams("a=1","b=2").to("projects#index2");
+        router.match("/projects").matchParams("a=1","b!=2", "c").to("projects#index2");
         
         router.match("/projects/{name}").withPost().to("projects#save");
         
