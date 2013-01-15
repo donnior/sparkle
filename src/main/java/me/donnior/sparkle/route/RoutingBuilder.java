@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import me.donnior.sparkle.HTTPMethod;
+import me.donnior.sparkle.condition.AbstractCondition;
+import me.donnior.sparkle.condition.ParamCondition;
 
 public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     

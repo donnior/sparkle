@@ -1,4 +1,4 @@
-package me.donnior.sparkle.route;
+package me.donnior.sparkle.condition;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,7 +8,7 @@ import me.donnior.fava.util.FLists;
 
 import com.google.common.base.Joiner;
 
-public abstract  class AbstractCondition {
+public abstract class AbstractCondition {
 
     protected String[] params;
     private FList<ConditionItem> conditionItems = FLists.newEmptyList();
@@ -28,7 +28,7 @@ public abstract  class AbstractCondition {
         return this.conditionItems.all(new Predict<ConditionItem>() {
             @Override
             public boolean apply(ConditionItem item) {
-                String real = getConditionValueFromRequest(request, item.getKey());
+                String real = getConditionValueFromRequest(request, item.getName());
                 return item.match(real);
             }
         });

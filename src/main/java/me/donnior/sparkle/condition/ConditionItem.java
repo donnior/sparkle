@@ -1,10 +1,10 @@
-package me.donnior.sparkle.route;
+package me.donnior.sparkle.condition;
 
 
 public interface ConditionItem {
     
     boolean match(String realValue);
 
-    String getKey();
+    String getName();
 
 }

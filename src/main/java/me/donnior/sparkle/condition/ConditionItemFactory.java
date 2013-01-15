@@ -1,4 +1,5 @@
-package me.donnior.sparkle.route;
+package me.donnior.sparkle.condition;
+
 
 public class ConditionItemFactory {
 
@@ -6,6 +7,9 @@ public class ConditionItemFactory {
     private static final String EQUAL_CHARS = "=";
     
     public static ConditionItem createItem(String param) {
+        if(!isValidConditionExpression(param)){
+            throw new RuntimeException(param + " is not an valid condition expression");
+        }
         if(isNotEqualCondition(param)){
             return new NotEqualConditionItem(param.split(NOT_EQUAL_CHARS));
         }
@@ -14,6 +18,11 @@ public class ConditionItemFactory {
         } else {
             return new NotNullConditionItem(param);
         }
+    }
+
+    private static boolean isValidConditionExpression(String param) {
+        // TODO check condition expression is valid
+        return true;
     }
 
     private static boolean isEqualCondition(String param) {
@@ -27,18 +36,18 @@ public class ConditionItemFactory {
 
 abstract class AbstractConditionItem implements ConditionItem{
     protected String value;
-    protected String key;
+    protected String name;
     
     public AbstractConditionItem(String[] split) {
-        this.key = split[0];
+        this.name = split[0];
         if(split.length > 1){
             this.value = split[1];            
         }
     }
     
     @Override
-    public String getKey() {
-        return this.key;
+    public String getName() {
+        return this.name;
     }
     
     public abstract boolean match(String realValue);
@@ -46,8 +55,8 @@ abstract class AbstractConditionItem implements ConditionItem{
 
 class NotEqualConditionItem extends AbstractConditionItem{
     
-    public NotEqualConditionItem(String[] split) {
-        super(split);
+    public NotEqualConditionItem(String[] kv) {
+        super(kv);
     }
 
     public boolean match(String realValue) {
@@ -58,8 +67,8 @@ class NotEqualConditionItem extends AbstractConditionItem{
 
 class EqualConditionItem extends AbstractConditionItem{
     
-    public EqualConditionItem(String[] split) {
-        super(split);
+    public EqualConditionItem(String[] kv) {
+        super(kv);
     }
 
     @Override
@@ -71,10 +80,10 @@ class EqualConditionItem extends AbstractConditionItem{
 
  class NotNullConditionItem implements ConditionItem{
     
-    private String key;
+    private String name;
     
     public NotNullConditionItem(String key) {
-        this.key = key;
+        this.name = key;
     }
     
     @Override
@@ -83,8 +92,8 @@ class EqualConditionItem extends AbstractConditionItem{
     }
     
     @Override
-    public String getKey() {
-        return this.key;
+    public String getName() {
+        return this.name;
     }
     
 }
