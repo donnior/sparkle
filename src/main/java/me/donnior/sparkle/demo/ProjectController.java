@@ -1,7 +1,12 @@
 package me.donnior.sparkle.demo;
 
+import java.util.List;
+
 import me.donnior.sparkle.annotation.Controller;
+import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
+import me.donnior.sparkle.annotation.ResponseBody;
+import me.donnior.sparkle.view.HttpStatus;
 
 @Controller("projects")
 public class ProjectController {
@@ -21,6 +26,30 @@ public class ProjectController {
     
     public String index2(){
         return "projects/index2";
+    }
+    
+    public String normalView(){
+        return "";
+    }
+    
+    public String redirectView(){
+        return "redirect:users";
+    }
+    
+    @Json
+    public List<Object> jsonView(){
+        
+        return null;
+    }
+    
+    @ResponseBody
+    public String responseBody(){
+        return "";
+    }
+    
+    
+    public HttpStatus httpStatus(){
+        return new HttpStatus(201, "Post created");
     }
     
     
