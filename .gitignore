@@ -13,10 +13,8 @@ target/
 
 *.svn-base
 *.svn*
-*.DS_Store
-.DS_Store
-
 
 .DS_Store
 
 src/main/java/ReflectionTest.java
+
