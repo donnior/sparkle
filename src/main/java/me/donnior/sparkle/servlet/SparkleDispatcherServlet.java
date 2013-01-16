@@ -108,6 +108,9 @@ public class SparkleDispatcherServlet extends HttpServlet {
         
         Object result = new SparkleActionExecutor().invoke(adf, controller, request);
         
+        
+        //TODO set controller's instance varialbles which need to be used in view to the request.
+        
         long actionTime = stopwatch.elapsedMillis();
         
         stopwatch.reset();
@@ -119,8 +122,6 @@ public class SparkleDispatcherServlet extends HttpServlet {
 
                 long viewTime = stopwatch.stop().elapsedMillis();
                 
-//                logger.info("completed request within {} ms (Action: {} ms | View: {} ms)" , 
-//                    new Object[]{viewEnd - start, actionEnd - start, viewEnd - actionEnd });
                 logger.info("completed request within {} ms (Action: {} ms | View: {} ms)" , 
                       new Object[]{viewTime + actionTime, actionTime, viewTime });
             } catch (ServletException e) {
