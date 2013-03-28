@@ -82,13 +82,12 @@ public class RouteBuilderMatcher {
         String cAndActionString = pathInfo;
 
         if (pathInfo == null) {
-            // System.out.println("wild servlet mapping like / or *.do");
+            //wild servlet mapping like "/" or "*.do"
             cAndActionString = request.getServletPath();
         } else {
-            // System.out.println("normal mapping like /cms/*");
+            //normal mapping like "/cms/*"
         }
 
-        // System.out.println("c&a string : " + cAndActionString);
         return cAndActionString;
     }
 

@@ -40,7 +40,7 @@ public class SparkleDispatcherServlet extends HttpServlet {
 
     private final static Logger logger = LoggerFactory.getLogger(SparkleDispatcherServlet.class);
     
-    public SparkleDispatcherServlet() {
+    public SparkleDispatcherServlet(SparkleConfiguration config) {
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
         
