@@ -1,6 +1,10 @@
 package me.donnior.sparkle.route;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.List;
 
 import org.junit.Test;
 
@@ -10,39 +14,41 @@ public class RouteCheckerTest {
     public void test() {
         RouteChecker c = new RouteChecker("/{name}/{action}/name");
         
+        List<String> pathVarialbes = c.pathVariables();
+        assertTrue(2 == pathVarialbes.size());
+        assertEquals("name", pathVarialbes.get(0));
         
-        assertTrue(c.isCorrectRoute("/{name}/{action}/name"));
+        assertEquals("/([^/]+)/([^/]+)/name", c.matcherRegexPatten());
         
         c = new RouteChecker("/name/action/name");
-        assertTrue(c.isCorrectRoute("/name/action/name"));
+        
+        pathVarialbes = c.pathVariables();
+        assertTrue(0 == pathVarialbes.size());
+        
+        assertEquals("/name/action/name", c.matcherRegexPatten());
         
         try {
-            c.isCorrectRoute("/{na{me}action}/name");
+            new RouteChecker("/{na{me}action}/name");
             fail();
-        } catch (RuntimeException e) {
-            
-        }
+        } catch (RuntimeException e) {}
 
         try {
             c = new RouteChecker("/{name/action}/name");
-            c.isCorrectRoute("/{name/action}/name");
             fail();
-        } catch (RuntimeException e) {
-            
-        }
+        } catch (RuntimeException e) {}
 
+        try {
+            c = new RouteChecker("/{name/action/name");
+            fail();
+        } catch (RuntimeException e) {}
         
         try {
             c = new RouteChecker("Item(s): {item1.test},{item2.qa},{item3.production}");
-            c.isCorrectRoute("Item(s): {item1.test},{item2.qa},{item3.production}");
             fail();
         } catch (RuntimeException e) {
             
         }
 
-        
-        
-        
     }
 
 }
