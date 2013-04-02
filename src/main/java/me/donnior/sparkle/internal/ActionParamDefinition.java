@@ -5,12 +5,12 @@ import java.util.List;
 
 public interface ActionParamDefinition {
 
-    public String paramName();
+    String paramName();
     
-    public Class<?> paramType();
+    Class<?> paramType();
     
-    public List<Annotation> annotions();
+    List<Annotation> annotions();
     
-    public boolean hasAnnotation(Class<?> annotationType);
+    boolean hasAnnotation(Class<?> annotationType);
     
 }

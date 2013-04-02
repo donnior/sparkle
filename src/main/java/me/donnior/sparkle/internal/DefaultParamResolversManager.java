@@ -20,11 +20,6 @@ public class DefaultParamResolversManager implements ParamResolversManager {
     
     @Override
     public Object resolve(final ActionParamDefinition actionParamDefinition, HttpServletRequest request) {
-//        if(paramDefinition.paramType().equals(String.class)){
-//            return request.getParameter("a");
-//        }
-//        return null;
-        
         FList<ArgumentResolver> list = FLists.create(argumentResolvers);
         ArgumentResolver matchedArgumentResolver = list.find(new Predict<ArgumentResolver>() {
             @Override

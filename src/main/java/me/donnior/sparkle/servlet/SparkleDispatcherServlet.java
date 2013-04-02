@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.SparkleActionExecutor;
+import me.donnior.sparkle.http.HTTPStatusCode;
 import me.donnior.sparkle.internal.ActionMethodDefinition;
 import me.donnior.sparkle.internal.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.internal.ControllerScanner;
@@ -63,39 +64,27 @@ public class SparkleDispatcherServlet extends HttpServlet {
 
 
     private void scanControllers() {
-        // String controllerPackage = "me.donnior.sparkle.demo";
         String controllerPackage = "";
         this.controllersHolder.addControllers(new ControllerScanner().scanControllers(controllerPackage), true);
-        
-//        FMap<String, Class<?>> maps = new FHashMap<String, Class<?>>(this.controllersHolder.namedControllers());
-//        maps.each(new MFunction<String, Class<?>>() {
-//            public void apply(String key, Class<?> value) {
-//                System.out.println(key +":" + value);
-//            }
-//        });
-        
+
     }
 
 
     protected void doService(HttpServletRequest request, HttpServletResponse response, HTTPMethod method){
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
-        
-//        System.out.println("context path : "+request.getContextPath());
-//        System.out.println("servlet path : "+request.getServletPath());
-//        System.out.println("request uri : "+request.getRequestURI());
-//        System.out.println("path info: "+request.getPathInfo());
+
         RoutingBuilder rd = new RouteMachter(this.router).match(request);
         
         if(rd == null){
-            response.setStatus(404);
+            response.setStatus(HTTPStatusCode.NOT_FOUND);
             return;
         }
         String controllerName = rd.getControllerName();
         String actionName = rd.getActionName();
         Object controller = ControllerFactory.getController(controllerName);
         if(controller == null){
-            System.out.println("can't find controller with name : " + controllerName);
+            logger.error("can't find controller with name : " + controllerName);
             return;
         }
         

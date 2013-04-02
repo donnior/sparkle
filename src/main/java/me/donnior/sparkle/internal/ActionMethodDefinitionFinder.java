@@ -56,7 +56,6 @@ public class ActionMethodDefinitionFinder {
                                 }
                             }
                             return false;
-//                            return this.annotions().contains(annotation);
                         }
                         
                         @Override

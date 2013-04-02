@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface RouteBuilderHolder {
 
-    public List<RoutingBuilder> getRegisteredRouteBuilders();
+    List<RoutingBuilder> getRegisteredRouteBuilders();
     
 }

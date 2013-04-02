@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.sparkle.internal.ActionMethodDefinition;
 import me.donnior.sparkle.internal.ActionParamDefinition;
@@ -13,9 +12,6 @@ import me.donnior.sparkle.internal.DefaultParamResolversManager;
 import me.donnior.sparkle.internal.ParamResolversManager;
 
 public class SparkleActionExecutor {
-
-    private HttpServletRequest request;
-    private HttpServletResponse response;
     
     //TODO should refactord this params resolver, make it support multi resolvers so programmers can create theire own
     // param resolver like param with class type 'Project'; so it should be List<ParamResolver>
@@ -25,7 +21,6 @@ public class SparkleActionExecutor {
         Method method = adf.method();
         List<ActionParamDefinition> apds = adf.paramDefinitions();
         
-        System.out.println("action " + adf.actionName() + " is expecting " + apds.size() + " params");
         Object[] params = new Object[apds.size()];
         for(int i = 0; i< apds.size(); i++){
             ActionParamDefinition apd = apds.get(i);
@@ -33,7 +28,6 @@ public class SparkleActionExecutor {
             params[i] = this.paramResolver.resolve(apd, request);
         }
         try {
-            System.out.println("invoke action with params " + params.length);
             return method.invoke(controller, params);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();

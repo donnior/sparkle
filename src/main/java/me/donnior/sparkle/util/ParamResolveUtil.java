@@ -36,8 +36,6 @@ public class ParamResolveUtil {
             //convert the value to object that is not array
             return convertSingleVaule(value, expectedType);
         }
-        
-//        return null;
     }
 
     private Object convertSingleVaule(String string, Class<?> componentType) {

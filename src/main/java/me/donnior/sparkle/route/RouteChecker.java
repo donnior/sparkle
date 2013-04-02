@@ -16,14 +16,12 @@ public class RouteChecker {
     
     public RouteChecker(String src) {
         if(Strings.count(src, "{") != Strings.count(src, "}")){
-            System.out.println("{ and } not match in " + src);
             throw new RuntimeException("{ and } not match in " + src);
         }
         Matcher m = p.matcher(src);
         while(m.find()) {
             String matched = m.group(1);
             if(!isCharacterOrDigit(matched)){
-                System.out.println(matched + " is invalid");
                 throw new RuntimeException(matched + " is invalid in " + src);
             } else {
                 this.pathVariables .add(matched);
@@ -33,10 +31,8 @@ public class RouteChecker {
         constructMatcherRegexPattern(src);
     }
     
-    
-    
     private void constructMatcherRegexPattern(String source) {
-//        String source = "/projects/{id}/members/{name}";
+        //match to route like "/projects/{id}/members/{name}";
         String result = source;
         for(String v : this.pathVariables){
             result = result.replaceAll("\\{"+v+"\\}", "([^/]+)");
@@ -55,17 +51,13 @@ public class RouteChecker {
     
     public boolean isCorrectRoute(String src){
         if(Strings.count(src, "{") != Strings.count(src, "}")){
-            System.out.println("{ and } not match in " + src);
             throw new RuntimeException("{ and } not match in " + src);
         }
         Matcher m = p.matcher(src);
         while(m.find()) {
             String matched = m.group(1);
             if(!isCharacterOrDigit(matched)){
-                System.out.println(matched + " is invalid");
                 throw new RuntimeException(matched + " is invalid in " + src);
-            } else {
-                
             }
         }
         return true;
@@ -74,7 +66,5 @@ public class RouteChecker {
     private boolean isCharacterOrDigit(String matched) {
         return matched.matches("\\w*");
     }
-    
-
-    
+       
 }

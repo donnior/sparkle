@@ -6,20 +6,13 @@ import me.donnior.sparkle.annotation.Controller;
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.annotation.ResponseBody;
+import me.donnior.sparkle.http.HTTPStatusCode;
 import me.donnior.sparkle.view.HttpStatus;
 
 @Controller("projects")
 public class ProjectController {
     
     public String index(@Param("a") String a, @Param("b") Integer b, @Param("c") String[] c){
-        System.out.println("a is " + a);
-        System.out.println("b is " + b);
-        System.out.println("c is " + c);
-//        try {
-//            Thread.sleep(3000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
         return "projects/index";
     }
     
@@ -49,12 +42,11 @@ public class ProjectController {
     
     
     public HttpStatus httpStatus(){
-        return new HttpStatus(201, "Post created");
+        return new HttpStatus(HTTPStatusCode.CREATED, "Post created");
     }
     
     
     public String save(){
-        System.out.println("projects save called");
         return "projects/index";
     }
 

@@ -24,7 +24,6 @@ public class RouteModuleScanner {
                 continue;
             }
             try {
-//                System.out.println("found route module class : " + clz);
                 routeModuleInstances.add((RouteModule)clz.newInstance());
                 logger.debug("created route module with class {} ",clz.getName());
             } catch (InstantiationException e) {

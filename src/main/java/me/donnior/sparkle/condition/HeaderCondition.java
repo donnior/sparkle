@@ -2,9 +2,6 @@ package me.donnior.sparkle.condition;
 
 import javax.servlet.http.HttpServletRequest;
 
-
-
-
 public class HeaderCondition extends AbstractCondition {
 
     public HeaderCondition(String[] params) {

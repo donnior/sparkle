@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface ActionMethodDefinition {
     
-    public String actionName();
+    String actionName();
     
-    public Method method();
+    Method method();
     
-    public List<ActionParamDefinition> paramDefinitions();
+    List<ActionParamDefinition> paramDefinitions();
     
-    public List<Annotation> annotions();
+    List<Annotation> annotions();
     
-    public boolean hasAnnotation(Annotation annotation);
+    boolean hasAnnotation(Annotation annotation);
 
 }

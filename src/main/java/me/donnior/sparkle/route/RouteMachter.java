@@ -50,12 +50,8 @@ public class RouteMachter {
             }
         });
         
-//        for(RouteBuilderMatcher m : matched){
-//        	    System.out.println("founded rb with : " + m.getBuilder().getPathPattern() + " with method " + m.getBuilder().getHttpMethod());
-//        }
-        
         if(matched.size() > 1){
-            System.out.println("found more than one matched route builder, now trying to get the closest one");
+            logger.debug("found more than one matched route builder, now trying to get the closest one");
             Collections.sort(matched, new Comparator<RouteBuilderMatcher>(){
                 @Override
                 public int compare(RouteBuilderMatcher one, RouteBuilderMatcher two) {
@@ -85,19 +81,12 @@ public class RouteMachter {
     }
 
     private String extractPath(HttpServletRequest request) {
-        String contextPath = request.getContextPath();
-        String servletPath = request.getServletPath();
         String pathInfo = request.getPathInfo();
         String cAndActionString = pathInfo;
-        
         if(pathInfo == null){
-//            System.out.println("wild servlet mapping like / or *.do");
+            //wild servlet mapping like / or *.do
             cAndActionString = request.getServletPath();
-        } else {
-//            System.out.println("normal mapping like /cms/*");
         }
-        
-        System.out.println("c&a string : " + cAndActionString);
         return cAndActionString;
     }
     

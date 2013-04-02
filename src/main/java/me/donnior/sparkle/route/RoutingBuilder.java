@@ -95,9 +95,6 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
     @Override
     public void to(String route){
         // TODO check route is correct, it should not empty and contains only one #
-        // if(route == null || route.trim().equals("")){
-        //     throw new RuntimeException("The controller name is empty, you can't bind route to it");
-        // }
         if(route == null || !route.matches(toRegex)){
             throw new RuntimeException("route's 'to' part '" + route + "'' is illegal, it must be 'controller#action' or just 'controller'");
         }
@@ -107,9 +104,8 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
     
     @Override
     public boolean matchPath(String path){
-        // logger.debug("matching ur {} using regex patthen {} ", url, this.matchPatten.pattern());
         boolean b = this.matchPatten.matcher(path).matches();
-//        logger.debug("match uri {} using pattern {} {}", new Object[]{path, this.matchPatten.pattern(), b?" success":" failed"});
+        logger.debug("match uri {} using pattern {} {}", new Object[]{path, this.matchPatten.pattern(), b?" success":" failed"});
         return b;
     }
     

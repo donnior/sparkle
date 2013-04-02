@@ -76,18 +76,16 @@ public class RouteBuilderMatcher {
     }
 
     private String extractPath(HttpServletRequest request) {
-        String contextPath = request.getContextPath();
-        String servletPath = request.getServletPath();
+        
         String pathInfo = request.getPathInfo();
         String cAndActionString = pathInfo;
 
         if (pathInfo == null) {
             //wild servlet mapping like "/" or "*.do"
             cAndActionString = request.getServletPath();
-        } else {
-            //normal mapping like "/cms/*"
-        }
-
+        } 
+        //otherwise normal mapping like "/cms/*"
+       
         return cAndActionString;
     }
 

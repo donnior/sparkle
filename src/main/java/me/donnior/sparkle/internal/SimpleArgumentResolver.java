@@ -19,12 +19,10 @@ public class SimpleArgumentResolver implements ArgumentResolver {
     @Override
     public boolean support(ActionParamDefinition actionParamDefinition) {
         return actionParamDefinition.hasAnnotation(Param.class);
-//        return actionParamDefinition.paramType().equals(String.class);
     }
 
     @Override
     public Object resovle(ActionParamDefinition actionParamDefinition, HttpServletRequest request) {
-        System.out.println("resolve action param : " + actionParamDefinition);
       FList<Annotation> ans =  FLists.create(actionParamDefinition.annotions());
       Annotation a = ans.find(new Predict<Annotation>() {
         @Override
