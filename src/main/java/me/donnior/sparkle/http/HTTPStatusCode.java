@@ -1,6 +1,6 @@
 package me.donnior.sparkle.http;
 
-public class HTTPStatusCode {
+public interface HTTPStatusCode {
 
     public static final int CREATED = 201;
     
