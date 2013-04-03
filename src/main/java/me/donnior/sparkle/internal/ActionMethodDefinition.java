@@ -14,6 +14,6 @@ public interface ActionMethodDefinition {
     
     List<Annotation> annotions();
     
-    boolean hasAnnotation(Annotation annotation);
+    boolean hasAnnotation(Class annotationType);
 
 }

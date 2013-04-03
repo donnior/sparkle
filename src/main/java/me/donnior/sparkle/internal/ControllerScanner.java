@@ -28,10 +28,13 @@ public class ControllerScanner {
         }
         Set<Class<? extends ApplicationController>> inherited = reflections.getSubTypesOf(ApplicationController.class);
         for(Class<?> clz : inherited){
-            if(!annotated.contains(clz)){
-                this.controllers.put(clz.getSimpleName(), clz);
-                logger.debug("founded inherited controller {} with class {} ", clz.getSimpleName(), clz.getName());
+            boolean controllerIsBothAnnotatedAndInherited = annotated.contains(clz);
+            if(controllerIsBothAnnotatedAndInherited){
+                continue; //since already been processed above
             }
+            String controllerName = clz.getSimpleName();
+            this.controllers.put(controllerName, clz);
+            logger.debug("founded inherited controller {} with class {} ", clz.getSimpleName(), clz.getName());
         }
         
         return this.controllers;

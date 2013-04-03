@@ -30,11 +30,14 @@ public class SimpleArgumentResolver implements ArgumentResolver {
             return e.annotationType().equals(Param.class);
         }
       });
-      String[] values = request.getParameterValues(((Param)a).value());
+      String paramName = ((Param)a).value();
+      Class<?> paramType = actionParamDefinition.paramType();
+      
+      String[] values = request.getParameterValues(paramName);
       if(values == null){
-          return nullValueForType(actionParamDefinition.paramType());
+          return nullValueForType(paramType);
       } else {
-          return new ParamResolveUtil().convertValue(values, actionParamDefinition.paramType());
+          return new ParamResolveUtil().convertValue(values, paramType);
       }
       
       //TODO add class cast for supported type like String, int; but exceptioin for customized type.
