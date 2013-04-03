@@ -1,8 +1,6 @@
 package me.donnior.reflection;
 
 import static org.junit.Assert.assertNotNull;
-import me.donnior.sparkle.route.RouteModule;
-import me.donnior.sparkle.route.Router;
 
 import org.junit.Before;
 import org.junit.Test;
