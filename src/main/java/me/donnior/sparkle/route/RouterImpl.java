@@ -43,4 +43,8 @@ public class RouterImpl implements Router, RouteBuilderHolder, RouteModuleInstal
         }
     }
     
+    public void clear(){
+        this.routeBuilders.clear();
+    }
+    
 }

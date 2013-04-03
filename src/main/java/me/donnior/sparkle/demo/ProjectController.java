@@ -7,7 +7,7 @@ import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.annotation.ResponseBody;
 import me.donnior.sparkle.http.HTTPStatusCode;
-import me.donnior.sparkle.view.HttpStatus;
+import me.donnior.sparkle.view.result.HttpStatus;
 
 @Controller("projects")
 public class ProjectController {

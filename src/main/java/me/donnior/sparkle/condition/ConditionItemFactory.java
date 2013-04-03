@@ -22,7 +22,7 @@ public class ConditionItemFactory {
 
     private static boolean isValidConditionExpression(String param) {
         // TODO check condition expression is valid
-        return true;
+        return param!=null && !"".equals(param.trim());
     }
 
     private static boolean isEqualCondition(String param) {
@@ -40,14 +40,17 @@ abstract class AbstractConditionItem implements ConditionItem{
     
     public AbstractConditionItem(String[] split) {
         this.name = split[0];
-        if(split.length > 1){
-            this.value = split[1];            
-        }
+        this.value = split[1];            
     }
     
     @Override
     public String getName() {
         return this.name;
+    }
+    
+    @Override
+    public String getValue() {
+        return this.value;
     }
     
     public abstract boolean match(String realValue);
@@ -94,6 +97,11 @@ class EqualConditionItem extends AbstractConditionItem{
     @Override
     public String getName() {
         return this.name;
+    }
+    
+    @Override
+    public String getValue() {
+        return null;
     }
     
 }

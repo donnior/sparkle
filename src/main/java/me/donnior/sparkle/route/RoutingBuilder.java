@@ -42,10 +42,6 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
         logger.debug("successfully resovled route definition [source={}, pattern={}, pathVariables={}] ", new Object[]{this.pathPattern, this.matchPatten.pattern(), this.pathVariables});
     }
     
-    public RoutingBuilder(Router router, List<Object> elements, Object source, String path) {
-        this.httpMethod = HTTPMethod.GET;
-    }
-    
     public Pattern getMatchPatten() {
         return matchPatten;
     }
@@ -72,7 +68,7 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
         if(params != null){
             this.paramCondition = new ParamCondition(params);
         }
-    	    return this;
+        return this;
     }
     
     @Override
@@ -116,9 +112,9 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
     @Override
     public ConditionMatchResult matchHeader(HttpServletRequest request){
         if(hasHeaderCondition()){
-            return this.headerCondition.match(request) ? ConditionMatchs.EXPLICIT : ConditionMatchs.FAILED;
+            return this.headerCondition.match(request) ? ConditionMatchs.EXPLICIT_SUCCEED : ConditionMatchs.FAILED;
         }
-        return ConditionMatchs.DEFAULT;
+        return ConditionMatchs.DEFAULT_SUCCEED;
     }
     
     private boolean hasHeaderCondition() {
@@ -128,9 +124,9 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
     @Override
     public ConditionMatchResult matchParam(HttpServletRequest request){
         if(hasParamCondition()){
-            return this.paramCondition.match(request) ? ConditionMatchs.EXPLICIT : ConditionMatchs.FAILED;
+            return this.paramCondition.match(request) ? ConditionMatchs.EXPLICIT_SUCCEED : ConditionMatchs.FAILED;
         }
-        return ConditionMatchs.DEFAULT;
+        return ConditionMatchs.DEFAULT_SUCCEED;
     }
     
     private boolean hasParamCondition() {
@@ -140,9 +136,9 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
     @Override
     public ConditionMatchResult matchConsume(HttpServletRequest request){
         if(hasConsumeCondition()){
-            return this.consumeCondition.match(request) ? ConditionMatchs.EXPLICIT : ConditionMatchs.FAILED;
+            return this.consumeCondition.match(request) ? ConditionMatchs.EXPLICIT_SUCCEED : ConditionMatchs.FAILED;
         }
-        return ConditionMatchs.DEFAULT;
+        return ConditionMatchs.DEFAULT_SUCCEED;
     }
     
     private boolean hasConsumeCondition() {

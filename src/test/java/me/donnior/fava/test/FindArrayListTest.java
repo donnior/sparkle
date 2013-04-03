@@ -1,5 +1,6 @@
 package me.donnior.fava.test;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -9,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import me.donnior.fava.EachFunction;
+import me.donnior.fava.FArrayList;
 import me.donnior.fava.FCollection;
 import me.donnior.fava.FList;
 import me.donnior.fava.FoldFunction;
@@ -41,6 +43,17 @@ public class FindArrayListTest {
 		});
 		assertEquals(2, as.size());
 	}
+	
+    @Test
+    public void testSelect(){
+        FList<A> c = prepareList();
+        FList<A> as = c.select(new Predict<A>(){   
+            public boolean apply(A a){
+                return a.i > 10;
+            }
+        });
+        assertEquals(2, as.size());
+    }	
 	
 	@Test
 	public void testMap(){
@@ -101,6 +114,11 @@ public class FindArrayListTest {
 		FList<A> c = prepareList();
 		assertEquals(8, c.first().i);
 		assertEquals(234, c.last().i);
+		
+		FList<A> emptyList = new FArrayList<A>();
+		assertNull(emptyList.first());
+		assertNull(emptyList.last());
+		
 	}
 	
 	@Test
@@ -192,6 +210,9 @@ public class FindArrayListTest {
 		list.push(4,5,6);
 		assertEquals(6, list.size());
 		assertTrue(5 == list.at(4));
+		
+		list.push(null);
+		assertEquals(6, list.size());
 	}		
 	
 	@Test

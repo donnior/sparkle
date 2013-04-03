@@ -2,7 +2,7 @@ package me.donnior.sparkle.route;
 
 public enum ConditionMatchs implements ConditionMatchResult{
 	
-	DEFAULT(true, false), EXPLICIT(true, true), FAILED(false, true);
+	DEFAULT_SUCCEED(true, false), EXPLICIT_SUCCEED(true, true), FAILED(false, true);
 
 	
 	private boolean succeed;
