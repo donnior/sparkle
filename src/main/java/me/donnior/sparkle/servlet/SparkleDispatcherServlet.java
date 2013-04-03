@@ -58,7 +58,8 @@ public class SparkleDispatcherServlet extends HttpServlet {
     
     
     private void installRouter() {
-        List<RouteModule> routeModules = new RouteModuleScanner().scanRouteModule();
+        String routePackage = "";
+        List<RouteModule> routeModules = new RouteModuleScanner().scanRouteModule(routePackage);
         this.router.install(routeModules);
     }
 
