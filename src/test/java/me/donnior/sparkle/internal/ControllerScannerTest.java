@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
-import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.annotation.Controller;
+import me.donnior.sparkle.controller.ApplicationController;
 
 import org.junit.Test;
 
