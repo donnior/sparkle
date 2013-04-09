@@ -42,13 +42,20 @@ public class ParamResolveUtil {
         if(componentType.equals(String.class)){
             return string;
         }
-        if(componentType.equals(Integer.class)){
+        if(componentType.equals(Integer.class) || componentType.equals(int.class)){
             return Integer.valueOf(string);
         }
-        if(componentType.isPrimitive()){
-            throw new RuntimeException("action method argument not support primitive");
+        if(componentType.equals(Float.class) || componentType.equals(float.class)){
+            return Float.valueOf(string);
         }
-        return null;
+        if(componentType.equals(Double.class) || componentType.equals(double.class)){
+            return Double.valueOf(string);
+        }
+//        if(componentType.isPrimitive()){
+        else{
+            throw new RuntimeException("action method argument not support type of " + componentType.getSimpleName());
+        }
+//        return null;
     }
 
 }

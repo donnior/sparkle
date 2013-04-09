@@ -1,14 +1,16 @@
 package me.donnior.sparkle.internal;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.common.collect.Lists;
-
 import me.donnior.fava.FList;
 import me.donnior.fava.Predict;
 import me.donnior.fava.util.FLists;
+
+import com.google.common.collect.Lists;
+
 
 public class DefaultParamResolversManager implements ParamResolversManager {
 
@@ -34,4 +36,9 @@ public class DefaultParamResolversManager implements ParamResolversManager {
         
     }
 
+     @Override
+    public List<ArgumentResolver> registeredResolvers() {
+      return Collections.unmodifiableList(this.argumentResolvers);
+    }
+    
 }
