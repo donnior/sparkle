@@ -1,11 +1,11 @@
 package me.donnior.sparkle;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.internal.ActionMethodDefinition;
 import me.donnior.sparkle.internal.ActionParamDefinition;
 import me.donnior.sparkle.internal.DefaultParamResolversManager;
@@ -24,19 +24,9 @@ public class SparkleActionExecutor {
         Object[] params = new Object[apds.size()];
         for(int i = 0; i< apds.size(); i++){
             ActionParamDefinition apd = apds.get(i);
-            
             params[i] = this.paramResolver.resolve(apd, request);
         }
-        try {
-            return method.invoke(controller, params);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return ReflectionUtil.invokeMethod(controller, method, params);
     }
 
 }   

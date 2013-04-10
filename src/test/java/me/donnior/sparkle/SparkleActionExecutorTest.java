@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import javax.servlet.http.HttpServletRequest;
 
-import me.donnior.sparkle.annotation.Param;
+
 import me.donnior.sparkle.internal.ActionMethodDefinition;
 import me.donnior.sparkle.internal.ActionMethodDefinitionFinder;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
@@ -48,15 +48,3 @@ public class SparkleActionExecutorTest {
 }
 
 
-class ControllerForSparkleActionExecutor{
-
-    public String index(@Param("name") String name, @Param("page") int page){
-        return name + String.valueOf(page);
-    }
-    
-    private String show(){
-        return null;
-    }
-    
-    
-}
