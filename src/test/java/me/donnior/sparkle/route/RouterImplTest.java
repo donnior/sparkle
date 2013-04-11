@@ -51,7 +51,7 @@ public class RouterImplTest {
         assertEquals(0, rrbs.size());
         
         try{
-            rrbs.add(new RouteBuilder());
+            rrbs.add(new RouteBuilder("/user"));
             fail();
         }catch(UnsupportedOperationException uoe){}
         

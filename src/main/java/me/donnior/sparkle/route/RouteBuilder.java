@@ -5,12 +5,14 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.condition.AbstractCondition;
+import me.donnior.sparkle.condition.ConsumeCondition;
+import me.donnior.sparkle.condition.HeaderCondition;
 import me.donnior.sparkle.condition.ParamCondition;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     
@@ -28,10 +30,6 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     private final static String toRegex = "\\w+#{0,1}\\w*";
 
     private final static Logger logger = LoggerFactory.getLogger(RouteBuilder.class);
-
-    public RouteBuilder() {
-        
-    }
 
     public RouteBuilder(String url){
         RouteChecker checker = new RouteChecker(url);
@@ -74,7 +72,7 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     @Override
     public ConditionalRoutingBuilder matchHeaders(String... params) {
         if(params != null){
-            this.headerCondition = new ParamCondition(params);
+            this.headerCondition = new HeaderCondition(params);
         }
         return this;
     }
@@ -82,7 +80,7 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     @Override
     public ConditionalRoutingBuilder matchConsumes(String... params) {
         if(params != null){
-            this.consumeCondition = new ParamCondition(params);
+            this.consumeCondition = new ConsumeCondition(params);
         }
         return this;
     }
@@ -92,7 +90,7 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     public void to(String route){
         // TODO check route is correct, it should not empty and contains only one #
         if(route == null || !route.matches(toRegex)){
-            throw new RuntimeException("route's 'to' part '" + route + "'' is illegal, it must be 'controller#action' or just 'controller'");
+            throw new RuntimeException("route's 'to' part '" + route + "' is illegal, it must be 'controller#action' or just 'controller'");
         }
         this.controllerName = extractController(route);
         this.actionName = extractAction(route);
@@ -105,10 +103,10 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
         return b;
     }
     
-    public MatchedCondition[] matchCondition(HttpServletRequest request){
-        return new MatchedCondition[]{};
-    }
-    
+//    public MatchedCondition[] matchCondition(HttpServletRequest request){
+//        return new MatchedCondition[]{};
+//    }
+//    
     @Override
     public ConditionMatchResult matchHeader(HttpServletRequest request){
         if(hasHeaderCondition()){
