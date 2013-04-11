@@ -12,7 +12,7 @@ public class RouterImpl implements Router, RouteBuilderHolder, RouteModuleInstal
 
     private static RouterImpl instance = new RouterImpl();
     
-    private List<RoutingBuilder> routeBuilders = new ArrayList<RoutingBuilder>();
+    private List<RouteBuilder> routeBuilders = new ArrayList<RouteBuilder>();
     
     private final static Logger logger = LoggerFactory.getLogger(RouterImpl.class);
     
@@ -20,12 +20,12 @@ public class RouterImpl implements Router, RouteBuilderHolder, RouteModuleInstal
         return instance;
     }
     
-    public List<RoutingBuilder> getRegisteredRouteBuilders() {
+    public List<RouteBuilder> getRegisteredRouteBuilders() {
         return Collections.unmodifiableList(this.routeBuilders);
     }
     
-    public RoutingBuilder match(String url){
-        RoutingBuilder rb = new RoutingBuilder(url);
+    public RouteBuilder match(String url){
+        RouteBuilder rb = new RouteBuilder(url);
         this.routeBuilders.add(rb);
         return rb;
     }

@@ -10,11 +10,11 @@ import me.donnior.sparkle.HTTPMethod;
 public class RouteBuilderMatcher {
 
     private HttpServletRequest request;
-    private RoutingBuilder builder;
+    private RouteBuilder builder;
 
     private List<MatchedCondition> explicitMatchedCondition = new ArrayList<MatchedCondition>();
 
-    public RouteBuilderMatcher(RoutingBuilder builder,
+    public RouteBuilderMatcher(RouteBuilder builder,
             HttpServletRequest request) {
         this.builder = builder;
         this.request = request;
@@ -61,7 +61,7 @@ public class RouteBuilderMatcher {
         return this.explicitMatchedCondition.toArray(new MatchedCondition[] {});
     }
 
-    public RoutingBuilder getBuilder() {
+    public RouteBuilder getBuilder() {
         return builder;
     }
 

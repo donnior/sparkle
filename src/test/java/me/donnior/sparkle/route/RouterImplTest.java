@@ -46,12 +46,12 @@ public class RouterImplTest {
         RouterImpl router = new RouterImpl();
         
         
-        List<RoutingBuilder> rrbs = router.getRegisteredRouteBuilders();
+        List<RouteBuilder> rrbs = router.getRegisteredRouteBuilders();
         
         assertEquals(0, rrbs.size());
         
         try{
-            rrbs.add(new RoutingBuilder());
+            rrbs.add(new RouteBuilder());
             fail();
         }catch(UnsupportedOperationException uoe){}
         
@@ -74,7 +74,7 @@ public class RouterImplTest {
         
         router.install(modules);
         
-        List<RoutingBuilder> rrbs = router.getRegisteredRouteBuilders();
+        List<RouteBuilder> rrbs = router.getRegisteredRouteBuilders();
         assertEquals(1, rrbs.size());
        
     }

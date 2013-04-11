@@ -28,16 +28,16 @@ public class RouteMachter {
         this.routeBuilderHolder = router;
     }
 
-    public  RoutingBuilder match(final HttpServletRequest request) {
+    public  RouteBuilder match(final HttpServletRequest request) {
         //TODO match route defenition with request's servlet path, request headers, etc.
 
         final String path = extractPath(request);
         
-        List<RoutingBuilder> rbs = this.routeBuilderHolder.getRegisteredRouteBuilders();
+        List<RouteBuilder> rbs = this.routeBuilderHolder.getRegisteredRouteBuilders();
         
-        FList<RouteBuilderMatcher> rbms = FLists.create(rbs).collect(new Function<RoutingBuilder, RouteBuilderMatcher>(){
+        FList<RouteBuilderMatcher> rbms = FLists.create(rbs).collect(new Function<RouteBuilder, RouteBuilderMatcher>(){
 			@Override
-			public RouteBuilderMatcher apply(RoutingBuilder e) {
+			public RouteBuilderMatcher apply(RouteBuilder e) {
 				return new RouteBuilderMatcher(e, request);
 			}
         	
@@ -67,7 +67,7 @@ public class RouteMachter {
         }
         
         RouteBuilderMatcher rbm = matched.first();
-        RoutingBuilder rb = null;
+        RouteBuilder rb = null;
         if(rbm != null){
         	    rb = rbm.getBuilder();
         	    logger.debug("founded route builder matched closest {}", rb);

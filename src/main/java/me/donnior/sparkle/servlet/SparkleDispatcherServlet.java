@@ -20,7 +20,7 @@ import me.donnior.sparkle.internal.RouteModuleScanner;
 import me.donnior.sparkle.route.RouteMachter;
 import me.donnior.sparkle.route.RouteModule;
 import me.donnior.sparkle.route.RouterImpl;
-import me.donnior.sparkle.route.RoutingBuilder;
+import me.donnior.sparkle.route.RouteBuilder;
 import me.donnior.sparkle.view.JSPViewResolver;
 import me.donnior.sparkle.view.ViewResolver;
 
@@ -75,7 +75,7 @@ public class SparkleDispatcherServlet extends HttpServlet {
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
 
-        RoutingBuilder rd = new RouteMachter(this.router).match(request);
+        RouteBuilder rd = new RouteMachter(this.router).match(request);
         
         if(rd == null){
             response.setStatus(HTTPStatusCode.NOT_FOUND);

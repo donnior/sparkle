@@ -12,7 +12,7 @@ import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.condition.AbstractCondition;
 import me.donnior.sparkle.condition.ParamCondition;
 
-public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
+public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     
     private HTTPMethod httpMethod;
     private String actionName;
@@ -27,13 +27,13 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
     //the rules for 'to' of the route: the controller can't be empty, only one '#' or zero, the action can be ommit
     private final static String toRegex = "\\w+#{0,1}\\w*";
 
-    private final static Logger logger = LoggerFactory.getLogger(RoutingBuilder.class);
+    private final static Logger logger = LoggerFactory.getLogger(RouteBuilder.class);
 
-    public RoutingBuilder() {
+    public RouteBuilder() {
         
     }
 
-    public RoutingBuilder(String url){
+    public RouteBuilder(String url){
         RouteChecker checker = new RouteChecker(url);
         this.pathVariables = checker.pathVariables();
         this.pathPattern = url;
@@ -51,13 +51,13 @@ public class RoutingBuilder implements HttpScoppedRoutingBuilder, RouteMatchRule
     }
     
     @Override
-    public RoutingBuilder withGet(){
+    public RouteBuilder withGet(){
         this.httpMethod = HTTPMethod.GET ;
         return this;
     }
     
     @Override
-    public RoutingBuilder withPost(){
+    public RouteBuilder withPost(){
         this.httpMethod = HTTPMethod.POST ;
         return this;
     }
