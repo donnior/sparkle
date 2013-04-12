@@ -8,6 +8,7 @@ import me.donnior.fava.FList;
 import me.donnior.fava.Predict;
 import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.annotation.Param;
+import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.util.ParamResolveUtil;
 
 /**
@@ -45,7 +46,7 @@ public class SimpleArgumentResolver implements ArgumentResolver {
 
     private Object nullValueForType(Class<?> type) {
         if(type.isPrimitive()){
-            throw new RuntimeException("action method argument annotated with @Param not support primitive");
+            throw new SparkleException("action method argument annotated with @Param not support primitive");
         }
         return null;
     }

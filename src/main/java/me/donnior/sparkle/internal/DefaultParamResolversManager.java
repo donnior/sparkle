@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import me.donnior.fava.FList;
 import me.donnior.fava.Predict;
 import me.donnior.fava.util.FLists;
+import me.donnior.sparkle.exception.SparkleException;
 
 import com.google.common.collect.Lists;
 
@@ -30,7 +31,7 @@ public class DefaultParamResolversManager implements ParamResolversManager {
             }
         });
         if(matchedArgumentResolver == null){
-            throw new RuntimeException("can't find proper argument resolver for "+actionParamDefinition);
+            throw new SparkleException("can't find proper argument resolver for "+actionParamDefinition);
         }
         return matchedArgumentResolver.resovle(actionParamDefinition, request);
         

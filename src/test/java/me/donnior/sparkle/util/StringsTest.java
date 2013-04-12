@@ -20,4 +20,18 @@ public class StringsTest {
         assertEquals(0, Strings.count(str, "hello"));
     }
     
+    
+    @Test
+    public void test_is_digit_or_charactor(){
+        assertTrue(Strings.isCharacterOrDigit("1"));
+        assertTrue(Strings.isCharacterOrDigit("a"));
+        assertTrue(Strings.isCharacterOrDigit("123"));
+        assertTrue(Strings.isCharacterOrDigit("abc"));
+        assertTrue(Strings.isCharacterOrDigit("123abc"));
+        
+        assertFalse(Strings.isCharacterOrDigit("123{}"));
+        assertFalse(Strings.isCharacterOrDigit("-"));
+        assertFalse(Strings.isCharacterOrDigit("@a"));
+        assertFalse(Strings.isCharacterOrDigit(".a"));
+    }
 }

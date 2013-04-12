@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import me.donnior.sparkle.exception.SparkleException;
+
 import org.reflections.Reflections;
 
 import com.google.common.base.Predicates;
@@ -18,10 +20,10 @@ public class ActionMethodDefinitionFinder {
         
         Set<Method> methods = Reflections.getAllMethods(clz, Predicates.and(Reflections.withModifier(Modifier.PUBLIC),Reflections.withName(actionName)));
         if(methods.isEmpty()){
-            throw new RuntimeException("can't find any action matched " + actionName);
+            throw new SparkleException("can't find any action matched " + actionName);
         }
         if(methods.size() > 1){
-            throw new RuntimeException("find more than actions with same name " + actionName);
+            throw new SparkleException("find more than actions with same name " + actionName);
         }
         final Method method = methods.iterator().next();        
         return new ActionMethodDefinition() {
@@ -47,6 +49,7 @@ public class ActionMethodDefinitionFinder {
                 return method;
             }
             
+            @SuppressWarnings({ "rawtypes", "unchecked" })
             @Override
             public boolean hasAnnotation(Class annotationType) {
                 return this.method().isAnnotationPresent(annotationType);

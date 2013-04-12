@@ -1,61 +1,63 @@
 package me.donnior.sparkle.route;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import me.donnior.sparkle.HTTPMethod;
+import com.google.common.collect.Lists;
 
 public class RouteBuilderMatcher {
 
     private HttpServletRequest request;
     private RouteBuilder builder;
 
-    private List<MatchedCondition> explicitMatchedCondition = new ArrayList<MatchedCondition>();
+    private List<MatchedCondition> explicitMatchedCondition = Lists.newArrayList();
 
-    public RouteBuilderMatcher(RouteBuilder builder,
-            HttpServletRequest request) {
+    public RouteBuilderMatcher(RouteBuilder builder, HttpServletRequest request) {
         this.builder = builder;
         this.request = request;
     }
 
     public boolean match() {
 
-        final String path = extractPath(request);
-        final HTTPMethod method = extractMethod(request);
-
-        boolean pathAndMethodMatched = builder.matchPath(path) && (builder.getHttpMethod() == method);
+        boolean pathAndMethodMatched = isPathMatched() && isMethodMatched();
         if (!pathAndMethodMatched) {
             return false;
-        } else {
-            ConditionMatchResult paramMatchResult = builder.matchParam(request);
-            if (!paramMatchResult.succeed()) {
-                return false;
-            }
-            if (paramMatchResult.isExplicitMatch()) {
-                this.explicitMatchedCondition.add(paramMatchResult);
-            }
-
-            ConditionMatchResult headerMatchResult = builder.matchHeader(request);
-            if (!headerMatchResult.succeed()) {
-                return false;
-            }
-            if (headerMatchResult.isExplicitMatch()) {
-                this.explicitMatchedCondition.add(headerMatchResult);
-            }
-
-            ConditionMatchResult consumeMatchResult = builder
-                    .matchConsume(request);
-            if (!consumeMatchResult.succeed()) {
-                return false;
-            }
-            if (consumeMatchResult.isExplicitMatch()) {
-                this.explicitMatchedCondition.add(consumeMatchResult);
-            }
-            return true;
+        } 
+        ConditionMatchResult paramMatchResult = builder.matchParam(request);
+        if (!paramMatchResult.succeed()) {
+            return false;
         }
+        if (paramMatchResult.isExplicitMatch()) {
+            this.explicitMatchedCondition.add(paramMatchResult);
+        }
+        ConditionMatchResult headerMatchResult = builder.matchHeader(request);
+        if (!headerMatchResult.succeed()) {
+            return false;
+        }
+        if (headerMatchResult.isExplicitMatch()) {
+            this.explicitMatchedCondition.add(headerMatchResult);
+        }
+
+//        ConditionMatchResult consumeMatchResult = builder.matchConsume(request);
+//        if (!consumeMatchResult.succeed()) {
+//            return false;
+//        }
+//        if (consumeMatchResult.isExplicitMatch()) {
+//            this.explicitMatchedCondition.add(consumeMatchResult);
+//        }
+        return true;
     }
+
+    private boolean isMethodMatched() {
+        return builder.matchMethod(RouteMethodDetector.detectMethod(request));
+    }
+
+    private boolean isPathMatched() {
+        return builder.matchPath(RoutePathDetector.extractPath(request));
+    }
+    
+    
 
     public MatchedCondition[] matchedExplicitConditions() {
         return this.explicitMatchedCondition.toArray(new MatchedCondition[] {});
@@ -63,30 +65,6 @@ public class RouteBuilderMatcher {
 
     public RouteBuilder getBuilder() {
         return builder;
-    }
-
-    private HTTPMethod extractMethod(HttpServletRequest request) {
-        if ("get".equals(request.getMethod().toLowerCase())) {
-            return HTTPMethod.GET;
-        }
-        if ("post".equals(request.getMethod().toLowerCase())) {
-            return HTTPMethod.POST;
-        }
-        return HTTPMethod.GET;
-    }
-
-    private String extractPath(HttpServletRequest request) {
-        
-        String pathInfo = request.getPathInfo();
-        String cAndActionString = pathInfo;
-
-        if (pathInfo == null) {
-            //wild servlet mapping like "/" or "*.do"
-            cAndActionString = request.getServletPath();
-        } 
-        //otherwise normal mapping like "/cms/*"
-       
-        return cAndActionString;
     }
 
 }

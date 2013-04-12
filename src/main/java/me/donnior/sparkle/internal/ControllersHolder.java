@@ -3,6 +3,8 @@ package me.donnior.sparkle.internal;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.donnior.sparkle.exception.SparkleException;
+
 public class ControllersHolder {
     
     private Map<String, Class<?>> controllers = new HashMap<String, Class<?>>();
@@ -32,7 +34,7 @@ public class ControllersHolder {
         for(Map.Entry<String, Class<?>> controller: controllersMap.entrySet()){
             //check duplicated controller name
             if(this.containsController(controller.getKey())){
-                throw new RuntimeException("Controller with name " + controller.getKey() + " was duplicated");                
+                throw new SparkleException("Controller with name " + controller.getKey() + " was duplicated");                
             }else{
                 this.controllers.put(controller.getKey(), controller.getValue());
             }

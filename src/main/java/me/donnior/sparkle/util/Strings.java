@@ -6,4 +6,8 @@ public class Strings {
         return input.split("\\Q"+countString+"\\E", -1).length - 1;
     }
 
+    public static boolean isCharacterOrDigit(String str) {
+        return str.matches("\\w*");
+    }
+    
 }

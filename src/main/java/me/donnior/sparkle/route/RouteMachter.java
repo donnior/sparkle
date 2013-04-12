@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +13,6 @@ import me.donnior.fava.FList;
 import me.donnior.fava.Function;
 import me.donnior.fava.Predict;
 import me.donnior.fava.util.FLists;
-import me.donnior.sparkle.util.AntPathMatcher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +20,7 @@ import org.slf4j.LoggerFactory;
 public class RouteMachter {
 
     private final static Logger logger = LoggerFactory.getLogger(RouteMachter.class);
+    
     private RouteBuilderHolder routeBuilderHolder;
     
     public RouteMachter(RouteBuilderHolder router) {
@@ -29,12 +28,23 @@ public class RouteMachter {
     }
 
     public  RouteBuilder match(final HttpServletRequest request) {
-        //TODO match route defenition with request's servlet path, request headers, etc.
-
-        final String path = extractPath(request);
         
         List<RouteBuilder> rbs = this.routeBuilderHolder.getRegisteredRouteBuilders();
-        
+        FList<RouteBuilderMatcher> matched = findSucceedRouteBuilderMatcher(request, rbs);
+        RouteBuilderMatcher rbm = getClosestMatchedRouteBuilder(matched);
+        if(rbm != null){
+            RouteBuilder rb = rbm.getBuilder();
+    	    logger.debug("founded route builder matched closest {}", rb);
+//    	    Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getPathPattern(), path);
+//            logger.debug("extracted path variables {}", uriVariables);
+            return rb;
+        } else {
+            logger.debug("can't find RoutingBuilder for {}", request);
+            return null;
+        }
+    }
+
+    private FList<RouteBuilderMatcher> findSucceedRouteBuilderMatcher(final HttpServletRequest request, List<RouteBuilder> rbs) {
         FList<RouteBuilderMatcher> rbms = FLists.create(rbs).collect(new Function<RouteBuilder, RouteBuilderMatcher>(){
 			@Override
 			public RouteBuilderMatcher apply(RouteBuilder e) {
@@ -49,7 +59,10 @@ public class RouteMachter {
                 return rbm.match();
             }
         });
-        
+        return matched;
+    }
+
+    private RouteBuilderMatcher getClosestMatchedRouteBuilder(FList<RouteBuilderMatcher> matched) {
         if(matched.size() > 1){
             logger.debug("found more than one matched route builder, now trying to get the closest one");
             Collections.sort(matched, new Comparator<RouteBuilderMatcher>(){
@@ -66,30 +79,7 @@ public class RouteMachter {
             });
         }
         
-        RouteBuilderMatcher rbm = matched.first();
-        RouteBuilder rb = null;
-        if(rbm != null){
-        	    rb = rbm.getBuilder();
-        	    logger.debug("founded route builder matched closest {}", rb);
-            Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getPathPattern(), path);
-            logger.debug("extracted path variables {}", uriVariables);            
-        } else {
-            logger.debug("can't find RoutingBuilder for {}", path);
-        }
-        return rb;
-              
+        return matched.first();
     }
-
-    private String extractPath(HttpServletRequest request) {
-        String pathInfo = request.getPathInfo();
-        String cAndActionString = pathInfo;
-        if(pathInfo == null){
-            //wild servlet mapping like / or *.do
-            cAndActionString = request.getServletPath();
-        }
-        return cAndActionString;
-    }
-    
-    
 
 }

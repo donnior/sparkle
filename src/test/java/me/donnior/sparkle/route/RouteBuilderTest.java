@@ -16,6 +16,7 @@ public class RouteBuilderTest {
         RouteBuilder rb = new RouteBuilder("/user/{id}");
 
         assertEquals(HTTPMethod.GET, rb.getHttpMethod());
+        assertTrue(rb.matchMethod(HTTPMethod.GET));
         assertNull(rb.getControllerName());
         assertNull(rb.getActionName());
         assertEquals("/user/{id}", rb.getPathPattern());
@@ -31,9 +32,9 @@ public class RouteBuilderTest {
     public void test_create_without_condition(){
         RouteBuilder rb = new RouteBuilder("/user/{id}");
 
-        rb.withPost().matchHeaders(null).matchParams(null).matchConsumes(null).to("user#show");
+        rb.withPost().matchHeaders((String[])null).matchParams((String[])null).matchConsumes((String[])null).to("user#show");
         
-        assertEquals(HTTPMethod.POST, rb.getHttpMethod());
+        assertTrue(rb.matchMethod(HTTPMethod.POST));
         assertEquals("user", rb.getControllerName());
         assertEquals("show", rb.getActionName());
         

@@ -10,6 +10,8 @@ import me.donnior.sparkle.condition.AbstractCondition;
 import me.donnior.sparkle.condition.ConsumeCondition;
 import me.donnior.sparkle.condition.HeaderCondition;
 import me.donnior.sparkle.condition.ParamCondition;
+import me.donnior.sparkle.exception.SparkleException;
+import me.donnior.sparkle.rest.RestStandard;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +92,7 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     public void to(String route){
         // TODO check route is correct, it should not empty and contains only one #
         if(route == null || !route.matches(toRegex)){
-            throw new RuntimeException("route's 'to' part '" + route + "' is illegal, it must be 'controller#action' or just 'controller'");
+            throw new SparkleException("route's 'to' part '" + route + "' is illegal, it must be 'controller#action' or just 'controller'");
         }
         this.controllerName = extractController(route);
         this.actionName = extractAction(route);
@@ -157,25 +159,11 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
 
     private String extractAction(String route) {
         String[] strs = route.split("#");
-        return strs.length > 1 ? strs[1] : defaultActionForMethod(this.httpMethod);
+        return strs.length > 1 ? strs[1] : RestStandard.defaultActionMethodNameForHttpMethod(this.httpMethod);
     }
 
     //TODO should it only set default action for GET? 
-    private String defaultActionForMethod(HTTPMethod httpMethod) {
-        if(HTTPMethod.DELETE == httpMethod){
-            return "destroy";
-        }
-        if(HTTPMethod.POST == httpMethod){
-            return "save";
-        }
-        if(HTTPMethod.PUT == httpMethod){
-            return "update";
-        }
-        if(HTTPMethod.GET == httpMethod){
-            return "index";
-        }
-        return null;
-    }
+
 
     public void setPathPattern(String url) {
         this.pathPattern = url;
@@ -196,6 +184,10 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    public boolean matchMethod(HTTPMethod method) {
+        return this.getHttpMethod().equals(method);
     }
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.util.Strings;
 
 public class RouteChecker {
@@ -16,18 +17,17 @@ public class RouteChecker {
     
     public RouteChecker(String src) {
         if(Strings.count(src, "{") != Strings.count(src, "}")){
-            throw new RuntimeException("{ and } not match in " + src);
+            throw new SparkleException("{ and } not match in " + src);
         }
         Matcher m = p.matcher(src);
         while(m.find()) {
             String matched = m.group(1);
-            if(!isCharacterOrDigit(matched)){
-                throw new RuntimeException(matched + " is invalid in " + src);
-            } else {
+            if(Strings.isCharacterOrDigit(matched)){
                 this.pathVariables .add(matched);
+            } else {
+                throw new SparkleException(matched + " is invalid in " + src);
             }
         }
-        
         constructMatcherRegexPattern(src);
     }
     
@@ -47,10 +47,6 @@ public class RouteChecker {
 
     public List<String> pathVariables() {
         return pathVariables;
-    }
-
-    private boolean isCharacterOrDigit(String matched) {
-        return matched.matches("\\w*");
     }
        
 }

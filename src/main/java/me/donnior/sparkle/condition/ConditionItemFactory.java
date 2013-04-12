@@ -1,5 +1,7 @@
 package me.donnior.sparkle.condition;
 
+import me.donnior.sparkle.exception.SparkleException;
+
 
 public class ConditionItemFactory {
 
@@ -8,7 +10,7 @@ public class ConditionItemFactory {
     
     public static ConditionItem createItem(String param) {
         if(!isValidConditionExpression(param)){
-            throw new RuntimeException(param + " is not an valid condition expression");
+            throw new SparkleException(param + " is not an valid condition expression");
         }
         if(isNotEqualCondition(param)){
             return new NotEqualConditionItem(param.split(NOT_EQUAL_CHARS));
