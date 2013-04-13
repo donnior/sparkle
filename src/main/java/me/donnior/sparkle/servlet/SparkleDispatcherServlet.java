@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import me.donnior.fava.FArrayList;
+import me.donnior.fava.FList;
+import me.donnior.fava.Predict;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.SparkleActionExecutor;
 import me.donnior.sparkle.controller.ApplicationController;
@@ -17,12 +20,13 @@ import me.donnior.sparkle.internal.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.internal.ControllerScanner;
 import me.donnior.sparkle.internal.ControllersHolder;
 import me.donnior.sparkle.internal.RouteModuleScanner;
+import me.donnior.sparkle.route.RouteBuilder;
 import me.donnior.sparkle.route.RouteMachter;
 import me.donnior.sparkle.route.RouteModule;
 import me.donnior.sparkle.route.RouterImpl;
-import me.donnior.sparkle.route.RouteBuilder;
-import me.donnior.sparkle.view.JSPViewResolver;
-import me.donnior.sparkle.view.ViewResolver;
+import me.donnior.sparkle.view.JSONViewRender;
+import me.donnior.sparkle.view.JSPViewRender;
+import me.donnior.sparkle.view.ViewRender;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +39,8 @@ public class SparkleDispatcherServlet extends HttpServlet {
 
     public static final String INCLUDE_REQUEST_URI_ATTRIBUTE = "javax.servlet.include.request_uri";
     
-    private ViewResolver viewResolver;
+    private ViewRender viewResolver;
+    private FList<ViewRender> viewRenders = new FArrayList<ViewRender>();
     private ControllersHolder controllersHolder;
     private RouterImpl router;
 
@@ -47,7 +52,10 @@ public class SparkleDispatcherServlet extends HttpServlet {
         
         //initialize Sparkle framework component
         //Scan controllers and stored their name and class
-        this.viewResolver = new JSPViewResolver();
+        this.viewResolver = new JSPViewRender();
+        this.viewRenders.add(new JSONViewRender());
+        this.viewRenders.add(this.viewResolver);
+        
         this.controllersHolder = ControllersHolder.getInstance();
         this.router = RouterImpl.getInstance();
         scanControllers();
@@ -98,32 +106,63 @@ public class SparkleDispatcherServlet extends HttpServlet {
         
         Object result = new SparkleActionExecutor().invoke(adf, controller, request);
         
-        
-        //TODO set controller's instance varialbles which need to be used in view to the request.
-        
         long actionTime = stopwatch.elapsedMillis();
-        
         stopwatch.reset();
         stopwatch.start();
-        if(result instanceof String){
-            //TODO wrap the request and response to interface 'Context' for more view resolvers
-            try {
-                this.viewResolver.resovleView((String)result, request, response);
 
+        //TODO how to resolve view ? not just json or jsp, consider jsp, freemarker, vocility. Reference springmvc's viewResolver
+        
+        
+        //get matched viewRender from all viewRenders, based on ActionMethodDefinition and result type
+        // if found any matched viewRender, render view using it, pass 'controller instantance, result, request, response' as arguments
+        // else use default viewRender(jsp view render to render result)
+        ViewRender viewRender = findMatchedViewRender(adf, result);
+        if(viewRender != null){
+            try {
+                viewRender.renderView(result, request, response);
                 long viewTime = stopwatch.stop().elapsedMillis();
-                
-                logger.info("completed request within {} ms (Action: {} ms | View: {} ms)" , 
-                      new Object[]{viewTime + actionTime, actionTime, viewTime });
+
+              logger.info("completed request within {} ms (Action: {} ms | View: {} ms)" , 
+                    new Object[]{viewTime + actionTime, actionTime, viewTime });
             } catch (ServletException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            
         }
-        //invoke action on controller with proper argument, first should resovled argument
+        
+        
+        //TODO set controller's instance varialbles which need to be used in view to the request.
+        
+        
+//        if(result instanceof String){
+//            //TODO wrap the request and response to interface 'Context' for more view resolvers
+//            try {
+//                this.viewResolver.renderView((String)result, request, response);
+//
+//                long viewTime = stopwatch.stop().elapsedMillis();
+//                
+//                logger.info("completed request within {} ms (Action: {} ms | View: {} ms)" , 
+//                      new Object[]{viewTime + actionTime, actionTime, viewTime });
+//            } catch (ServletException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            
+//        }
     }
     
+    private ViewRender findMatchedViewRender(final ActionMethodDefinition adf, final Object result) {
+        return this.viewRenders.find(new Predict<ViewRender>() {
+            @Override
+            public boolean apply(ViewRender viewRender) {
+                return viewRender.supportActionMethod(adf, result);
+            }
+        });
+    }
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {

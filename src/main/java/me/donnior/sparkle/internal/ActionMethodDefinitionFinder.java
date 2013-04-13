@@ -9,7 +9,7 @@ import java.util.Set;
 
 import me.donnior.sparkle.exception.SparkleException;
 
-import org.reflections.Reflections;
+import org.reflections.ReflectionUtils;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
@@ -18,7 +18,7 @@ public class ActionMethodDefinitionFinder {
 
     public ActionMethodDefinition find(Class<? extends Object> clz, final String actionName) {
         
-        Set<Method> methods = Reflections.getAllMethods(clz, Predicates.and(Reflections.withModifier(Modifier.PUBLIC),Reflections.withName(actionName)));
+        Set<Method> methods = ReflectionUtils.getAllMethods(clz, Predicates.and(ReflectionUtils.withModifier(Modifier.PUBLIC),ReflectionUtils.withName(actionName)));
         if(methods.isEmpty()){
             throw new SparkleException("can't find any action matched " + actionName);
         }

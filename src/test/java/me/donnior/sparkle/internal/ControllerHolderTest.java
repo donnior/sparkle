@@ -37,7 +37,7 @@ public class ControllerHolderTest {
     
     @Test
     public void testAddWithDuplication(){
-        ControllersHolder ch = ControllersHolder.getInstance();
+        ControllersHolder ch = new ControllersHolder();
         ch.addControllers(sampleControllersMap());
         
         assertEquals(2, ch.namedControllers().size());

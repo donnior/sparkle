@@ -1,11 +1,15 @@
 package me.donnior.sparkle.internal;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import me.donnior.sparkle.data.module.ModuleOne;
+import me.donnior.sparkle.data.module.ModuleTwo;
+import me.donnior.sparkle.data.module.SampleModule;
+import me.donnior.sparkle.data.module.SampleRouteModule;
 import me.donnior.sparkle.route.RouteModule;
-import me.donnior.sparkle.route.Router;
 
 import org.junit.Test;
 
@@ -13,11 +17,13 @@ public class RouteModuleScannerTest {
 
     @Test
     public void testScanRoute(){
-        String pkg = "me.donnior.sparkle.internal";
-        RouteModuleScanner scanner = new RouteModuleScanner();
-        List<RouteModule> modules = scanner.scanRouteModule(pkg);
-        assertEquals(1, modules.size());
-        assertEquals(ModuleOne.class, modules.get(0).getClass());
+        String pkg = "me.donnior.sparkle.data.module";
+        List<RouteModule> modules = new RouteModuleScanner().scanRouteModule(pkg);
+        assertEquals(4, modules.size());
+//        assertTrue(modules.contains(ModuleOne.class));
+//        assertTrue(modules.contains(ModuleTwo.class));
+//        assertTrue(modules.contains(SampleModule.class));
+//        assertTrue(modules.contains(SampleRouteModule.class));
     }
-    
+
 }

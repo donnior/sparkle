@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import me.donnior.sparkle.data.module.SampleModule;
+
 import org.junit.Test;
 
 public class RouterImplTest {
@@ -59,14 +61,7 @@ public class RouterImplTest {
     
     @Test
     public void testInstallModule(){
-        class SampleModule extends AbstractRouteModule{
-
-            @Override
-            protected void configure() {
-                post("/user");
-            }
-            
-        }
+        
         RouterImpl router = new RouterImpl();
         
         Collection<RouteModule> modules = new ArrayList<RouteModule>();

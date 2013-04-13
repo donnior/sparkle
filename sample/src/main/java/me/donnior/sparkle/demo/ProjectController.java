@@ -12,6 +12,7 @@ import me.donnior.sparkle.view.result.HttpStatus;
 @Controller("projects")
 public class ProjectController {
     
+    @Json
     public String index(@Param("a") String a, @Param("b") Integer b, @Param("c") String[] c){
         return "projects/index";
     }

@@ -5,7 +5,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 public abstract class AbstractRouteModule implements RouteModule {
 
-    Router router;
+    public Router router;
 
     @Override
     public void config(Router router) {
@@ -21,7 +21,7 @@ public abstract class AbstractRouteModule implements RouteModule {
 
     protected abstract void configure();
 
-    protected Router router() {
+    public Router router() {
         checkState(router != null, "The router can only be used inside configure()");
         return router;
     }

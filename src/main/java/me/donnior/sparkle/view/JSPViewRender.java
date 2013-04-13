@@ -7,7 +7,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class JSPViewResolver implements ViewResolver {
+import me.donnior.sparkle.internal.ActionMethodDefinition;
+
+public class JSPViewRender implements ViewRender {
     
     public static final String   INCLUDE_REQUEST_URI_ATTRIBUTE = "javax.servlet.include.request_uri";
 
@@ -15,8 +17,8 @@ public class JSPViewResolver implements ViewResolver {
     private String viewPathSuffix = ".jsp";
 
     @Override
-    public void resovleView(String result, HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
+    public void renderView(Object result, HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
         String viewPath = this.viewPathPrefix + result + viewPathSuffix;
 
         RequestDispatcher rd = request.getRequestDispatcher(viewPath);
@@ -38,15 +40,17 @@ public class JSPViewResolver implements ViewResolver {
 
     }
 
-    private boolean useInclude(HttpServletRequest request,
-            HttpServletResponse response) {
+    private boolean useInclude(HttpServletRequest request, HttpServletResponse response) {
         return isIncludeRequest(request) || response.isCommitted();
     }
 
     private boolean isIncludeRequest(HttpServletRequest request) {
         return (request.getAttribute(INCLUDE_REQUEST_URI_ATTRIBUTE) != null);
     }
-    
-    
+
+    @Override
+    public boolean supportActionMethod(ActionMethodDefinition adf, Object actionMethodResult) {
+        return true;
+    }
 
 }

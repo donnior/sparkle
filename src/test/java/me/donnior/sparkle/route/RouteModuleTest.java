@@ -1,6 +1,9 @@
 package me.donnior.sparkle.route;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+import me.donnior.sparkle.data.module.SampleRouteModule;
 
 import org.junit.Test;
 
@@ -35,17 +38,3 @@ public class RouteModuleTest {
 
 }
 
-class SampleRouteModule extends AbstractRouteModule{
-
-    public HttpScoppedRoutingBuilder matchResult;
-    public LinkedRoutingBuilder postResult;
-    public LinkedRoutingBuilder getResult;
-    
-    @Override
-    protected void configure() {
-        postResult = post("/user/new");
-        getResult = get("/user/1");
-        matchResult = match("/user/donnior");
-    }
-    
-}
