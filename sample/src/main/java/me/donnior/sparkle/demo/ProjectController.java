@@ -1,6 +1,8 @@
 package me.donnior.sparkle.demo;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import me.donnior.sparkle.annotation.Controller;
 import me.donnior.sparkle.annotation.Json;
@@ -34,6 +36,14 @@ public class ProjectController {
     public List<Object> jsonView(){
         
         return null;
+    }
+    
+    @Json
+    public Map<String, String> jsons(){
+        Map<String, String> maps = new HashMap<String, String>();
+        maps.put("name", "donny");
+        maps.put("age", "10");
+        return maps;
     }
     
     @ResponseBody

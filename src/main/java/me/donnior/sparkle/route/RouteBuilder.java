@@ -101,7 +101,7 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     @Override
     public boolean matchPath(String path){
         boolean b = this.matchPatten.matcher(path).matches();
-        logger.debug("match uri {} using pattern {} {}", new Object[]{path, this.matchPatten.pattern(), b?" success":" failed"});
+//        logger.debug("match uri {} using pattern {} {}", new Object[]{path, this.matchPatten.pattern(), b?" success":" failed"});
         return b;
     }
     
