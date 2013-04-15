@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class ControllerFactoryTest {
+public class ControllerFactoryTest extends ControllerFactory{
 
     @Before
     public void setup() {

@@ -14,6 +14,11 @@ public class ParamResolveUtilTest {
         this.util = new ParamResolveUtil();
     }
     
+    @Test(expected=RuntimeException.class)
+    public void testConvertNull(){
+        this.util.convertValue(null, String.class);
+    }
+    
     @Test
     public void testConvertToIntArray() {
         String[] values = {"1", "2", "3"};
