@@ -8,7 +8,7 @@ import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Test;
 
-public class RoutePathExtractorTest {
+public class RoutePathDetectorTest extends RoutePathDetector{
     
     @Test
     public void test_extract_normal_path(){

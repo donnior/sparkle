@@ -97,6 +97,19 @@ public class ConditionsTest {
     }
     
     @Test
+    public void testConsumeCondition() {
+
+        ConsumeCondition c = new ConsumeCondition(new String[]{"a=1","b!=1", "c"});
+        try{
+            c.match(null);
+            fail();
+        }catch(RuntimeException re){
+            assertEquals("not implemented yet", re.getMessage());
+        }
+    }
+    
+    
+    @Test
     public void testConditionToString() {
 
         HeaderCondition c = new HeaderCondition(new String[]{"a=1","b!=1", "c"});

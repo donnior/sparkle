@@ -9,7 +9,7 @@ import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Test;
 
-public class RouteMethodDetectorTest {
+public class RouteMethodDetectorTest extends RouteMethodDetector{
     
     @Test
     public void test_direct_method_detect(){

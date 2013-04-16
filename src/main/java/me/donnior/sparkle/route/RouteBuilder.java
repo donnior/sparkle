@@ -163,11 +163,6 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     }
 
     //TODO should it only set default action for GET? 
-
-
-    public void setPathPattern(String url) {
-        this.pathPattern = url;
-    }
     
     public String getPathPattern() {
         return pathPattern;

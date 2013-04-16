@@ -34,7 +34,6 @@ import com.google.common.base.Stopwatch;
 
 public class SparkleEngine {
 
-    private ViewRender viewResolver;
     private FList<ViewRender> viewRenders = new FArrayList<ViewRender>();
     private ControllersHolder controllersHolder;
     private RouterImpl router;
@@ -43,7 +42,6 @@ public class SparkleEngine {
     
     
     public SparkleEngine(SparkleConfiguration config) {
-        // TODO Auto-generated constructor stub
     }
 
     public void initialize() {
@@ -51,10 +49,8 @@ public class SparkleEngine {
         stopwatch.start();
         
         //initialize Sparkle framework component
-        //Scan controllers and stored their name and class
-        this.viewResolver = new JSPViewRender();
         this.viewRenders.add(new JSONViewRender());
-        this.viewRenders.add(this.viewResolver);
+        this.viewRenders.add(new JSPViewRender());
         
         this.controllersHolder = ControllersHolder.getInstance();
         this.router = RouterImpl.getInstance();

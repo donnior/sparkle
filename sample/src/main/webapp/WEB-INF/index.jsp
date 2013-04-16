@@ -14,20 +14,18 @@
 </style>
 </head>
 <body>
-    <a href='<c:url value="/" />' >Home Page</a> <br />
-    <a href='<c:url value="/projects" />' >Projects Page</a>  <br />
-    <a href='<c:url value="/user/index" />' >Users Page</a>  <br />
+    <ul>
+        <li><a href='<c:url value="/" />' >Home Page</a> - [/] </li>
+        <li><a href='<c:url value="/projects" />' >Projects Index</a> - [/projects] </li>
+        <li><a href='<c:url value="/projects?a=1&b=3&c=2" />' >Projects Index With Params</a> - [/projects?a=1&b=3&c=2] </li>
+        <li><a href='<c:url value="/users/donnior/projects/1" />' >User's Project</a> - [/users/donnior/projects/1] </li>
+        <li><a href='<c:url value="/projects/1234" />' >Project Show</a> - [/projects/1234] </li>
+        <li><a href='<c:url value="/project/jsons" />' >Project Json</a> - [/project/jsons] </li>
+        <li><a href='<c:url value="/user/index" />' >Users Page</a> - [/user/index] </li>
+    </ul>
     
-    <br />
     
-    <a href='<c:url value="/accounts/donnior" />' >account donnior Page</a>  <br />
-    <a href='<c:url value="/accounts/javeer" />' >account javeer Page</a>  <br />
-    <a href='<c:url value="/users/donnior/topics/1" />' >users donnior's topic 1</a>  <br />
-    <a href='<c:url value="/users/javeer/topics/2" />' >users javeer's topic 2</a>  <br />
-    
-    <a href='<c:url value="/projects/donnior" />' >/projects/donnior with get</a>  <br />
-
-    /projects/donnior with post
+    <p>/projects/donnior with post</p>
     <form action='<c:url value="/projects/donnior" />' method="post">
         <input type="text" name="f1" />
         <input type="submit" />

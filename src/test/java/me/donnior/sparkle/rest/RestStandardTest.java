@@ -5,7 +5,7 @@ import me.donnior.sparkle.HTTPMethod;
 
 import org.junit.Test;
 
-public class RestStandardTest {
+public class RestStandardTest extends RestStandard{
 
     @Test
     public void test(){

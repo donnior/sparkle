@@ -1,6 +1,10 @@
 package me.donnior.sparkle.route;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,6 +24,8 @@ public class RouteBuilderTest {
         assertNull(rb.getControllerName());
         assertNull(rb.getActionName());
         assertEquals("/user/{id}", rb.getPathPattern());
+        
+        assertEquals("/user/([^/]+)", rb.getMatchPatten().pattern());
         
         assertTrue(rb.matchPath("/user/donnior"));
         assertFalse(rb.matchPath("/users/1"));
