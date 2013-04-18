@@ -22,6 +22,8 @@ public class DemoRouteModuleOne implements RouteModule {
         router.match("/users/{name}/projects/{id}").to("projects#show");
         
         router.match("/project/jsons").to("projects#jsons");
+        
+        router.match("/project/json").to("projects#json");
 
     }
 

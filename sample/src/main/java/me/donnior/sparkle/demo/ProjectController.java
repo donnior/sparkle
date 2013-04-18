@@ -1,9 +1,10 @@
 package me.donnior.sparkle.demo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
+import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.annotation.Controller;
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
@@ -46,6 +47,11 @@ public class ProjectController {
         maps.put("name", "donny");
         maps.put("age", "10");
         return maps;
+    }
+    
+    @Json
+    public List<String> json(){
+        return FLists.create("one", "two", "three", "four");
     }
     
     @ResponseBody

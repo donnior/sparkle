@@ -20,7 +20,8 @@
         <li><a href='<c:url value="/projects?a=1&b=3&c=2" />' >Projects Index With Params</a> - [/projects?a=1&b=3&c=2] </li>
         <li><a href='<c:url value="/users/donnior/projects/1" />' >User's Project</a> - [/users/donnior/projects/1] </li>
         <li><a href='<c:url value="/projects/1234" />' >Project Show</a> - [/projects/1234] </li>
-        <li><a href='<c:url value="/project/jsons" />' >Project Json</a> - [/project/jsons] </li>
+        <li><a href='<c:url value="/project/jsons" />' >Project Json With Map</a> - [/project/jsons] </li>
+        <li><a href='<c:url value="/project/json" />' >Project Json With List</a> - [/project/json] </li>
         <li><a href='<c:url value="/user/index" />' >Users Page</a> - [/user/index] </li>
     </ul>
     
