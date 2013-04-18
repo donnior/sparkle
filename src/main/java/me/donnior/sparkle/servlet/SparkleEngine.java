@@ -7,18 +7,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import me.donnior.fava.Consumer;
 import me.donnior.fava.FArrayList;
 import me.donnior.fava.FList;
 import me.donnior.fava.Predict;
+import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.SparkleActionExecutor;
+import me.donnior.sparkle.config.Application;
+import me.donnior.sparkle.config.Config;
+import me.donnior.sparkle.config.ConfigImpl;
+import me.donnior.sparkle.config.ConfigResult;
 import me.donnior.sparkle.controller.ApplicationController;
 import me.donnior.sparkle.http.HTTPStatusCode;
 import me.donnior.sparkle.internal.ActionMethodDefinition;
 import me.donnior.sparkle.internal.ActionMethodDefinitionFinder;
+import me.donnior.sparkle.internal.ApplicationConfigScanner;
 import me.donnior.sparkle.internal.ControllerScanner;
 import me.donnior.sparkle.internal.ControllersHolder;
 import me.donnior.sparkle.internal.RouteModuleScanner;
@@ -30,34 +34,74 @@ import me.donnior.sparkle.view.JSONViewRender;
 import me.donnior.sparkle.view.JSPViewRender;
 import me.donnior.sparkle.view.ViewRender;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Stopwatch;
 
 public class SparkleEngine {
 
     private FList<ViewRender> viewRenders = new FArrayList<ViewRender>();
-    private ControllersHolder controllersHolder;
     private RouterImpl router;
     
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
     
-    
-    public SparkleEngine(SparkleConfiguration config) {
+    public SparkleEngine(Config config){
+        this();
     }
 
-    public void initialize() {
+    public SparkleEngine(){
+        this.startup();
+    }
+
+    protected void startup() {
+        ConfigImpl config = new ConfigImpl();
+        Application application = scanApplication();
+        if(application != null){
+            application.config(config);
+        }else{
+            logger.debug("not found any ApplicationConfig, will use the default configuration");
+        }
+        initEngineWithConfig(config);
+    }
+
+ 
+    private void initEngineWithConfig(ConfigResult config) {
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
         
         //initialize Sparkle framework component
-        this.viewRenders.add(new JSONViewRender());
-        this.viewRenders.add(new JSPViewRender());
         
-        this.controllersHolder = ControllersHolder.getInstance();
+        initViewRenders(config.getViewRenders());
+        
+        initViewControllers(config.getControllerPackages());
+        
         this.router = RouterImpl.getInstance();
-        scanControllers();
+        
         installRouter();
 
         logger.info("sparkle framework started succeed within {} ms", stopwatch.elapsedMillis());
+        
+    }
+
+    private void initViewControllers(String[] controllerPackages) {
+        //TODO 
+        scanControllers("");
+    }
+
+    private void initViewRenders(FList<Class<? extends ViewRender>> renders) {
+        renders.each(new Consumer<Class<? extends ViewRender>>() {
+            @Override
+            public void apply(Class<? extends ViewRender> viewRenderClass) {
+                viewRenders.add((ViewRender)ReflectionUtil.initialize(viewRenderClass));
+            }
+        });
+        ensuerDefaultViewRenders();
+    }
+
+    private void ensuerDefaultViewRenders() {
+        this.viewRenders.add(new JSONViewRender());
+        this.viewRenders.add(new JSPViewRender());
     }
 
     protected void doService(HttpServletRequest request, HttpServletResponse response, HTTPMethod method){
@@ -133,11 +177,15 @@ public class SparkleEngine {
     }
 
 
-    private void scanControllers() {
-        String controllerPackage = "";
-        this.controllersHolder.addControllers(new ControllerScanner().scanControllers(controllerPackage), true);
-
+    private void scanControllers(String pkg) {
+        ControllersHolder.getInstance().addControllers(new ControllerScanner().scanControllers(pkg), true);
     }
 
+    
+    private Application scanApplication() {
+        Class<?> clz = new ApplicationConfigScanner().scan("");
+        return clz != null ? (Application) ReflectionUtil.initialize(clz) : null;
+    }
 
+    
 }

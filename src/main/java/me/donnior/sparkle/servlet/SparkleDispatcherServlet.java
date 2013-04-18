@@ -16,13 +16,12 @@ public class SparkleDispatcherServlet extends HttpServlet {
     
     private SparkleEngine sparkle;
     
-    public SparkleDispatcherServlet(SparkleConfiguration config) {
-        this(new SparkleEngine(config));
+    public SparkleDispatcherServlet() {
+        this(new SparkleEngine());
     }
 
     public SparkleDispatcherServlet(SparkleEngine engine) {
         this.sparkle = engine;
-        this.sparkle.initialize();
     }
 
     

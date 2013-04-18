@@ -25,16 +25,19 @@ import javax.servlet.SessionCookieConfig;
 import javax.servlet.SessionTrackingMode;
 import javax.servlet.descriptor.JspConfigDescriptor;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SparkleWebAppInitializerTest {
 
     @Test
+    @Ignore
     public void testSuccess() throws ServletException{
         SparkleWebAppInitializer initializer = new SparkleWebAppInitializer();
         initializer.onStartup(null, new SucceedServletContextAdapter());
     }
     
+    @Ignore
     @Test(expected=IllegalStateException.class)
     public void testFail() throws ServletException{
         SparkleWebAppInitializer initializer = new SparkleWebAppInitializer();

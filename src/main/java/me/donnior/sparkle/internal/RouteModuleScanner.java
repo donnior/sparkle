@@ -23,17 +23,12 @@ public class RouteModuleScanner {
         Set<Class<? extends RouteModule>> fromInterface = reflections.getSubTypesOf(RouteModule.class);
         Set<Class<? extends AbstractRouteModule>> fromAbstracts = reflections.getSubTypesOf(AbstractRouteModule.class);
         fromInterface.addAll(fromAbstracts);
-        System.out.println(fromInterface.size());
-        for(Class<?> clz : fromInterface){
-            System.out.println(clz);
-        }
         for(Class<?> clz : fromInterface){
             if(Modifier.isAbstract(clz.getModifiers())){
                 continue;
             }
             routeModuleInstances.add((RouteModule)ReflectionUtil.initialize(clz));
             logger.debug("created route module with class {} ",clz.getName());
-            
         }
         return routeModuleInstances;
     }

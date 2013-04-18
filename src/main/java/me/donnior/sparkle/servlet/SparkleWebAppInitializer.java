@@ -23,10 +23,9 @@ public class SparkleWebAppInitializer implements ServletContainerInitializer {
     @Override
     public void onStartup(Set<Class<?>> arg0, ServletContext servletContext) throws ServletException {
         
-        SparkleConfiguration config = new SparkleConfiguration();
         
         ServletRegistration.Dynamic appServlet = 
-                servletContext.addServlet(SPARKLE_SERVLET_NAME, new SparkleDispatcherServlet(config));
+                servletContext.addServlet(SPARKLE_SERVLET_NAME, new SparkleDispatcherServlet());
         appServlet.setLoadOnStartup(1);
         Set<String> mappingConflicts = appServlet.addMapping("/");
         

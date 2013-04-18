@@ -17,7 +17,7 @@ public class SparkleDispatcherServletTest {
     
     @Before
     public void setup(){
-        servlet = new SparkleDispatcherServlet(new MockSparkleEngine(null));
+        servlet = new SparkleDispatcherServlet(new MockSparkleEngine());
     }
     
     @Test
@@ -42,12 +42,11 @@ public class SparkleDispatcherServletTest {
 
 class MockSparkleEngine extends SparkleEngine{
 
-    
-    
-    public MockSparkleEngine(SparkleConfiguration config) {
-        super(config);
+    @Override
+    protected void startup() {
+
     }
-    
+
     @Override
     protected void doService(HttpServletRequest request,
             HttpServletResponse response, HTTPMethod method) {
