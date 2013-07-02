@@ -15,17 +15,21 @@ public class ConfigImpl implements Config, ConfigResult {
     
     @Override
     public void registerViewRenderClass(Class<? extends ViewRender> viewRenderClass) {
-        this.viewRenders.add(viewRenderClass);
+        if(!this.viewRenders.contains(viewRenderClass)){
+            this.viewRenders.add(viewRenderClass);
+        }
     }
 
     @Override
     public void registerControllerPackages(String... packages) {
-        this.controllerPackages.addAll(Arrays.asList(packages));
+        if(packages != null){
+            this.controllerPackages.addAll(Arrays.asList(packages));
+        }
     }
     
     @Override
     public FList<Class<? extends ViewRender>> getViewRenders() {
-        return this.viewRenders;
+        return this.viewRenders.compact();
     }
 
     @Override

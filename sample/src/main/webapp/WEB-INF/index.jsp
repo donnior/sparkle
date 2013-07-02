@@ -5,32 +5,42 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-<style type="text/css">
-    body {
-      padding-top: 60px;
-      padding-bottom: 40px;
-    }
-</style>
+<link rel="stylesheet" href="/static/pure-min.css">
+<link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
-    <ul>
-        <li><a href='<c:url value="/" />' >Home Page</a> - [/] </li>
-        <li><a href='<c:url value="/projects" />' >Projects Index</a> - [/projects] </li>
-        <li><a href='<c:url value="/projects?a=1&b=3&c=2" />' >Projects Index With Params</a> - [/projects?a=1&b=3&c=2] </li>
-        <li><a href='<c:url value="/users/donnior/projects/1" />' >User's Project</a> - [/users/donnior/projects/1] </li>
-        <li><a href='<c:url value="/projects/1234" />' >Project Show</a> - [/projects/1234] </li>
-        <li><a href='<c:url value="/project/jsons" />' >Project Json With Map</a> - [/project/jsons] </li>
-        <li><a href='<c:url value="/project/json" />' >Project Json With List</a> - [/project/json] </li>
-        <li><a href='<c:url value="/user/index" />' >Users Page</a> - [/user/index] </li>
-    </ul>
+  <!-- <img src="/static/img/a.jpg"> -->
     
+  <table class="pure-table pure-table-bordered">
+    <thead><tr><th>Link</th><th>URI</th></tr></thead>
+    <tbody>
+        <tr><td><a href='<c:url value="/" />' >Home Page</a></td><td>/</td></tr>
+
+        <tr><td><a href='<c:url value="/projects" />' >Projects Index</a></td><td>/projects</td></tr>
+
+        <tr><td><a href='<c:url value="/projects?a=1&b=3&c=2" />' >Projects Index With Params</a></td><td>/projects?a=1&b=3&c=2</td></tr>
+        
+        <tr><td><a href='<c:url value="/users/donnior/projects/1" />' >User's Project</a></td><td>/users/donnior/projects/1</td></tr>
+
+        <tr><td><a href='<c:url value="/projects/1234" />' >Project Show</a></td><td>/projects/1234</td></tr>
+        
+        <tr><td><a href='<c:url value="/project/jsons" />' >Project Json With Map</a></td><td>/project/jsons</td></tr>
+        
+        <tr><td><a href='<c:url value="/project/json" />' >Project Json With List</a></td><td>/project/json</td></tr>
+        
+        <tr><td><a href='<c:url value="/user/index" />' >Users Page</a></td><td>/user/index</td></tr>
+
+    </tbody>
+  </table>
     
-    <p>/projects/donnior with post</p>
-    <form action='<c:url value="/projects/donnior" />' method="post">
-        <input type="text" name="f1" />
-        <input type="submit" />
-    </form>
+    <form class="pure-form" action='<c:url value="/projects/donnior" />' method="post">
+    <fieldset>
+        <legend>/projects/donnior with post</legend>
+
+        <input type="text" name="f1" placeholder="Anything" />
+        <button type="submit" class="pure-button notice">Sign in</button>
+    </fieldset>
+</form>
     
 </body>
 </html>

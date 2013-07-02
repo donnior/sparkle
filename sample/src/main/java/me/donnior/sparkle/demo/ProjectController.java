@@ -66,7 +66,7 @@ public class ProjectController {
     
     
     public String save(){
-        return "projects/index";
+        return "redirect:projects/index";
     }
 
 }

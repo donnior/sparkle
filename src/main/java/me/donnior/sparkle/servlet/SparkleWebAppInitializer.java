@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 public class SparkleWebAppInitializer implements ServletContainerInitializer {
     
     private static final String SPARKLE_SERVLET_NAME = "sparkleServlet";
+    private static final String STATIC_SERVLET_NAME = "staticServlet";
     
     private final static Logger logger = LoggerFactory.getLogger(SparkleWebAppInitializer.class);
     
@@ -30,6 +31,11 @@ public class SparkleWebAppInitializer implements ServletContainerInitializer {
         Set<String> mappingConflicts = appServlet.addMapping("/");
         
         ensureContainerSpecifiedEnv(mappingConflicts);
+        
+        ServletRegistration.Dynamic staticServlet = 
+                servletContext.addServlet(STATIC_SERVLET_NAME, new StaticWrapperServlet());
+        staticServlet.setLoadOnStartup(1);
+        staticServlet.addMapping("/static/*");
     }
 
     //deal with container specified env issue, like tomcat's version support
