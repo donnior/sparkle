@@ -34,7 +34,7 @@ public class RouteMachter {
         RouteBuilderMatcher rbm = getClosestMatchedRouteBuilder(matched);
         if(rbm != null){
             RouteBuilder rb = rbm.getBuilder();
-    	    logger.debug("founded route builder matched closest {}", rb);
+    	    logger.debug("Found route builder matched closest {}", rb);
 //    	    Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getPathPattern(), path);
 //            logger.debug("extracted path variables {}", uriVariables);
             return rb;
