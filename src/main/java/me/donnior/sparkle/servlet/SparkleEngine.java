@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import me.donnior.fava.Consumer;
 import me.donnior.fava.FArrayList;
 import me.donnior.fava.FList;
-import me.donnior.fava.Predict;
+import me.donnior.fava.Predicate;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.SparkleActionExecutor;
@@ -162,7 +162,7 @@ public class SparkleEngine {
     }
     
     private ViewRender findMatchedViewRender(final ActionMethodDefinition adf, final Object result) {
-        return this.viewRenders.find(new Predict<ViewRender>() {
+        return this.viewRenders.find(new Predicate<ViewRender>() {
             @Override
             public boolean apply(ViewRender viewRender) {
                 return viewRender.supportActionMethod(adf, result);

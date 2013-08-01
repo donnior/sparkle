@@ -6,7 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.fava.FList;
-import me.donnior.fava.Predict;
+import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.exception.SparkleException;
 
@@ -24,7 +24,7 @@ public class DefaultParamResolversManager implements ParamResolversManager {
     @Override
     public Object resolve(final ActionParamDefinition actionParamDefinition, HttpServletRequest request) {
         FList<ArgumentResolver> list = FLists.create(argumentResolvers);
-        ArgumentResolver matchedArgumentResolver = list.find(new Predict<ArgumentResolver>() {
+        ArgumentResolver matchedArgumentResolver = list.find(new Predicate<ArgumentResolver>() {
             @Override
             public boolean apply(ArgumentResolver e) {
                 return e.support(actionParamDefinition);

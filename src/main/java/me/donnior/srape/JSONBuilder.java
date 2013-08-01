@@ -1,17 +1,50 @@
 package me.donnior.srape;
 
+import me.donnior.fava.FList;
+import me.donnior.fava.Function;
+import me.donnior.fava.Predicate;
+
+import com.google.common.base.Joiner;
+
 public class JSONBuilder {
 
-    public JSONBuilder(JSONDefinition jsonDefinition) {
-        
-    }
-
-    public static void main(String[] args) {
-
+    private FieldExposerImpl jsonDefinition = new FieldExposerImpl();
+    
+    
+    public JSONBuilder(FieldExposerModule module) {
+        module.config(this.jsonDefinition);
     }
 
     public String build() {
-        return null;
+        final StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        
+        
+        FList<FieldBuilderImpl> fieldBuildersNeedExpose = this.getFieldsExposeDefinition().select(new Predicate<FieldBuilderImpl>() {
+            @Override
+            public boolean apply(FieldBuilderImpl fieldBuilder) {
+                return fieldBuilder.conditionMatched();
+            }
+        });
+
+        FList<String> fieldStrings = fieldBuildersNeedExpose.map(new Function<FieldBuilderImpl, String>() {
+            @Override
+            public String apply(FieldBuilderImpl fieldBuilder) {
+                return fieldBuilder.toJson();
+            }
+        });
+        
+        sb.append(Joiner.on(",").join(fieldStrings));
+        
+        sb.append("}");
+        return sb.toString();
+    }
+    
+    public int fieldsExposeDefinitionCount(){
+        return this.jsonDefinition.fieldsExposeDefinition().size();
     }
 
+    public FList<FieldBuilderImpl> getFieldsExposeDefinition() {
+        return this.jsonDefinition.fieldsExposeDefinition();
+    }
 }

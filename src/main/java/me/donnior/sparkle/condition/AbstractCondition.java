@@ -3,7 +3,7 @@ package me.donnior.sparkle.condition;
 import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.fava.FList;
-import me.donnior.fava.Predict;
+import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
 
 import com.google.common.base.Joiner;
@@ -25,7 +25,7 @@ public abstract class AbstractCondition {
     }
 
     public boolean match(final HttpServletRequest request) {
-        return this.conditionItems.all(new Predict<ConditionItem>() {
+        return this.conditionItems.all(new Predicate<ConditionItem>() {
             @Override
             public boolean apply(ConditionItem item) {
                 String real = getConditionValueFromRequest(request, item.getName());

@@ -1,8 +1,12 @@
 package me.donnior.sparkle.internal;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Map;
+
+import me.donnior.sparkle.exception.SparkleException;
 
 import org.junit.Test;
 
@@ -45,7 +49,7 @@ public class ControllerHolderTest {
         try{
             ch.addControllers(duplicatedControllerMap());
             fail();
-        }catch(RuntimeException re){
+        }catch(SparkleException re){
             
         }
         

@@ -1,22 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" href="/static/pure-min.css">
-<link rel="stylesheet" href="/static/app.css">
-</head>
-<body>
-  <!-- <img src="/static/img/a.jpg"> -->
-    
+<%@ taglib prefix="r" uri="r-tag"%>
+
+<r:stylesheet name="/static/pure-min.css"></r:stylesheet>
+<r:stylesheet name="/static/app.css"></r:stylesheet>
+
+<r:layout title="Sparkle Sample">
+
   <table class="pure-table pure-table-bordered">
     <thead><tr><th>Link</th><th>URI</th></tr></thead>
     <tbody>
         <tr><td><a href='<c:url value="/" />' >Home Page</a></td><td>/</td></tr>
 
         <tr><td><a href='<c:url value="/projects" />' >Projects Index</a></td><td>/projects</td></tr>
+
+        <tr><td><r:a href="/projects">Projects Index</r:a></td><td>/projects</td></tr>
 
         <tr><td><a href='<c:url value="/projects?a=1&b=3&c=2" />' >Projects Index With Params</a></td><td>/projects?a=1&b=3&c=2</td></tr>
         
@@ -40,7 +39,6 @@
         <input type="text" name="f1" placeholder="Anything" />
         <button type="submit" class="pure-button notice">Sign in</button>
     </fieldset>
-</form>
-    
-</body>
-</html>
+    </form>
+
+</r:layout>

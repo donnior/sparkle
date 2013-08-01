@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import me.donnior.fava.Predict;
+import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.data.module.ModuleOne;
 import me.donnior.sparkle.route.RouteModule;
@@ -20,7 +20,7 @@ public class RouteModuleScannerTest {
         List<RouteModule> modules = new RouteModuleScanner().scanRouteModule(pkg);
         assertEquals(4, modules.size());
         
-        boolean hasModuleOneClass = FLists.create(modules).any(new Predict<RouteModule>() {
+        boolean hasModuleOneClass = FLists.create(modules).any(new Predicate<RouteModule>() {
             
             @Override
             public boolean apply(RouteModule module) {

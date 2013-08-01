@@ -3,16 +3,20 @@ package me.donnior.sparkle.internal;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
+import me.donnior.fava.FList;
+import me.donnior.fava.Predicate;
+import me.donnior.fava.util.FLists;
+
 import com.google.common.collect.Lists;
 
 public class DefaulActionParamDefinition implements ActionParamDefinition{
     
     private Class<?> paramType;
-    private List<Annotation> annotaions;
+    private FList<Annotation> annotaions;
 
     public DefaulActionParamDefinition(Class<?> paramType, List<Annotation> annotations){
         this.paramType = paramType;
-        this.annotaions = annotations;
+        this.annotaions = FLists.create(annotations);
     }
 
     @Override
@@ -25,13 +29,12 @@ public class DefaulActionParamDefinition implements ActionParamDefinition{
     }
     
     @Override
-    public boolean hasAnnotation(Class<?> annotationType) {
-        for(Annotation a : this.annotions()){
-            if(a.annotationType().equals(annotationType)){
-                return true;
+    public boolean hasAnnotation(final Class<?> annotationType) {
+        return this.annotaions.any(new Predicate<Annotation>() {
+            public boolean apply(Annotation a) {
+                return a.annotationType().equals(annotationType);
             }
-        }
-        return false;
+        });
     }
     
     @Override

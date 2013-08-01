@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import me.donnior.fava.FList;
+import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.exception.SparkleException;
 
 import org.reflections.ReflectionUtils;

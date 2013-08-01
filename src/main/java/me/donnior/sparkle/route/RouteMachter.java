@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.fava.FList;
 import me.donnior.fava.Function;
-import me.donnior.fava.Predict;
+import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
 
 import org.slf4j.Logger;
@@ -53,7 +53,7 @@ public class RouteMachter {
         	
         });
         
-        FList<RouteBuilderMatcher> matched = rbms.select(new Predict<RouteBuilderMatcher>() {
+        FList<RouteBuilderMatcher> matched = rbms.select(new Predicate<RouteBuilderMatcher>() {
             @Override
             public boolean apply(RouteBuilderMatcher rbm) {
                 return rbm.match();

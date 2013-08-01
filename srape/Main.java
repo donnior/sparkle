@@ -2,33 +2,21 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import me.donnior.fava.Consumer;
+import me.donnior.srape.AbstractFieldExposerModule;
+import me.donnior.srape.FieldBuilderImpl;
+import me.donnior.srape.FieldExposer;
+import me.donnior.srape.FieldExposerModule;
 import me.donnior.srape.JSONBuilder;
-import me.donnior.srape.JSONDefinition;
+import me.donnior.srape.FieldExposerImpl;
 import me.donnior.srape.JsonObject;
 import me.donnior.srape.JsonObjectWriter;
 import me.donnior.srape.SrapeEntity;
 
 
 public class Main {
-
-    public static void main1(String[] args){
-        JsonObject jo = new JsonObject();
-        
-        User user = new User();
-        
-        Account account = new Account();
-        
-        jo.expose(user).withName("user");
-        jo.expose(account).withNameAndType("user", AccountEntity.class);
-        
-        JsonObjectWriter writer = new JsonObjectWriter();
-        
-        System.out.println(writer.write(jo));
-        
-    }
     
-    
-    public static void main(String[] args){
+    public static void main2(String[] args){
         List<String> list = Arrays.asList("one", "tw\"o", "three");
         
         JsonObjectWriter writer = new JsonObjectWriter();
@@ -38,6 +26,40 @@ public class Main {
         System.out.println(writer.writeArray(Arrays.asList(3,2,1), String.class));
         
     }
+    
+    public static void main(String[] args){
+        JSONBuilder builder = new Controller().jsonResult();
+        System.out.println(builder.fieldsExposeDefinitionCount());
+        builder.getFieldsExposeDefinition().each(new Consumer<FieldBuilderImpl>() {
+            
+            @Override
+            public void apply(FieldBuilderImpl expose) {
+                String name = expose.getName();
+                Class type = expose.getEntityClass();
+                boolean conditionMatched = expose.conditionMatched();
+                System.out.println(name);
+                System.out.println(type);
+                System.out.println(conditionMatched);
+            }
+        });
+        
+        builder = new Controller().jsonResult2();
+        System.out.println(builder.fieldsExposeDefinitionCount());
+        builder.getFieldsExposeDefinition().each(new Consumer<FieldBuilderImpl>() {
+            
+            @Override
+            public void apply(FieldBuilderImpl expose) {
+                String name = expose.getName();
+                Class type = expose.getEntityClass();
+                boolean conditionMatched = expose.conditionMatched();
+                System.out.println(name);
+                System.out.println(type);
+                System.out.println(conditionMatched);
+            }
+        });
+    }
+    
+    
     
 }
 
@@ -58,22 +80,38 @@ class AccountEntity extends SrapeEntity{
 
 class Controller{
  
-    String jsonResult(){
+    JSONBuilder jsonResult(){
         final List<User> users = null;
         final Account account = null;
-        final int age = 0;
-        return new JSONBuilder(new JSONDefinition(){
-            public void define() {
-                this.expose(users).withName("users").when(age > 16);
-                this.expose(account).withNameAndType("account", AccountEntity.class);
+        final int age = 20;
+        return new JSONBuilder(new FieldExposerModule() {
+            
+            @Override
+            public void config(FieldExposer exposer) {
+                exposer.expose(users).withName("users").when(age > 76);
+                exposer.expose(account).withNameAndType("account", AccountEntity.class);
             }
-        }).build();
+        });
+    }
+    
+    JSONBuilder jsonResult2(){
+        final List<User> users = null;
+        final Account account = null;
+        final int age = 20;
+        return new JSONBuilder(new AbstractFieldExposerModule() {
+            
+            @Override
+            public void config() {
+                expose(users).withName("users").when(age > 76);
+                expose(account).withNameAndType("account", AccountEntity.class);      
+            }
+        });
     }
  
-    JSONDefinition jsonResult2(){
+    FieldExposerImpl jsonResult3(){
         final List<User> users = null;
         final Account account = null;
-        return new JSONDefinition(){
+        return new FieldExposerImpl(){
             public void define() {
                this.expose(users);
             }
