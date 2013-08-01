@@ -44,6 +44,6 @@ public class DefaulActionParamDefinition implements ActionParamDefinition{
     
     public String toString() {
         return "ActionParamDefinition:[type=>"+this.paramType()+"]";
-    };
+    }
 
 }

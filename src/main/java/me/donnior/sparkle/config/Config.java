@@ -8,4 +8,6 @@ public interface Config {
     
     void registerControllerPackages(String... packages);
     
+    void registerBasePackage(String basePackage);
+    
 }

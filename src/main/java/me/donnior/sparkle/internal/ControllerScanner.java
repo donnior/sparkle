@@ -19,13 +19,16 @@ public class ControllerScanner {
     
     public Map<String, Class<?>> scanControllers(String pkg){
         logger.info("begin scanning controllers under package {}", pkg);
+        
         Reflections reflections = new Reflections(pkg);
+        
         Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(Controller.class);
         for(Class<?> clz : annotated){
             Controller controller = (Controller)clz.getAnnotation(Controller.class);
             this.controllers.put(controller.value(), clz);
             logger.debug("Found annotated controller {} with class {} ", controller.value(), clz.getName());
         }
+        
         Set<Class<? extends ApplicationController>> inherited = reflections.getSubTypesOf(ApplicationController.class);
         for(Class<?> clz : inherited){
             boolean controllerIsBothAnnotatedAndInherited = annotated.contains(clz);

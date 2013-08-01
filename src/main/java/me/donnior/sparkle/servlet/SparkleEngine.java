@@ -17,7 +17,7 @@ import me.donnior.sparkle.SparkleActionExecutor;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.config.Config;
 import me.donnior.sparkle.config.ConfigImpl;
-import me.donnior.sparkle.config.ConfigResult;
+import me.donnior.sparkle.config.ConfigAware;
 import me.donnior.sparkle.controller.ApplicationController;
 import me.donnior.sparkle.http.HTTPStatusCode;
 import me.donnior.sparkle.internal.ActionMethodDefinition;
@@ -43,6 +43,7 @@ public class SparkleEngine {
 
     private FList<ViewRender> viewRenders = new FArrayList<ViewRender>();
     private RouterImpl router;
+    private ConfigImpl config = new ConfigImpl();
     
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
     
@@ -55,7 +56,6 @@ public class SparkleEngine {
     }
 
     protected void startup() {
-        ConfigImpl config = new ConfigImpl();
         Application application = scanApplication();
         if(application != null){
             application.config(config);
@@ -66,7 +66,7 @@ public class SparkleEngine {
     }
 
  
-    private void initEngineWithConfig(ConfigResult config) {
+    private void initEngineWithConfig(ConfigAware config) {
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
         
@@ -85,8 +85,8 @@ public class SparkleEngine {
     }
 
     private void initViewControllers(String[] controllerPackages) {
-        //TODO 
-        scanControllers("");
+        //TODO how to deal with multi controller packages
+        scanControllers(this.config.getBasePackage());
     }
 
     private void initViewRenders(FList<Class<? extends ViewRender>> renders) {
@@ -148,7 +148,7 @@ public class SparkleEngine {
                 viewRender.renderView(result, request, response);
                 long viewTime = stopwatch.stop().elapsedMillis();
 
-              logger.info("completed request within {} ms (Action: {} ms | View: {} ms)" , 
+              logger.info("completed request within {} ms (Action: {} ms | View: {} ms)", 
                     new Object[]{viewTime + actionTime, actionTime, viewTime });
             } catch (ServletException e) {
                 e.printStackTrace();

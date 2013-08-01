@@ -7,8 +7,6 @@ import me.donnior.sparkle.HTTPMethod;
 
 public class RestStandard {
 
-   
-    
     public static String defaultActionMethodNameForHttpMethod(HTTPMethod method){
         return methods().get(method);
     }

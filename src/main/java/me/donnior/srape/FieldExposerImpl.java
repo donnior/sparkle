@@ -13,7 +13,6 @@ public class FieldExposerImpl implements FieldExposer{
         return sjb;
     }
     
-
     public FList<FieldBuilderImpl> fieldsExposeDefinition(){
         return this.fieldsDefinition;
     }

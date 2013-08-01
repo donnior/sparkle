@@ -8,10 +8,11 @@ import me.donnior.fava.FList;
 import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.view.ViewRender;
 
-public class ConfigImpl implements Config, ConfigResult {
+public class ConfigImpl implements Config, ConfigAware {
 
     private FList<Class<? extends ViewRender>> viewRenders = FLists.newEmptyList();
     private FList<String> controllerPackages = FLists.newEmptyList();
+    private String basePackage = "";
     
     @Override
     public void registerViewRenderClass(Class<? extends ViewRender> viewRenderClass) {
@@ -28,6 +29,13 @@ public class ConfigImpl implements Config, ConfigResult {
     }
     
     @Override
+    public void registerBasePackage(String basePackage) {
+        if(basePackage != null){
+            this.basePackage = basePackage;
+        }
+    }
+    
+    @Override
     public FList<Class<? extends ViewRender>> getViewRenders() {
         return this.viewRenders.compact();
     }
@@ -37,5 +45,12 @@ public class ConfigImpl implements Config, ConfigResult {
         Set<String> set = new HashSet<String>(this.controllerPackages.compact());
         return set.toArray(new String[set.size()]);
     }
+    
+    @Override
+    public String getBasePackage() {
+        return this.basePackage;
+    }
+    
+    
 
 }
