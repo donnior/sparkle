@@ -18,6 +18,7 @@ public class DefaultParamResolversManager implements ParamResolversManager {
     List<ArgumentResolver> argumentResolvers = Lists.newArrayList();
     
     public DefaultParamResolversManager() {
+        this.argumentResolvers.add(new ParamInstanceArgumentResolver());
         this.argumentResolvers.add(new SimpleArgumentResolver());
     }
     

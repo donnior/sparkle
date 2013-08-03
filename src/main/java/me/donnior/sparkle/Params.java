@@ -1,6 +1,6 @@
 package me.donnior.sparkle;
 
-public interface Param {
+public interface Params {
 
     String get(String name);
     

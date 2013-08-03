@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import me.donnior.fava.util.FLists;
+import me.donnior.sparkle.Params;
 import me.donnior.sparkle.annotation.Controller;
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
@@ -23,7 +24,8 @@ public class ProjectController {
         return "projects/show";
     }
     
-    public String index2(){
+    public String index2(Params params){
+        System.out.println("param account : " + params.get("account"));
         return "projects/index2";
     }
     
