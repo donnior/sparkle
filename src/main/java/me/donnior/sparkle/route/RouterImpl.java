@@ -33,7 +33,7 @@ public class RouterImpl implements Router, RouteBuilderHolder, RouteModuleInstal
     
     @Override
     public void install(RouteModule module) {
-        logger.debug("install route module for {}", module.getClass() );
+        logger.info("Install route module : {}", module.getClass() );
         module.config(this);
     }
     

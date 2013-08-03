@@ -39,7 +39,7 @@ public class RouteMachter {
 //            logger.debug("extracted path variables {}", uriVariables);
             return rb;
         } else {
-            logger.debug("can't find RoutingBuilder for {}", request);
+            logger.debug("Can't find RoutingBuilder for {}", request);
             return null;
         }
     }
@@ -64,7 +64,7 @@ public class RouteMachter {
 
     private RouteBuilderMatcher getClosestMatchedRouteBuilder(FList<RouteBuilderMatcher> matched) {
         if(matched.size() > 1){
-            logger.debug("found more than one matched route builder, now trying to get the closest one");
+            logger.debug("Found more than one matched route builder, now trying to get the closest one");
             Collections.sort(matched, new Comparator<RouteBuilderMatcher>(){
                 @Override
                 public int compare(RouteBuilderMatcher one, RouteBuilderMatcher two) {

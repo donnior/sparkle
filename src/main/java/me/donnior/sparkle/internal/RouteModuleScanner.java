@@ -28,7 +28,7 @@ public class RouteModuleScanner {
                 continue;
             }
             routeModuleInstances.add((RouteModule)ReflectionUtil.initialize(clz));
-            logger.debug("created route module with class {} ",clz.getName());
+            logger.debug("Created route module with class {} ",clz.getName());
         }
         return routeModuleInstances;
     }
