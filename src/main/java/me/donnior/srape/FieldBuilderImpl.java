@@ -9,6 +9,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     private Class<? extends SrapeEntity> clz;
     private boolean condition;
     private boolean hasConditon;
+    private boolean hasName;
     private Object value;
     
     public FieldBuilderImpl(Object value) {
@@ -24,6 +25,13 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     public ConditionalFieldBuilder withName(String string) {
         return this.withNameAndType(string, null);        
     }
+    
+    public ConditionalFieldBuilder withType(Class<? extends SrapeEntity> entityClass) {
+        this.hasName = false;
+        return this.withNameAndType(null, entityClass);        
+    }
+    
+    
     
     public String getName() {
         return name;
@@ -57,6 +65,10 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
 
     public boolean hasCondition(){
         return hasConditon;
+    }
+    
+    public boolean hasName(){
+        return this.hasName;
     }
     
     public Object getValue() {
