@@ -17,8 +17,12 @@ public class JSONBuilder {
 
     public String build() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        
+        boolean isArrayData = this.fieldsExposeDefinitionCount() == 1 &&
+                this.getFieldsExposeDefinition().at(0).isPureArrayData();
+
+        if(!isArrayData){
+            sb.append("{");
+        }
         
         FList<FieldBuilderImpl> fieldBuildersNeedExpose = this.getFieldsExposeDefinition().select(new Predicate<FieldBuilderImpl>() {
             @Override
@@ -36,7 +40,9 @@ public class JSONBuilder {
         
         sb.append(Joiner.on(",").join(fieldStrings));
         
-        sb.append("}");
+        if(!isArrayData){
+            sb.append("}");
+        }
         return sb.toString();
     }
     

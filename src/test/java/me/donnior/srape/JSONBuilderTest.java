@@ -29,17 +29,21 @@ public class JSONBuilderTest {
     public void test_integration(){
         JSONBuilder builder = new Controller().jsonResult();
         
+        System.out.println(builder.build());
+        
         assertEquals(2, builder.fieldsExposeDefinitionCount());
         
         FieldBuilderImpl impl = builder.getFieldsExposeDefinition().first();
         assertEquals("users", impl.getName());
         assertFalse(impl.conditionMatched());
         assertNull(impl.getEntityClass());
+        System.out.println("a"+impl.toJson());
         
         impl = builder.getFieldsExposeDefinition().at(1);
         assertEquals("account", impl.getName());
         assertTrue(impl.conditionMatched());
         assertTrue(impl.getEntityClass().equals(AccountEntity.class));
+        
         
     }
     
