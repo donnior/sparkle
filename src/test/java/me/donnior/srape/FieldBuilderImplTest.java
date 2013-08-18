@@ -86,7 +86,7 @@ public class FieldBuilderImplTest {
         assertTrue(fieldBuilder.isCollectionValue());
         
         fieldBuilder = new FieldBuilderImpl(new int[]{1,3,5});
-        assertTrue(fieldBuilder.isCollectionValue());
+        assertTrue(fieldBuilder.isArrayData());
         
         fieldBuilder = new FieldBuilderImpl(null);
         assertFalse(fieldBuilder.isCollectionValue());

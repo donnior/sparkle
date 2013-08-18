@@ -104,6 +104,10 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     }
     
     private Object _value0(Object value){
+        if(value == null){
+            //TODO deal with null
+            return "Null";
+        }
         if(value instanceof Number){
             return value;
         }

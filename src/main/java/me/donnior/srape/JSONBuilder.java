@@ -6,9 +6,13 @@ import me.donnior.fava.Predicate;
 
 import com.google.common.base.Joiner;
 
+/**
+ * 
+ * Build JSON with one {@link FieldExposerModule}, this class is not thread safe!
+ */
 public class JSONBuilder {
 
-    private FieldExposerImpl jsonDefinition = new FieldExposerImpl();
+    private FieldsExpositionHolder jsonDefinition = new FieldsExpositionHolder();
     
     
     public JSONBuilder(FieldExposerModule module) {
@@ -17,10 +21,9 @@ public class JSONBuilder {
 
     public String build() {
         final StringBuilder sb = new StringBuilder();
-        boolean isArrayData = this.fieldsExposeDefinitionCount() == 1 &&
-                this.getFieldsExposeDefinition().at(0).isPureArrayData();
-
-        if(!isArrayData){
+        
+        boolean isAPureArrayDefinition = isAPureArrayDefinition();
+        if(!isAPureArrayDefinition){
             sb.append("{");
         }
         
@@ -40,10 +43,15 @@ public class JSONBuilder {
         
         sb.append(Joiner.on(",").join(fieldStrings));
         
-        if(!isArrayData){
+        if(!isAPureArrayDefinition){
             sb.append("}");
         }
         return sb.toString();
+    }
+
+    private boolean isAPureArrayDefinition() {
+        return this.fieldsExposeDefinitionCount() == 1 &&
+                this.getFieldsExposeDefinition().at(0).isPureArrayData();
     }
     
     public int fieldsExposeDefinitionCount(){

@@ -57,7 +57,7 @@ public class JSONBuilderTest {
                 exposer.expose(23).withName("age");
             }
         });
-        String expected = "{" + jsonPair("user", "donny", true) + "," + jsonPair("age", 23, true)+ "}";
+        String expected = "{" + jsonPair("user", "donny", true) + "," + jsonPair("age", 23, false)+ "}";
         assertEquals(expected, builder.build());
     }
 }
