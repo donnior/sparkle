@@ -37,7 +37,6 @@ public class JSONBuilderTest {
         assertEquals("users", impl.getName());
         assertFalse(impl.conditionMatched());
         assertNull(impl.getEntityClass());
-        System.out.println("a"+impl.toJson());
         
         impl = builder.getFieldsExposeDefinition().at(1);
         assertEquals("account", impl.getName());

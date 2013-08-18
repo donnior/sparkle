@@ -61,7 +61,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     }
     
     public boolean isArrayData(){
-        return this.isCollectionValue() || this.value.getClass().isArray();
+        return this.value != null && (this.isCollectionValue() || this.value.getClass().isArray());
     }
     
     public void unless(boolean condition){
@@ -106,14 +106,18 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     private Object _value0(Object value){
         if(value == null){
             //TODO deal with null
-            return "Null";
+            return "null";
+        }
+        if(value instanceof Boolean){
+            return value.toString();
         }
         if(value instanceof Number){
             return value;
         }
 
         if(value instanceof String){
-            return StringUtil.quote(value.toString());
+//            return StringUtil.quote(value.toString());
+            return quote(value.toString()); //TODO is this enough? like string \" escaping?
         }
         
         if (value.getClass().isArray()) {
@@ -123,7 +127,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
             List<Object> values = new ArrayList<Object>();
             for (int i = 0; i < length; i ++) {
                 Object arrayElement = Array.get(value, i);
-                values.add(_value(arrayElement));
+                values.add(_value0(arrayElement));
             }
             sb.append(Joiner.on(",").join(values));
             sb.append("]");
@@ -144,7 +148,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
                 List<Object> values = new ArrayList<Object>();
                 Iterator<Object> it = ((Collection)value).iterator();
                 while(it.hasNext()){
-                    values.add(_value(it.next()));
+                    values.add(_value0(it.next()));
                 }
                 sb.append(Joiner.on(",").join(values));
                 sb.append("]");
@@ -171,17 +175,6 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
         return StringUtil.quote(value.toString());
     }
     
-
-    private Object _value(Object value){
-        if(value instanceof Number){
-            return value;
-        }
-
-        if(value instanceof String){
-            return StringUtil.quote(value.toString());
-        }
-        return StringUtil.quote(value.toString());
-    }
     
     /**
      * Is this field exposition a pure array data? means it value is data type and don't have a
@@ -201,5 +194,59 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
      */
     public boolean isPureArrayData(){
         return this.isArrayData() && !this.hasName;
+    }
+    
+    public static String quote(String string) {
+        if (string == null || string.length() == 0) {
+            return "\"\"";
+        }
+
+        char         c = 0;
+        int          i;
+        int          len = string.length();
+        StringBuilder sb = new StringBuilder(len + 4);
+        String       t;
+
+        sb.append('"');
+        for (i = 0; i < len; i += 1) {
+            c = string.charAt(i);
+            switch (c) {
+            case '\\':
+            case '"':
+                sb.append('\\');
+                sb.append(c);
+                break;
+            case '/':
+//                if (b == '<') {
+                    sb.append('\\');
+//                }
+                sb.append(c);
+                break;
+            case '\b':
+                sb.append("\\b");
+                break;
+            case '\t':
+                sb.append("\\t");
+                break;
+            case '\n':
+                sb.append("\\n");
+                break;
+            case '\f':
+                sb.append("\\f");
+                break;
+            case '\r':
+               sb.append("\\r");
+               break;
+            default:
+                if (c < ' ') {
+                    t = "000" + Integer.toHexString(c);
+                    sb.append("\\u" + t.substring(t.length() - 4));
+                } else {
+                    sb.append(c);
+                }
+            }
+        }
+        sb.append('"');
+        return sb.toString();
     }
 }

@@ -70,7 +70,7 @@ public class BuilderTest {
     public void testMapWithPrimaryTypes(){
         
         final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("name", "james");
+        map.put("name", "jam\"es");
         map.put("age", 18);
         
         FieldExposerModule module = new AbstractFieldExposerModule() {
@@ -85,7 +85,6 @@ public class BuilderTest {
     @Test
 //  @Ignore
   public void testOnlyOneCollectionDataWithName(){
-      
       FieldExposerModule module = new AbstractFieldExposerModule() {
           public void config() {
               expose(Lists.newArrayList(1,2,3)).withName(null);        //ints
@@ -98,10 +97,33 @@ public class BuilderTest {
     @Test
 //  @Ignore
   public void testOnlyOneCollectionDataWithoutName(){
-      
       FieldExposerModule module = new AbstractFieldExposerModule() {
           public void config() {
-              expose(Lists.newArrayList(1,2,3));
+              expose(Lists.newArrayList(1,-2,3));
+          }
+      };
+      
+      System.out.println(build(module));
+  }
+    
+    @Test
+//  @Ignore
+  public void test_null_value(){
+      FieldExposerModule module = new AbstractFieldExposerModule() {
+          public void config() {
+              expose(null).withName("null");
+          }
+      };
+      
+      System.out.println(build(module));
+  }
+    
+    @Test
+//  @Ignore
+  public void test_bool_value(){
+      FieldExposerModule module = new AbstractFieldExposerModule() {
+          public void config() {
+              expose(true).withName("bool");
           }
       };
       
