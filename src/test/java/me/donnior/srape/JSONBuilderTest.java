@@ -71,7 +71,7 @@ class Account{
     Date loginAt;
 }
 
-class AccountEntity extends SrapeEntity<Account>{
+class AccountEntity implements SrapeEntity<Account>{
     
     @Override
     public void config(Account account, FieldExposer exposer) {

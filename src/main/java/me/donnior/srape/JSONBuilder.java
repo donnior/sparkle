@@ -20,33 +20,34 @@ public class JSONBuilder {
     }
 
     public String build() {
-        final StringBuilder sb = new StringBuilder();
-        
-        boolean isAPureArrayDefinition = isAPureArrayDefinition();
-        if(!isAPureArrayDefinition){
-            sb.append("{");
-        }
-        
-        FList<FieldBuilderImpl> fieldBuildersNeedExpose = this.getFieldsExposeDefinition().select(new Predicate<FieldBuilderImpl>() {
-            @Override
-            public boolean apply(FieldBuilderImpl fieldBuilder) {
-                return fieldBuilder.conditionMatched();
-            }
-        });
-
-        FList<String> fieldStrings = fieldBuildersNeedExpose.map(new Function<FieldBuilderImpl, String>() {
-            @Override
-            public String apply(FieldBuilderImpl fieldBuilder) {
-                return fieldBuilder.toJson();
-            }
-        });
-        
-        sb.append(Joiner.on(",").join(fieldStrings));
-        
-        if(!isAPureArrayDefinition){
-            sb.append("}");
-        }
-        return sb.toString();
+        return this.jsonDefinition.build();
+//        final StringBuilder sb = new StringBuilder();
+//        
+//        boolean isAPureArrayDefinition = isAPureArrayDefinition();
+//        if(!isAPureArrayDefinition){
+//            sb.append("{");
+//        }
+//        
+//        FList<FieldBuilderImpl> fieldBuildersNeedExpose = this.getFieldsExposeDefinition().select(new Predicate<FieldBuilderImpl>() {
+//            @Override
+//            public boolean apply(FieldBuilderImpl fieldBuilder) {
+//                return fieldBuilder.conditionMatched();
+//            }
+//        });
+//
+//        FList<String> fieldStrings = fieldBuildersNeedExpose.map(new Function<FieldBuilderImpl, String>() {
+//            @Override
+//            public String apply(FieldBuilderImpl fieldBuilder) {
+//                return fieldBuilder.toJson();
+//            }
+//        });
+//        
+//        sb.append(Joiner.on(",").join(fieldStrings));
+//        
+//        if(!isAPureArrayDefinition){
+//            sb.append("}");
+//        }
+//        return sb.toString();
     }
 
     private boolean isAPureArrayDefinition() {

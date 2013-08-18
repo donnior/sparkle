@@ -120,6 +120,10 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
             return quote(value.toString()); //TODO is this enough? like string \" escaping?
         }
         
+        if(this.clz != null){
+            return buildEntity(this.value,this.clz);
+        }
+        
         if (value.getClass().isArray()) {
             StringBuilder sb = new StringBuilder();
             sb.append("[");
@@ -176,6 +180,21 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     }
     
     
+    private Object buildEntity(Object value, Class<? extends SrapeEntity> clz) {
+        try {
+            System.out.println("newing with " + clz);
+            SrapeEntity entity = clz.newInstance();
+            FieldsExpositionHolder holder = new FieldsExpositionHolder();
+            entity.config(value, holder);
+            return holder.build();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * Is this field exposition a pure array data? means it value is data type and don't have a
      * explicit name. You can't use {@link #withName(String)} or {@link #withNameAndType(String, Class)}

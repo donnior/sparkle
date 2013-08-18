@@ -1,9 +1,7 @@
 package me.donnior.srape;
 
-public class SrapeEntity<E> {
+public interface SrapeEntity<E> {
 
-    public void config(E object, FieldExposer exposer){
-        
-    }
+    public void config(E object, FieldExposer exposer);
     
 }

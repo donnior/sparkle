@@ -95,6 +95,12 @@ public class FieldBuilderImplTest {
 }
 
 
-class ExampleEntity extends SrapeEntity<Integer>{
+class ExampleEntity implements SrapeEntity<Integer>{
+
+    @Override
+    public void config(Integer object, FieldExposer exposer) {
+        // TODO Auto-generated method stub
+        
+    }
     
 }
