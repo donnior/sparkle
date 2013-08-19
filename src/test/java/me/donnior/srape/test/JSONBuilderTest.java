@@ -1,4 +1,4 @@
-package me.donnior.srape;
+package me.donnior.srape.test;
 import static me.donnior.srape.StringUtil.jsonPair;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -8,6 +8,14 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import me.donnior.srape.FieldBuilderImpl;
+import me.donnior.srape.FieldExposer;
+import me.donnior.srape.FieldExposerModule;
+import me.donnior.srape.JSONBuilder;
+import me.donnior.srape.JsonObjectWriter;
+import me.donnior.srape.SrapeEntity;
+import me.donnior.srape.model.User;
 
 import org.junit.Test;
 

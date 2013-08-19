@@ -1,4 +1,8 @@
-package me.donnior.srape;
+package me.donnior.srape.mapping;
+
+import me.donnior.srape.FieldExposer;
+import me.donnior.srape.SrapeEntity;
+import me.donnior.srape.model.User;
 
 public class DetailedUserEntity implements SrapeEntity<User>{
 

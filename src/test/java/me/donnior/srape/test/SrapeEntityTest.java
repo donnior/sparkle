@@ -1,7 +1,17 @@
-package me.donnior.srape;
+package me.donnior.srape.test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.donnior.srape.AbstractFieldExposerModule;
+import me.donnior.srape.FieldExposerModule;
+import me.donnior.srape.JSONBuilder;
+import me.donnior.srape.mapping.DetailedUserEntity;
+import me.donnior.srape.mapping.PostEntity;
+import me.donnior.srape.mapping.SummaryUserEntity;
+import me.donnior.srape.model.Post;
+import me.donnior.srape.model.Profile;
+import me.donnior.srape.model.User;
 
 import org.junit.Test;
 

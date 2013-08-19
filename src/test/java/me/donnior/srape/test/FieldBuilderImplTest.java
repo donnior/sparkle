@@ -1,4 +1,4 @@
-package me.donnior.srape;
+package me.donnior.srape.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -9,6 +9,9 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import me.donnior.fava.util.FLists;
+import me.donnior.srape.FieldBuilderImpl;
+import me.donnior.srape.FieldExposer;
+import me.donnior.srape.SrapeEntity;
 
 import org.junit.Test;
 

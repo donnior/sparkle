@@ -1,8 +1,10 @@
-package me.donnior.srape;
+package me.donnior.srape.model;
+
+
 
 public class Post {
-    String title;
-    User owner;
+    public String title;
+    public User owner;
 
     public Post(String string) {
         this.title = string;

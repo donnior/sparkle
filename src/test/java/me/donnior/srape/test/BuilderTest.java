@@ -1,7 +1,14 @@
-package me.donnior.srape;
+package me.donnior.srape.test;
+
+import static org.junit.Assert.*;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+import me.donnior.srape.AbstractFieldExposerModule;
+import me.donnior.srape.FieldExposerModule;
+import me.donnior.srape.JSONBuilder;
 
 import org.junit.Test;
 
@@ -32,6 +39,9 @@ public class BuilderTest {
             }
         };
         
+        //should be {"int":12,"char":"a","byte":1,"short":1,"long":1,"float":1.23,"double":1.25,"login":"srape"}
+        String expected = "{\"int\":12,\"char\":\"a\",\"byte\":1,\"short\":1,\"long\":1,\"float\":1.23,\"double\":1.25,\"login\":\"srape\"}";
+        assertEquals(expected, build(module));
         System.out.println(build(module));
     }
     
@@ -48,6 +58,8 @@ public class BuilderTest {
             }
         };
         
+        String expected = "{\"ints\":[1,2,3],\"strings\":[\"one\",\"two\",\"three2\"]}";
+        assertEquals(expected, build(module));
         System.out.println(build(module));
     }
     
@@ -63,13 +75,15 @@ public class BuilderTest {
             }
         };
         
+        String expected = "{\"ints\":[1,2,3],\"strings\":[\"one\",\"two\",\"three\"]}";
+        assertEquals(expected, build(module));
         System.out.println(build(module));
     }
 
     @Test
     public void testMapWithPrimaryTypes(){
         
-        final Map<String, Object> map = new HashMap<String, Object>();
+        final Map<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("name", "jam\"es");
         map.put("age", 18);
         
@@ -79,6 +93,8 @@ public class BuilderTest {
             }
         };
         
+        String expected = "{\"map\":{\"name\":\"jam\\\"es\",\"age\":18}}";
+        assertEquals(expected, build(module));
         System.out.println(build(module));
     }
     
@@ -91,6 +107,8 @@ public class BuilderTest {
           }
       };
       
+      String exptected = "{\"\":[1,2,3]}";
+      assertEquals(exptected, build(module));
       System.out.println(build(module));
   }
     
@@ -103,6 +121,8 @@ public class BuilderTest {
           }
       };
       
+      String exptected = "[1,-2,3]";
+      assertEquals(exptected, build(module));
       System.out.println(build(module));
   }
     
@@ -115,6 +135,8 @@ public class BuilderTest {
           }
       };
       
+      String exptected = "{\"null\":null}";
+      assertEquals(exptected, build(module));
       System.out.println(build(module));
   }
     
@@ -127,6 +149,8 @@ public class BuilderTest {
           }
       };
       
+      String exptected = "{\"bool\":true}";
+      assertEquals(exptected, build(module));
       System.out.println(build(module));
   }
 
