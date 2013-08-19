@@ -61,10 +61,6 @@ public class JSONBuilderTest {
     }
 }
 
-class User{
-    String name;
-    int age;
-}
 
 class Account{
     String login;

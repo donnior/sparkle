@@ -130,43 +130,8 @@ public class BuilderTest {
       System.out.println(build(module));
   }
 
-    @Test
-//  @Ignore
-  public void test_srape_entity_value(){
-     
-      
-      final User1 user = new User1();
-      user.name = "donny";
-      user.age = 30;
-      
-      FieldExposerModule module = new AbstractFieldExposerModule() {
-          public void config() {
-              expose(user).withNameAndType("user", UserEntity.class);
-              expose(30).withName("age");
-          }
-      };
-      
-      System.out.println(build(module));
-  }
-    
-    
     private String build(FieldExposerModule module){
         return new JSONBuilder(module).build();
     }
-    
-}
-
-
-class User1 {
-    String name;
-    int age;
-};
-
-class UserEntity implements SrapeEntity<User1>{
-
-  @Override
-  public void config(User1 user, FieldExposer exposer) {
-      exposer.expose(user.name).withName("user_name");
-  }
     
 }

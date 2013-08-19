@@ -120,7 +120,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
             return quote(value.toString()); //TODO is this enough? like string \" escaping?
         }
         
-        if(this.clz != null){
+        if(!isArrayData() && this.clz != null){
             return buildEntity(this.value,this.clz);
         }
         
@@ -131,7 +131,11 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
             List<Object> values = new ArrayList<Object>();
             for (int i = 0; i < length; i ++) {
                 Object arrayElement = Array.get(value, i);
-                values.add(_value0(arrayElement));
+                if(hasEntityType()){
+                    values.add(buildEntity(arrayElement, this.clz));
+                } else {
+                    values.add(_value0(arrayElement));
+                }
             }
             sb.append(Joiner.on(",").join(values));
             sb.append("]");
@@ -140,11 +144,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
         
         //TODO more complex need
         if(value instanceof Collection){
-            if(this.hasEntityType()){
-                //TODO array data with srape entity type defined.
-                System.out.println("collection data with entity type");
-                return "";
-            }else{
+            
                 //TODO data with normal type, fall back to gson
                 StringBuilder sb = new StringBuilder();
                 sb.append("[");
@@ -152,12 +152,16 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
                 List<Object> values = new ArrayList<Object>();
                 Iterator<Object> it = ((Collection)value).iterator();
                 while(it.hasNext()){
-                    values.add(_value0(it.next()));
+//                    values.add(_value0(it.next()));
+                    if(hasEntityType()){
+                        values.add(buildEntity(it.next(), this.clz));
+                    } else {
+                        values.add(_value0(it.next()));
+                    }
                 }
                 sb.append(Joiner.on(",").join(values));
                 sb.append("]");
                 return sb.toString();
-            }
             
         } 
         
@@ -182,7 +186,6 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     
     private Object buildEntity(Object value, Class<? extends SrapeEntity> clz) {
         try {
-            System.out.println("newing with " + clz);
             SrapeEntity entity = clz.newInstance();
             FieldsExpositionHolder holder = new FieldsExpositionHolder();
             entity.config(value, holder);
