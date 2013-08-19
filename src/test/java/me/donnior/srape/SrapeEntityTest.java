@@ -32,6 +32,20 @@ public class SrapeEntityTest {
 
         System.out.println(build(module));
     }
+    
+    @Test
+    public void test_srape_entity_value_3() {
+        final User user = domainUser();
+
+        FieldExposerModule module = new AbstractFieldExposerModule() {
+            public void config() {
+                expose(user.posts).withType(PostEntity.class);
+            }
+        };
+
+        System.out.println(build(module));
+    }    
+    
 
     private User domainUser() {
         User user = new User();
@@ -51,11 +65,7 @@ public class SrapeEntityTest {
     }
 
     private String build(FieldExposerModule module) {
-        long start = System.currentTimeMillis();
-        String result = new JSONBuilder(module).build();
-        long end = System.currentTimeMillis();
-        System.out.println(end - start);
-        return result;
+        return new JSONBuilder(module).build();
     }
 
 }

@@ -36,7 +36,8 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     
     public ConditionalFieldBuilder withType(Class<? extends SrapeEntity> entityClass) {
         this.hasName = false;
-        return this.withNameAndType(null, entityClass);        
+        this.clz = entityClass;
+        return this;        
     }
     
     
@@ -90,9 +91,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     }
     
     public String toJson(){
-//        return "{" + contentWithNameAndValue(this.name, this.value) +"}";
         Object name = this.name != null ? this.name :"";
-        
         return contentWithNameAndValue(name, this.value, this.hasName);
     }
     private String contentWithNameAndValue(Object name, Object value, boolean hasName){
