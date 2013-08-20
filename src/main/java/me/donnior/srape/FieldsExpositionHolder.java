@@ -53,7 +53,7 @@ public class FieldsExpositionHolder implements FieldExposer{
     
     private boolean isAPureArrayDefinition() {
         return this.fieldsExposeDefinition().size() == 1 &&
-                this.fieldsExposeDefinition().at(0).isPureArrayData();
+                this.fieldsExposeDefinition().at(0).isPureIterableValue();
     }
    
 }

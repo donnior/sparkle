@@ -52,7 +52,7 @@ public class JSONBuilder {
 
     private boolean isAPureArrayDefinition() {
         return this.fieldsExposeDefinitionCount() == 1 &&
-                this.getFieldsExposeDefinition().at(0).isPureArrayData();
+                this.getFieldsExposeDefinition().at(0).isPureIterableValue();
     }
     
     public int fieldsExposeDefinitionCount(){

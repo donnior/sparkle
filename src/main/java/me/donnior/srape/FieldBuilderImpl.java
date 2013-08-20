@@ -13,20 +13,21 @@ import com.google.common.base.Joiner;
 public class FieldBuilderImpl implements ScopedFieldBuilder{
 
     private String name;
+    private Object value;
     private Class<? extends SrapeEntity> clz;
+
     private boolean condition;
     private boolean hasConditon;
     private boolean hasName;
-    private Object value;
     
     public FieldBuilderImpl(Object value) {
         this.value = value;
     }
 
     public ConditionalFieldBuilder withNameAndType(String name, Class<? extends SrapeEntity> entityClass) {
+        this.hasName = true;
         this.name = name;
         this.clz = entityClass;
-        this.hasName = true;
         return this;
     }
 
@@ -39,8 +40,6 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
         this.clz = entityClass;
         return this;        
     }
-    
-    
     
     public String getName() {
         return name;
@@ -55,14 +54,15 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     }
 
     public boolean isCollectionValue(){
-        return this.value != null && 
-                this.value instanceof Collection;
-//               (this.value instanceof Collection || this.value.getClass().isArray());
-
+        return this.value != null && this.value instanceof Collection;
     }
     
-    public boolean isArrayData(){
-        return this.value != null && (this.isCollectionValue() || this.value.getClass().isArray());
+    public boolean isArrayValue(){
+        return this.value != null && this.value.getClass().isArray();
+    }
+    
+    public boolean isValueIterable(){
+        return isArrayValue() || isCollectionValue();
     }
     
     public void unless(boolean condition){
@@ -94,6 +94,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
         Object name = this.name != null ? this.name :"";
         return contentWithNameAndValue(name, this.value, this.hasName);
     }
+    
     private String contentWithNameAndValue(Object name, Object value, boolean hasName){
         if(hasName){
             return StringUtil.quote(name.toString()) + ":" + _value0(value);   
@@ -119,11 +120,11 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
             return quote(value.toString()); //TODO is this enough? like string \" escaping?
         }
         
-        if(!isArrayData() && this.clz != null){
+        if(!isValueIterable() && hasEntityType()){
             return buildEntity(this.value,this.clz);
         }
         
-        if (value.getClass().isArray()) {
+        if(isArrayValue()) {
             StringBuilder sb = new StringBuilder();
             sb.append("[");
             int length = Array.getLength(value);
@@ -142,30 +143,29 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
         }
         
         //TODO more complex need
-        if(value instanceof Collection){
+        if(isCollectionValue()){
+            //TODO data with normal type, fall back to gson
+            boolean hasEntityType = this.hasEntityType();
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
             
-                //TODO data with normal type, fall back to gson
-                StringBuilder sb = new StringBuilder();
-                sb.append("[");
-                
-                List<Object> values = new ArrayList<Object>();
-                Iterator<Object> it = ((Collection)value).iterator();
-                while(it.hasNext()){
-//                    values.add(_value0(it.next()));
-                    if(hasEntityType()){
-                        values.add(buildEntity(it.next(), this.clz));
-                    } else {
-                        values.add(_value0(it.next()));
-                    }
+            List<Object> values = new ArrayList<Object>();
+            Iterator<Object> it = ((Collection)value).iterator();
+            while(it.hasNext()){
+                if(hasEntityType){
+                    values.add(buildEntity(it.next(), this.clz));
+                } else {
+                    values.add(_value0(it.next()));
                 }
-                sb.append(Joiner.on(",").join(values));
-                sb.append("]");
-                return sb.toString();
-            
+            }
+            sb.append(Joiner.on(",").join(values));
+            sb.append("]");
+            return sb.toString();
         } 
         
         if(value instanceof Map){
-            //TODO map data
+            //TODO map data, for map data, should disable entity mapping, 
+            //can explicit set hasEntityType to false
             Iterator<Entry<Object, Object>> it = ((Map)value).entrySet().iterator();
             StringBuilder sb = new StringBuilder();
             sb.append("{");
@@ -198,7 +198,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     }
 
     /**
-     * Is this field exposition a pure array data? means it value is data type and don't have a
+     * Is this field exposition a pure iterable value? means it value is data type and don't have a
      * explicit name. You can't use {@link #withName(String)} or {@link #withNameAndType(String, Class)}
      * to define a field exposition if you want to make it pure data, you can use {@link #withType(Class)}
      * or just ignore the 'with' clause. 
@@ -206,15 +206,15 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
      * <br />
      * <br />
      * 
-     * If this field exposition is pure array, it would be output as <pre><code>[1,2,3]</code></pre>
+     * If this field exposition is pure iterable, it would be output as <pre><code>[1,2,3]</code></pre>
      * 
      * 
      * Otherwise it will be output as <pre><code>{"name": xxxx}</code></pre>
      * 
      * @return
      */
-    public boolean isPureArrayData(){
-        return this.isArrayData() && !this.hasName;
+    public boolean isPureIterableValue(){
+        return this.isValueIterable() && !hasName();
     }
     
     public static String quote(String string) {
