@@ -6,12 +6,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.List;
 
 import me.donnior.fava.util.FLists;
 import me.donnior.srape.FieldBuilderImpl;
 import me.donnior.srape.FieldExposer;
 import me.donnior.srape.SrapeEntity;
+import me.donnior.srape.mapping.DetailedUserEntity;
 
 import org.junit.Test;
 
@@ -95,6 +97,22 @@ public class FieldBuilderImplTest {
         assertFalse(fieldBuilder.isCollectionValue());
     }
     
+    @Test
+    public void test_has_entity_type(){
+        FieldBuilderImpl fieldBuilder = new FieldBuilderImpl(FLists.create(1,2,3));
+        
+        assertFalse(fieldBuilder.hasEntityType());
+        
+        fieldBuilder.withNameAndType("name", DetailedUserEntity.class);
+        assertTrue(fieldBuilder.hasEntityType());
+        
+        fieldBuilder = new FieldBuilderImpl(new HashMap());
+        
+        assertFalse(fieldBuilder.hasEntityType());
+        
+        fieldBuilder.withNameAndType("name", DetailedUserEntity.class);
+        assertFalse(fieldBuilder.hasEntityType());
+    }
 }
 
 
