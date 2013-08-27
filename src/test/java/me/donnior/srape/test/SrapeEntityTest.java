@@ -1,7 +1,9 @@
 package me.donnior.srape.test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.donnior.srape.AbstractFieldExposerModule;
 import me.donnior.srape.FieldExposerModule;
@@ -54,7 +56,24 @@ public class SrapeEntityTest {
         };
 
         System.out.println(build(module));
-    }    
+    }
+    
+    @Test
+    public void test_srape_with_map_value(){
+        final User user = domainUser();
+        
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("user", user);
+        map.put("num", 1);
+        
+        FieldExposerModule module = new AbstractFieldExposerModule() {
+            public void config() {
+                expose(map).withNameAndType("res", PostEntity.class);
+            }
+        };
+
+        System.out.println(build(module));
+    }
     
 
     private User domainUser() {

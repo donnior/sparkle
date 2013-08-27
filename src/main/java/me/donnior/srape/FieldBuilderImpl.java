@@ -50,9 +50,13 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     }
     
     public boolean hasEntityType(){
-        return this.clz != null;
+        return this.clz != null && !this.isMapValue();
     }
 
+    public boolean isMapValue(){
+        return this.value != null && this.value instanceof Map;
+    }
+    
     public boolean isCollectionValue(){
         return this.value != null && this.value instanceof Collection;
     }
@@ -117,7 +121,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
 
         if(value instanceof String){
 //            return StringUtil.quote(value.toString());
-            return quote(value.toString()); //TODO is this enough? like string \" escaping?
+            return quote(value.toString());      //TODO is this enough? like string \" escaping?
         }
         
         if(!isValueIterable() && hasEntityType()){
@@ -125,61 +129,74 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
         }
         
         if(isArrayValue()) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("[");
-            int length = Array.getLength(value);
-            List<Object> values = new ArrayList<Object>();
-            for (int i = 0; i < length; i ++) {
-                Object arrayElement = Array.get(value, i);
-                if(hasEntityType()){
-                    values.add(buildEntity(arrayElement, this.clz));
-                } else {
-                    values.add(value0(arrayElement));
-                }
-            }
-            sb.append(Joiner.on(",").join(values));
-            sb.append("]");
-            return sb.toString();
+            return _array(value);
         }
         
-        //TODO more complex need
         if(isCollectionValue()){
-            //TODO data with normal type, fall back to gson
-            boolean hasEntityType = this.hasEntityType();
-            StringBuilder sb = new StringBuilder();
-            sb.append("[");
-            
-            List<Object> values = new ArrayList<Object>();
-            Iterator<Object> it = ((Collection)value).iterator();
-            while(it.hasNext()){
-                if(hasEntityType){
-                    values.add(buildEntity(it.next(), this.clz));
-                } else {
-                    values.add(value0(it.next()));
-                }
-            }
-            sb.append(Joiner.on(",").join(values));
-            sb.append("]");
-            return sb.toString();
+            return _collection(value);
         } 
         
         if(value instanceof Map){
-            //TODO map data, for map data, should disable entity mapping, 
-            //can explicit set hasEntityType to false
-            Iterator<Entry<Object, Object>> it = ((Map)value).entrySet().iterator();
-            StringBuilder sb = new StringBuilder();
-            sb.append("{");
-            List<String> collector = new ArrayList<String>();
-            while(it.hasNext()){
-                Entry<Object, Object>  entry = it.next();
-                collector.add(contentWithNameAndValue(entry.getKey(),   entry.getValue(), true));
-            }
-            sb.append(Joiner.on(",").join(collector));
-            sb.append("}");
-            return sb.toString();
+            return _map(value);
         } 
         
-        return StringUtil.quote(value.toString());
+        return quote(value.toString());
+    }
+
+    private Object _map(Object value) {
+        //TODO map data, for map data, should disable entity mapping, 
+        //can explicit set hasEntityType to false
+        Iterator<Entry<Object, Object>> it = ((Map)value).entrySet().iterator();
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        List<String> collector = new ArrayList<String>();
+        while(it.hasNext()){
+            Entry<Object, Object>  entry = it.next();
+            collector.add(contentWithNameAndValue(entry.getKey(),   entry.getValue(), true));
+        }
+        sb.append(Joiner.on(",").join(collector));
+        sb.append("}");
+        return sb.toString();
+    }
+
+    //json value for collection represent
+    private Object _collection(Object value) {
+        //TODO data with normal type, fall back to gson
+        boolean hasEntityType = this.hasEntityType();
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        
+        List<Object> values = new ArrayList<Object>();
+        Iterator<Object> it = ((Collection)value).iterator();
+        while(it.hasNext()){
+            if(hasEntityType){
+                values.add(buildEntity(it.next(), this.clz));
+            } else {
+                values.add(value0(it.next()));
+            }
+        }
+        sb.append(Joiner.on(",").join(values));
+        sb.append("]");
+        return sb.toString();
+    }
+
+    //json value for array represent
+    private Object _array(Object value) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        int length = Array.getLength(value);
+        List<Object> values = new ArrayList<Object>();
+        for (int i = 0; i < length; i ++) {
+            Object arrayElement = Array.get(value, i);
+            if(hasEntityType()){
+                values.add(buildEntity(arrayElement, this.clz));
+            } else {
+                values.add(value0(arrayElement));
+            }
+        }
+        sb.append(Joiner.on(",").join(values));
+        sb.append("]");
+        return sb.toString();
     }
     
     
