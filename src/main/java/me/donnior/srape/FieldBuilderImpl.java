@@ -97,13 +97,13 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     
     private String contentWithNameAndValue(Object name, Object value, boolean hasName){
         if(hasName){
-            return StringUtil.quote(name.toString()) + ":" + _value0(value);   
+            return StringUtil.quote(name.toString()) + ":" + value0(value);   
         } else {
-            return _value0(value).toString();
+            return value0(value).toString();
         }
     }
     
-    private Object _value0(Object value){
+    private Object value0(Object value){
         if(value == null){
             //TODO deal with null
             return "null";
@@ -134,7 +134,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
                 if(hasEntityType()){
                     values.add(buildEntity(arrayElement, this.clz));
                 } else {
-                    values.add(_value0(arrayElement));
+                    values.add(value0(arrayElement));
                 }
             }
             sb.append(Joiner.on(",").join(values));
@@ -155,7 +155,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
                 if(hasEntityType){
                     values.add(buildEntity(it.next(), this.clz));
                 } else {
-                    values.add(_value0(it.next()));
+                    values.add(value0(it.next()));
                 }
             }
             sb.append(Joiner.on(",").join(values));
