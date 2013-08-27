@@ -49,6 +49,12 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
         return this.clz;
     }
     
+    /**
+     * whether this field exposition has a valid entity type, not just set entity type manually,
+     * the value must a not Map value.
+     * 
+     * @return
+     */
     public boolean hasEntityType(){
         return this.clz != null && !this.isMapValue();
     }
