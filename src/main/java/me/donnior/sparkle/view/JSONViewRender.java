@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.internal.ActionMethodDefinition;
+import me.donnior.srape.FieldExposerModule;
+import me.donnior.srape.JSONBuilder;
 
 import com.google.gson.Gson;
 
@@ -18,12 +20,16 @@ public class JSONViewRender implements ViewRender {
     @Override
     public void renderView(Object result, HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        response.getWriter().write(new Gson().toJson(result));
+        if(result instanceof FieldExposerModule){
+            response.getWriter().write(new JSONBuilder((FieldExposerModule)result).build());
+        } else {
+            response.getWriter().write(new Gson().toJson(result));
+        }
     }
 
     @Override
     public boolean supportActionMethod(ActionMethodDefinition adf, Object actionMethodResult) {
-        return adf.hasAnnotation(Json.class);
+        return adf.hasAnnotation(Json.class) || actionMethodResult instanceof FieldExposerModule;
     }
 
 }
