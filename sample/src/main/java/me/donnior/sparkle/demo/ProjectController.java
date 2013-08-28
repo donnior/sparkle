@@ -13,8 +13,13 @@ import me.donnior.sparkle.view.result.HttpStatus;
 import me.donnior.srape.AbstractFieldExposerModule;
 import me.donnior.srape.FieldExposerModule;
 
+import com.google.inject.Inject;
+
 @Controller("projects")
 public class ProjectController {
+    
+    @Inject
+    private Service service;
     
     public String index(@Param("a") String a, @Param("b") Integer b, @Param("c") String[] c){
         return "projects/index";
@@ -53,6 +58,7 @@ public class ProjectController {
 //  
     
     public FieldExposerModule jsons(){
+        this.service.hello();
         return new AbstractFieldExposerModule() {
             public void config() {
                 expose(new int[]{1,2,3}).withName("ints");        //ints

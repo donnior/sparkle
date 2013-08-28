@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.donnior.sparkle.internal.ControllersHolder;
-import me.donnior.sparkle.servlet.ControllerFactory;
+import me.donnior.sparkle.servlet.SimpleControllerFactory;
 
 import org.junit.Before;
 import org.junit.Test;
 
 
-public class ControllerFactoryTest extends ControllerFactory{
+public class ControllerFactoryTest extends SimpleControllerFactory{
 
     @Before
     public void setup() {
@@ -23,13 +23,13 @@ public class ControllerFactoryTest extends ControllerFactory{
     
     @Test
     public void test_get_controller_succeed(){
-        Object obj = ControllerFactory.getController("testController");
+        Object obj = new SimpleControllerFactory().get("testController", ControllerForControllerFactoryTest.class);
         assertNotNull(obj);
     }
 
     @Test
     public void test_get_controller_failed(){
-        Object obj = ControllerFactory.getController("testController2");
+        Object obj = new SimpleControllerFactory().get("testController", null);
         assertNull(obj);
     }
     

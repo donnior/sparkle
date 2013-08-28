@@ -16,8 +16,8 @@ import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.SparkleActionExecutor;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.config.Config;
-import me.donnior.sparkle.config.ConfigImpl;
 import me.donnior.sparkle.config.ConfigAware;
+import me.donnior.sparkle.config.ConfigImpl;
 import me.donnior.sparkle.controller.ApplicationController;
 import me.donnior.sparkle.http.HTTPStatusCode;
 import me.donnior.sparkle.internal.ActionMethodDefinition;
@@ -44,6 +44,7 @@ public class SparkleEngine {
     private FList<ViewRender> viewRenders = new FArrayList<ViewRender>();
     private RouterImpl router;
     private ConfigImpl config = new ConfigImpl();
+    private ControllerFactory controllerFactory = new GuiceControllerFactory();
     
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
     
@@ -76,12 +77,27 @@ public class SparkleEngine {
         
         initViewControllers(config.getControllerPackages());
         
+        initControllerFactory(config);
+        
         this.router = RouterImpl.getInstance();
         
         installRouter();
 
         logger.info("sparkle framework started succeed within {} ms", stopwatch.elapsedMillis());
         
+    }
+
+    //TODO how to make the controller factory can be customized, for example let user use an
+    //spring container as this factory? Maybe introduce a ControllerFactoryResolver based on ConfigAware is better?
+    private void initControllerFactory(ConfigAware config) {
+        if(config.getControllerFactory() != null){
+            this.controllerFactory = config.getControllerFactory();
+            return;
+        }
+        if(config.getControllerFactoryClass() != null){
+            this.controllerFactory = (ControllerFactory)ReflectionUtil.initialize(config.getControllerFactoryClass());
+            return;
+        }
     }
 
     private void initViewControllers(String[] controllerPackages) {
@@ -116,8 +132,11 @@ public class SparkleEngine {
             return;
         }
         String controllerName = rd.getControllerName();
-        String actionName = rd.getActionName();
-        Object controller = ControllerFactory.getController(controllerName);
+        Class<?> controllerClass = ControllersHolder.getInstance().getControllerClass(controllerName);
+
+        Object controller = this.controllerFactory.get(controllerName, controllerClass);
+//        Object controller = SimpleControllerFactory.getController(controllerName);
+        
         if(controller == null){
             logger.error("can't find controller with name : " + controllerName);
             return;
@@ -128,6 +147,7 @@ public class SparkleEngine {
             ((ApplicationController)controller).setResponse(response);
         }
         
+        String actionName = rd.getActionName();
         ActionMethodDefinition adf = new ActionMethodDefinitionFinder().find(controller.getClass(), actionName);
         
         Object result = new SparkleActionExecutor().invoke(adf, controller, request);

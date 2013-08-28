@@ -1,0 +1,19 @@
+package me.donnior.sparkle.servlet;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+public class GuiceControllerFactory implements ControllerFactory{
+
+    Injector injector;
+    
+    public GuiceControllerFactory(){
+        this.injector = Guice.createInjector();
+    }
+    
+    @Override
+    public Object get(String controllerName, Class<?> controllerClass) {
+        System.out.println("get controller with guice");
+        return this.injector.getInstance(controllerClass);
+    }
+}
