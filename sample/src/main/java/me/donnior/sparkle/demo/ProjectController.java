@@ -1,9 +1,14 @@
 package me.donnior.sparkle.demo;
 
 import java.util.List;
+import java.util.concurrent.Callable;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.Params;
+import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.annotation.Controller;
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
@@ -67,7 +72,7 @@ public class ProjectController {
     }
     
     @Json
-    public List<String> json(){
+    public List<String> json(HttpServletRequest request){
         return FLists.create("one", "two", "three", "four");
     }
     
@@ -83,4 +88,45 @@ public class ProjectController {
     public String save(){
         return "redirect: projects";
     }
+    
+    @Async
+    public Callable<String> async0(){
+        return new Callable<String>() {
+            
+            @Override
+            public String call() throws Exception {
+                return "callable";
+            }
+        };
+    }
+    
+    @Async
+    public String async1(){
+        return "async";
+    }
+    
+    public Callable<String> async2(){
+        return new Callable<String>() {
+            
+            @Override
+            public String call() throws Exception {
+                return "callable";
+            }
+        };
+    }
+    
+    public Object async3(){
+        return new Callable<String>() {
+            
+            @Override
+            public String call() throws Exception {
+                return "callable";
+            }
+        }; 
+    }
+    
+    public Object async4(){
+        return "normal";
+    }
+    
 }

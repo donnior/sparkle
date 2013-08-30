@@ -27,9 +27,9 @@ public class DefaultParamResolversManagerTest {
     
     @Test
     public void testDefaultConstructor(){
-        assertEquals(2, manager.registeredResolvers().size());
-        assertEquals(ParamInstanceArgumentResolver.class, manager.registeredResolvers().get(0).getClass());
-        assertEquals(SimpleArgumentResolver.class, manager.registeredResolvers().get(1).getClass());
+        assertEquals(4, manager.registeredResolvers().size());
+        assertEquals(ParamInstanceArgumentResolver.class, manager.registeredResolvers().get(2).getClass());
+        assertEquals(SimpleArgumentResolver.class, manager.registeredResolvers().get(3).getClass());
     }
     
     @Test (expected=RuntimeException.class)

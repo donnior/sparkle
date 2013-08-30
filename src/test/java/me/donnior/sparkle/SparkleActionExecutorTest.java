@@ -25,7 +25,7 @@ public class SparkleActionExecutorTest {
     public void testInvoke(){
         ActionMethodDefinition adf = 
                 new ActionMethodDefinitionFinder().find(ControllerForSparkleActionExecutor.class, "index");
-        Object result = executor.invoke(adf, new ControllerForSparkleActionExecutor(), mockRequest());
+        Object result = executor.invoke(adf, new ControllerForSparkleActionExecutor(), mockRequest(), null);
         assertEquals("sparkle1", result);
     }
     

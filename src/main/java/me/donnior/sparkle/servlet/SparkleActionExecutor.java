@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.fava.Function;
 import me.donnior.fava.util.FLists;
@@ -19,7 +20,9 @@ public class SparkleActionExecutor {
     // param resolver like param with class type 'Project'; so it should be List<ParamResolver>
     private ParamResolversManager paramResolver = new DefaultParamResolversManager();
 
-    public Object invoke(ActionMethodDefinition adf, Object controller, final HttpServletRequest request) {
+    public Object invoke(ActionMethodDefinition adf, Object controller, 
+            final HttpServletRequest request, final HttpServletResponse response) {
+        
         Method method = adf.method();
         List<ActionParamDefinition> apds = adf.paramDefinitions();
         

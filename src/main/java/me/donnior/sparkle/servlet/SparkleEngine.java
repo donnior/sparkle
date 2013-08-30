@@ -2,6 +2,7 @@ package me.donnior.sparkle.servlet;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.HTTPMethod;
+import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.config.Config;
 import me.donnior.sparkle.config.ConfigAware;
@@ -121,7 +123,7 @@ public class SparkleEngine {
         this.viewRenders.add(new JSPViewRender());
     }
 
-    protected void doService(HttpServletRequest request, HttpServletResponse response, HTTPMethod method){
+    protected void doService(final HttpServletRequest request, final HttpServletResponse response, HTTPMethod method){
         logger.info("processing request : {}", request);
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
@@ -135,7 +137,7 @@ public class SparkleEngine {
         String controllerName = rd.getControllerName();
         Class<?> controllerClass = ControllersHolder.getInstance().getControllerClass(controllerName);
 
-        Object controller = this.controllerFactory.get(controllerName, controllerClass);
+        final Object controller = this.controllerFactory.get(controllerName, controllerClass);
 //        Object controller = SimpleControllerFactory.getController(controllerName);
         
         if(controller == null){
@@ -149,9 +151,36 @@ public class SparkleEngine {
         }
         
         String actionName = rd.getActionName();
-        ActionMethodDefinition adf = new ActionMethodDefinitionFinder().find(controller.getClass(), actionName);
+        final ActionMethodDefinition adf = new ActionMethodDefinitionFinder().find(controller.getClass(), actionName);
         
-        Object result = new SparkleActionExecutor().invoke(adf, controller, request);
+        boolean isAsyncAction = isAsyncActionDefinition(adf);
+        if(isAsyncAction){
+            //TODO start process action async, but should check the 
+            //action result type is Callable, if not, wrap the action method in a Callable object
+            boolean isCallableReturnType = false;
+            Callable<Object> c = null;
+            if(!isCallableReturnType){
+                c = new Callable<Object>() {
+                    @Override
+                    public Object call() throws Exception {
+                        return new SparkleActionExecutor().invoke(adf, controller, request, response);
+                    }
+                };
+            } else {
+                c = (Callable)new SparkleActionExecutor().invoke(adf, controller, request, response);
+            }
+            startAsyncProcess(c, request, response);
+            return;
+        }
+        
+        Object result = new SparkleActionExecutor().invoke(adf, controller, request, response);
+        System.out.println(result.getClass());
+        boolean isCallableResult = result instanceof Callable;
+        System.out.println("result is a Callable " + isCallableResult);
+        if(isCallableResult){
+            startAsyncProcess((Callable<Object>)result, request, response);
+            return;
+        }
         
         long actionTime = stopwatch.elapsedMillis();
         stopwatch.reset();
@@ -182,6 +211,15 @@ public class SparkleEngine {
   
     }
     
+    void startAsyncProcess(Callable<Object> callable, HttpServletRequest request, HttpServletResponse response){
+        //TODO process callable
+        System.out.println("async process");
+    }
+    
+    private boolean isAsyncActionDefinition(ActionMethodDefinition adf) {
+        return adf.hasAnnotation(Async.class);
+    }
+
     private ViewRender findMatchedViewRender(final ActionMethodDefinition adf, final Object result) {
         return this.viewRenders.find(new Predicate<ViewRender>() {
             @Override

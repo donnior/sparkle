@@ -15,5 +15,7 @@ public interface ActionMethodDefinition {
     List<Annotation> annotions();
     
     boolean hasAnnotation(Class<?> annotationType);
+    
+//    boolean isAsyncAction();
 
 }

@@ -24,7 +24,13 @@ public class DemoRouteModuleOne implements RouteModule {
         router.match("/project/jsons").to("projects#jsons");
         
         router.match("/project/json").to("projects#json");
-
+        
+        router.match("/project/async0").to("projects#async0");
+        router.match("/project/async1").to("projects#async1");
+        router.match("/project/async2").to("projects#async2");
+        router.match("/project/async3").to("projects#async3");
+        router.match("/project/async4").to("projects#async4");
+    
     }
 
 }
