@@ -13,7 +13,6 @@ public class GuiceControllerFactory implements ControllerFactory{
     
     @Override
     public Object get(String controllerName, Class<?> controllerClass) {
-        System.out.println("get controller with guice");
         return this.injector.getInstance(controllerClass);
     }
 }

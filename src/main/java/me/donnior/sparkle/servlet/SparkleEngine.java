@@ -32,6 +32,7 @@ import me.donnior.sparkle.route.RouteModule;
 import me.donnior.sparkle.route.RouterImpl;
 import me.donnior.sparkle.view.JSONViewRender;
 import me.donnior.sparkle.view.JSPViewRender;
+import me.donnior.sparkle.view.RedirectViewRender;
 import me.donnior.sparkle.view.ViewRender;
 
 import org.slf4j.Logger;
@@ -117,6 +118,7 @@ public class SparkleEngine {
 
     private void ensuerDefaultViewRenders() {
         this.viewRenders.add(new JSONViewRender());
+        this.viewRenders.add(new RedirectViewRender());
         this.viewRenders.add(new JSPViewRender());
     }
 

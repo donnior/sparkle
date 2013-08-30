@@ -23,12 +23,6 @@ public class SparkleActionExecutor {
         Method method = adf.method();
         List<ActionParamDefinition> apds = adf.paramDefinitions();
         
-//        Object[] params = new Object[apds.size()];
-//        for(int i = 0; i< apds.size(); i++){
-//            ActionParamDefinition apd = apds.get(i);
-//            params[i] = this.paramResolver.resolve(apd, request);
-//        }
-        
         Object[] params = FLists.create(apds).collect(new Function<ActionParamDefinition, Object>() {
             public Object apply(ActionParamDefinition apd) {
                 return paramResolver.resolve(apd, request);

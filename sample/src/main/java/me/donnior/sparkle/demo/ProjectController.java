@@ -18,8 +18,7 @@ import com.google.inject.Inject;
 @Controller("projects")
 public class ProjectController {
     
-    @Inject
-    private Service service;
+    @Inject private Service service;
     
     public String index(@Param("a") String a, @Param("b") Integer b, @Param("c") String[] c){
         return "projects/index";
@@ -82,6 +81,6 @@ public class ProjectController {
     }
     
     public String save(){
-        return "redirect:projects/index";
+        return "redirect: projects";
     }
 }
