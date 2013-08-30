@@ -13,7 +13,6 @@ import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.HTTPMethod;
-import me.donnior.sparkle.SparkleActionExecutor;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.config.Config;
 import me.donnior.sparkle.config.ConfigAware;

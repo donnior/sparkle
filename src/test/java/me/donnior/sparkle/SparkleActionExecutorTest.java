@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 import me.donnior.sparkle.internal.ActionMethodDefinition;
 import me.donnior.sparkle.internal.ActionMethodDefinitionFinder;
+import me.donnior.sparkle.servlet.SparkleActionExecutor;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Before;

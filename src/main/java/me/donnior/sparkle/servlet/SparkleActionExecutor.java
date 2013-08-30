@@ -1,4 +1,4 @@
-package me.donnior.sparkle;
+package me.donnior.sparkle.servlet;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -15,7 +15,7 @@ import me.donnior.sparkle.internal.ParamResolversManager;
 
 public class SparkleActionExecutor {
     
-    //TODO should refactord this params resolver, make it support multi resolvers so programmers can create theire own
+    //TODO should refactord this params resolver, make it support multi resolvers so programmers can create their own
     // param resolver like param with class type 'Project'; so it should be List<ParamResolver>
     private ParamResolversManager paramResolver = new DefaultParamResolversManager();
 
