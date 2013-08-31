@@ -8,9 +8,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import me.donnior.sparkle.core.config.ConfigImpl;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinition;
 import me.donnior.sparkle.core.view.ViewRender;
+import me.donnior.sparkle.servlet.ConfigImpl;
 
 import org.junit.Before;
 import org.junit.Test;

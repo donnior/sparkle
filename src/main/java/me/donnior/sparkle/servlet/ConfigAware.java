@@ -1,8 +1,7 @@
-package me.donnior.sparkle.core.config;
+package me.donnior.sparkle.servlet;
 
 import me.donnior.fava.FList;
 import me.donnior.sparkle.core.view.ViewRender;
-import me.donnior.sparkle.servlet.ControllerFactory;
 
 public interface ConfigAware {
 

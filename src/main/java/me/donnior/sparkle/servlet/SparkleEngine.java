@@ -21,8 +21,6 @@ import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.config.Config;
-import me.donnior.sparkle.core.config.ConfigAware;
-import me.donnior.sparkle.core.config.ConfigImpl;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinition;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.core.resolver.ApplicationConfigScanner;
