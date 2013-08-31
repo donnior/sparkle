@@ -5,9 +5,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import me.donnior.sparkle.exception.SparkleException;
+import me.donnior.sparkle.util.Tuple;
+import me.donnior.sparkle.util.Tuple2;
 
 import org.reflections.ReflectionUtils;
 
@@ -69,10 +73,43 @@ public class ActionMethodDefinitionFinder {
         
     }
     
-    //TODO add cache here
-    public ActionMethodDefinition find(Class<? extends Object> clz, final String actionName) {
+//    private static class ActionMethodKey {
+//        
+//        private Class clz;
+//        private String actionName;
+//
+//        public ActionMethodKey(Class clz, String actionName) {
+//            this.clz = clz;
+//            this.actionName = actionName;
+//        }
+//        
+//        @Override
+//        public int hashCode() {
+//            return Objects.hashCode(this.clz, this.actionName);
+//        }
+//        
+//        @Override
+//        public boolean equals(Object obj) {
+//            if(obj == null) { return false;}
+//            if(!(obj instanceof ActionMethodKey)){ return false; }
+//            ActionMethodKey other = (ActionMethodKey)obj;
+//            return this.clz.equals(other.clz) && this.actionName.equals(other.actionName);
+//        }
+//        
+//    }
+    
+    //TODO remove static, make this ActionMethodDefinitionFinder singleton in SparkleEngin
+    private static Map<Tuple2<Class, String>, ActionMethodDefinition> cache = 
+            new ConcurrentHashMap<Tuple2<Class, String>, ActionMethodDefinition>(); 
+    
+    public ActionMethodDefinition find(Class clz, final String actionName) {
+        Tuple2<Class, String> key = Tuple.of(clz, actionName);
+        if(isCached(key)){
+            return cache.get(key);
+        }
         
-        Set<Method> methods = ReflectionUtils.getAllMethods(clz, Predicates.and(ReflectionUtils.withModifier(Modifier.PUBLIC),ReflectionUtils.withName(actionName)));
+        Set<Method> methods = ReflectionUtils.getAllMethods(clz, 
+                Predicates.and(ReflectionUtils.withModifier(Modifier.PUBLIC),ReflectionUtils.withName(actionName)));
         if(methods.isEmpty()){
             throw new SparkleException("can't find any action matched " + actionName);
         }
@@ -80,7 +117,13 @@ public class ActionMethodDefinitionFinder {
             throw new SparkleException("find more than actions with same name " + actionName);
         }
         final Method method = methods.iterator().next();
-        return new DefaultActionMethodDefinition(method, actionName);
+        ActionMethodDefinition result = new DefaultActionMethodDefinition(method, actionName);
+        cache.put(key, result);
+        return result;
+    }
+    
+    private boolean isCached(Tuple2<Class, String> key){
+        return this.cache.containsKey(key);
     }
 
 }
