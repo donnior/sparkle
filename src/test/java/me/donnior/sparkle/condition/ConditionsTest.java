@@ -1,7 +1,9 @@
 package me.donnior.sparkle.condition;
 
 import static org.junit.Assert.*;
-
+import me.donnior.sparkle.core.route.condition.ConsumeCondition;
+import me.donnior.sparkle.core.route.condition.HeaderCondition;
+import me.donnior.sparkle.core.route.condition.ParamCondition;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Test;

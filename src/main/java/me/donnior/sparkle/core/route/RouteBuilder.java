@@ -6,10 +6,10 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.sparkle.HTTPMethod;
-import me.donnior.sparkle.condition.AbstractCondition;
-import me.donnior.sparkle.condition.ConsumeCondition;
-import me.donnior.sparkle.condition.HeaderCondition;
-import me.donnior.sparkle.condition.ParamCondition;
+import me.donnior.sparkle.core.route.condition.AbstractCondition;
+import me.donnior.sparkle.core.route.condition.ConsumeCondition;
+import me.donnior.sparkle.core.route.condition.HeaderCondition;
+import me.donnior.sparkle.core.route.condition.ParamCondition;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.rest.RestStandard;
 import me.donnior.sparkle.route.ConditionalRoutingBuilder;

@@ -1,4 +1,4 @@
-package me.donnior.sparkle.condition;
+package me.donnior.sparkle.core.route.condition;
 
 import javax.servlet.http.HttpServletRequest;
 
