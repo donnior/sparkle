@@ -1,4 +1,4 @@
-package me.donnior.sparkle.config;
+package me.donnior.sparkle.core.config;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -6,6 +6,7 @@ import java.util.Set;
 
 import me.donnior.fava.FList;
 import me.donnior.fava.util.FLists;
+import me.donnior.sparkle.config.Config;
 import me.donnior.sparkle.servlet.ControllerFactory;
 import me.donnior.sparkle.view.ViewRender;
 

@@ -1,4 +1,4 @@
-package me.donnior.sparkle.config;
+package me.donnior.sparkle.core.config;
 
 import me.donnior.fava.FList;
 import me.donnior.sparkle.servlet.ControllerFactory;
