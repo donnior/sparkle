@@ -3,7 +3,10 @@ package me.donnior.sparkle.servlet;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -174,9 +177,7 @@ public class SparkleEngine {
         }
         
         Object result = new SparkleActionExecutor().invoke(adf, controller, request, response);
-        System.out.println(result.getClass());
         boolean isCallableResult = result instanceof Callable;
-        System.out.println("result is a Callable " + isCallableResult);
         if(isCallableResult){
             startAsyncProcess((Callable<Object>)result, request, response);
             return;
@@ -211,9 +212,25 @@ public class SparkleEngine {
   
     }
     
-    void startAsyncProcess(Callable<Object> callable, HttpServletRequest request, HttpServletResponse response){
+    private ExecutorService es = Executors.newFixedThreadPool(100);
+    
+    void startAsyncProcess(Callable<Object> callable, HttpServletRequest request, final HttpServletResponse response){
         //TODO process callable
-        System.out.println("async process");
+//        System.out.println("async process");
+        final AsyncContext ac = request.startAsync();
+        es.submit(new Callable<String>() {
+
+            @Override
+            public String call() throws Exception {
+                try {
+                    ac.getResponse().getWriter().write("hello");
+                    ac.complete();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        });
     }
     
     private boolean isAsyncActionDefinition(ActionMethodDefinition adf) {

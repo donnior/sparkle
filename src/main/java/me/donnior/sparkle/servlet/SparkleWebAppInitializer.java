@@ -29,6 +29,7 @@ public class SparkleWebAppInitializer implements ServletContainerInitializer {
                 servletContext.addServlet(SPARKLE_SERVLET_NAME, new SparkleDispatcherServlet());
         appServlet.setLoadOnStartup(1);
         Set<String> mappingConflicts = appServlet.addMapping("/");
+        appServlet.setAsyncSupported(true);
         
         ensureContainerSpecifiedEnv(mappingConflicts);
         
