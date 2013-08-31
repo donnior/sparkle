@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.annotation.Controller;
-import me.donnior.sparkle.controller.ApplicationController;
 
 import org.reflections.Reflections;
 import org.slf4j.Logger;
