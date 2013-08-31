@@ -83,7 +83,7 @@ class EqualConditionItem extends AbstractConditionItem{
     
 }
 
- class NotNullConditionItem implements ConditionItem{
+class NotNullConditionItem implements ConditionItem{
     
     private String name;
     

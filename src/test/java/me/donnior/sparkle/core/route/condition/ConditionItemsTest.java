@@ -1,9 +1,8 @@
-package me.donnior.sparkle.condition;
+package me.donnior.sparkle.core.route.condition;
 
-import static org.junit.Assert.*;
-import me.donnior.sparkle.core.route.condition.EqualConditionItem;
-import me.donnior.sparkle.core.route.condition.NotEqualConditionItem;
-import me.donnior.sparkle.core.route.condition.NotNullConditionItem;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
