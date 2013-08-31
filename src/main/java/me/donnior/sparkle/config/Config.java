@@ -1,6 +1,6 @@
 package me.donnior.sparkle.config;
 
-import me.donnior.sparkle.view.ViewRender;
+import me.donnior.sparkle.core.view.ViewRender;
 
 public interface Config {
 

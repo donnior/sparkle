@@ -7,8 +7,8 @@ import java.util.Set;
 import me.donnior.fava.FList;
 import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.config.Config;
+import me.donnior.sparkle.core.view.ViewRender;
 import me.donnior.sparkle.servlet.ControllerFactory;
-import me.donnior.sparkle.view.ViewRender;
 
 public class ConfigImpl implements Config, ConfigAware {
 

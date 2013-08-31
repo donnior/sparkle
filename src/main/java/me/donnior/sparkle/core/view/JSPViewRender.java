@@ -1,4 +1,4 @@
-package me.donnior.sparkle.view;
+package me.donnior.sparkle.core.view;
 
 import java.io.IOException;
 
