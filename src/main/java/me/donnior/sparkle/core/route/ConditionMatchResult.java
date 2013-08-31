@@ -1,4 +1,5 @@
-package me.donnior.sparkle.route;
+package me.donnior.sparkle.core.route;
+
 
 public interface ConditionMatchResult extends MatchedCondition{
 

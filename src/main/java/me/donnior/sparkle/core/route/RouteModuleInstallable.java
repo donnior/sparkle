@@ -1,6 +1,8 @@
-package me.donnior.sparkle.route;
+package me.donnior.sparkle.core.route;
 
 import java.util.Collection;
+
+import me.donnior.sparkle.route.RouteModule;
 
 
 public interface RouteModuleInstallable {

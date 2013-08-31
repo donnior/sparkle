@@ -1,4 +1,4 @@
-package me.donnior.sparkle.route;
+package me.donnior.sparkle.core.route;
 
 import java.util.ArrayList;
 import java.util.List;

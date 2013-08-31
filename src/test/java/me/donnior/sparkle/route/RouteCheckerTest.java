@@ -6,6 +6,8 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
+import me.donnior.sparkle.core.route.RouteChecker;
+
 import org.junit.Test;
 
 public class RouteCheckerTest {

@@ -1,7 +1,7 @@
 package me.donnior.sparkle.condition;
 
 import static org.junit.Assert.*;
-import me.donnior.sparkle.route.ConditionMatchs;
+import me.donnior.sparkle.core.route.ConditionMatchs;
 
 import org.junit.Test;
 

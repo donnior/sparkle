@@ -1,4 +1,4 @@
-package me.donnior.sparkle.route;
+package me.donnior.sparkle.core.route;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -12,6 +12,8 @@ import me.donnior.sparkle.condition.HeaderCondition;
 import me.donnior.sparkle.condition.ParamCondition;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.rest.RestStandard;
+import me.donnior.sparkle.route.ConditionalRoutingBuilder;
+import me.donnior.sparkle.route.HttpScoppedRoutingBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

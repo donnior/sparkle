@@ -1,10 +1,12 @@
-package me.donnior.sparkle.route;
+package me.donnior.sparkle.core.route;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import me.donnior.sparkle.route.RouteModule;
+import me.donnior.sparkle.route.Router;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

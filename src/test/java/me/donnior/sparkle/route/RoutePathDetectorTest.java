@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import me.donnior.sparkle.core.route.RoutePathDetector;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Test;
