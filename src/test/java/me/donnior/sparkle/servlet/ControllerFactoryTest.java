@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.donnior.sparkle.internal.ControllersHolder;
+import me.donnior.sparkle.core.resolver.ControllersHolder;
 import me.donnior.sparkle.servlet.SimpleControllerFactory;
 
 import org.junit.Before;

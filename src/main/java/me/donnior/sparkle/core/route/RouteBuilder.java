@@ -11,7 +11,6 @@ import me.donnior.sparkle.core.route.condition.ConsumeCondition;
 import me.donnior.sparkle.core.route.condition.HeaderCondition;
 import me.donnior.sparkle.core.route.condition.ParamCondition;
 import me.donnior.sparkle.exception.SparkleException;
-import me.donnior.sparkle.rest.RestStandard;
 import me.donnior.sparkle.route.ConditionalRoutingBuilder;
 import me.donnior.sparkle.route.HttpScoppedRoutingBuilder;
 

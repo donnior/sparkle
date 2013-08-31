@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import me.donnior.sparkle.internal.ActionMethodDefinition;
+import me.donnior.sparkle.core.resolver.ActionMethodDefinition;
 
 public class RedirectViewRender implements ViewRender {
     

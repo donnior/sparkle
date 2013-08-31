@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import me.donnior.fava.Function;
 import me.donnior.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
-import me.donnior.sparkle.internal.ActionMethodDefinition;
-import me.donnior.sparkle.internal.ActionParamDefinition;
-import me.donnior.sparkle.internal.DefaultParamResolversManager;
-import me.donnior.sparkle.internal.ParamResolversManager;
+import me.donnior.sparkle.core.resolver.ActionMethodDefinition;
+import me.donnior.sparkle.core.resolver.ActionParamDefinition;
+import me.donnior.sparkle.core.resolver.DefaultParamResolversManager;
+import me.donnior.sparkle.core.resolver.ParamResolversManager;
 
 public class SparkleActionExecutor {
     
