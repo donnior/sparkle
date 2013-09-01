@@ -3,6 +3,7 @@ package me.donnior.sparkle.core.resolver;
 import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.sparkle.Params;
+import me.donnior.sparkle.core.ActionParamDefinition;
 
 /**
  * Argument resolver for argument  with type {@link Params} 

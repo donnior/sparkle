@@ -6,6 +6,7 @@ import java.util.List;
 import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
+import me.donnior.sparkle.core.ActionParamDefinition;
 
 import com.google.common.collect.Lists;
 

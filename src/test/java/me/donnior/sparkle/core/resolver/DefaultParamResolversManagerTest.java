@@ -9,9 +9,9 @@ import java.util.List;
 
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
-import me.donnior.sparkle.core.resolver.ActionMethodDefinition;
+import me.donnior.sparkle.core.ActionMethodDefinition;
+import me.donnior.sparkle.core.ActionParamDefinition;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
-import me.donnior.sparkle.core.resolver.ActionParamDefinition;
 import me.donnior.sparkle.core.resolver.DefaulActionParamDefinition;
 import me.donnior.sparkle.core.resolver.DefaultParamResolversManager;
 import me.donnior.sparkle.core.resolver.ParamInstanceArgumentResolver;

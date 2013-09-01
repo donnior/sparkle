@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import me.donnior.sparkle.core.ActionMethodDefinition;
+import me.donnior.sparkle.core.ActionParamDefinition;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.util.Tuple;
 import me.donnior.sparkle.util.Tuple2;

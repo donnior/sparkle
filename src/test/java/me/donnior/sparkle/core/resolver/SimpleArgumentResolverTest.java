@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
-import me.donnior.sparkle.core.resolver.ActionParamDefinition;
+import me.donnior.sparkle.core.ActionParamDefinition;
 import me.donnior.sparkle.core.resolver.DefaulActionParamDefinition;
 import me.donnior.sparkle.core.resolver.SimpleArgumentResolver;
 import me.donnior.web.adapter.HttpServletRequestAdapter;

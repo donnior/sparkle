@@ -11,7 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import me.donnior.fava.Consumer;
 import me.donnior.fava.FArrayList;
 import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
@@ -21,7 +20,7 @@ import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.config.Config;
-import me.donnior.sparkle.core.resolver.ActionMethodDefinition;
+import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.core.resolver.ApplicationConfigScanner;
 import me.donnior.sparkle.core.resolver.ControllerScanner;
@@ -30,10 +29,11 @@ import me.donnior.sparkle.core.resolver.RouteModuleScanner;
 import me.donnior.sparkle.core.route.RouteBuilder;
 import me.donnior.sparkle.core.route.RouteMachter;
 import me.donnior.sparkle.core.route.RouterImpl;
-import me.donnior.sparkle.core.view.JSONViewRender;
-import me.donnior.sparkle.core.view.JSPViewRender;
-import me.donnior.sparkle.core.view.RedirectViewRender;
+//import me.donnior.sparkle.core.view.JSONViewRender;
+//import me.donnior.sparkle.core.view.JSPViewRender;
+//import me.donnior.sparkle.core.view.RedirectViewRender;
 import me.donnior.sparkle.core.view.ViewRender;
+import me.donnior.sparkle.core.view.ViewRendersResovler;
 import me.donnior.sparkle.http.HTTPStatusCode;
 import me.donnior.sparkle.route.RouteModule;
 
@@ -76,9 +76,9 @@ public class SparkleEngine {
         
         //initialize Sparkle framework component
         
-        initViewRenders(config.getViewRenders());
+        initViewRenders(config);
         
-        initViewControllers(config.getControllerPackages());
+        initViewControllers(config);
         
         initControllerFactory(config);
         
@@ -88,6 +88,10 @@ public class SparkleEngine {
 
         logger.info("sparkle framework started succeed within {} ms", stopwatch.elapsedMillis());
         
+    }
+
+    private void initViewRenders(ConfigAware config) {
+        this.viewRenders.addAll(new ViewRendersResovler().resovleRegisteredViewRenders(config));
     }
 
     //TODO how to make the controller factory can be customized, for example let user use an
@@ -103,26 +107,12 @@ public class SparkleEngine {
         }
     }
 
-    private void initViewControllers(String[] controllerPackages) {
+    private void initViewControllers(ConfigAware config) {
         //TODO how to deal with multi controller packages
         scanControllers(this.config.getBasePackage());
     }
 
-    private void initViewRenders(FList<Class<? extends ViewRender>> renders) {
-        renders.each(new Consumer<Class<? extends ViewRender>>() {
-            @Override
-            public void apply(Class<? extends ViewRender> viewRenderClass) {
-                viewRenders.add((ViewRender)ReflectionUtil.initialize(viewRenderClass));
-            }
-        });
-        ensuerDefaultViewRenders();
-    }
 
-    private void ensuerDefaultViewRenders() {
-        this.viewRenders.add(new JSONViewRender());
-        this.viewRenders.add(new RedirectViewRender());
-        this.viewRenders.add(new JSPViewRender());
-    }
 
     protected void doService(final HttpServletRequest request, final HttpServletResponse response, HTTPMethod method){
         logger.info("processing request : {}", request);

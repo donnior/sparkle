@@ -8,6 +8,7 @@ import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.annotation.Param;
+import me.donnior.sparkle.core.ActionParamDefinition;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.util.ParamResolveUtil;
 
