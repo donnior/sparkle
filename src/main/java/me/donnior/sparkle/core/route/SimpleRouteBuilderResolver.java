@@ -17,13 +17,13 @@ import me.donnior.fava.util.FLists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RouteMachter {
+public class SimpleRouteBuilderResolver implements RouteBuilderResolver{
 
-    private final static Logger logger = LoggerFactory.getLogger(RouteMachter.class);
+    private final static Logger logger = LoggerFactory.getLogger(SimpleRouteBuilderResolver.class);
     
     private RouteBuilderHolder routeBuilderHolder;
     
-    public RouteMachter(RouteBuilderHolder router) {
+    public SimpleRouteBuilderResolver(RouteBuilderHolder router) {
         this.routeBuilderHolder = router;
     }
 

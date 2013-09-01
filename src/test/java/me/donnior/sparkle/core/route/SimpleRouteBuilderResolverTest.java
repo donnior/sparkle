@@ -2,20 +2,20 @@ package me.donnior.sparkle.core.route;
 
 import static org.junit.Assert.*;
 import me.donnior.sparkle.core.route.RouteBuilder;
-import me.donnior.sparkle.core.route.RouteMachter;
+import me.donnior.sparkle.core.route.SimpleRouteBuilderResolver;
 import me.donnior.sparkle.core.route.RouterImpl;
 import me.donnior.web.adapter.GetHttpServletRequest;
 
 import org.junit.Test;
 
-public class RouteMatcherTest {
+public class SimpleRouteBuilderResolverTest {
 
     @Test
     public void test(){
         RouterImpl router = new RouterImpl();
         router.match("/user").to("user#show");
         
-        RouteMachter matcher = new RouteMachter(router);
+        SimpleRouteBuilderResolver matcher = new SimpleRouteBuilderResolver(router);
 
         RouteBuilder rb = matcher.match(new GetHttpServletRequest("/accounts"));
         assertNull(rb);

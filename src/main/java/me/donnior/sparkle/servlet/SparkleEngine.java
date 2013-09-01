@@ -27,8 +27,9 @@ import me.donnior.sparkle.core.resolver.ControllerScanner;
 import me.donnior.sparkle.core.resolver.ControllersHolder;
 import me.donnior.sparkle.core.resolver.RouteModuleScanner;
 import me.donnior.sparkle.core.route.RouteBuilder;
-import me.donnior.sparkle.core.route.RouteMachter;
+import me.donnior.sparkle.core.route.RouteBuilderResolver;
 import me.donnior.sparkle.core.route.RouterImpl;
+import me.donnior.sparkle.core.route.SimpleRouteBuilderResolver;
 //import me.donnior.sparkle.core.view.JSONViewRender;
 //import me.donnior.sparkle.core.view.JSPViewRender;
 //import me.donnior.sparkle.core.view.RedirectViewRender;
@@ -48,6 +49,7 @@ public class SparkleEngine {
     private RouterImpl router;
     private ConfigImpl config = new ConfigImpl();
     private ControllerFactory controllerFactory = new GuiceControllerFactory();
+    private RouteBuilderResolver routeBuilderResovler;
     
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
     
@@ -75,14 +77,15 @@ public class SparkleEngine {
         stopwatch.start();
         
         //initialize Sparkle framework component
+        this.router = RouterImpl.getInstance();
         
         initViewRenders(config);
         
         initViewControllers(config);
         
         initControllerFactory(config);
-        
-        this.router = RouterImpl.getInstance();
+
+        this.routeBuilderResovler = new SimpleRouteBuilderResolver(this.router);
         
         installRouter();
 
@@ -119,7 +122,7 @@ public class SparkleEngine {
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
 
-        RouteBuilder rd = new RouteMachter(this.router).match(request);
+        RouteBuilder rd = this.routeBuilderResovler.match(request);
         
         if(rd == null){
             response.setStatus(HTTPStatusCode.NOT_FOUND);
