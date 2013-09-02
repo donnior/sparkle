@@ -19,7 +19,6 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
-
 import javax.servlet.ServletSecurityElement;
 import javax.servlet.SessionCookieConfig;
 import javax.servlet.SessionTrackingMode;

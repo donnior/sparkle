@@ -1,7 +1,9 @@
 package me.donnior.sparkle.core.resolver;
 
-import static org.junit.Assert.*;
-import me.donnior.sparkle.core.resolver.ApplicationConfigScanner;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import me.donnior.sparkle.exception.SparkleException;
 
 import org.junit.Test;

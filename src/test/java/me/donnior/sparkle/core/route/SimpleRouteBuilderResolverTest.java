@@ -1,9 +1,8 @@
 package me.donnior.sparkle.core.route;
 
-import static org.junit.Assert.*;
-import me.donnior.sparkle.core.route.RouteBuilder;
-import me.donnior.sparkle.core.route.SimpleRouteBuilderResolver;
-import me.donnior.sparkle.core.route.RouterImpl;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import me.donnior.web.adapter.GetHttpServletRequest;
 
 import org.junit.Test;

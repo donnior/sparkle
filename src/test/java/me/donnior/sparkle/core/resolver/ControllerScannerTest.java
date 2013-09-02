@@ -7,7 +7,6 @@ import java.util.Map;
 
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.annotation.Controller;
-import me.donnior.sparkle.core.resolver.ControllerScanner;
 
 import org.junit.Test;
 

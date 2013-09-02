@@ -1,8 +1,7 @@
 package me.donnior.sparkle.core.route;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import me.donnior.sparkle.HTTPMethod;
-import me.donnior.sparkle.core.route.RestStandard;
 
 import org.junit.Test;
 

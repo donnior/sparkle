@@ -1,10 +1,6 @@
 package me.donnior.srape;
 
 import me.donnior.fava.FList;
-import me.donnior.fava.Function;
-import me.donnior.fava.Predicate;
-
-import com.google.common.base.Joiner;
 
 /**
  * 

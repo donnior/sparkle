@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import javax.servlet.http.HttpServletRequest;
 
-import me.donnior.sparkle.core.route.RouteBuilder;
-import me.donnior.sparkle.core.route.RouteBuilderMatcher;
 import me.donnior.web.adapter.GetHttpServletRequest;
 
 import org.junit.Test;

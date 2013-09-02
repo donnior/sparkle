@@ -11,7 +11,6 @@ import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.ActionParamDefinition;
-import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 
 import org.junit.Test;
 

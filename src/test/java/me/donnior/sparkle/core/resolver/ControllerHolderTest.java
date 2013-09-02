@@ -6,7 +6,6 @@ import static org.junit.Assert.fail;
 
 import java.util.Map;
 
-import me.donnior.sparkle.core.resolver.ControllersHolder;
 import me.donnior.sparkle.exception.SparkleException;
 
 import org.junit.Test;

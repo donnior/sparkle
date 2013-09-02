@@ -1,11 +1,11 @@
 package me.donnior.srape;
 
-import com.google.common.base.Joiner;
-
 import me.donnior.fava.FList;
 import me.donnior.fava.Function;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
+
+import com.google.common.base.Joiner;
 
 public class FieldsExpositionHolder implements FieldExposer{
 

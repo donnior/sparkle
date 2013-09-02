@@ -1,11 +1,11 @@
 package me.donnior.sparkle.servlet;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import me.donnior.sparkle.core.resolver.ControllersHolder;
-import me.donnior.sparkle.servlet.SimpleControllerFactory;
 
 import org.junit.Before;
 import org.junit.Test;

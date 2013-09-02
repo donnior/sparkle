@@ -7,7 +7,6 @@ import java.util.List;
 
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
-import me.donnior.sparkle.core.resolver.RouteModuleScanner;
 import me.donnior.sparkle.data.module.ModuleOne;
 import me.donnior.sparkle.route.RouteModule;
 

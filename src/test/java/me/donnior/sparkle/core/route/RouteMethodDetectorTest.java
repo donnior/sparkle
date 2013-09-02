@@ -1,11 +1,10 @@
 package me.donnior.sparkle.core.route;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.sparkle.HTTPMethod;
-import me.donnior.sparkle.core.route.RouteMethodDetector;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Test;
