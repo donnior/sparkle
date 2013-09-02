@@ -20,7 +20,6 @@ import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
-import me.donnior.sparkle.config.Config;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.core.resolver.ApplicationConfigScanner;
@@ -32,9 +31,6 @@ import me.donnior.sparkle.core.route.RouteBuilder;
 import me.donnior.sparkle.core.route.RouteBuilderResolver;
 import me.donnior.sparkle.core.route.RouterImpl;
 import me.donnior.sparkle.core.route.SimpleRouteBuilderResolver;
-//import me.donnior.sparkle.core.view.JSONViewRender;
-//import me.donnior.sparkle.core.view.JSPViewRender;
-//import me.donnior.sparkle.core.view.RedirectViewRender;
 import me.donnior.sparkle.core.view.ViewRender;
 import me.donnior.sparkle.core.view.ViewRendersResovler;
 import me.donnior.sparkle.http.HTTPStatusCode;
@@ -47,20 +43,23 @@ import com.google.common.base.Stopwatch;
 
 public class SparkleEngine {
 
-    private FList<ViewRender> viewRenders                   = new FArrayList<ViewRender>();
-    private RouterImpl router                               = RouterImpl.getInstance();
-    private ConfigImpl config                               = new ConfigImpl();
-    private ControllerFactory controllerFactory             = new GuiceControllerFactory();
-    private RouteBuilderResolver routeBuilderResovler       = new SimpleRouteBuilderResolver(this.router);
-    private ControllerClassResolver controllerClassResolver = ControllersHolder.getInstance();
+    private FList<ViewRender> viewRenders;
+    private RouterImpl router;
+    private ConfigImpl config;
+    private ControllerFactory controllerFactory;
+    private RouteBuilderResolver routeBuilderResovler;
+    private ControllerClassResolver controllerClassResolver;
     
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
     
-    public SparkleEngine(Config config){
-        this();
-    }
-
     public SparkleEngine(){
+        this.config                  = new ConfigImpl();
+        this.viewRenders             = new FArrayList<ViewRender>();
+        this.router                  = RouterImpl.getInstance();
+        this.controllerFactory       = new GuiceControllerFactory();
+        this.routeBuilderResovler    = new SimpleRouteBuilderResolver(this.router);
+        this.controllerClassResolver = ControllersHolder.getInstance();
+        
         this.startup();
     }
 
