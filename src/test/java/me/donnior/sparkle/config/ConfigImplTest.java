@@ -47,16 +47,16 @@ public class ConfigImplTest {
     @Test
     public void testRegisterViewRenders(){
         
-      assertEquals(0, config.getViewRenders().size());
+      assertEquals(0, config.getCustomizedViewRenders().size());
       
       config.registerViewRenderClass(null);
-      assertEquals(0, config.getViewRenders().size());
+      assertEquals(0, config.getCustomizedViewRenders().size());
       
       config.registerViewRenderClass(DemoViewRenderForConfig.class);
-      assertEquals(1, config.getViewRenders().size());
+      assertEquals(1, config.getCustomizedViewRenders().size());
       
       config.registerViewRenderClass(DemoViewRenderForConfig.class);
-      assertEquals(1, config.getViewRenders().size());
+      assertEquals(1, config.getCustomizedViewRenders().size());
     }
 
     

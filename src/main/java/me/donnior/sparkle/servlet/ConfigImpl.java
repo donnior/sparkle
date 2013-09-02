@@ -9,8 +9,9 @@ import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.config.Config;
 import me.donnior.sparkle.core.view.ViewRender;
 
-public class ConfigImpl implements Config, ConfigAware {
+public class ConfigImpl implements Config, ConfigResult {
 
+    //TODO change collection type to Set
     private FList<Class<? extends ViewRender>> viewRenders = FLists.newEmptyList();
     private FList<String> controllerPackages = FLists.newEmptyList();
     private String basePackage = "";
@@ -37,7 +38,7 @@ public class ConfigImpl implements Config, ConfigAware {
     }
     
     @Override
-    public FList<Class<? extends ViewRender>> getViewRenders() {
+    public FList<Class<? extends ViewRender>> getCustomizedViewRenders() {
         return this.viewRenders.compact();
     }
 

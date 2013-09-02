@@ -80,7 +80,7 @@ public class SparkleEngine {
     }
 
  
-    private void initEngineWithConfig(ConfigAware config) {
+    private void initEngineWithConfig(ConfigResult config) {
         
         //initialize Sparkle framework component
 
@@ -94,13 +94,13 @@ public class SparkleEngine {
         
     }
 
-    private void initViewRenders(ConfigAware config) {
-        this.viewRenders.addAll(new ViewRendersResovler().resovleRegisteredViewRenders(config));
+    private void initViewRenders(ConfigResult config) {
+        this.viewRenders.addAll(new ViewRendersResovler().resovleRegisteredViewRenders(config.getCustomizedViewRenders()));
     }
 
     //TODO how to make the controller factory can be customized, for example let user use an
     //spring container as this factory? Maybe introduce a ControllerFactoryResolver based on ConfigAware is better?
-    private void initControllerFactory(ConfigAware config) {
+    private void initControllerFactory(ConfigResult config) {
         if(config.getControllerFactory() != null){
             this.controllerFactory = config.getControllerFactory();
             return;
@@ -111,7 +111,7 @@ public class SparkleEngine {
         }
     }
 
-    private void initControllers(ConfigAware config) {
+    private void initControllers(ConfigResult config) {
         //TODO how to deal with multi controller packages
         Map<String, Class<?>> scanedControllers = new ControllerScanner().scanControllers(this.config.getBasePackage());
         this.controllerClassResolver.registeControllers(scanedControllers, true);
