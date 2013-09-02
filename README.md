@@ -13,7 +13,6 @@ Sparkle provide a Rails-like style route definition. You don't need config route
 ```java
     
     router.match("/projects/{name}").withPost().to("controller#action");
-
 ```
 
 ### Built-in JSON support.
@@ -32,7 +31,6 @@ Sparkle use a json library called `srape`. It's a smart json build library which
             exposer.expose(account).withNameAndType("account", AccountEntity.class);
         }
     };
-    
 ```    
 
 Where `AccountEntity` defined `account`'s fields will exposed to json result.
