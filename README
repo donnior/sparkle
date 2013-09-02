@@ -16,6 +16,7 @@ your route rules like `router.match("/projects/{name}").withPost().to("controlle
 Sparkle use a json library called `srape`. It's a smart json build library which can write same object to 
 different json object in different scenes. Unlike Gson's annotation, it use a entity-mapping solution.
 
+```java
     final Account account = ...;
     final int status = 20;
     
@@ -26,9 +27,16 @@ different json object in different scenes. Unlike Gson's annotation, it use a en
             exposer.expose(account).withNameAndType("account", AccountEntity.class);
         }
     };
+```    
 
 Where `AccountEntity` defined `account`'s fields will exposed to json result.
 
-## How to start
+## Sample App
 
-    
+* Checkout Sparkle and execute `mvn install` to install it. 
+* Change directory to `sample`, execute `mvn jetty:run`
+
+
+
+
+
