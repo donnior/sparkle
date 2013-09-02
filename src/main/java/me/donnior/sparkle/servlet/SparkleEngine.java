@@ -47,11 +47,11 @@ import com.google.common.base.Stopwatch;
 
 public class SparkleEngine {
 
-    private FList<ViewRender> viewRenders = new FArrayList<ViewRender>();
-    private RouterImpl router;
-    private ConfigImpl config = new ConfigImpl();
-    private ControllerFactory controllerFactory = new GuiceControllerFactory();
-    private RouteBuilderResolver routeBuilderResovler;
+    private FList<ViewRender> viewRenders                   = new FArrayList<ViewRender>();
+    private RouterImpl router                               = RouterImpl.getInstance();
+    private ConfigImpl config                               = new ConfigImpl();
+    private ControllerFactory controllerFactory             = new GuiceControllerFactory();
+    private RouteBuilderResolver routeBuilderResovler       = new SimpleRouteBuilderResolver(this.router);
     private ControllerClassResolver controllerClassResolver = ControllersHolder.getInstance();
     
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
@@ -65,6 +65,10 @@ public class SparkleEngine {
     }
 
     protected void startup() {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.start();
+        logger.info("Start initializing sparkle framework.");
+
         Application application = scanApplication();
         if(application != null){
             application.config(config);
@@ -72,27 +76,22 @@ public class SparkleEngine {
             logger.debug("not found any ApplicationConfig, will use the default configuration");
         }
         initEngineWithConfig(config);
+        
+        logger.info("sparkle framework started succeed within {} ms", stopwatch.elapsedMillis());
     }
 
  
     private void initEngineWithConfig(ConfigAware config) {
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.start();
         
         //initialize Sparkle framework component
-        this.router = RouterImpl.getInstance();
-        
+
         initViewRenders(config);
         
         initControllers(config);
         
         initControllerFactory(config);
-
-        this.routeBuilderResovler = new SimpleRouteBuilderResolver(this.router);
         
         installRouter();
-
-        logger.info("sparkle framework started succeed within {} ms", stopwatch.elapsedMillis());
         
     }
 
@@ -252,5 +251,4 @@ public class SparkleEngine {
         return clz != null ? (Application) ReflectionUtil.initialize(clz) : null;
     }
 
-    
 }

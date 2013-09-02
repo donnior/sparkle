@@ -18,7 +18,7 @@ public class SparkleWebAppInitializer implements ServletContainerInitializer {
     private final static Logger logger = LoggerFactory.getLogger(SparkleWebAppInitializer.class);
     
     public SparkleWebAppInitializer() {
-        logger.info("Start initializing sparkle framework.");
+        
     }
 
     @Override
