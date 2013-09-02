@@ -2,8 +2,8 @@ package me.donnior.sparkle.core.view;
 
 import java.util.List;
 
-import me.donnior.fava.Consumer;
 import me.donnior.fava.FList;
+import me.donnior.fava.Function;
 import me.donnior.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
 
@@ -20,11 +20,10 @@ public class ViewRendersResovler {
     }
  
     private FList<ViewRender> initViewRenders(FList<Class<? extends ViewRender>> renders) {
-        final FList<ViewRender> viewRenders = FLists.newEmptyList();
-        renders.each(new Consumer<Class<? extends ViewRender>>() {
+        FList<ViewRender> viewRenders = renders.collect(new Function<Class<? extends ViewRender>, ViewRender>() {
             @Override
-            public void apply(Class<? extends ViewRender> viewRenderClass) {
-                viewRenders.add((ViewRender)ReflectionUtil.initialize(viewRenderClass));
+            public ViewRender apply(Class<? extends ViewRender> viewRenderClass) {
+                return (ViewRender)ReflectionUtil.initialize(viewRenderClass);
             }
         });
         
