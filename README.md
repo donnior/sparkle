@@ -8,7 +8,13 @@ Sparkle is developend based on Servlet 3.0 specification, so it don't need `web.
 
 ### Rails Like Route
 
-Sparkle provide a Rails-like style route definition. You don't need config route using annotation. Just write your route rules like `router.match("/projects/{name}").withPost().to("controller#action")`.
+Sparkle provide a Rails-like style route definition. You don't need config route using annotation. Just write your route rules like 
+
+```java
+    
+    router.match("/projects/{name}").withPost().to("controller#action");
+
+```
 
 ### Built-in JSON support.
 
