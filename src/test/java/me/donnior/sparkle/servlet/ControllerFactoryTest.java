@@ -17,7 +17,7 @@ public class ControllerFactoryTest extends SimpleControllerFactory{
     public void setup() {
         Map<String, Class<?>> controllers = new HashMap<String, Class<?>>();
         controllers.put("testController", ControllerForControllerFactoryTest.class);
-        ControllersHolder.getInstance().addControllers(controllers,true);
+        ControllersHolder.getInstance().registeControllers(controllers,true);
     }
     
     

@@ -7,11 +7,11 @@ import me.donnior.fava.FHashMap;
 import me.donnior.fava.MConsumer;
 import me.donnior.sparkle.exception.SparkleException;
 
-public class ControllersHolder {
-    
-    private Map<String, Class<?>> controllers = new HashMap<String, Class<?>>();
+public class ControllersHolder implements ControllerClassResolver{
     
     private final static ControllersHolder instance = new ControllersHolder();
+    
+    private Map<String, Class<?>> controllers = new HashMap<String, Class<?>>();
     
     public Map<String, Class<?>> namedControllers(){
         return this.controllers;
@@ -25,11 +25,11 @@ public class ControllersHolder {
         return this.controllers.get(controllerName);
     }
 
-    public void addControllers(Map<String, Class<?>> controllersMap) {
-        this.addControllers(controllersMap, false);
+    public void registeControllers(Map<String, Class<?>> controllersMap) {
+        this.registeControllers(controllersMap, false);
     }
     
-    public void addControllers(Map<String, Class<?>> controllersMap, boolean reset) {
+    public void registeControllers(Map<String, Class<?>> controllersMap, boolean reset) {
         if(reset){
             this.controllers.clear();
         }

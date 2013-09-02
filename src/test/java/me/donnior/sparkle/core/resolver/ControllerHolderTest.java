@@ -18,7 +18,7 @@ public class ControllerHolderTest {
     @Test
     public void testGetting(){
         ControllersHolder ch = new ControllersHolder();
-        ch.addControllers(sampleControllersMap());
+        ch.registeControllers(sampleControllersMap());
         
         assertEquals(2, ch.namedControllers().size());
         assertTrue(ch.containsController("sampleOne"));
@@ -31,11 +31,11 @@ public class ControllerHolderTest {
     @Test
     public void testAddWithReset(){
         ControllersHolder ch = new ControllersHolder();
-        ch.addControllers(sampleControllersMap());
+        ch.registeControllers(sampleControllersMap());
         
         assertEquals(2, ch.namedControllers().size());
         
-        ch.addControllers(anotherSampleControllersMap(), true);
+        ch.registeControllers(anotherSampleControllersMap(), true);
         
         assertEquals(1, ch.namedControllers().size());
     }
@@ -43,12 +43,12 @@ public class ControllerHolderTest {
     @Test
     public void testAddWithDuplication(){
         ControllersHolder ch = new ControllersHolder();
-        ch.addControllers(sampleControllersMap());
+        ch.registeControllers(sampleControllersMap());
         
         assertEquals(2, ch.namedControllers().size());
         
         try{
-            ch.addControllers(duplicatedControllerMap());
+            ch.registeControllers(duplicatedControllerMap());
             fail();
         }catch(SparkleException re){
             

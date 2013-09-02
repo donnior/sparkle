@@ -2,6 +2,7 @@ package me.donnior.sparkle.servlet;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,6 +24,7 @@ import me.donnior.sparkle.config.Config;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.core.resolver.ApplicationConfigScanner;
+import me.donnior.sparkle.core.resolver.ControllerClassResolver;
 import me.donnior.sparkle.core.resolver.ControllerScanner;
 import me.donnior.sparkle.core.resolver.ControllersHolder;
 import me.donnior.sparkle.core.resolver.RouteModuleScanner;
@@ -50,6 +52,7 @@ public class SparkleEngine {
     private ConfigImpl config = new ConfigImpl();
     private ControllerFactory controllerFactory = new GuiceControllerFactory();
     private RouteBuilderResolver routeBuilderResovler;
+    private ControllerClassResolver controllerClassResolver = ControllersHolder.getInstance();
     
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
     
@@ -81,7 +84,7 @@ public class SparkleEngine {
         
         initViewRenders(config);
         
-        initViewControllers(config);
+        initControllers(config);
         
         initControllerFactory(config);
 
@@ -110,9 +113,10 @@ public class SparkleEngine {
         }
     }
 
-    private void initViewControllers(ConfigAware config) {
+    private void initControllers(ConfigAware config) {
         //TODO how to deal with multi controller packages
-        scanControllers(this.config.getBasePackage());
+        Map<String, Class<?>> scanedControllers = new ControllerScanner().scanControllers(this.config.getBasePackage());
+        this.controllerClassResolver.registeControllers(scanedControllers, true);
     }
 
 
@@ -129,10 +133,10 @@ public class SparkleEngine {
             return;
         }
         String controllerName = rd.getControllerName();
-        Class<?> controllerClass = ControllersHolder.getInstance().getControllerClass(controllerName);
+        
+        Class<?> controllerClass = controllerClassResolver.getControllerClass(controllerName);
 
         final Object controller = this.controllerFactory.get(controllerName, controllerClass);
-//        Object controller = SimpleControllerFactory.getController(controllerName);
         
         if(controller == null){
             logger.error("can't find controller with name : " + controllerName);
@@ -243,12 +247,6 @@ public class SparkleEngine {
         this.router.install(routeModules);
     }
 
-
-    private void scanControllers(String pkg) {
-        ControllersHolder.getInstance().addControllers(new ControllerScanner().scanControllers(pkg), true);
-    }
-
-    
     private Application scanApplication() {
         Class<?> clz = new ApplicationConfigScanner().scan("");
         return clz != null ? (Application) ReflectionUtil.initialize(clz) : null;
