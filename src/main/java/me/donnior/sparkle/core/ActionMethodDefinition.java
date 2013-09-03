@@ -17,5 +17,7 @@ public interface ActionMethodDefinition {
     boolean hasAnnotation(Class<?> annotationType);
     
 //    boolean isAsyncAction();
+    
+    public Class<?> getReturnType();
 
 }

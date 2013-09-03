@@ -27,10 +27,12 @@ public class ActionMethodDefinitionFinder {
         private final Method method;
         private final String actionName;
         private final List<ActionParamDefinition> apds;
+        private final Class<?> returnType;
 
         public DefaultActionMethodDefinition(Method method, String actionName){
             this.method = method;
             this.actionName = actionName;
+            this.returnType = method.getReturnType();
             
             final Class<?>[] paramTypes = method.getParameterTypes();
             final Annotation[][] ans = method.getParameterAnnotations();
@@ -71,6 +73,11 @@ public class ActionMethodDefinitionFinder {
         @Override
         public boolean hasAnnotation(Class annotationType) {
             return this.method().isAnnotationPresent(annotationType);
+        }
+        
+        @Override
+        public Class<?> getReturnType() {
+            return returnType;
         }
         
     }

@@ -50,7 +50,7 @@ public class JSPViewRender implements ViewRender {
 
     @Override
     public boolean supportActionMethod(ActionMethodDefinition adf, Object actionMethodResult) {
-        return true;
+        return void.class.equals(adf.getReturnType()) || String.class.equals(adf.getReturnType());
     }
 
 }
