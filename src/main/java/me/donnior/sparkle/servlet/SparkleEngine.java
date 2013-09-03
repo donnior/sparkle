@@ -51,6 +51,7 @@ public class SparkleEngine {
     private ControllerFactory controllerFactory;
     private RouteBuilderResolver routeBuilderResovler;
     private ControllerClassResolver controllerClassResolver;
+    private ActionMethodDefinitionFinder actionMethodResolver;
     
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
     
@@ -60,6 +61,7 @@ public class SparkleEngine {
         this.router                  = RouterImpl.getInstance();
         this.controllerFactory       = new GuiceControllerFactory();
         this.routeBuilderResovler    = new SimpleRouteBuilderResolver(this.router);
+        this.actionMethodResolver    = new ActionMethodDefinitionFinder();
         this.controllerClassResolver = ControllersHolder.getInstance();
         
         this.startup();
@@ -149,7 +151,7 @@ public class SparkleEngine {
         }
         
         String actionName = rd.getActionName();
-        final ActionMethodDefinition adf = new ActionMethodDefinitionFinder().find(controller.getClass(), actionName);
+        final ActionMethodDefinition adf = this.actionMethodResolver.find(controller.getClass(), actionName);
         
         boolean isAsyncAction = isAsyncActionDefinition(adf);
         if(isAsyncAction){

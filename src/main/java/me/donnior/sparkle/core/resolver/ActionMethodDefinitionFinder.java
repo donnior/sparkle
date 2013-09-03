@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
 import me.donnior.sparkle.exception.SparkleException;
+import me.donnior.sparkle.util.Singleton;
 import me.donnior.sparkle.util.Tuple;
 import me.donnior.sparkle.util.Tuple2;
 
@@ -20,6 +21,7 @@ import org.reflections.ReflectionUtils;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
+@Singleton
 public class ActionMethodDefinitionFinder {
 
     static class DefaultActionMethodDefinition implements ActionMethodDefinition{
@@ -108,7 +110,7 @@ public class ActionMethodDefinitionFinder {
 //    }
     
     //TODO remove static, make this ActionMethodDefinitionFinder singleton in SparkleEngin
-    private static Map<Tuple2<Class, String>, ActionMethodDefinition> cache = 
+    private  Map<Tuple2<Class, String>, ActionMethodDefinition> cache = 
             new ConcurrentHashMap<Tuple2<Class, String>, ActionMethodDefinition>(); 
     
     public ActionMethodDefinition find(Class clz, final String actionName) {

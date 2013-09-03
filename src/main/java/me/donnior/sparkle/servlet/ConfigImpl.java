@@ -8,7 +8,9 @@ import me.donnior.fava.FList;
 import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.config.Config;
 import me.donnior.sparkle.core.view.ViewRender;
+import me.donnior.sparkle.util.Singleton;
 
+@Singleton
 public class ConfigImpl implements Config, ConfigResult {
 
     //TODO change collection type to Set

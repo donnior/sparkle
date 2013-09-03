@@ -13,10 +13,12 @@ import me.donnior.fava.FList;
 import me.donnior.fava.Function;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
+import me.donnior.sparkle.util.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 public class SimpleRouteBuilderResolver implements RouteBuilderResolver{
 
     private final static Logger logger = LoggerFactory.getLogger(SimpleRouteBuilderResolver.class);
