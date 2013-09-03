@@ -120,7 +120,7 @@ public class SparkleEngine {
 
 
     protected void doService(final HttpServletRequest request, final HttpServletResponse response, HTTPMethod method){
-        logger.info("processing request : {}", request);
+        logger.info("processing request : {}", request.getRequestURI());
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
 

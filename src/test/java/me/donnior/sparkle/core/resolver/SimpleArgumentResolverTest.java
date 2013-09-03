@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.SimpleWebRequest;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Test;
@@ -39,14 +40,14 @@ public class SimpleArgumentResolverTest {
         
         ActionParamDefinition apd = correctSupportedActionParamDefinition(String.class, "userName");
         HttpServletRequest request = createRequestWithParamNameAndValue("userName", null);
-        Object result = resolver.resovle(apd, request);
+        Object result = resolver.resovle(apd, new SimpleWebRequest(request, null));
         assertNull(result);
 
         apd = correctSupportedActionParamDefinition(int.class, "userName");
         request = createRequestWithParamNameAndValue("userName", null);
         
         try {
-            result = resolver.resovle(apd, request);
+            result = resolver.resovle(apd, new SimpleWebRequest(request,null));
             fail();
         } catch (RuntimeException re) {
             assertEquals("action method argument annotated with @Param not support primitive", re.getMessage());
@@ -60,7 +61,7 @@ public class SimpleArgumentResolverTest {
         
         ActionParamDefinition apd = correctSupportedActionParamDefinition(Integer.class, "page");
         HttpServletRequest request = createRequestWithParamNameAndValue("page", new String[]{"1"});
-        Object result = resolver.resovle(apd, request);
+        Object result = resolver.resovle(apd, new SimpleWebRequest(request,null));
         
         assertEquals(Integer.valueOf(1), (Integer)result);
         

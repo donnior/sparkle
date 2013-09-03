@@ -1,8 +1,8 @@
 package me.donnior.sparkle.core.resolver;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionParamDefinition;
 
@@ -18,9 +18,9 @@ public class HttpResponseArgumentResolver implements ArgumentResolver {
     }
 
     @Override
-    public Object resovle(ActionParamDefinition actionParamDefinition, HttpServletRequest request) {
+    public Object resovle(ActionParamDefinition actionParamDefinition, WebRequest request) {
         //TODO introduce response as param or use simply solution?
-        throw new RuntimeException("not support HttpServletResponse param now");
+        return request.getServletResponse();
     }
 
 }

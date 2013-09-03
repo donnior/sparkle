@@ -11,6 +11,7 @@ import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.SimpleWebRequest;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Before;
@@ -61,7 +62,8 @@ public class DefaultParamResolversManagerTest {
         assertEquals(1, actionParamDefinition.paramDefinitions().size());
                
                 
-        Object obj = manager.resolve(actionParamDefinition.paramDefinitions().get(0), new HttpServletRequestAdapter());
+        Object obj = manager.resolve(actionParamDefinition.paramDefinitions().get(0), 
+                new SimpleWebRequest(new HttpServletRequestAdapter(),null));
         assertNull(obj);
     }
     

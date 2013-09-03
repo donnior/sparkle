@@ -11,6 +11,7 @@ import me.donnior.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.SimpleWebRequest;
 import me.donnior.sparkle.core.resolver.DefaultParamResolversManager;
 import me.donnior.sparkle.core.resolver.ParamResolversManager;
 
@@ -28,7 +29,7 @@ public class SparkleActionExecutor {
         
         Object[] params = FLists.create(apds).collect(new Function<ActionParamDefinition, Object>() {
             public Object apply(ActionParamDefinition apd) {
-                return paramResolver.resolve(apd, request);
+                return paramResolver.resolve(apd, new SimpleWebRequest(request, response));
             }
         }).toArray();
         

@@ -3,11 +3,10 @@ package me.donnior.sparkle.core.resolver;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
+import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionParamDefinition;
 import me.donnior.sparkle.exception.SparkleException;
 
@@ -26,7 +25,7 @@ public class DefaultParamResolversManager implements ParamResolversManager {
     }
     
     @Override
-    public Object resolve(final ActionParamDefinition actionParamDefinition, HttpServletRequest request) {
+    public Object resolve(final ActionParamDefinition actionParamDefinition, WebRequest request) {
         FList<ArgumentResolver> list = FLists.create(argumentResolvers);
         ArgumentResolver matchedArgumentResolver = list.find(new Predicate<ArgumentResolver>() {
             public boolean apply(ArgumentResolver e) {

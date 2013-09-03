@@ -2,11 +2,10 @@ package me.donnior.sparkle.core.resolver;
 
 import java.lang.annotation.Annotation;
 
-import javax.servlet.http.HttpServletRequest;
-
 import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
+import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionParamDefinition;
 import me.donnior.sparkle.exception.SparkleException;
@@ -24,7 +23,7 @@ public class SimpleArgumentResolver implements ArgumentResolver {
     }
 
     @Override
-    public Object resovle(ActionParamDefinition actionParamDefinition, HttpServletRequest request) {
+    public Object resovle(ActionParamDefinition actionParamDefinition, WebRequest request) {
       FList<Annotation> ans =  FLists.create(actionParamDefinition.annotions());
       Annotation a = ans.find(new Predicate<Annotation>() {
           @Override
@@ -35,7 +34,7 @@ public class SimpleArgumentResolver implements ArgumentResolver {
       String paramName = ((Param)a).value();
       Class<?> paramType = actionParamDefinition.paramType();
       
-      String[] values = request.getParameterValues(paramName);
+      String[] values = request.getServletRequest().getParameterValues(paramName);
       if(values == null){
           return nullValueForType(paramType);
       } else {
