@@ -7,7 +7,7 @@ import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParamDefinition;
 import me.donnior.sparkle.exception.SparkleException;
 
 import com.google.common.collect.Lists;
@@ -25,7 +25,7 @@ public class DefaultParamResolversManager implements ParamResolversManager {
     }
     
     @Override
-    public Object resolve(final ActionParamDefinition actionParamDefinition, WebRequest request) {
+    public Object resolve(final ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
         FList<ArgumentResolver> list = FLists.create(argumentResolvers);
         ArgumentResolver matchedArgumentResolver = list.find(new Predicate<ArgumentResolver>() {
             public boolean apply(ArgumentResolver e) {

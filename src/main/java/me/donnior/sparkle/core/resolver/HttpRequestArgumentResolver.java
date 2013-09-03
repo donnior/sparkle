@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.annotation.Param;
-import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParamDefinition;
 
 /**
  * Argument resolver for argument annotated with {@link Param} 
@@ -13,12 +13,12 @@ import me.donnior.sparkle.core.ActionParamDefinition;
 public class HttpRequestArgumentResolver implements ArgumentResolver {
 
     @Override
-    public boolean support(ActionParamDefinition actionParamDefinition) {
+    public boolean support(ActionMethodParamDefinition actionParamDefinition) {
         return actionParamDefinition.paramType().equals(HttpServletRequest.class);
     }
 
     @Override
-    public Object resovle(ActionParamDefinition actionParamDefinition, WebRequest request) {
+    public Object resovle(ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
         return request.getServletRequest();
     }
 

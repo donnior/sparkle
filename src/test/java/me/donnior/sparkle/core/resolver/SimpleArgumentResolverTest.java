@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
-import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParamDefinition;
 import me.donnior.sparkle.core.SimpleWebRequest;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
@@ -25,7 +25,7 @@ public class SimpleArgumentResolverTest {
     public void test_support_ability(){
         SimpleArgumentResolver resolver = new SimpleArgumentResolver();
         
-        ActionParamDefinition apd = correctSupportedActionParamDefinition(String.class, "userName");
+        ActionMethodParamDefinition apd = correctSupportedActionParamDefinition(String.class, "userName");
         
         assertTrue(resolver.support(apd));
         
@@ -38,7 +38,7 @@ public class SimpleArgumentResolverTest {
     public void test_null_value_with_paramname(){
         SimpleArgumentResolver resolver = new SimpleArgumentResolver();
         
-        ActionParamDefinition apd = correctSupportedActionParamDefinition(String.class, "userName");
+        ActionMethodParamDefinition apd = correctSupportedActionParamDefinition(String.class, "userName");
         HttpServletRequest request = createRequestWithParamNameAndValue("userName", null);
         Object result = resolver.resovle(apd, new SimpleWebRequest(request, null));
         assertNull(result);
@@ -59,7 +59,7 @@ public class SimpleArgumentResolverTest {
     public void test_normal_value_with_paramname(){
         SimpleArgumentResolver resolver = new SimpleArgumentResolver();
         
-        ActionParamDefinition apd = correctSupportedActionParamDefinition(Integer.class, "page");
+        ActionMethodParamDefinition apd = correctSupportedActionParamDefinition(Integer.class, "page");
         HttpServletRequest request = createRequestWithParamNameAndValue("page", new String[]{"1"});
         Object result = resolver.resovle(apd, new SimpleWebRequest(request,null));
         
@@ -81,7 +81,7 @@ public class SimpleArgumentResolverTest {
         };
     }
 
-    private ActionParamDefinition createActionParamDefinition(
+    private ActionMethodParamDefinition createActionParamDefinition(
             final Class<?> paramType, final Class<? extends Annotation> annotationType, final String annotationValue) {
         Annotation an = new Annotation() {
             
@@ -98,7 +98,7 @@ public class SimpleArgumentResolverTest {
         return new DefaulActionParamDefinition(paramType, Arrays.asList(an));
     }
 
-    private ActionParamDefinition correctSupportedActionParamDefinition(Class<?> paramType, final String annotationValue) {
+    private ActionMethodParamDefinition correctSupportedActionParamDefinition(Class<?> paramType, final String annotationValue) {
         Annotation userNameAnnotation = new Param() {
             
             @Override

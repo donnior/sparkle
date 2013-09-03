@@ -10,7 +10,7 @@ import me.donnior.fava.Function;
 import me.donnior.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.core.ActionMethodDefinition;
-import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParamDefinition;
 import me.donnior.sparkle.core.SimpleWebRequest;
 import me.donnior.sparkle.core.resolver.DefaultParamResolversManager;
 import me.donnior.sparkle.core.resolver.ParamResolversManager;
@@ -25,10 +25,10 @@ public class SparkleActionExecutor {
             final HttpServletRequest request, final HttpServletResponse response) {
         
         Method method = adf.method();
-        List<ActionParamDefinition> apds = adf.paramDefinitions();
+        List<ActionMethodParamDefinition> apds = adf.paramDefinitions();
         
-        Object[] params = FLists.create(apds).collect(new Function<ActionParamDefinition, Object>() {
-            public Object apply(ActionParamDefinition apd) {
+        Object[] params = FLists.create(apds).collect(new Function<ActionMethodParamDefinition, Object>() {
+            public Object apply(ActionMethodParamDefinition apd) {
                 return paramResolver.resolve(apd, new SimpleWebRequest(request, response));
             }
         }).toArray();

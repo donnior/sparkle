@@ -6,11 +6,11 @@ import java.util.List;
 import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
-import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParamDefinition;
 
 import com.google.common.collect.Lists;
 
-public class DefaulActionParamDefinition implements ActionParamDefinition{
+public class DefaulActionParamDefinition implements ActionMethodParamDefinition{
     
     private Class<?> paramType;
     private FList<Annotation> annotaions;

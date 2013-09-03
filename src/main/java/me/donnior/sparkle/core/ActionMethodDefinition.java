@@ -10,7 +10,7 @@ public interface ActionMethodDefinition {
     
     Method method();
     
-    List<ActionParamDefinition> paramDefinitions();
+    List<ActionMethodParamDefinition> paramDefinitions();
     
     List<Annotation> annotions();
     

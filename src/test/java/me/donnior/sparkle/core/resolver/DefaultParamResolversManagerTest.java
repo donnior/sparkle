@@ -10,7 +10,7 @@ import java.util.List;
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionMethodDefinition;
-import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParamDefinition;
 import me.donnior.sparkle.core.SimpleWebRequest;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
@@ -47,7 +47,7 @@ public class DefaultParamResolversManagerTest {
             }
         });
         
-        ActionParamDefinition actionParamDefinition = 
+        ActionMethodParamDefinition actionParamDefinition = 
                 new DefaulActionParamDefinition(String.class, annotations);
         
         manager.resolve(actionParamDefinition, null);

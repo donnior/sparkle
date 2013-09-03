@@ -22,7 +22,7 @@ import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethodDefinition;
-import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParamDefinition;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.core.resolver.ApplicationConfigScanner;
 import me.donnior.sparkle.core.resolver.ControllerClassResolver;
@@ -219,10 +219,10 @@ public class SparkleEngine {
      * @return
      */
     private boolean isResponseProcessedManually(ActionMethodDefinition adf) {
-        return FLists.create(adf.paramDefinitions()).any(new Predicate<ActionParamDefinition>() {
+        return FLists.create(adf.paramDefinitions()).any(new Predicate<ActionMethodParamDefinition>() {
             
             @Override
-            public boolean apply(ActionParamDefinition apd) {
+            public boolean apply(ActionMethodParamDefinition apd) {
                 return apd.paramType().equals(HttpServletResponse.class);
             }
         });

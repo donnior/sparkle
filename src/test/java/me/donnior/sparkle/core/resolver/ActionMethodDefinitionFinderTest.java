@@ -10,7 +10,7 @@ import java.util.List;
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionMethodDefinition;
-import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParamDefinition;
 
 import org.junit.Test;
 
@@ -26,10 +26,10 @@ public class ActionMethodDefinitionFinderTest {
         assertEquals(1, amd.annotions().size());
         assertEquals(Json.class, amd.annotions().get(0).annotationType());
         
-        List<ActionParamDefinition> apds = amd.paramDefinitions();
+        List<ActionMethodParamDefinition> apds = amd.paramDefinitions();
         assertEquals(2, apds.size());
         
-        ActionParamDefinition apd1 = apds.get(0);
+        ActionMethodParamDefinition apd1 = apds.get(0);
         assertEquals(String.class, apd1.paramType());
         assertFalse(apd1.hasAnnotation(Param.class));
         assertEquals(0, apd1.annotions().size());
@@ -40,7 +40,7 @@ public class ActionMethodDefinitionFinderTest {
             assertEquals("currently not allowed to get paramName", uoe.getMessage());
         }
         
-        ActionParamDefinition apd2 = apds.get(1);
+        ActionMethodParamDefinition apd2 = apds.get(1);
         assertEquals(int.class, apd2.paramType());
         assertTrue(apd2.hasAnnotation(Param.class));
         assertFalse(apd2.hasAnnotation(Json.class));

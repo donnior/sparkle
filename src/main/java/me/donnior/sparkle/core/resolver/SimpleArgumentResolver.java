@@ -7,7 +7,7 @@ import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.annotation.Param;
-import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParamDefinition;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.util.ParamResolveUtil;
 
@@ -18,12 +18,12 @@ import me.donnior.sparkle.util.ParamResolveUtil;
 public class SimpleArgumentResolver implements ArgumentResolver {
 
     @Override
-    public boolean support(ActionParamDefinition actionParamDefinition) {
+    public boolean support(ActionMethodParamDefinition actionParamDefinition) {
         return actionParamDefinition.hasAnnotation(Param.class);
     }
 
     @Override
-    public Object resovle(ActionParamDefinition actionParamDefinition, WebRequest request) {
+    public Object resovle(ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
       FList<Annotation> ans =  FLists.create(actionParamDefinition.annotions());
       Annotation a = ans.find(new Predicate<Annotation>() {
           @Override

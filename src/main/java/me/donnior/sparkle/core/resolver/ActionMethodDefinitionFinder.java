@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import me.donnior.sparkle.core.ActionMethodDefinition;
-import me.donnior.sparkle.core.ActionParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParamDefinition;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.util.Tuple;
 import me.donnior.sparkle.util.Tuple2;
@@ -26,7 +26,7 @@ public class ActionMethodDefinitionFinder {
 
         private final Method method;
         private final String actionName;
-        private final List<ActionParamDefinition> apds;
+        private final List<ActionMethodParamDefinition> apds;
         private final Class<?> returnType;
 
         public DefaultActionMethodDefinition(Method method, String actionName){
@@ -37,11 +37,11 @@ public class ActionMethodDefinitionFinder {
             final Class<?>[] paramTypes = method.getParameterTypes();
             final Annotation[][] ans = method.getParameterAnnotations();
           
-            List<ActionParamDefinition> apds = Lists.newArrayList();
+            List<ActionMethodParamDefinition> apds = Lists.newArrayList();
             for(int i=0; i<paramTypes.length; i++){
                 final Class<?> type = paramTypes[i];
                 final Annotation[] annotaions = ans[i];
-                ActionParamDefinition apd = new DefaulActionParamDefinition(type, Arrays.asList(annotaions));
+                ActionMethodParamDefinition apd = new DefaulActionParamDefinition(type, Arrays.asList(annotaions));
                 apds.add(apd);
             }
             
@@ -60,7 +60,7 @@ public class ActionMethodDefinitionFinder {
         }
 
         @Override
-        public List<ActionParamDefinition> paramDefinitions() {
+        public List<ActionMethodParamDefinition> paramDefinitions() {
             return this.apds;
         }
 
