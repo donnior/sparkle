@@ -27,6 +27,9 @@
         
         <tr><td><a href='<c:url value="/project/json" />' >Project Json With List</a></td><td>/project/json</td></tr>
         
+        <tr><td><a href='<c:url value="/project/text" />' >Project Text</a></td><td>/project/text</td></tr>
+        
+
         <tr><td><a href='<c:url value="/user/index" />' >Users Page</a></td><td>/user/index</td></tr>
 
     </tbody>

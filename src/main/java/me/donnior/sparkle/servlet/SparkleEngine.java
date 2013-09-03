@@ -15,12 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import me.donnior.fava.FArrayList;
 import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
+import me.donnior.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethodDefinition;
+import me.donnior.sparkle.core.ActionParamDefinition;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.core.resolver.ApplicationConfigScanner;
 import me.donnior.sparkle.core.resolver.ControllerClassResolver;
@@ -180,31 +182,52 @@ public class SparkleEngine {
         stopwatch.reset();
         stopwatch.start();
 
-        //TODO how to resolve view ? not just json or jsp, consider jsp, freemarker, vocility. Reference springmvc's viewResolver
-        
-        
-        //get matched viewRender from all viewRenders, based on ActionMethodDefinition and result type
-        // if found any matched viewRender, render view using it, pass 'controller instantance, result, request, response' as arguments
-        // else use default viewRender(jsp view render to render result)
-        ViewRender viewRender = findMatchedViewRender(adf, result);
-        if(viewRender != null){
-            try {
-                viewRender.renderView(result, request, response);
-                long viewTime = stopwatch.stop().elapsedMillis();
-
-              logger.info("completed request within {} ms (Action: {} ms | View: {} ms)", 
-                    new Object[]{viewTime + actionTime, actionTime, viewTime });
-            } catch (ServletException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+        boolean isResponseProcessedMannually = isResponseProcessedManually(adf);
+        if(!isResponseProcessedMannually){
+            //TODO how to resolve view ? not just json or jsp, consider jsp, freemarker, vocility. Reference springmvc's viewResolver
+            
+            
+            //get matched viewRender from all viewRenders, based on ActionMethodDefinition and result type
+            // if found any matched viewRender, render view using it, pass 'controller instantance, result, request, response' as arguments
+            // else use default viewRender(jsp view render to render result)
+            ViewRender viewRender = findMatchedViewRender(adf, result);
+            if(viewRender != null){
+                try {
+                    viewRender.renderView(result, request, response);
+                } catch (ServletException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            logger.debug("Http servlet response has been procceed mannually, ignore view rendering.");
         }
+        
+        long viewTime = stopwatch.stop().elapsedMillis();
+        logger.info("completed request within {} ms (Action: {} ms | View: {} ms)", 
+                new Object[]{viewTime + actionTime, actionTime, viewTime });
         
         //TODO set controller's instance varialbles which need to be used in view to the request.
   
     }
     
+    /**
+     * if one action method has a HttpServletResponse argument, then suppose user want process response manually,
+     * will ignore the view rendering phase.
+     * @param adf
+     * @return
+     */
+    private boolean isResponseProcessedManually(ActionMethodDefinition adf) {
+        return FLists.create(adf.paramDefinitions()).any(new Predicate<ActionParamDefinition>() {
+            
+            @Override
+            public boolean apply(ActionParamDefinition apd) {
+                return apd.paramType().equals(HttpServletResponse.class);
+            }
+        });
+    }
+
     private ExecutorService es = Executors.newFixedThreadPool(100);
     
     void startAsyncProcess(Callable<Object> callable, HttpServletRequest request, final HttpServletResponse response){

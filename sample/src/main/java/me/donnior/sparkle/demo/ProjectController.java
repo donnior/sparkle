@@ -1,5 +1,6 @@
 package me.donnior.sparkle.demo;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -129,4 +130,11 @@ public class ProjectController {
         return "normal";
     }
     
+    public void text(HttpServletResponse response){
+        try {
+            response.getWriter().write("hello world");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
