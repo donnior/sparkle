@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -13,25 +12,12 @@ import me.donnior.srape.FieldBuilderImpl;
 import me.donnior.srape.FieldExposer;
 import me.donnior.srape.FieldExposerModule;
 import me.donnior.srape.JSONBuilder;
-import me.donnior.srape.JsonObjectWriter;
 import me.donnior.srape.SrapeEntity;
 import me.donnior.srape.model.User;
 
 import org.junit.Test;
 
 public class JSONBuilderTest {
-    
-    @Test
-    public void test(){
-        List<String> list = Arrays.asList("one", "tw\"o", "three");
-        
-        JsonObjectWriter writer = new JsonObjectWriter();
-        
-        assertEquals("[\"one\",\"tw\\\"o\",\"three\"]", writer.writeArray(list, String.class));
-        
-        assertEquals("[3,2,1]", writer.writeArray(Arrays.asList(3,2,1), String.class));
-        
-    }
     
     @Test
     public void test_integration(){
