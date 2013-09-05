@@ -17,7 +17,7 @@ public class JSPViewRender implements ViewRender {
     private String viewPathSuffix = ".jsp";
 
     @Override
-    public void renderView(Object result, HttpServletRequest request, HttpServletResponse response) 
+    public void renderView(Object result, Object contrller, HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         String viewPath = this.viewPathPrefix + result + viewPathSuffix;
 

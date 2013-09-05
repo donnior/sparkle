@@ -18,7 +18,7 @@ public class JSONViewRender implements ViewRender {
     public static final String   INCLUDE_REQUEST_URI_ATTRIBUTE = "javax.servlet.include.request_uri";
 
     @Override
-    public void renderView(Object result, HttpServletRequest request, HttpServletResponse response) 
+    public void renderView(Object result, Object controller, HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         if(result instanceof FieldExposerModule){
             response.getWriter().write(new JSONBuilder((FieldExposerModule)result).build());

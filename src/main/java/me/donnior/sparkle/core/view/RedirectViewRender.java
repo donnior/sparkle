@@ -13,7 +13,7 @@ public class RedirectViewRender implements ViewRender {
     private static final String REDIRECT_PREFIX = "redirect:";
 
     @Override
-    public void renderView(Object result, HttpServletRequest request, HttpServletResponse response) 
+    public void renderView(Object result, Object controller, HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         String path = ((String)result).substring(REDIRECT_PREFIX.length()).trim();
         if(!path.startsWith("http")){

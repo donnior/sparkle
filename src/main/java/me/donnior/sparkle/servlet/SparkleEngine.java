@@ -188,14 +188,17 @@ public class SparkleEngine {
         if(!isResponseProcessedMannually){
             //TODO how to resolve view ? not just json or jsp, consider jsp, freemarker, vocility. Reference springmvc's viewResolver
             
-            
             //get matched viewRender from all viewRenders, based on ActionMethodDefinition and result type
             // if found any matched viewRender, render view using it, pass 'controller instantance, result, request, response' as arguments
             // else use default viewRender(jsp view render to render result)
             ViewRender viewRender = findMatchedViewRender(adf, result);
             if(viewRender != null){
                 try {
-                    viewRender.renderView(result, request, response);
+//                    Map<String, Object> valueToExpose = null;
+//                    if(viewRender.needPrepareValue()){
+//                        valueToExpose = getValueMapFromContrller(controller);
+//                    }
+                    viewRender.renderView(result, controller, request, response);
                 } catch (ServletException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

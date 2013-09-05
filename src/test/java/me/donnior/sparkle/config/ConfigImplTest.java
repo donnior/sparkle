@@ -70,7 +70,7 @@ class DemoViewRenderForConfig implements ViewRender{
     }
 
     @Override
-    public void renderView(Object result, HttpServletRequest request,
+    public void renderView(Object result, Object controller,  HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
     }
     

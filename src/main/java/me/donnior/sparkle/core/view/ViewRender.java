@@ -12,6 +12,6 @@ public interface ViewRender {
 
     boolean supportActionMethod(ActionMethodDefinition adf, Object actionMethodResult);
     
-    void renderView(Object result, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    void renderView(Object result, Object controller, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 
 }
