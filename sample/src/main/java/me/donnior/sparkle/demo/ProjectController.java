@@ -12,6 +12,7 @@ import me.donnior.sparkle.Params;
 import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.annotation.Controller;
 import me.donnior.sparkle.annotation.Json;
+import me.donnior.sparkle.annotation.Out;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.annotation.ResponseBody;
 import me.donnior.sparkle.http.HTTPStatusCode;
@@ -26,7 +27,12 @@ public class ProjectController {
     
     @Inject private Service service;
     
+    @Out private String a;
+    @Out private Service account;
+    
     public String index(@Param("a") String a, @Param("b") Integer b, @Param("c") String[] c){
+        System.out.println("a from param is " + a);
+        this.a = a;
         return "projects/index";
     }
     

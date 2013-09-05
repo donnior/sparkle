@@ -8,6 +8,7 @@
 </head>
 <body>
 <h2>This is project page</h2>
+a: ${a}
 <%  
 /* int sum = 0;
 for(int i=0; i< 3000000; i++){

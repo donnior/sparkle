@@ -1,12 +1,24 @@
 package me.donnior.sparkle.core.view;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import me.donnior.fava.Consumer;
+import me.donnior.fava.FHashMap;
+import me.donnior.fava.FMap;
+import me.donnior.fava.MConsumer;
+import me.donnior.fava.util.FLists;
+import me.donnior.reflection.ReflectionUtil;
+import me.donnior.sparkle.annotation.Out;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 
 public class JSPViewRender implements ViewRender {
@@ -17,10 +29,12 @@ public class JSPViewRender implements ViewRender {
     private String viewPathSuffix = ".jsp";
 
     @Override
-    public void renderView(Object result, Object contrller, HttpServletRequest request, HttpServletResponse response) 
+    public void renderView(Object result, Object controller, final HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         String viewPath = this.viewPathPrefix + result + viewPathSuffix;
 
+        setRequestAttributeFromControllersExposeValue(controller, request);
+        
         RequestDispatcher rd = request.getRequestDispatcher(viewPath);
         if (rd == null) {
             throw new ServletException("Could not get RequestDispatcher for ["
@@ -39,6 +53,43 @@ public class JSPViewRender implements ViewRender {
         }
 
     }
+
+    private void setRequestAttributeFromControllersExposeValue(Object controller, final HttpServletRequest request) {
+        Map<String, Object> valueExposeToRequestAttribute = getExposedValues(controller);
+        
+        FMap<String, Object> fmap = new FHashMap<String, Object>(valueExposeToRequestAttribute);
+        fmap.each(new MConsumer<String, Object>() {
+            @Override
+            public void apply(String key, Object value) {
+                request.setAttribute(key, value);
+            }
+        });
+    }
+    
+    private Map<String, Object> getExposedValues(final Object controller){
+        final Map<String, Object> values = new HashMap<String, Object>();
+        
+        List<Field> annotatedFields = 
+                ReflectionUtil.getAllDeclaredFieldsFieldsWithAnnotation(new ArrayList<Field>(), controller.getClass(), Out.class);
+        
+        FLists.create(annotatedFields).each(new Consumer<Field>() {
+            @Override
+            public void apply(Field f) {
+               try {
+                   f.setAccessible(true);
+                   values.put(f.getName(), f.get(controller));
+               } catch (IllegalArgumentException e) {
+                   e.printStackTrace();
+               } catch (IllegalAccessException e) {
+                   e.printStackTrace();
+               }
+            }
+        });
+        return values;
+    }
+    
+    
+    
 
     private boolean useInclude(HttpServletRequest request, HttpServletResponse response) {
         return isIncludeRequest(request) || response.isCommitted();
