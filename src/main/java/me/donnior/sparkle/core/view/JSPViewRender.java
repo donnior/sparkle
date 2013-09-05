@@ -1,10 +1,7 @@
 package me.donnior.sparkle.core.view;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.net.URL;
 import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
@@ -12,13 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import me.donnior.fava.Consumer;
 import me.donnior.fava.FHashMap;
-import me.donnior.fava.FMap;
 import me.donnior.fava.MConsumer;
-import me.donnior.fava.util.FLists;
-import me.donnior.reflection.ReflectionUtil;
-import me.donnior.sparkle.annotation.Out;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 
 public class JSPViewRender implements ViewRender {
@@ -35,8 +27,19 @@ public class JSPViewRender implements ViewRender {
 
         setRequestAttributeFromControllersExposeValue(controller, request);
         
-        RequestDispatcher rd = request.getRequestDispatcher(viewPath);
+        /*
+         * check jsp page exist or not, can be useful for dev environment, //TODO ENV feature is to be added in the future. 
+         */
+        URL url = request.getServletContext().getResource(viewPath);
+        if (url != null) { 
+            System.out.println("resource ok");
+        } else {
+            System.out.println("resource error");
+        }
+        
+        RequestDispatcher rd = request.getServletContext().getRequestDispatcher(viewPath);
         if (rd == null) {
+            System.out.println("rd is null");
             throw new ServletException("Could not get RequestDispatcher for ["
                     + viewPath
                     + "]: check that this file exists within your WAR");
@@ -64,9 +67,6 @@ public class JSPViewRender implements ViewRender {
             }
         });
     }
-    
-    
-    
 
     private boolean useInclude(HttpServletRequest request, HttpServletResponse response) {
         return isIncludeRequest(request) || response.isCommitted();

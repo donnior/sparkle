@@ -33,7 +33,7 @@ public class ProjectController {
     public String index(@Param("a") String a, @Param("b") Integer b, @Param("c") String[] c){
         System.out.println("a from param is " + a);
         this.a = a;
-        return "projects/index";
+        return "projects/indexlaal";
     }
     
     public String show(){
