@@ -55,37 +55,14 @@ public class JSPViewRender implements ViewRender {
     }
 
     private void setRequestAttributeFromControllersExposeValue(Object controller, final HttpServletRequest request) {
-        Map<String, Object> valueExposeToRequestAttribute = getExposedValues(controller);
+        Map<String, Object> valueExposeToRequestAttribute = new ViewVariablesExposer().getValueMap(controller);
         
-        FMap<String, Object> fmap = new FHashMap<String, Object>(valueExposeToRequestAttribute);
-        fmap.each(new MConsumer<String, Object>() {
+        new FHashMap<String, Object>(valueExposeToRequestAttribute).each(new MConsumer<String, Object>() {
             @Override
             public void apply(String key, Object value) {
                 request.setAttribute(key, value);
             }
         });
-    }
-    
-    private Map<String, Object> getExposedValues(final Object controller){
-        final Map<String, Object> values = new HashMap<String, Object>();
-        
-        List<Field> annotatedFields = 
-                ReflectionUtil.getAllDeclaredFieldsFieldsWithAnnotation(new ArrayList<Field>(), controller.getClass(), Out.class);
-        
-        FLists.create(annotatedFields).each(new Consumer<Field>() {
-            @Override
-            public void apply(Field f) {
-               try {
-                   f.setAccessible(true);
-                   values.put(f.getName(), f.get(controller));
-               } catch (IllegalArgumentException e) {
-                   e.printStackTrace();
-               } catch (IllegalAccessException e) {
-                   e.printStackTrace();
-               }
-            }
-        });
-        return values;
     }
     
     

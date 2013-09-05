@@ -3,11 +3,9 @@ package me.donnior.reflection;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.annotation.Out;
@@ -41,14 +39,13 @@ public class ReflectionUtil {
      * 
      * @param fields
      * @param type 
-     * @return addDeclaredAndInheritedFields
+     * @return 
      */
-    
-    public static List<Field> getAllDeclaredFieldsFields(List<Field> fields, Class<?> type) {
+    public static List<Field> getAllDeclaredFieldsIncludeInherited(List<Field> fields, Class<?> type) {
         fields.addAll(Arrays.asList(type.getDeclaredFields()));
         Class<?> superClass = type.getSuperclass(); 
         if (superClass != null) { 
-            getAllDeclaredFieldsFields(fields, type.getSuperclass()); 
+            getAllDeclaredFieldsIncludeInherited(fields, type.getSuperclass()); 
         }
         return fields;
     }
@@ -61,16 +58,14 @@ public class ReflectionUtil {
      * @return
      */
     
-    public static List<Field> getAllDeclaredFieldsFieldsWithAnnotation(List<Field> fields, Class<?> type, Class<?> annotation) {
-        List<Field> allFields = getAllDeclaredFieldsFields(fields, type);
-        FList<Field> annotatedFields = FLists.create(allFields).findAll(new Predicate<Field>() {
+    public static List<Field> getAllDeclaredFieldsWithAnnotation(List<Field> fields, Class<?> type, Class<?> annotation) {
+        List<Field> allFields = getAllDeclaredFieldsIncludeInherited(fields, type);
+        return FLists.create(allFields).findAll(new Predicate<Field>() {
             @Override
             public boolean apply(Field f) {
                 return f.isAnnotationPresent(Out.class);
             }
         });
-        
-        return annotatedFields;
     }
 
 }
