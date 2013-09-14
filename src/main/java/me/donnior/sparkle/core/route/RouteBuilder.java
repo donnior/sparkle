@@ -40,7 +40,8 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
         this.pathPattern = url;
         this.matchPatten = Pattern.compile(checker.matcherRegexPatten());
         this.httpMethod = HTTPMethod.GET;
-        logger.debug("Create route definition [source={}, pattern={}, pathVariables={}] ", new Object[]{this.pathPattern, this.matchPatten.pattern(), this.pathVariables});
+        logger.debug("Create route definition [source={}, pattern={}, pathVariables={}] ",
+                new Object[]{this.pathPattern, this.matchPatten.pattern(), this.pathVariables});
     }
     
     public Pattern getMatchPatten() {

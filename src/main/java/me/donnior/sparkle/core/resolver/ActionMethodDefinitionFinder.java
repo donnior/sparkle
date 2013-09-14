@@ -110,7 +110,7 @@ public class ActionMethodDefinitionFinder {
 //    }
     
     //TODO remove static, make this ActionMethodDefinitionFinder singleton in SparkleEngin
-    private  Map<Tuple2<Class, String>, ActionMethodDefinition> cache = 
+    private final Map<Tuple2<Class, String>, ActionMethodDefinition> cache =
             new ConcurrentHashMap<Tuple2<Class, String>, ActionMethodDefinition>(); 
     
     public ActionMethodDefinition find(Class clz, final String actionName) {
