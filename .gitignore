@@ -8,7 +8,7 @@ target/
 .settings/org.eclipse.wst.common.component
 
 .project
-
+.idea
 .classpath
 
 *.svn-base
@@ -22,3 +22,5 @@ src/main/java/ReflectionTest.java
 
 
 sample/.settings/org.eclipse.jdt.core.prefs
+
+sparkle.iml
