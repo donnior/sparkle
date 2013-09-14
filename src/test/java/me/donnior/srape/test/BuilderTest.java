@@ -44,6 +44,22 @@ public class BuilderTest {
         System.out.println(build(module));
     }
     
+    @Test
+  public void testStringEscape(){
+      final String name = "\"foo\" is not \"bar\". specials: \b\r\n\f\t\\/";
+      
+      FieldExposerModule module = new AbstractFieldExposerModule() {
+          public void config() {
+              expose(name).withName("login");     //string
+          }
+      };
+      
+      //should be {"int":12,"char":"a","byte":1,"short":1,"long":1,"float":1.23,"double":1.25,"login":"srape"}
+      String expected = "{\"login\":\"\\\"foo\\\" is not \\\"bar\\\". specials: \\b\\r\\n\\f\\t\\\\\\/\"}";
+      System.out.println(build(module));
+      assertEquals(expected, build(module));
+  }    
+    
     
     @Test
 //    @Ignore

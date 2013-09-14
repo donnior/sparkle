@@ -1,14 +1,17 @@
-apply plugin: 'java'
-apply plugin: 'war'
-
 repositories {  
     mavenCentral()
     mavenLocal()
 }
 
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'pmd'
+apply plugin: 'jdepend'
+apply plugin: 'findbugs'
 apply plugin: 'jetty'
-jettyRun.contextPath = '/'
+apply plugin: 'project-report'
 
+jettyRun.contextPath = '/'
 jettyVersion = "8.1.8.v20121106"
 
 configurations {
@@ -19,6 +22,13 @@ dependencies {
     jetty8 "org.mortbay.jetty:jetty-runner:$jettyVersion"
 }
 
+tasks.withType(JDepend) {
+    reports {
+        xml.enabled = false
+        text.enabled = true
+    }
+ }
+
 task runJetty8(type: JavaExec) {
     main = "org.mortbay.jetty.runner.Runner"
     args = [war.archivePath]
@@ -26,7 +36,7 @@ task runJetty8(type: JavaExec) {
 }
 
 dependencies {
-    testCompile 'junit:junit:4.8.1'
+    testCompile 'junit:junit:4.0'
 
 //    compile 'com.google.guava:guava:r09'
 
@@ -34,7 +44,7 @@ dependencies {
     compile 'javax.servlet.jsp:jsp-api:2.2'
     compile 'javax.servlet:jstl:1.2'
  
-    compile 'me.donnior:fava:1.0'
+    compile 'me.donnior:fava:1.1'
     compile 'com.google.code.gson:gson:2.2.3'
     compile 'com.google.inject:guice:3.0'
             
