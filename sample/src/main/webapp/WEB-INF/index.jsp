@@ -44,4 +44,16 @@
     </fieldset>
     </form>
 
+
+    <form class="pure-form" action='<c:url value="/users" />' method="post">
+    <fieldset>
+        <legend>new users</legend>
+
+        <input type="text" name="name" placeholder="name" />
+        <input type="text" name="mail" placeholder="mail" />
+        <input type="text" name="age" placeholder="age" />
+        <button type="submit" class="pure-button notice">Sign in</button>
+    </fieldset>
+    </form>
+
 </r:layout>

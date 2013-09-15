@@ -7,6 +7,7 @@ public class DemoRouteModuleTwo extends  AbstractRouteModule {
     @Override
     public void configure() {
         get("/user/index").to("user#index");
+        post("/users").to("user#save");
     }
 
 }
