@@ -52,7 +52,7 @@
         <input type="text" name="name" placeholder="name" />
         <input type="text" name="mail" placeholder="mail" />
         <input type="text" name="age" placeholder="age" />
-        <button type="submit" class="pure-button notice">Sign in</button>
+        <button type="submit" class="pure-button notice">New User</button>
     </fieldset>
     </form>
 

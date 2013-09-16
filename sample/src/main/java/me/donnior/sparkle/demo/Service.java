@@ -3,6 +3,9 @@ package me.donnior.sparkle.demo;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.google.inject.Singleton;
+
+@Singleton
 public class Service {
 
     private List<User> users = new ArrayList<User>();
