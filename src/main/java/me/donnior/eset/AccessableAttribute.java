@@ -12,6 +12,7 @@ public class AccessableAttribute {
     private Field field;
     private boolean isGenericField;  //TODO need add
     
+    
     public AccessableAttribute(String name, String accessName, Class<?> type, Class<?> entityType, Field field) {
         this.name = name;
         this.accessName = accessName;
@@ -21,6 +22,11 @@ public class AccessableAttribute {
         
     }
 
+    /**
+     * 
+     * @param field
+     * @param entityType The accessable field's owner type class.
+     */
     public AccessableAttribute(Field field, Class<?> entityType) {
         this(field.getName(), accessNameForField(field), field.getType(), entityType, field);
         
@@ -36,6 +42,18 @@ public class AccessableAttribute {
         
         
         //TODO only 'type' can't get current field's generic type, such as this field is List<String>, must use Method.getGenericType()
+        /*
+         * 要处理的字段类型：
+         *  
+         *  非集合和数组的基本类型
+         *  非集合和数组的对象类型（自定义的对象）
+         *  集合之基本类型
+         *  数组之基本类型
+         *  集合之自定义对象类型
+         *  数组之自定义对象类型
+         *  枚举, 只支持valueOf
+         * 
+         */
         Object convertedValue = convertValue(paramValue, this.type);
         try {
             field.setAccessible(true);

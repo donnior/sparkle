@@ -1,6 +1,11 @@
 package me.donnior.eset;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ValueConverter {
     
@@ -9,16 +14,8 @@ public class ValueConverter {
             throw new RuntimeException("the values to be converted can't be null");
         }
         
-        if(values.length == 0){
-            if(expectedType.isArray()){
-                //create empty Array and return it;
-                Class<?> componentType = expectedType.getComponentType();
-                int arraySize = 0;
-                return Array.newInstance(componentType, arraySize);
-            } else {
-                //convert empty values to not array type like String
-                return null;
-            }
+        if(values.length == 0 && !isCollectionOrArray(expectedType)){
+            return null;
         }
         
         //values has more than one value
@@ -31,11 +28,33 @@ public class ValueConverter {
                 Array.set(result, i, convertSingleVaule(values[i], componentType));
             }
             return result;
-        }else{
-            String value = values[0];
-            //convert the value to object that is not array
-            return convertSingleVaule(value, expectedType);
+        } 
+        
+        if(Collection.class.isAssignableFrom(expectedType)){
+            Collection result = collectionInstanceOf(expectedType);
+            for(String value: values){
+                result.add(convertSingleVaule(value, Object.class));  //TODO The Object class should be the generic class for this collection 
+            }
+            return result;
         }
+
+        // expected is not collection or array, and values is not empty.
+        String value = values[0];
+        return convertSingleVaule(value, expectedType);
+    }
+
+    private Collection collectionInstanceOf(Class expectedType) {
+        if(List.class.equals(expectedType)){
+            return new ArrayList();
+        }
+        if(Set.class.equals(expectedType)){
+            return new HashSet();
+        }
+        throw new RuntimeException("more conconrete class will be support shortly");
+    }
+
+    private boolean isCollectionOrArray(Class expectedType) {
+        return expectedType.isArray() || (Collection.class.isAssignableFrom(expectedType));
     }
 
     private Object convertSingleVaule(String string, Class<?> componentType) {
