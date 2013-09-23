@@ -14,8 +14,12 @@ public class ValueConverter {
             throw new RuntimeException("the values to be converted can't be null");
         }
         
-        if(values.length == 0 && !isCollectionOrArray(expectedType)){
-            return null;
+        if(expectedType.isEnum()){
+            return values.length == 0 ? null : Enum.valueOf(expectedType, values[0]);
+        }
+        
+        if(!isCollectionOrArray(expectedType)){
+            return values.length == 0 ? null :  convertSingleVaule(values[0], expectedType);
         }
         
         //values has more than one value
@@ -24,7 +28,7 @@ public class ValueConverter {
             Class<?> componentType = expectedType.getComponentType();
             int arraySize = values.length;
             Object result = Array.newInstance(componentType, arraySize);
-            for(int i=0; i<values.length; i++){
+            for(int i=0; i<arraySize; i++){
                 Array.set(result, i, convertSingleVaule(values[i], componentType));
             }
             return result;
@@ -33,14 +37,13 @@ public class ValueConverter {
         if(Collection.class.isAssignableFrom(expectedType)){
             Collection result = collectionInstanceOf(expectedType);
             for(String value: values){
-                result.add(convertSingleVaule(value, Object.class));  //TODO The Object class should be the generic class for this collection 
+                //TODO The Object class should be the generic class for this collection 
+                result.add(convertSingleVaule(value, Object.class));  
             }
             return result;
         }
 
-        // expected is not collection or array, and values is not empty.
-        String value = values[0];
-        return convertSingleVaule(value, expectedType);
+       return null;
     }
 
     private Collection collectionInstanceOf(Class expectedType) {
