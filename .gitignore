@@ -6,6 +6,7 @@ target/
 .settings/org.eclipse.jdt.core.prefs
 
 .settings/org.eclipse.wst.common.component
+sample/
 
 .project
 .idea
@@ -24,3 +25,5 @@ src/main/java/ReflectionTest.java
 sample/.settings/org.eclipse.jdt.core.prefs
 
 sparkle.iml
+
+src/test/java/me/donnior/eset/Snippet.java
