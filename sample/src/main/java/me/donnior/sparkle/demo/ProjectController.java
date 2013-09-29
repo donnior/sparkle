@@ -20,10 +20,15 @@ import me.donnior.sparkle.view.result.HttpStatus;
 import me.donnior.srape.AbstractFieldExposerModule;
 import me.donnior.srape.FieldExposerModule;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Inject;
 
 @Controller("projects")
 public class ProjectController {
+    
+    private final static Logger logger = LoggerFactory.getLogger(ProjectController.class);
     
     @Inject private Service service;
     
@@ -138,9 +143,15 @@ public class ProjectController {
     
     public void text(HttpServletResponse response){
         try {
+//            logger.info("get text");
             response.getWriter().write("hello world");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static void main(String[] args){
+        logger.info("should be printed");
+        System.out.println("ha");
     }
 }

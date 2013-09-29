@@ -31,11 +31,11 @@ public class JSPViewRender implements ViewRender {
          * check jsp page exist or not, can be useful for dev environment, //TODO ENV feature is to be added in the future. 
          */
         URL url = request.getServletContext().getResource(viewPath);
-        if (url != null) { 
-            System.out.println("resource ok");
-        } else {
-            System.out.println("resource error");
-        }
+//        if (url != null) { 
+//            System.out.println("resource ok");
+//        } else {
+//            System.out.println("resource error");
+//        }
         
         RequestDispatcher rd = request.getServletContext().getRequestDispatcher(viewPath);
         if (rd == null) {

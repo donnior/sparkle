@@ -22,9 +22,7 @@ public class ValueConverter {
             return values.length == 0 ? null :  convertSingleVaule(values[0], expectedType);
         }
         
-        //values has more than one value
         if(expectedType.isArray()){
-            //create Array and set each value and return the array
             Class<?> componentType = expectedType.getComponentType();
             int arraySize = values.length;
             Object result = Array.newInstance(componentType, arraySize);
@@ -38,7 +36,7 @@ public class ValueConverter {
             Collection result = collectionInstanceOf(expectedType);
             for(String value: values){
                 //TODO The Object class should be the generic class for this collection 
-                result.add(convertSingleVaule(value, Object.class));  
+                result.add(convertSingleVaule(value, Object.class));
             }
             return result;
         }

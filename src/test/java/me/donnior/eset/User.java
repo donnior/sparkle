@@ -1,6 +1,6 @@
 package me.donnior.eset;
 
-import me.donnior.eset.Accessable;
+import java.util.List;
 
 public class User {
     
@@ -26,8 +26,29 @@ public class User {
     @Accessable
     private boolean isMale;
     
+    @Accessable
+    private List<String> mails;
+    
     private String desc;
 
+    private User friend;
+    
+    public void setMails(List<String> mails) {
+        this.mails = mails;
+    }
+    
+    public User getFriend() {
+        return friend;
+    }
+    
+    public void setFriend(User friend) {
+        this.friend = friend;
+    }
+    
+    public List<String> getMails() {
+        return mails;
+    }
+    
     public void setAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
