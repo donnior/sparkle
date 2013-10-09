@@ -1,7 +1,6 @@
 package me.donnior.eset;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +62,9 @@ public class ParsedParams {
                 ((Map)parentNode).put(lastPartOfPath(currentPath), v);
                 this.params.put(currentPath, v);
             } else if(parentNode instanceof Collection){
-                ((Collection)parentNode).add(v);
+                int index = indexFromPath(currentPath);
+                safeAdd((List) parentNode, v, index);
+//                ((Collection)parentNode).add(v);
                 this.params.put(currentPath, v);
             }
 //        } else if (PathType.ARRAY.equals(type)) {
@@ -86,12 +87,16 @@ public class ParsedParams {
         Object node = this.params.get(path);
         if (node == null) {
             String parentPath = getParentPath(path);
+            System.out.println("path : " + path);
+            System.out.println("parent path : " + parentPath);
             Object parentNode = getOrCreateNodeByPath(parentPath, typeOfPath(path));
             Object currentNode = objectWithType(typeOfPath);
             if (parentNode instanceof Map) {
                 ((Map) parentNode).put(lastPartOfPath(path), currentNode);
             } else {
-                ((List) parentNode).add(currentNode);
+                int index = indexFromPath(path);
+                safeAdd((List) parentNode, currentNode, index);
+                //((List) parentNode).add(currentNode); //TODO get index from path, and set it to the right position, care the size increment
             }
             this.params.put(path, currentNode);
             return currentNode;
@@ -103,7 +108,9 @@ public class ParsedParams {
                 if (parentNode instanceof Map) {
                     ((Map) parentNode).put(lastPartOfPath(path), currentNode);
                 } else {
-                    ((List) parentNode).add(currentNode);
+                    int index = indexFromPath(path);
+                    safeAdd((List) parentNode, currentNode, index);
+//                    ((List) parentNode).add(currentNode);
                 }
                 this.params.put(path, currentNode);
                 return currentNode;
@@ -111,6 +118,22 @@ public class ParsedParams {
                 return node;
             }
         }
+    }
+
+    private void safeAdd(List parentNode, Object currentNode, int index) {
+        if(!(parentNode.size() > index)){
+            for(int i = parentNode.size(); i<index+1; i++){
+                parentNode.add(null);
+            }
+        }
+        parentNode.set(index, currentNode);
+    }
+
+    public static int indexFromPath(String path) {
+        int start = path.lastIndexOf("[");
+        int end = path.lastIndexOf("]");
+        String index = path.substring(start+1, end);
+        return Integer.parseInt(index);
     }
 
     private Object typeOfObject(Object node) {
@@ -156,41 +179,8 @@ public class ParsedParams {
         return this.params;
     }
 
-}
-class StringValue{
-    
-    private String[] values;
-    
-    public StringValue(String[] values){
-        this.values = values;
-    }
-    
-    
-    public boolean isNull() {
-        return values == null;
-    }
-    
-    public boolean isSingleValue(){
-        return isNull() || this.values.length == 1;
-    }
-    
-    public String value(){
-        if(isNull()) return null;
-        return this.values[0];
-    }
-    
-    public String[] values(){
-        if(isNull()) return new String[]{};
-        return this.values;
-    }
-    
-    @Override
-    public String toString() {
-        if(isSingleValue()){
-            return value();
-        } else {
-            return Arrays.toString(values);
-        }
+    public static void main(String[] args){
+        System.out.println(indexFromPath("user[0][12]"));
     }
     
 }
