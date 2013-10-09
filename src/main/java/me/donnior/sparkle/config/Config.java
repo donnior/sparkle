@@ -1,5 +1,6 @@
 package me.donnior.sparkle.config;
 
+import me.donnior.sparkle.Environment;
 import me.donnior.sparkle.core.view.ViewRender;
 
 public interface Config {
@@ -14,5 +15,7 @@ public interface Config {
     
     
     void registerBasePackage(String basePackage);
+    
+    void setMode(Environment.Mode mode);
     
 }

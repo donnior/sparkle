@@ -6,6 +6,8 @@ import java.util.Set;
 
 import me.donnior.fava.FList;
 import me.donnior.fava.util.FLists;
+import me.donnior.sparkle.Environment;
+import me.donnior.sparkle.Environment.Mode;
 import me.donnior.sparkle.config.Config;
 import me.donnior.sparkle.core.view.ViewRender;
 import me.donnior.sparkle.util.Singleton;
@@ -37,6 +39,11 @@ public class ConfigImpl implements Config, ConfigResult {
         if(basePackage != null){
             this.basePackage = basePackage;
         }
+    }
+    
+    @Override
+    public void setMode(Mode mode) {
+        Environment.setMode(mode);
     }
     
     @Override
