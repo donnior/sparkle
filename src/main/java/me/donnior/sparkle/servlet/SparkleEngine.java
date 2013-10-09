@@ -124,7 +124,7 @@ public class SparkleEngine {
 
 
     protected void doService(final HttpServletRequest request, final HttpServletResponse response, HTTPMethod method){
-//        logger.info("processing request : {}", request.getRequestURI());
+        logger.info("processing request : {}", request.getRequestURI());
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
 
@@ -210,8 +210,8 @@ public class SparkleEngine {
         }
         
         long viewTime = stopwatch.stop().elapsedMillis();
-//        logger.info("completed request within {} ms (Action: {} ms | View: {} ms)", 
-//                new Object[]{viewTime + actionTime, actionTime, viewTime });
+        logger.info("completed request within {} ms (Action: {} ms | View: {} ms)", 
+                new Object[]{viewTime + actionTime, actionTime, viewTime });
         
         //TODO set controller's instance varialbles which need to be used in view to the request.
   
