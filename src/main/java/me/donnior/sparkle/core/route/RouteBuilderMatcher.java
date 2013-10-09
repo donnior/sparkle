@@ -20,7 +20,7 @@ public class RouteBuilderMatcher {
 
     public boolean match() {
 
-        boolean pathAndMethodMatched = isPathMatched() && isMethodMatched();
+        boolean pathAndMethodMatched = isMethodMatched() && isPathMatched();
         if (!pathAndMethodMatched) {
             return false;
         } 
