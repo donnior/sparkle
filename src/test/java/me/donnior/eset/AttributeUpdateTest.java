@@ -1,11 +1,14 @@
 package me.donnior.eset;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import me.donnior.eset.EntityUpdater;
 
 import org.junit.Test;
 
@@ -13,7 +16,7 @@ public class AttributeUpdateTest {
 
     @Test
     public void testMain() {
-        Map<String, String[]> params = params();
+        Map<String, Object> params = params();
         
         User user = new User();
         user.setId(22);
@@ -34,17 +37,20 @@ public class AttributeUpdateTest {
         assertTrue(user.getWeight() == 120.0);
     }
 
-    private Map<String, String[]> params() {
-        Map<String, String[]> params = new HashMap<String, String[]>();
-        params.put("id", new String[]{"123"});
-        params.put("age", new String[]{"23"});
-        params.put("name", new String[]{"donny"});
-        params.put("isAdmin", new String[]{"true"});
-        params.put("desc", new String[]{"my desc"});
-        params.put("nick", new String[]{"donnior"});
-        params.put("isMale", new String[]{"true"});
-        params.put("height", new String[]{"170"});
-        params.put("weight", new String[]{"120.0"});
+    private Map<String, Object> params() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("id", "123");
+        params.put("age", "23");
+        params.put("name", "donny");
+        params.put("isAdmin", "true");
+        params.put("desc", "my desc");
+        params.put("nick", "donnior");
+        params.put("isMale", "true");
+        params.put("height", "170");
+        params.put("weight", "120.0");
+        List<String> mails = new ArrayList<String>();
+        mails.add("donnior@gmail.com");
+        params.put("mails", mails);
         return params;
     }
 

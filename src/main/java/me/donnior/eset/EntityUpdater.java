@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+import me.donnior.eset.type.TypedAccessableAttributeFactory;
 import me.donnior.fava.Consumer;
 import me.donnior.fava.Function;
 import me.donnior.fava.Predicate;
@@ -11,7 +12,9 @@ import me.donnior.fava.util.FLists;
 
 public class EntityUpdater {
 
-    public void updateAttribute(final Object user, final Map<String, String[]> params) {
+    final TypedAccessableAttributeFactory factory = new TypedAccessableAttributeFactory();
+    
+    public void updateAttribute(final Object user, final Map<String, Object> params) {
         List<AccessableAttribute> attrs = getAccessableAttributes(user.getClass());
         FLists.create(attrs).each(new Consumer<AccessableAttribute>() {
             @Override
@@ -31,7 +34,7 @@ public class EntityUpdater {
         }).collect(new Function<Field, AccessableAttribute>() {
             @Override
             public AccessableAttribute apply(Field field) {
-                return new AccessableAttribute(field, clz);
+                return factory.accessableAttributeFor(field);
             }
         });
     }

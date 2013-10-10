@@ -33,6 +33,17 @@ public class User {
 
     private User friend;
     
+    @Accessable
+    private List<Address> address;
+    
+    public void setAddress(List<Address> address) {
+        this.address = address;
+    }
+    
+    public List<Address> getAddress() {
+        return address;
+    }
+    
     public void setMails(List<String> mails) {
         this.mails = mails;
     }

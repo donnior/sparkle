@@ -1,25 +1,32 @@
 package me.donnior.eset;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Map;
 
-public class AccessableAttribute {
+public abstract class AccessableAttribute {
 
-    private String name;
-    private String accessName;
-    private Class<?> type;
-    private Class<?> entityType;
-    private Field field;
-    private boolean isGenericField;  //TODO need add
+    protected String name;
+    protected String accessName;
+    protected Class<?> type;
+    protected Class<?> ownerType;
+    protected Field field;
+    protected boolean isGenericField;  //TODO need add
+    protected boolean isCollection;
+    protected boolean isArray;
     
+    public AccessableAttribute(){
+        
+    }
     
-    public AccessableAttribute(String name, String accessName, Class<?> type, Class<?> entityType, Field field) {
+    public AccessableAttribute(String name, String accessName, Class<?> type, Class<?> ownerType, Field field) {
         this.name = name;
         this.accessName = accessName;
         this.type = type;
-        this.entityType = entityType;
+        this.ownerType = ownerType;
         this.field = field;
-        
+        this.isArray = this.type.isArray();
+        this.isCollection = Collection.class.isAssignableFrom(this.type);
     }
 
     /**
@@ -27,42 +34,20 @@ public class AccessableAttribute {
      * @param field
      * @param entityType The accessable field's owner type class.
      */
-    public AccessableAttribute(Field field, Class<?> entityType) {
-        this(field.getName(), accessNameForField(field), field.getType(), entityType, field);
+    public AccessableAttribute(Field field, Class<?> ownerType) {
+        this(field.getName(), accessNameForField(field), field.getType(), ownerType, field);
         
     }
     
-    public void update(Object entity, Map<String, String[]> params) {
+    public abstract void doUpdate(Object entity, Object params);
+    
+    public void update(Object entity, Map<String, Object> params) {
         String paramName = hasExtraAccessName() ? this.accessName : this.name;
         if(!params.containsKey(paramName)){
             return;  //ignore setting attribute if params don't contains the attribute name
         }
-        String[] values = params.get(paramName);
-        String paramValue = (values != null && values.length>0) ? values[0]: null;
-        
-        
-        //TODO only 'type' can't get current field's generic type, such as this field is List<String>, must use Method.getGenericType()
-        /*
-         * 要处理的字段类型：
-         *  
-         *  非集合和数组的基本类型
-         *  非集合和数组的对象类型（自定义的对象）
-         *  集合之基本类型
-         *  数组之基本类型
-         *  集合之自定义对象类型
-         *  数组之自定义对象类型
-         *  枚举, 只支持valueOf
-         * 
-         */
-        Object convertedValue = convertValue(paramValue, this.type);
-        try {
-            field.setAccessible(true);
-            field.set(entity, convertedValue);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e){
-            e.printStackTrace();
-        }
+        Object values = params.get(paramName);
+        doUpdate(entity, values);
     }
 
     private Object convertValue(String paramValue, Class<?> type) {
