@@ -13,12 +13,9 @@ public class TypedAccessableAttributeFactory {
             return new ArrayAccessableAttribute(field, null);
         }
         if(Collection.class.isAssignableFrom(type)){
-            Class componentType = null; //TODO get generic collection's component type
-            return new CollectionAccessableAttribute(field, componentType);
+            return new CollectionAccessableAttribute(field, null);
         }
-        
         return new PlainAccessableAttribute(field, null);
-        
     }
     
 }

@@ -16,10 +16,6 @@ public abstract class AccessableAttribute {
     
     private final static Logger logger = LoggerFactory.getLogger(AccessableAttribute.class);
     
-    public AccessableAttribute(){
-        
-    }
-    
     public AccessableAttribute(String name, String accessName, Class<?> type, Class<?> ownerType, Field field) {
         this.name = name;
         this.accessName = accessName;
@@ -51,6 +47,7 @@ public abstract class AccessableAttribute {
         doUpdate(entity, values);
     }
 
+    @SuppressWarnings("unused")
     private Object convertValue(String paramValue, Class<?> type) {
         return new ValueConverter().convertValue(new String[]{paramValue}, type);
     }

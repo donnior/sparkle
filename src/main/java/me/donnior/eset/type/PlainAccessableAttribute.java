@@ -2,7 +2,6 @@ package me.donnior.eset.type;
 
 import java.lang.reflect.Field;
 
-import me.donnior.eset.Accessable;
 import me.donnior.eset.AccessableAttribute;
 import me.donnior.eset.ValueConverter;
 
@@ -13,10 +12,6 @@ public class PlainAccessableAttribute extends AccessableAttribute {
 
     private final static Logger logger = LoggerFactory.getLogger(PlainAccessableAttribute.class);
     
-    public PlainAccessableAttribute(String name, String accessName, Class<?> type, Class<?> ownerType, Field field) {
-        super(name, accessName, type, ownerType, field);
-        
-    }
 
     /**
      * 
@@ -24,13 +19,12 @@ public class PlainAccessableAttribute extends AccessableAttribute {
      * @param entityType The accessable field's owner type class.
      */
     public PlainAccessableAttribute(Field field, Class<?> ownerType) {
-        this(field.getName(), accessNameForField(field), field.getType(), ownerType, field);
+        super(field, ownerType);
     }
     
     @Override
     public void doUpdate(Object entity, Object value) {
         logger.debug("update plain attribute '{}' with params : {}", this.name,  value);
-        String paramName = hasExtraAccessName() ? this.accessName : this.name;
         String paramValue = (String)value;
         
         //TODO only 'type' can't get current field's generic type, such as this field is List<String>, must use Method.getGenericType()
@@ -50,23 +44,8 @@ public class PlainAccessableAttribute extends AccessableAttribute {
         setValueToEntity(entity, convertedValue);
     }
 
-
-
     private Object convertValue(String paramValue, Class<?> type) {
         return new ValueConverter().convertValue(new String[]{paramValue}, type);
     }
 
-    private boolean hasExtraAccessName() {
-        return this.accessName != null;
-    }
-
-    private static String accessNameForField(Field field) {
-        if(field.isAnnotationPresent(Accessable.class)){
-            Accessable a = field.getAnnotation(Accessable.class);
-            if(a.name() != null && !a.name().trim().equals("")){
-                return a.name();
-            }
-        }
-        return null;
-    }
 }

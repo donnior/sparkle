@@ -19,6 +19,7 @@ public class ArrayAccessableAttribute extends IterableAccessableAttribute {
         super(field, null);
     }
     
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void doUpdate(Object entity, Object params) {
         logger.debug("update array attribute '{}'[{}] with params : {}", this.name, this.componentType, params);
@@ -47,7 +48,7 @@ public class ArrayAccessableAttribute extends IterableAccessableAttribute {
     }
     
     @Override
-    protected Class detectComponentType(Field field) {
+    protected Class<?> detectComponentType(Field field) {
         return field.getType().getComponentType();
     }
 

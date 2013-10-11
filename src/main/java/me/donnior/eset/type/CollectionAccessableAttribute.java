@@ -21,8 +21,9 @@ public class CollectionAccessableAttribute extends IterableAccessableAttribute {
         super(field, null);
     }
     
+    @SuppressWarnings("rawtypes")
     @Override
-    protected Class detectComponentType(Field field) {
+    protected Class<?> detectComponentType(Field field) {
         Type genericFieldType = field.getGenericType();
         if (genericFieldType instanceof ParameterizedType) {
             ParameterizedType aType = (ParameterizedType) genericFieldType;
