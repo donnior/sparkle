@@ -1,17 +1,19 @@
 package me.donnior.eset.type;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Map;
 
 import me.donnior.eset.Accessable;
 import me.donnior.eset.AccessableAttribute;
 import me.donnior.eset.ValueConverter;
 
-public class SingleAccessableAttribute extends AccessableAttribute {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+public class PlainAccessableAttribute extends AccessableAttribute {
+
+    private final static Logger logger = LoggerFactory.getLogger(PlainAccessableAttribute.class);
     
-    public SingleAccessableAttribute(String name, String accessName, Class<?> type, Class<?> ownerType, Field field) {
+    public PlainAccessableAttribute(String name, String accessName, Class<?> type, Class<?> ownerType, Field field) {
         super(name, accessName, type, ownerType, field);
         
     }
@@ -21,16 +23,15 @@ public class SingleAccessableAttribute extends AccessableAttribute {
      * @param field
      * @param entityType The accessable field's owner type class.
      */
-    public SingleAccessableAttribute(Field field, Class<?> ownerType) {
+    public PlainAccessableAttribute(Field field, Class<?> ownerType) {
         this(field.getName(), accessNameForField(field), field.getType(), ownerType, field);
     }
     
     @Override
     public void doUpdate(Object entity, Object value) {
+        logger.debug("update plain attribute '{}' with params : {}", this.name,  value);
         String paramName = hasExtraAccessName() ? this.accessName : this.name;
-        System.out.println("update " + this.name + " with value " + value);
         String paramValue = (String)value;
-        
         
         //TODO only 'type' can't get current field's generic type, such as this field is List<String>, must use Method.getGenericType()
         /*
@@ -46,15 +47,10 @@ public class SingleAccessableAttribute extends AccessableAttribute {
          * 
          */
         Object convertedValue = convertValue(paramValue, this.type);
-        try {
-            field.setAccessible(true);
-            field.set(entity, convertedValue);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e){
-            e.printStackTrace();
-        }
+        setValueToEntity(entity, convertedValue);
     }
+
+
 
     private Object convertValue(String paramValue, Class<?> type) {
         return new ValueConverter().convertValue(new String[]{paramValue}, type);

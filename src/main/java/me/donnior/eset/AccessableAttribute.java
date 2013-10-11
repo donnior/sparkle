@@ -1,8 +1,10 @@
 package me.donnior.eset;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AccessableAttribute {
 
@@ -11,9 +13,8 @@ public abstract class AccessableAttribute {
     protected Class<?> type;
     protected Class<?> ownerType;
     protected Field field;
-    protected boolean isGenericField;  //TODO need add
-    protected boolean isCollection;
-    protected boolean isArray;
+    
+    private final static Logger logger = LoggerFactory.getLogger(AccessableAttribute.class);
     
     public AccessableAttribute(){
         
@@ -25,8 +26,6 @@ public abstract class AccessableAttribute {
         this.type = type;
         this.ownerType = ownerType;
         this.field = field;
-        this.isArray = this.type.isArray();
-        this.isCollection = Collection.class.isAssignableFrom(this.type);
     }
 
     /**
@@ -42,8 +41,10 @@ public abstract class AccessableAttribute {
     public abstract void doUpdate(Object entity, Object params);
     
     public void update(Object entity, Map<String, Object> params) {
+        logger.debug("update '{}' within context : {}", this.name, params);
         String paramName = hasExtraAccessName() ? this.accessName : this.name;
         if(!params.containsKey(paramName)){
+            logger.debug("don't contains params : {}", paramName);
             return;  //ignore setting attribute if params don't contains the attribute name
         }
         Object values = params.get(paramName);
@@ -67,4 +68,18 @@ public abstract class AccessableAttribute {
         }
         return null;
     }
+    
+
+    
+    protected void setValueToEntity(Object entity, Object value) {
+        try {
+            field.setAccessible(true);
+            field.set(entity, value);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e){
+            e.printStackTrace();
+        }
+    }
+
 }

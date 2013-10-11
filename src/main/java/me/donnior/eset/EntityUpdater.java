@@ -14,12 +14,12 @@ public class EntityUpdater {
 
     final TypedAccessableAttributeFactory factory = new TypedAccessableAttributeFactory();
     
-    public void updateAttribute(final Object user, final Map<String, Object> params) {
-        List<AccessableAttribute> attrs = getAccessableAttributes(user.getClass());
+    public void updateAttribute(final Object target, final Map<String, Object> params) {
+        List<AccessableAttribute> attrs = getAccessableAttributes(target.getClass());
         FLists.create(attrs).each(new Consumer<AccessableAttribute>() {
             @Override
             public void apply(AccessableAttribute accessableAttribute) {
-                accessableAttribute.update(user, params);
+                accessableAttribute.update(target, params);
             }
         });
     }

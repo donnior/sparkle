@@ -12,6 +12,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.google.common.collect.ImmutableMap;
+
 public class AttributeUpdateTest {
 
     @Test
@@ -35,6 +37,12 @@ public class AttributeUpdateTest {
         
         assertTrue(user.getHeight() == 170);
         assertTrue(user.getWeight() == 120.0);
+        
+        assertTrue(user.getAddress().size() == 2);
+        assertEquals("beijing", user.getAddress().get(1).getCity());
+        
+        assertTrue(user.getStudiedPlaces().length == 2);
+        assertEquals("beijing", user.getStudiedPlaces()[1].getCity());
     }
 
     private Map<String, Object> params() {
@@ -51,6 +59,18 @@ public class AttributeUpdateTest {
         List<String> mails = new ArrayList<String>();
         mails.add("donnior@gmail.com");
         params.put("mails", mails);
+        
+        List<Map<String,String>> address = new ArrayList<Map<String,String>>();
+        address.add(ImmutableMap.of("state", "china", "city", "wuhan"));
+        address.add(ImmutableMap.of("state", "china", "city", "beijing"));
+        
+        params.put("address", address);
+        
+        List<Map<String,String>> studiedPlaces = new ArrayList<Map<String,String>>();
+        studiedPlaces.add(ImmutableMap.of("state", "china", "city", "wuhan"));
+        studiedPlaces.add(ImmutableMap.of("state", "china", "city", "beijing"));
+        
+        params.put("studiedPlaces", studiedPlaces);
         return params;
     }
 

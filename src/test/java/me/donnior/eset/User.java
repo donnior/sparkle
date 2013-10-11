@@ -36,6 +36,9 @@ public class User {
     @Accessable
     private List<Address> address;
     
+    @Accessable
+    private Address[] studiedPlaces;
+    
     public void setAddress(List<Address> address) {
         this.address = address;
     }
@@ -114,5 +117,9 @@ public class User {
     
     public float getWeight() {
         return weight;
+    }
+    
+    public Address[] getStudiedPlaces() {
+        return studiedPlaces;
     }
 }

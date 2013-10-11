@@ -3,8 +3,13 @@ package me.donnior.reflection;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
@@ -57,7 +62,6 @@ public class ReflectionUtil {
      * @param type
      * @return
      */
-    
     public static List<Field> getAllDeclaredFieldsWithAnnotation(List<Field> fields, Class<?> type, Class<?> annotation) {
         List<Field> allFields = getAllDeclaredFieldsIncludeInherited(fields, type);
         return FLists.create(allFields).findAll(new Predicate<Field>() {
@@ -68,4 +72,29 @@ public class ReflectionUtil {
         });
     }
 
+    public static Collection defaultValueForCollectionType(Class<?> clz){
+        if(!Collection.class.isAssignableFrom(clz)){
+            throw new RuntimeException(clz + " is not a Collection");
+        }
+        //equals, means not abstract class or concrete class
+        if(List.class.equals(clz)){
+            return new ArrayList();
+        }
+        if(Set.class.equals(clz)){
+            return new HashSet();
+        }
+
+        //concrete class
+        int modifiers = clz.getModifiers();
+        if(!Modifier.isAbstract(modifiers) && !Modifier.isInterface(modifiers)){
+            return (Collection)initialize(clz);
+        }
+        
+        if(clz.isAssignableFrom(ArrayList.class)){
+            return (Collection) new ArrayList();
+        }
+        
+        throw new RuntimeException("Not supported collection type for get a default instance");
+    }
+    
 }
