@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
-import me.donnior.eset.type.TypedAccessableAttributeFactory;
+import me.donnior.eset.type.TypedAccessibleAttributeFactory;
 import me.donnior.fava.Consumer;
 import me.donnior.fava.Function;
 import me.donnior.fava.Predicate;
@@ -12,28 +12,28 @@ import me.donnior.fava.util.FLists;
 
 public class EntityUpdater {
 
-    final TypedAccessableAttributeFactory factory = new TypedAccessableAttributeFactory();
+    final TypedAccessibleAttributeFactory factory = new TypedAccessibleAttributeFactory();
     
     public void updateAttribute(final Object target, final Map<String, Object> params) {
-        List<AccessableAttribute> attrs = getAccessableAttributes(target.getClass());
-        FLists.create(attrs).each(new Consumer<AccessableAttribute>() {
+        List<AccessibleAttribute> attrs = getAccessableAttributes(target.getClass());
+        FLists.create(attrs).each(new Consumer<AccessibleAttribute>() {
             @Override
-            public void apply(AccessableAttribute accessableAttribute) {
+            public void apply(AccessibleAttribute accessableAttribute) {
                 accessableAttribute.update(target, params);
             }
         });
     }
 
-    private List<AccessableAttribute> getAccessableAttributes(final Class<? extends Object> clz) {
+    private List<AccessibleAttribute> getAccessableAttributes(final Class<? extends Object> clz) {
         Field[] fields = clz.getDeclaredFields();
         return FLists.create(fields).findAll(new Predicate<Field>() {
             @Override
             public boolean apply(Field field) {
-                return field.isAnnotationPresent(Accessable.class);
+                return field.isAnnotationPresent(Accessible.class);
             }
-        }).collect(new Function<Field, AccessableAttribute>() {
+        }).collect(new Function<Field, AccessibleAttribute>() {
             @Override
-            public AccessableAttribute apply(Field field) {
+            public AccessibleAttribute apply(Field field) {
                 return factory.accessableAttributeFor(field);
             }
         });

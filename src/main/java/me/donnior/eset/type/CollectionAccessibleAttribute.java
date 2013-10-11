@@ -13,11 +13,11 @@ import me.donnior.reflection.ReflectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CollectionAccessableAttribute extends IterableAccessableAttribute {
+public class CollectionAccessibleAttribute extends IterableAccessibleAttribute {
 
-    private final static Logger logger = LoggerFactory.getLogger(CollectionAccessableAttribute.class);
+    private final static Logger logger = LoggerFactory.getLogger(CollectionAccessibleAttribute.class);
     
-    public CollectionAccessableAttribute(Field field, Class<?> componentType) {
+    public CollectionAccessibleAttribute(Field field, Class<?> componentType) {
         super(field, null);
     }
     

@@ -6,37 +6,40 @@ public class User {
     
     private int id;
     
-    @Accessable
+    @Accessible
+    Gender gender;
+    
+    @Accessible
     private String name;
     
-    @Accessable(name="nick")
+    @Accessible(name="nick")
     private String nickName;
     
-    @Accessable
+    @Accessible
     private int age;
     
-    @Accessable
+    @Accessible
     private short height;
     
-    @Accessable
+    @Accessible
     private float weight;
     
     private boolean isAdmin;
     
-    @Accessable
+    @Accessible
     private boolean isMale;
     
-    @Accessable
+    @Accessible
     private List<String> mails;
     
     private String desc;
 
     private User friend;
     
-    @Accessable
+    @Accessible
     private List<Address> address;
     
-    @Accessable
+    @Accessible
     private Address[] studiedPlaces;
     
     public void setAddress(List<Address> address) {
@@ -121,5 +124,9 @@ public class User {
     
     public Address[] getStudiedPlaces() {
         return studiedPlaces;
+    }
+    
+    public Gender getGender() {
+        return gender;
     }
 }

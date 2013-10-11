@@ -43,6 +43,8 @@ public class AttributeUpdateTest {
         
         assertTrue(user.getStudiedPlaces().length == 2);
         assertEquals("beijing", user.getStudiedPlaces()[1].getCity());
+        
+        assertEquals(Gender.FEMALE, user.getGender());
     }
 
     private Map<String, Object> params() {
@@ -71,6 +73,8 @@ public class AttributeUpdateTest {
         studiedPlaces.add(ImmutableMap.of("state", "china", "city", "beijing"));
         
         params.put("studiedPlaces", studiedPlaces);
+        
+        params.put("gender", "FEMALE");
         return params;
     }
 

@@ -2,10 +2,10 @@ package me.donnior.eset;
 
 public class Address {
 
-    @Accessable
+    @Accessible
     private String state;
     
-    @Accessable
+    @Accessible
     private String city;
     
     public void setCity(String city) {

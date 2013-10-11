@@ -2,23 +2,22 @@ package me.donnior.eset.type;
 
 import java.lang.reflect.Field;
 
-import me.donnior.eset.AccessableAttribute;
+import me.donnior.eset.AccessibleAttribute;
 import me.donnior.eset.ValueConverter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PlainAccessableAttribute extends AccessableAttribute {
+public class PlainAccessibleAttribute extends AccessibleAttribute {
 
-    private final static Logger logger = LoggerFactory.getLogger(PlainAccessableAttribute.class);
-    
+    private final static Logger logger = LoggerFactory.getLogger(PlainAccessibleAttribute.class);
 
     /**
      * 
      * @param field
-     * @param entityType The accessable field's owner type class.
+     * @param entityType The accessible field's owner type class.
      */
-    public PlainAccessableAttribute(Field field, Class<?> ownerType) {
+    public PlainAccessibleAttribute(Field field, Class<?> ownerType) {
         super(field, ownerType);
     }
     

@@ -6,7 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AccessableAttribute {
+public abstract class AccessibleAttribute {
 
     protected String name;
     protected String accessName;
@@ -14,9 +14,9 @@ public abstract class AccessableAttribute {
     protected Class<?> ownerType;
     protected Field field;
     
-    private final static Logger logger = LoggerFactory.getLogger(AccessableAttribute.class);
+    private final static Logger logger = LoggerFactory.getLogger(AccessibleAttribute.class);
     
-    public AccessableAttribute(String name, String accessName, Class<?> type, Class<?> ownerType, Field field) {
+    public AccessibleAttribute(String name, String accessName, Class<?> type, Class<?> ownerType, Field field) {
         this.name = name;
         this.accessName = accessName;
         this.type = type;
@@ -29,7 +29,7 @@ public abstract class AccessableAttribute {
      * @param field
      * @param entityType The accessable field's owner type class.
      */
-    public AccessableAttribute(Field field, Class<?> ownerType) {
+    public AccessibleAttribute(Field field, Class<?> ownerType) {
         this(field.getName(), accessNameForField(field), field.getType(), ownerType, field);
         
     }
@@ -57,8 +57,8 @@ public abstract class AccessableAttribute {
     }
 
     private static String accessNameForField(Field field) {
-        if(field.isAnnotationPresent(Accessable.class)){
-            Accessable a = field.getAnnotation(Accessable.class);
+        if(field.isAnnotationPresent(Accessible.class)){
+            Accessible a = field.getAnnotation(Accessible.class);
             if(a.name() != null && !a.name().trim().equals("")){
                 return a.name();
             }
