@@ -23,6 +23,7 @@ import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
+import me.donnior.sparkle.core.SimpleWebRequest;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.core.resolver.ApplicationConfigScanner;
 import me.donnior.sparkle.core.resolver.ControllerClassResolver;
@@ -163,17 +164,17 @@ public class SparkleEngine {
                 c = new Callable<Object>() {
                     @Override
                     public Object call() throws Exception {
-                        return new SparkleActionExecutor().invoke(adf, controller, request, response);
+                        return new SparkleActionExecutor().invoke(adf, controller,  new SimpleWebRequest(request, response));
                     }
                 };
             } else {
-                c = (Callable)new SparkleActionExecutor().invoke(adf, controller, request, response);
+                c = (Callable)new SparkleActionExecutor().invoke(adf, controller,  new SimpleWebRequest(request, response));
             }
             startAsyncProcess(c, request, response);
             return;
         }
         
-        Object result = new SparkleActionExecutor().invoke(adf, controller, request, response);
+        Object result = new SparkleActionExecutor().invoke(adf, controller,  new SimpleWebRequest(request, response));
         boolean isCallableResult = result instanceof Callable;
         if(isCallableResult){
             startAsyncProcess((Callable<Object>)result, request, response);
