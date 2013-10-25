@@ -24,7 +24,6 @@ import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
-import me.donnior.sparkle.core.SimpleWebRequest;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.core.resolver.ApplicationConfigScanner;
 import me.donnior.sparkle.core.resolver.ControllerClassResolver;
