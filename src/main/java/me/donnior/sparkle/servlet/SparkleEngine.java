@@ -19,6 +19,7 @@ import me.donnior.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
+import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethodDefinition;
@@ -124,7 +125,10 @@ public class SparkleEngine {
 
 
 
-    protected void doService(final HttpServletRequest request, final HttpServletResponse response, HTTPMethod method){
+    protected void doService(final WebRequest webRequest, HTTPMethod method){
+        HttpServletRequest request = webRequest.getServletRequest();
+        HttpServletResponse response = webRequest.getServletResponse();
+        
         logger.info("processing request : {}", request.getRequestURI());
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
@@ -147,8 +151,8 @@ public class SparkleEngine {
         }
         
         if(controller instanceof ApplicationController){
-            ((ApplicationController)controller).setRequest(request);
-            ((ApplicationController)controller).setResponse(response);
+            ((ApplicationController)controller).setRequest(webRequest.getServletRequest());
+            ((ApplicationController)controller).setResponse(webRequest.getServletResponse());
         }
         
         String actionName = rd.getActionName();
@@ -164,20 +168,20 @@ public class SparkleEngine {
                 c = new Callable<Object>() {
                     @Override
                     public Object call() throws Exception {
-                        return new SparkleActionExecutor().invoke(adf, controller,  new SimpleWebRequest(request, response));
+                        return new SparkleActionExecutor().invoke(adf, controller, webRequest);
                     }
                 };
             } else {
-                c = (Callable)new SparkleActionExecutor().invoke(adf, controller,  new SimpleWebRequest(request, response));
+                c = (Callable)new SparkleActionExecutor().invoke(adf, controller, webRequest);
             }
-            startAsyncProcess(c, request, response);
+            startAsyncProcess(c, webRequest);
             return;
         }
         
-        Object result = new SparkleActionExecutor().invoke(adf, controller,  new SimpleWebRequest(request, response));
+        Object result = new SparkleActionExecutor().invoke(adf, controller, webRequest);
         boolean isCallableResult = result instanceof Callable;
         if(isCallableResult){
-            startAsyncProcess((Callable<Object>)result, request, response);
+            startAsyncProcess((Callable<Object>)result, webRequest);
             return;
         }
         
@@ -236,10 +240,10 @@ public class SparkleEngine {
 
     private ExecutorService es = Executors.newFixedThreadPool(100);
     
-    void startAsyncProcess(Callable<Object> callable, HttpServletRequest request, final HttpServletResponse response){
+    void startAsyncProcess(Callable<Object> callable, WebRequest webRequest){
         //TODO process callable
 //        System.out.println("async process");
-        final AsyncContext ac = request.startAsync();
+        final AsyncContext ac = webRequest.getServletRequest().startAsync();
         es.submit(new Callable<String>() {
 
             @Override

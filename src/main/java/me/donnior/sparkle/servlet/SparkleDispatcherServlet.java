@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.sparkle.HTTPMethod;
+import me.donnior.sparkle.core.SimpleWebRequest;
 
 public class SparkleDispatcherServlet extends HttpServlet {
     
@@ -29,47 +30,47 @@ public class SparkleDispatcherServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
        //if ... doService(req, resp, Method.DELETE);
-        this.sparkle.doService(req, resp, HTTPMethod.GET);
+        this.sparkle.doService(new SimpleWebRequest(req, resp), HTTPMethod.GET);
     }
     
     @Override
     protected void doHead(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        this.sparkle.doService(req, resp, HTTPMethod.HEAD);
+        this.sparkle.doService(new SimpleWebRequest(req, resp), HTTPMethod.HEAD);
     }
     
     
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        this.sparkle.doService(req, resp, HTTPMethod.DELETE);
+        this.sparkle.doService(new SimpleWebRequest(req, resp), HTTPMethod.DELETE);
     }
     
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        this.sparkle.doService(req, resp, HTTPMethod.OPTIONS);
+        this.sparkle.doService(new SimpleWebRequest(req, resp), HTTPMethod.OPTIONS);
     }
     
     
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        this.sparkle.doService(req, resp, HTTPMethod.POST);
+        this.sparkle.doService(new SimpleWebRequest(req, resp), HTTPMethod.POST);
     }
     
     
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        this.sparkle.doService(req, resp, HTTPMethod.PUT);
+        this.sparkle.doService(new SimpleWebRequest(req, resp), HTTPMethod.PUT);
     }
     
     
     @Override
     protected void doTrace(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        this.sparkle.doService(req, resp, HTTPMethod.TRACE);
+        this.sparkle.doService(new SimpleWebRequest(req, resp), HTTPMethod.TRACE);
     }
     
     

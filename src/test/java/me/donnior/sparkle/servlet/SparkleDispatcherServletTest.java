@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.sparkle.HTTPMethod;
+import me.donnior.sparkle.WebRequest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,8 +49,7 @@ class MockSparkleEngine extends SparkleEngine{
     }
 
     @Override
-    protected void doService(HttpServletRequest request,
-            HttpServletResponse response, HTTPMethod method) {
+    protected void doService(WebRequest request, HTTPMethod method) {
         
     }
     
