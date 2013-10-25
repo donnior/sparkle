@@ -1,6 +1,6 @@
 package me.donnior.sparkle.core.route.condition;
 
-import javax.servlet.http.HttpServletRequest;
+import me.donnior.sparkle.WebRequest;
 
 public class HeaderCondition extends AbstractCondition {
 
@@ -8,8 +8,8 @@ public class HeaderCondition extends AbstractCondition {
         super(params);
     }
 
-    public String getConditionValueFromRequest(HttpServletRequest request, String key) {
-        return request.getHeader(key);
+    public String getConditionValueFromRequest(WebRequest webRequest, String key) {
+        return webRequest.getHeader(key);
     }
     
 }

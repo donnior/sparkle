@@ -2,20 +2,20 @@ package me.donnior.sparkle.core.route;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import me.donnior.sparkle.WebRequest;
 
 import com.google.common.collect.Lists;
 
 public class RouteBuilderMatcher {
 
-    private HttpServletRequest request;
+    private WebRequest request;
     private RouteBuilder builder;
 
     private List<MatchedCondition> explicitMatchedCondition = Lists.newArrayList();
 
-    public RouteBuilderMatcher(RouteBuilder builder, HttpServletRequest request) {
+    public RouteBuilderMatcher(RouteBuilder builder, WebRequest webRequest) {
         this.builder = builder;
-        this.request = request;
+        this.request = webRequest;
     }
 
     public boolean match() {

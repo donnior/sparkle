@@ -8,5 +8,11 @@ public interface WebRequest {
     HttpServletRequest getServletRequest();
     
     HttpServletResponse getServletResponse();
+
+    String getParameter(String key);
+
+    String getHeader(String key);
+
+    String getMethod();
     
 }

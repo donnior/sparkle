@@ -1,10 +1,9 @@
 package me.donnior.sparkle.core.route.condition;
 
-import javax.servlet.http.HttpServletRequest;
-
 import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
+import me.donnior.sparkle.WebRequest;
 
 import com.google.common.base.Joiner;
 
@@ -24,7 +23,7 @@ public abstract class AbstractCondition {
         }
     }
 
-    public boolean match(final HttpServletRequest request) {
+    public boolean match(final WebRequest request) {
         return this.conditionItems.all(new Predicate<ConditionItem>() {
             @Override
             public boolean apply(ConditionItem item) {
@@ -39,6 +38,6 @@ public abstract class AbstractCondition {
         return "\""+Joiner.on(",").join(this.params)+"\"";
     }
 
-    public abstract String getConditionValueFromRequest(HttpServletRequest request, String key);
+    public abstract String getConditionValueFromRequest(WebRequest request, String key);
     
 }

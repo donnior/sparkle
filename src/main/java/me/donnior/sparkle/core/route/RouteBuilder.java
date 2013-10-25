@@ -3,9 +3,8 @@ package me.donnior.sparkle.core.route;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
-
 import me.donnior.sparkle.HTTPMethod;
+import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.route.condition.AbstractCondition;
 import me.donnior.sparkle.core.route.condition.ConsumeCondition;
 import me.donnior.sparkle.core.route.condition.HeaderCondition;
@@ -108,12 +107,8 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
         return b;
     }
     
-//    public MatchedCondition[] matchCondition(HttpServletRequest request){
-//        return new MatchedCondition[]{};
-//    }
-//    
     @Override
-    public ConditionMatchResult matchHeader(HttpServletRequest request){
+    public ConditionMatchResult matchHeader(WebRequest request){
         if(hasHeaderCondition()){
             return this.headerCondition.match(request) ? ConditionMatchs.EXPLICIT_SUCCEED : ConditionMatchs.FAILED;
         }
@@ -125,7 +120,7 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     }
 
     @Override
-    public ConditionMatchResult matchParam(HttpServletRequest request){
+    public ConditionMatchResult matchParam(WebRequest request){
         if(hasParamCondition()){
             return this.paramCondition.match(request) ? ConditionMatchs.EXPLICIT_SUCCEED : ConditionMatchs.FAILED;
         }
@@ -137,7 +132,7 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     }
 
     @Override
-    public ConditionMatchResult matchConsume(HttpServletRequest request){
+    public ConditionMatchResult matchConsume(WebRequest request){
         if(hasConsumeCondition()){
             return this.consumeCondition.match(request) ? ConditionMatchs.EXPLICIT_SUCCEED : ConditionMatchs.FAILED;
         }

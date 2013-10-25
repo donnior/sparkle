@@ -7,12 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import me.donnior.fava.FList;
 import me.donnior.fava.Function;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
+import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.util.Singleton;
 
 import org.slf4j.Logger;
@@ -29,10 +28,10 @@ public class SimpleRouteBuilderResolver implements RouteBuilderResolver{
         this.routeBuilderHolder = router;
     }
 
-    public  RouteBuilder match(final HttpServletRequest request) {
+    public  RouteBuilder match(final WebRequest webRequest) {
         
         List<RouteBuilder> rbs = this.routeBuilderHolder.getRegisteredRouteBuilders();
-        FList<RouteBuilderMatcher> matched = findSucceedRouteBuilderMatcher(request, rbs);
+        FList<RouteBuilderMatcher> matched = findSucceedRouteBuilderMatcher(webRequest, rbs);
         RouteBuilderMatcher rbm = getClosestMatchedRouteBuilder(matched);
         if(rbm != null){
             RouteBuilder rb = rbm.getBuilder();
@@ -41,16 +40,16 @@ public class SimpleRouteBuilderResolver implements RouteBuilderResolver{
 //            logger.debug("extracted path variables {}", uriVariables);
             return rb;
         } else {
-            logger.debug("Can't find RoutingBuilder for {}", request);
+            logger.debug("Can't find RoutingBuilder for {}", webRequest);
             return null;
         }
     }
 
-    private FList<RouteBuilderMatcher> findSucceedRouteBuilderMatcher(final HttpServletRequest request, List<RouteBuilder> rbs) {
+    private FList<RouteBuilderMatcher> findSucceedRouteBuilderMatcher(final WebRequest webRequest, List<RouteBuilder> rbs) {
         FList<RouteBuilderMatcher> rbms = FLists.create(rbs).collect(new Function<RouteBuilder, RouteBuilderMatcher>(){
 			@Override
 			public RouteBuilderMatcher apply(RouteBuilder e) {
-				return new RouteBuilderMatcher(e, request);
+				return new RouteBuilderMatcher(e, webRequest);
 			}
         	
         });

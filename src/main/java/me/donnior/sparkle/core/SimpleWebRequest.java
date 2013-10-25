@@ -16,6 +16,21 @@ public class SimpleWebRequest implements WebRequest{
     }
     
     @Override
+    public String getHeader(String name) {
+        return this.request.getHeader(name);
+    }
+    
+    @Override
+    public String getParameter(String name) {
+        return this.request.getParameter(name);
+    }
+    
+    @Override
+    public String getMethod() {
+        return this.request.getMethod();
+    }
+    
+    @Override
     public HttpServletRequest getServletRequest() {
         return this.request;
     }

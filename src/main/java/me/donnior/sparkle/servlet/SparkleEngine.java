@@ -132,7 +132,7 @@ public class SparkleEngine {
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
 
-        RouteBuilder rd = this.routeBuilderResovler.match(request);
+        RouteBuilder rd = this.routeBuilderResovler.match(webRequest);
         
         if(rd == null){
             response.setStatus(HTTPStatusCode.NOT_FOUND);

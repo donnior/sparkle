@@ -1,12 +1,11 @@
 package me.donnior.sparkle.core.route;
 
-import javax.servlet.http.HttpServletRequest;
-
 import me.donnior.sparkle.HTTPMethod;
+import me.donnior.sparkle.WebRequest;
 
 public class RouteMethodDetector {
 
-    public static HTTPMethod detectMethod(HttpServletRequest request) {
+    public static HTTPMethod detectMethod(WebRequest request) {
         if ("get".equals(request.getMethod().toLowerCase())) {
             return HTTPMethod.GET;
         }

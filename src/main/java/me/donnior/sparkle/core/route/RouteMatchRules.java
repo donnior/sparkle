@@ -1,15 +1,15 @@
 package me.donnior.sparkle.core.route;
 
-import javax.servlet.http.HttpServletRequest;
+import me.donnior.sparkle.WebRequest;
 
 public interface RouteMatchRules {
 
     boolean matchPath(String path);
 
-    ConditionMatchResult matchHeader(HttpServletRequest request);
+    ConditionMatchResult matchHeader(WebRequest request);
 
-    ConditionMatchResult matchParam(HttpServletRequest request);
+    ConditionMatchResult matchParam(WebRequest request);
 
-    ConditionMatchResult matchConsume(HttpServletRequest request);
+    ConditionMatchResult matchConsume(WebRequest request);
 
 }
