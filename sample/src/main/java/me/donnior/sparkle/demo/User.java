@@ -1,13 +1,14 @@
 package me.donnior.sparkle.demo;
 
-import me.donnior.eset.Accessable;
+import me.donnior.eset.Accessible;
+
 
 public class User {
 
     
-    @Accessable private String name;
-    @Accessable private String mail;
-    @Accessable private int age;
+    @Accessible private String name;
+    @Accessible private String mail;
+    @Accessible private int age;
     
     public User(){
         this(null, null);

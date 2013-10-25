@@ -1,15 +1,15 @@
 package me.donnior.sparkle.demo;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-import com.google.inject.Inject;
 
 import me.donnior.eset.EntityUpdater;
 import me.donnior.sparkle.annotation.Controller;
 import me.donnior.sparkle.annotation.Out;
+
+import com.google.inject.Inject;
 
 @Controller("user")
 public class UserController {
@@ -33,7 +33,7 @@ public class UserController {
     
     public String save(HttpServletRequest request) {
         User user = new User();
-        new EntityUpdater().updateAttribute(user, request.getParameterMap());
+//        new EntityUpdater().updateAttribute(user, (Map<String, Object>)request.getParameterMap());
         this.service.saveUser(user);
         System.out.println(user.toString());
         return "redirect:user/index";
