@@ -3,8 +3,6 @@ package me.donnior.sparkle.servlet;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
