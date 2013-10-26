@@ -9,7 +9,6 @@ import java.util.concurrent.Executors;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.fava.FArrayList;
@@ -125,10 +124,9 @@ public class SparkleEngine {
 
 
     protected void doService(final WebRequest webRequest, HTTPMethod method){
-        HttpServletRequest request = webRequest.getServletRequest();
         HttpServletResponse response = webRequest.getServletResponse();
         
-        logger.info("processing request : {}", request.getRequestURI());
+        logger.info("processing request : {}", webRequest.getPath());
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
 
@@ -202,7 +200,7 @@ public class SparkleEngine {
 //                    if(viewRender.needPrepareValue()){
 //                        valueToExpose = getValueMapFromContrller(controller);
 //                    }
-                    viewRender.renderView(result, controller, request, response);
+                    viewRender.renderView(result, controller, webRequest);
                 } catch (ServletException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

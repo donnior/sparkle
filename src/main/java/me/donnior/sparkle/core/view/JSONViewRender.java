@@ -3,9 +3,9 @@ package me.donnior.sparkle.core.view;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.srape.FieldExposerModule;
@@ -15,11 +15,11 @@ import com.google.gson.Gson;
 
 public class JSONViewRender implements ViewRender {
     
-    public static final String   INCLUDE_REQUEST_URI_ATTRIBUTE = "javax.servlet.include.request_uri";
-
     @Override
-    public void renderView(Object result, Object controller, HttpServletRequest request, HttpServletResponse response) 
+    public void renderView(Object result, Object controller, WebRequest webRequest) 
             throws ServletException, IOException {
+        HttpServletResponse response = webRequest.getServletResponse();
+        
         if(result instanceof FieldExposerModule){
             response.getWriter().write(new JSONBuilder((FieldExposerModule)result).build());
         } else {

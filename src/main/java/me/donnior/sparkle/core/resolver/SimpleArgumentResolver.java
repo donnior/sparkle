@@ -34,7 +34,7 @@ public class SimpleArgumentResolver implements ArgumentResolver {
       String paramName = ((Param)a).value();
       Class<?> paramType = actionParamDefinition.paramType();
       
-      String[] values = request.getServletRequest().getParameterValues(paramName);
+      String[] values = request.getParameterValues(paramName);
       if(values == null){
           return nullValueForType(paramType);
       } else {

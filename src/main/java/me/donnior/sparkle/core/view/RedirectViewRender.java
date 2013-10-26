@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 
 public class RedirectViewRender implements ViewRender {
@@ -13,8 +14,11 @@ public class RedirectViewRender implements ViewRender {
     private static final String REDIRECT_PREFIX = "redirect:";
 
     @Override
-    public void renderView(Object result, Object controller, HttpServletRequest request, HttpServletResponse response) 
+    public void renderView(Object result, Object controller, WebRequest webRequest) 
             throws ServletException, IOException {
+        HttpServletRequest  request  = webRequest.getServletRequest(); 
+        HttpServletResponse response = webRequest.getServletResponse();
+        
         String path = ((String)result).substring(REDIRECT_PREFIX.length()).trim();
         if(!path.startsWith("http")){
             path = contextPathAppendedPath(path, request);

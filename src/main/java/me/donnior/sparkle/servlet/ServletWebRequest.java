@@ -43,6 +43,11 @@ public class ServletWebRequest implements WebRequest{
     public HttpServletRequest getServletRequest() {
         return this.request;
     }
+    
+    @Override
+    public String[] getParameterValues(String paramName) {
+        return this.request.getParameterValues(paramName);
+    }
 
     @Override
     public HttpServletResponse getServletResponse() {

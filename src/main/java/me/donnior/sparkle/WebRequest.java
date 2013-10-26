@@ -16,5 +16,7 @@ public interface WebRequest {
     String getMethod();
 
     String getPath();
+
+    String[] getParameterValues(String paramName);
     
 }
