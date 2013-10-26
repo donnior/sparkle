@@ -1,18 +1,27 @@
-package me.donnior.sparkle.core;
+package me.donnior.sparkle.servlet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.sparkle.WebRequest;
 
-public class SimpleWebRequest implements WebRequest{
+public class ServletWebRequest implements WebRequest{
 
     private final HttpServletResponse response;
     private final HttpServletRequest request;
 
-    public SimpleWebRequest(HttpServletRequest request, HttpServletResponse response) {
+    public ServletWebRequest(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
+    }
+    
+    @Override
+    public String getPath() {
+        String pathInfo = this.request.getPathInfo();
+        if (pathInfo == null) {
+            return this.request.getServletPath();   //wild servlet mapping like "/" or "*.do"
+        } 
+        return pathInfo;        //otherwise normal mapping like "/cms/*"
     }
     
     @Override

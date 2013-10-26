@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.core.SimpleWebRequest;
+import me.donnior.sparkle.servlet.ServletWebRequest;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class RouteBuilderTest {
         assertTrue(rb.matchPath("/user/donnior"));
         assertFalse(rb.matchPath("/users/1"));
         
-        WebRequest request = new SimpleWebRequest(matchedRequest(),null);
+        WebRequest request = new ServletWebRequest(matchedRequest(),null);
         assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchConsume(request));
         assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchParam(request));
         assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchHeader(request));
@@ -60,7 +60,7 @@ public class RouteBuilderTest {
         assertEquals("user", rb.getControllerName());
         assertEquals("show", rb.getActionName());
         
-        WebRequest request = new SimpleWebRequest(matchedRequest(),null);
+        WebRequest request = new ServletWebRequest(matchedRequest(),null);
 //        assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchConsume(request));
         assertEquals(ConditionMatchs.EXPLICIT_SUCCEED, rb.matchParam(request));
         assertEquals(ConditionMatchs.EXPLICIT_SUCCEED, rb.matchHeader(request));
@@ -74,7 +74,7 @@ public class RouteBuilderTest {
         assertEquals("user", rb.getControllerName());
         assertEquals("show", rb.getActionName());
         
-        WebRequest request = new SimpleWebRequest(notMatchedRequest(),null);
+        WebRequest request = new ServletWebRequest(notMatchedRequest(),null);
 //        assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchConsume(request));
         assertEquals(ConditionMatchs.FAILED, rb.matchParam(request));
         assertEquals(ConditionMatchs.FAILED, rb.matchHeader(request));

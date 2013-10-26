@@ -14,5 +14,7 @@ public interface WebRequest {
     String getHeader(String key);
 
     String getMethod();
+
+    String getPath();
     
 }

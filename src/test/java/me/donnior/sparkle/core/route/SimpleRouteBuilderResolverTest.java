@@ -3,7 +3,7 @@ package me.donnior.sparkle.core.route;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import me.donnior.sparkle.core.SimpleWebRequest;
+import me.donnior.sparkle.servlet.ServletWebRequest;
 import me.donnior.web.adapter.GetHttpServletRequest;
 
 import org.junit.Test;
@@ -17,17 +17,17 @@ public class SimpleRouteBuilderResolverTest {
         
         SimpleRouteBuilderResolver matcher = new SimpleRouteBuilderResolver(router);
 
-        RouteBuilder rb = matcher.match(new SimpleWebRequest(new GetHttpServletRequest("/accounts"), null));
+        RouteBuilder rb = matcher.match(new ServletWebRequest(new GetHttpServletRequest("/accounts"), null));
         assertNull(rb);
         
-        rb = matcher.match(new SimpleWebRequest(new GetHttpServletRequest("/user"), null));
+        rb = matcher.match(new ServletWebRequest(new GetHttpServletRequest("/user"), null));
         assertNotNull(rb);
         assertEquals("/user", rb.getPathPattern());
         assertEquals("show", rb.getActionName());
         
         router.match("/user").matchParams("profile=1").to("user#profile");
         
-        rb = matcher.match(new SimpleWebRequest(new GetHttpServletRequest("/user"){
+        rb = matcher.match(new ServletWebRequest(new GetHttpServletRequest("/user"){
             @Override
             public String getParameter(String name) {
                 if("profile".equals(name)){

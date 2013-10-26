@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import me.donnior.sparkle.core.SimpleWebRequest;
+import me.donnior.sparkle.servlet.ServletWebRequest;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class ConditionsTest {
 
         HeaderCondition c = new HeaderCondition(new String[]{"a=1","b!=1", "c"});
         
-        boolean result = c.match(new SimpleWebRequest(new HttpServletRequestAdapter(){
+        boolean result = c.match(new ServletWebRequest(new HttpServletRequestAdapter(){
             @Override
             public String getHeader(String headerKey) {
                 if("a".equals(headerKey)){
@@ -35,7 +35,7 @@ public class ConditionsTest {
         
         assertTrue(result);
         
-        result = c.match(new SimpleWebRequest(new HttpServletRequestAdapter(){
+        result = c.match(new ServletWebRequest(new HttpServletRequestAdapter(){
             @Override
             public String getHeader(String headerKey) {
                 if("a".equals(headerKey)){
@@ -60,7 +60,7 @@ public class ConditionsTest {
 
         ParamCondition c = new ParamCondition(new String[]{"a=1","b!=1", "c"});
         
-        boolean result = c.match(new SimpleWebRequest(new HttpServletRequestAdapter(){
+        boolean result = c.match(new ServletWebRequest(new HttpServletRequestAdapter(){
             @Override
             public String getParameter(String paramName){
                 if("a".equals(paramName)){
@@ -79,7 +79,7 @@ public class ConditionsTest {
         
         assertTrue(result);
         
-        result = c.match(new SimpleWebRequest(new HttpServletRequestAdapter(){
+        result = c.match(new ServletWebRequest(new HttpServletRequestAdapter(){
             @Override
             public String getHeader(String headerKey) {
                 if("a".equals(headerKey)){

@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.sparkle.core.ActionMethodDefinition;
-import me.donnior.sparkle.core.SimpleWebRequest;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
+import me.donnior.sparkle.servlet.ServletWebRequest;
 import me.donnior.sparkle.servlet.SparkleActionExecutor;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
@@ -26,7 +26,7 @@ public class SparkleActionExecutorTest {
     public void testInvoke(){
         ActionMethodDefinition adf = 
                 new ActionMethodDefinitionFinder().find(ControllerForSparkleActionExecutor.class, "index");
-        Object result = executor.invoke(adf, new ControllerForSparkleActionExecutor(),  new SimpleWebRequest(mockRequest(), null));
+        Object result = executor.invoke(adf, new ControllerForSparkleActionExecutor(),  new ServletWebRequest(mockRequest(), null));
         assertEquals("sparkle1", result);
     }
     
