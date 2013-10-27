@@ -16,7 +16,7 @@ public class JSONViewRender implements ViewRender {
     
     @Override
     public void renderView(Object result, Object controller, WebRequest webRequest) throws IOException {
-        HttpServletResponse response = webRequest.getServletResponse();
+        HttpServletResponse response = webRequest.getOriginalResponse();
         
         if(result instanceof FieldExposerModule){
             response.getWriter().write(new JSONBuilder((FieldExposerModule)result).build());

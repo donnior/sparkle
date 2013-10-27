@@ -23,7 +23,7 @@ public class JSPViewRender implements ViewRender {
     @Override
     public void renderView(Object result, Object controller, WebRequest webRequest) throws IOException {
         final HttpServletRequest request = webRequest.getOriginalRequest();
-        final HttpServletResponse response = webRequest.getServletResponse();
+        final HttpServletResponse response = webRequest.getOriginalResponse();
         String viewPath = this.viewPathPrefix + result + viewPathSuffix;
 
         setRequestAttributeFromControllersExposeValue(controller, request);

@@ -1,12 +1,13 @@
 package me.donnior.sparkle;
 
-import javax.servlet.http.HttpServletResponse;
 
 public interface WebRequest {
 
     <T> T getOriginalRequest();
     
-    HttpServletResponse getServletResponse();
+    <T> T getOriginalResponse();
+    
+//    HttpServletResponse getServletResponse();
 
     String getParameter(String key);
 
@@ -19,5 +20,7 @@ public interface WebRequest {
     String[] getParameterValues(String paramName);
 
     String getContextPath();
+
+    WebResponse getWebResponse();
     
 }

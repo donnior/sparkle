@@ -13,7 +13,7 @@ public class RedirectViewRender implements ViewRender {
 
     @Override
     public void renderView(Object result, Object controller, WebRequest webRequest) throws IOException {
-        HttpServletResponse response = webRequest.getServletResponse();
+        HttpServletResponse response = webRequest.getOriginalResponse();
         
         String path = ((String)result).substring(REDIRECT_PREFIX.length()).trim();
         if(!path.startsWith("http")){

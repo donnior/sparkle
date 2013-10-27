@@ -7,7 +7,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.fava.FArrayList;
@@ -18,6 +17,7 @@ import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
+import me.donnior.sparkle.WebResponse;
 import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethodDefinition;
@@ -123,7 +123,7 @@ public class SparkleEngine {
 
 
     public void doService(final WebRequest webRequest, HTTPMethod method){
-        HttpServletResponse response = webRequest.getServletResponse();
+        WebResponse response = webRequest.getWebResponse();
         
         logger.info("processing request : {}", webRequest.getPath());
         Stopwatch stopwatch = new Stopwatch();
@@ -132,6 +132,7 @@ public class SparkleEngine {
         RouteBuilder rd = this.routeBuilderResovler.match(webRequest);
         
         if(rd == null){
+            System.out.println("not found route");
             response.setStatus(HTTPStatusCode.NOT_FOUND);
             return;
         }
@@ -148,7 +149,7 @@ public class SparkleEngine {
         
         if(controller instanceof ApplicationController){
             ((ApplicationController)controller).setRequest(webRequest);
-            ((ApplicationController)controller).setResponse(webRequest.getServletResponse());
+            ((ApplicationController)controller).setResponse(webRequest.getWebResponse());
         }
         
         String actionName = rd.getActionName();

@@ -20,7 +20,7 @@ public class HttpResponseArgumentResolver implements ArgumentResolver {
     @Override
     public Object resovle(ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
         //TODO introduce response as param or use simply solution?
-        return request.getServletResponse();
+        return request.getOriginalResponse();
     }
 
 }

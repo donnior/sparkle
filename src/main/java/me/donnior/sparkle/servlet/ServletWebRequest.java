@@ -4,15 +4,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.sparkle.WebRequest;
+import me.donnior.sparkle.WebResponse;
 
 public class ServletWebRequest implements WebRequest{
 
-    private final HttpServletResponse response;
+    private final WebResponse webResponse;
     private final HttpServletRequest request;
 
     public ServletWebRequest(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
-        this.response = response;
+        this.webResponse = new ServletWebResponse(response);
     }
     
     @Override
@@ -56,8 +57,13 @@ public class ServletWebRequest implements WebRequest{
     }
 
     @Override
-    public HttpServletResponse getServletResponse() {
-        return this.response;
+    public HttpServletResponse getOriginalResponse() {
+        return this.webResponse.getOriginalResponse();
+    }
+    
+    @Override
+    public WebResponse getWebResponse() {
+        return this.webResponse;
     }
 
 }
