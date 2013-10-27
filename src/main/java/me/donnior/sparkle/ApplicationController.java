@@ -1,14 +1,13 @@
 package me.donnior.sparkle;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ApplicationController {
     
-    protected HttpServletRequest request;
+    protected WebRequest request;
     protected HttpServletResponse response;
     
-    public void setRequest(HttpServletRequest request) {
+    public void setRequest(WebRequest request) {
         this.request = request;
     }
     

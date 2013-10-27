@@ -1,5 +1,7 @@
 package me.donnior.sparkle.core.resolver;
 
+import javax.servlet.http.HttpServletRequest;
+
 import me.donnior.sparkle.Params;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
@@ -17,7 +19,7 @@ public class ParamInstanceArgumentResolver implements ArgumentResolver {
 
     @Override
     public Object resovle(ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
-      return (Params)new HttpRequestParamsWraper(request.getServletRequest());
+      return new HttpRequestParamsWraper((HttpServletRequest)request.getOriginalRequest());
     }
 
 }

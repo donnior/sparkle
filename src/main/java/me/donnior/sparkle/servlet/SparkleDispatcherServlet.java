@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.sparkle.HTTPMethod;
+import me.donnior.sparkle.engine.SparkleEngine;
 
 public class SparkleDispatcherServlet extends HttpServlet {
     

@@ -1,4 +1,4 @@
-package me.donnior.sparkle.servlet;
+package me.donnior.sparkle.engine;
 
 import java.util.Arrays;
 import java.util.HashSet;

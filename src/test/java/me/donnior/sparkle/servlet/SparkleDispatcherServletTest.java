@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
+import me.donnior.sparkle.engine.SparkleEngine;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ class MockSparkleEngine extends SparkleEngine{
     }
 
     @Override
-    protected void doService(WebRequest request, HTTPMethod method) {
+    public void doService(WebRequest request, HTTPMethod method) {
         
     }
     

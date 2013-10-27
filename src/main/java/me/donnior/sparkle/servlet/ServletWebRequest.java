@@ -39,8 +39,9 @@ public class ServletWebRequest implements WebRequest{
         return this.request.getMethod();
     }
     
+    @SuppressWarnings("unchecked")
     @Override
-    public HttpServletRequest getServletRequest() {
+    public HttpServletRequest getOriginalRequest() {
         return this.request;
     }
     

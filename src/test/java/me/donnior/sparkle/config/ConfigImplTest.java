@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.view.ViewRender;
-import me.donnior.sparkle.servlet.ConfigImpl;
+import me.donnior.sparkle.engine.ConfigImpl;
 
 import org.junit.Before;
 import org.junit.Test;

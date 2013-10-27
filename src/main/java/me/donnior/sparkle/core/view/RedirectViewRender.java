@@ -16,7 +16,7 @@ public class RedirectViewRender implements ViewRender {
     @Override
     public void renderView(Object result, Object controller, WebRequest webRequest) 
             throws ServletException, IOException {
-        HttpServletRequest  request  = webRequest.getServletRequest(); 
+        HttpServletRequest  request  = webRequest.getOriginalRequest(); 
         HttpServletResponse response = webRequest.getServletResponse();
         
         String path = ((String)result).substring(REDIRECT_PREFIX.length()).trim();

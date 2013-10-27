@@ -3,11 +3,10 @@ package me.donnior.sparkle.core.resolver;
 import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
 
 /**
- * Argument resolver for argument annotated with {@link Param} 
+ * Argument resolver for argument with type HttpServletRequest 
  *
  */
 public class HttpRequestArgumentResolver implements ArgumentResolver {
@@ -19,7 +18,7 @@ public class HttpRequestArgumentResolver implements ArgumentResolver {
 
     @Override
     public Object resovle(ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
-        return request.getServletRequest();
+        return request.getOriginalRequest();
     }
 
 }
