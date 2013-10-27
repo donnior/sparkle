@@ -2,7 +2,6 @@ package me.donnior.sparkle.core.view;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.sparkle.WebRequest;
@@ -16,8 +15,7 @@ import com.google.gson.Gson;
 public class JSONViewRender implements ViewRender {
     
     @Override
-    public void renderView(Object result, Object controller, WebRequest webRequest) 
-            throws ServletException, IOException {
+    public void renderView(Object result, Object controller, WebRequest webRequest) throws IOException {
         HttpServletResponse response = webRequest.getServletResponse();
         
         if(result instanceof FieldExposerModule){

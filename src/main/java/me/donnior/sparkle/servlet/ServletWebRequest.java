@@ -25,6 +25,11 @@ public class ServletWebRequest implements WebRequest{
     }
     
     @Override
+    public String getContextPath() {
+        return this.request.getServletContext().getContextPath();
+    }
+    
+    @Override
     public String getHeader(String name) {
         return this.request.getHeader(name);
     }

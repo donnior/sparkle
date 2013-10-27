@@ -200,8 +200,6 @@ public class SparkleEngine {
 //                        valueToExpose = getValueMapFromContrller(controller);
 //                    }
                     viewRender.renderView(result, controller, webRequest);
-                } catch (ServletException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
