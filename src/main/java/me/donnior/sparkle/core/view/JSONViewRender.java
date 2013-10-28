@@ -2,9 +2,8 @@ package me.donnior.sparkle.core.view;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletResponse;
-
 import me.donnior.sparkle.WebRequest;
+import me.donnior.sparkle.WebResponse;
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.srape.FieldExposerModule;
@@ -16,12 +15,14 @@ public class JSONViewRender implements ViewRender {
     
     @Override
     public void renderView(Object result, Object controller, WebRequest webRequest) throws IOException {
-        HttpServletResponse response = webRequest.getOriginalResponse();
+        WebResponse response = webRequest.getWebResponse();
+        
+        response.setContentType("application/json; charset=UTF-8");
         
         if(result instanceof FieldExposerModule){
-            response.getWriter().write(new JSONBuilder((FieldExposerModule)result).build());
+            response.write(new JSONBuilder((FieldExposerModule)result).build());
         } else {
-            response.getWriter().write(new Gson().toJson(result));
+            response.write(new Gson().toJson(result));
         }
     }
 
