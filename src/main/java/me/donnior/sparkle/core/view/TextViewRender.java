@@ -13,7 +13,7 @@ public class TextViewRender implements ViewRender {
     public void renderView(Object result, Object controller, WebRequest webRequest) throws IOException {
         WebResponse response = webRequest.getWebResponse();
         
-        response.setContentType("application/text; charset=UTF-8");
+        response.setContentType("text/plain; charset=UTF-8");
         response.write(result.toString());
     }
 
