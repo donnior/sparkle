@@ -102,6 +102,9 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     @Override
     public boolean matchPath(String path){
         //TODO how about introducing a pattern-path-match cache? reduce the cost creating a matcher every time
+        if(path.endsWith("/")){
+            path = path.substring(0, path.length()-1);
+        }
         boolean b = this.matchPatten.matcher(path).matches();
 //        logger.debug("match uri {} using pattern {} {}", new Object[]{path, this.matchPatten.pattern(), b?" success":" failed"});
         return b;
