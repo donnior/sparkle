@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.sparkle.HTTPMethod;
+import me.donnior.sparkle.WebRequest;
+import me.donnior.sparkle.servlet.ServletWebRequest;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Test;
@@ -13,14 +15,14 @@ public class RouteMethodDetectorTest extends RouteMethodDetector{
     
     @Test
     public void test_direct_method_detect(){
-        HttpServletRequest request = getRequest();
+        WebRequest request = new ServletWebRequest(getRequest(), null);
         
         assertEquals(HTTPMethod.GET, RouteMethodDetector.detectMethod(request));
         
-        request = postRequest();
+        request = new ServletWebRequest(postRequest(), null);
         assertEquals(HTTPMethod.POST, RouteMethodDetector.detectMethod(request));
         
-        request = unknownRequest();
+        request = new ServletWebRequest(unknownRequest(), null);
         assertEquals(HTTPMethod.GET, RouteMethodDetector.detectMethod(request));
         
     }

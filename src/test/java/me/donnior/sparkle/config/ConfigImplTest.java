@@ -5,12 +5,11 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.view.ViewRender;
-import me.donnior.sparkle.servlet.ConfigImpl;
+import me.donnior.sparkle.engine.ConfigImpl;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -70,8 +69,7 @@ class DemoViewRenderForConfig implements ViewRender{
     }
 
     @Override
-    public void renderView(Object result, Object controller,  HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
+    public void renderView(Object result, Object controller, WebRequest request) throws IOException {
     }
     
 }

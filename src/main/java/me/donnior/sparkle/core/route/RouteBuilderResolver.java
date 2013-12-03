@@ -1,6 +1,6 @@
 package me.donnior.sparkle.core.route;
 
-import javax.servlet.http.HttpServletRequest;
+import me.donnior.sparkle.WebRequest;
 
 public interface RouteBuilderResolver {
     /**
@@ -8,6 +8,6 @@ public interface RouteBuilderResolver {
      * @param request
      * @return
      */
-    RouteBuilder match(final HttpServletRequest request);
+    RouteBuilder match(final WebRequest webRequest);
     
 }

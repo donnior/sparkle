@@ -1,4 +1,4 @@
-package me.donnior.sparkle.servlet;
+package me.donnior.sparkle.engine;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,9 +7,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.fava.FArrayList;
@@ -20,6 +17,7 @@ import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
+import me.donnior.sparkle.WebResponse;
 import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethodDefinition;
@@ -124,17 +122,17 @@ public class SparkleEngine {
 
 
 
-    protected void doService(final WebRequest webRequest, HTTPMethod method){
-        HttpServletRequest request = webRequest.getServletRequest();
-        HttpServletResponse response = webRequest.getServletResponse();
+    public void doService(final WebRequest webRequest, HTTPMethod method){
+        WebResponse response = webRequest.getWebResponse();
         
-        logger.info("processing request : {}", request.getRequestURI());
+        logger.info("processing request : {}", webRequest.getPath());
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
 
-        RouteBuilder rd = this.routeBuilderResovler.match(request);
+        RouteBuilder rd = this.routeBuilderResovler.match(webRequest);
         
         if(rd == null){
+            System.out.println("not found route");
             response.setStatus(HTTPStatusCode.NOT_FOUND);
             return;
         }
@@ -150,8 +148,8 @@ public class SparkleEngine {
         }
         
         if(controller instanceof ApplicationController){
-            ((ApplicationController)controller).setRequest(webRequest.getServletRequest());
-            ((ApplicationController)controller).setResponse(webRequest.getServletResponse());
+            ((ApplicationController)controller).setRequest(webRequest);
+            ((ApplicationController)controller).setResponse(webRequest.getWebResponse());
         }
         
         String actionName = rd.getActionName();
@@ -202,9 +200,7 @@ public class SparkleEngine {
 //                    if(viewRender.needPrepareValue()){
 //                        valueToExpose = getValueMapFromContrller(controller);
 //                    }
-                    viewRender.renderView(result, controller, request, response);
-                } catch (ServletException e) {
-                    e.printStackTrace();
+                    viewRender.renderView(result, controller, webRequest);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -240,8 +236,8 @@ public class SparkleEngine {
     private ExecutorService es = Executors.newFixedThreadPool(100);
     
     void startAsyncProcess(Callable<Object> callable, WebRequest webRequest){
-        //TODO process callable
-//        System.out.println("async process");
+        //TODO process async callable
+        /*
         final AsyncContext ac = webRequest.getServletRequest().startAsync();
         es.submit(new Callable<String>() {
 
@@ -256,6 +252,7 @@ public class SparkleEngine {
                 return null;
             }
         });
+        */
     }
     
     private boolean isAsyncActionDefinition(ActionMethodDefinition adf) {

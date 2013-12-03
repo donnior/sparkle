@@ -2,10 +2,9 @@ package me.donnior.sparkle.core.view;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 
 public class RedirectViewRender implements ViewRender {
@@ -13,11 +12,12 @@ public class RedirectViewRender implements ViewRender {
     private static final String REDIRECT_PREFIX = "redirect:";
 
     @Override
-    public void renderView(Object result, Object controller, HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
+    public void renderView(Object result, Object controller, WebRequest webRequest) throws IOException {
+        HttpServletResponse response = webRequest.getOriginalResponse();
+        
         String path = ((String)result).substring(REDIRECT_PREFIX.length()).trim();
         if(!path.startsWith("http")){
-            path = contextPathAppendedPath(path, request);
+            path = contextPathAppendedPath(path, webRequest);
         }
         String encodedRedirectURL = response.encodeRedirectURL(path);
         
@@ -25,8 +25,8 @@ public class RedirectViewRender implements ViewRender {
         response.setHeader("Location", encodedRedirectURL);
     }
 
-    private String contextPathAppendedPath(String path, HttpServletRequest request) {
-        String contextPath = request.getServletContext().getContextPath();
+    private String contextPathAppendedPath(String path, WebRequest request) {
+        String contextPath = request.getContextPath();
         return path.startsWith("/") ? contextPath+path : contextPath + "/" + path;
     }
 

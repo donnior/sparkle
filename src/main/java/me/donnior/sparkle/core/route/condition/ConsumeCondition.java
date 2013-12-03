@@ -1,6 +1,6 @@
 package me.donnior.sparkle.core.route.condition;
 
-import javax.servlet.http.HttpServletRequest;
+import me.donnior.sparkle.WebRequest;
 
 public class ConsumeCondition extends AbstractCondition {
 
@@ -8,7 +8,7 @@ public class ConsumeCondition extends AbstractCondition {
         super(params);
     }
 
-    public String getConditionValueFromRequest(HttpServletRequest request, String key) {
+    public String getConditionValueFromRequest(WebRequest request, String key) {
 //        return request.getHeader(key);
         throw new UnsupportedOperationException("not implemented yet");
     }

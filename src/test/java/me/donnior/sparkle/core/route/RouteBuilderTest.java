@@ -5,10 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import javax.servlet.http.HttpServletRequest;
-
 import me.donnior.sparkle.HTTPMethod;
+import me.donnior.sparkle.WebRequest;
+import me.donnior.sparkle.servlet.ServletWebRequest;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Test;
@@ -47,7 +46,7 @@ public class RouteBuilderTest {
         assertTrue(rb.matchPath("/user/donnior"));
         assertFalse(rb.matchPath("/users/1"));
         
-        HttpServletRequest request = matchedRequest();
+        WebRequest request = new ServletWebRequest(matchedRequest(),null);
         assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchConsume(request));
         assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchParam(request));
         assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchHeader(request));
@@ -61,7 +60,7 @@ public class RouteBuilderTest {
         assertEquals("user", rb.getControllerName());
         assertEquals("show", rb.getActionName());
         
-        HttpServletRequest request = matchedRequest();
+        WebRequest request = new ServletWebRequest(matchedRequest(),null);
 //        assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchConsume(request));
         assertEquals(ConditionMatchs.EXPLICIT_SUCCEED, rb.matchParam(request));
         assertEquals(ConditionMatchs.EXPLICIT_SUCCEED, rb.matchHeader(request));
@@ -75,7 +74,7 @@ public class RouteBuilderTest {
         assertEquals("user", rb.getControllerName());
         assertEquals("show", rb.getActionName());
         
-        HttpServletRequest request = notMatchedRequest();
+        WebRequest request = new ServletWebRequest(notMatchedRequest(),null);
 //        assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchConsume(request));
         assertEquals(ConditionMatchs.FAILED, rb.matchParam(request));
         assertEquals(ConditionMatchs.FAILED, rb.matchHeader(request));
