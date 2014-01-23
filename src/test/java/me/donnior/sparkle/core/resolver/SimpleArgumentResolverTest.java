@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
-import me.donnior.sparkle.servlet.ServletWebRequest;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
+import me.donnior.web.adapter.ServletWebRequest;
 
 import org.junit.Test;
 

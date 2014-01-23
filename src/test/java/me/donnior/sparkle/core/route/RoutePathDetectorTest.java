@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.servlet.ServletWebRequest;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
+import me.donnior.web.adapter.ServletWebRequest;
 
 import org.junit.Test;
 

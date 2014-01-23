@@ -34,6 +34,7 @@ import me.donnior.sparkle.core.route.RouterImpl;
 import me.donnior.sparkle.core.route.SimpleRouteBuilderResolver;
 import me.donnior.sparkle.core.view.ViewRender;
 import me.donnior.sparkle.core.view.ViewRendersResovler;
+import me.donnior.sparkle.ext.EnvSpecific;
 import me.donnior.sparkle.http.HTTPStatusCode;
 import me.donnior.sparkle.route.RouteModule;
 
@@ -51,10 +52,12 @@ public class SparkleEngine {
     private RouteBuilderResolver routeBuilderResovler;
     private ControllerClassResolver controllerClassResolver;
     private ActionMethodDefinitionFinder actionMethodResolver;
+    private EnvSpecific envSpecific;
     
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
     
-    public SparkleEngine(){
+    public SparkleEngine(EnvSpecific es){
+        this.envSpecific = es;
         this.config                  = new ConfigImpl();
         this.viewRenders             = new FArrayList<ViewRender>();
         this.router                  = RouterImpl.getInstance();
@@ -98,7 +101,7 @@ public class SparkleEngine {
     }
 
     private void initViewRenders(ConfigResult config) {
-        this.viewRenders.addAll(new ViewRendersResovler().resovleRegisteredViewRenders(config.getCustomizedViewRenders()));
+        this.viewRenders.addAll(this.envSpecific.getViewRendersResovler().resovleRegisteredViewRenders(config.getCustomizedViewRenders()));
     }
 
     //TODO how to make the controller factory can be customized, for example let user use an
@@ -165,17 +168,17 @@ public class SparkleEngine {
                 c = new Callable<Object>() {
                     @Override
                     public Object call() throws Exception {
-                        return new SparkleActionExecutor().invoke(adf, controller, webRequest);
+                        return new SparkleActionExecutor(envSpecific.getParamsResolverManager()).invoke(adf, controller, webRequest);
                     }
                 };
             } else {
-                c = (Callable)new SparkleActionExecutor().invoke(adf, controller, webRequest);
+                c = (Callable)new SparkleActionExecutor(envSpecific.getParamsResolverManager()).invoke(adf, controller, webRequest);
             }
             startAsyncProcess(c, webRequest);
             return;
         }
         
-        Object result = new SparkleActionExecutor().invoke(adf, controller, webRequest);
+        Object result = new SparkleActionExecutor(envSpecific.getParamsResolverManager()).invoke(adf, controller, webRequest);
         boolean isCallableResult = result instanceof Callable;
         if(isCallableResult){
             startAsyncProcess((Callable<Object>)result, webRequest);
