@@ -35,11 +35,9 @@ public class ViewRendersResovler {
     private void ensuerDefaultViewRenders(FList<ViewRender> viewRenders) {
         viewRenders.add(new JSONViewRender());
         viewRenders.add(new TextViewRender());
-//        viewRenders.add(new RedirectViewRender());
-//        viewRenders.add(new JSPViewRender());
     }
     
-    public void registerCustomViewRenders(List<ViewRender> viewRenders){
+    protected void registerCustomViewRenders(List<ViewRender> viewRenders){
         
     }
     
