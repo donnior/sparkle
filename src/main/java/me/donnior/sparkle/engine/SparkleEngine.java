@@ -33,7 +33,6 @@ import me.donnior.sparkle.core.route.RouteBuilderResolver;
 import me.donnior.sparkle.core.route.RouterImpl;
 import me.donnior.sparkle.core.route.SimpleRouteBuilderResolver;
 import me.donnior.sparkle.core.view.ViewRender;
-import me.donnior.sparkle.core.view.ViewRendersResovler;
 import me.donnior.sparkle.ext.EnvSpecific;
 import me.donnior.sparkle.http.HTTPStatusCode;
 import me.donnior.sparkle.route.RouteModule;
@@ -57,7 +56,7 @@ public class SparkleEngine {
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
     
     public SparkleEngine(EnvSpecific es){
-        this.envSpecific = es;
+        this.envSpecific             = es;
         this.config                  = new ConfigImpl();
         this.viewRenders             = new FArrayList<ViewRender>();
         this.router                  = RouterImpl.getInstance();
