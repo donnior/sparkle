@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
-import me.donnior.sparkle.engine.SparkleActionExecutor;
+import me.donnior.sparkle.engine.ActionExecutor;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Before;
@@ -12,11 +12,11 @@ import org.junit.Test;
 
 public class SparkleActionExecutorTest {
 
-    private SparkleActionExecutor executor;
+    private ActionExecutor executor;
     
     @Before
     public void setup(){
-        this.executor = new SparkleActionExecutor(null);
+        this.executor = new ActionExecutor(null);
     }
     
     @Test

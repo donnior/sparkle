@@ -11,11 +11,11 @@ import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
 import me.donnior.sparkle.core.resolver.ParamResolversManager;
 
-public class SparkleActionExecutor {
+public class ActionExecutor {
 
     private ParamResolversManager paramResolver ;
     
-    public SparkleActionExecutor(ParamResolversManager paramResolversManager){
+    public ActionExecutor(ParamResolversManager paramResolversManager){
         this.paramResolver = paramResolversManager;
     }
     
