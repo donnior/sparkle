@@ -7,12 +7,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.fava.FArrayList;
 import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
-import me.donnior.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
@@ -21,7 +19,6 @@ import me.donnior.sparkle.WebResponse;
 import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethodDefinition;
-import me.donnior.sparkle.core.ActionMethodParamDefinition;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.core.resolver.ApplicationConfigScanner;
 import me.donnior.sparkle.core.resolver.ControllerClassResolver;
@@ -226,13 +223,7 @@ public class SparkleEngine {
      * @return
      */
     private boolean isResponseProcessedManually(ActionMethodDefinition adf) {
-        return FLists.create(adf.paramDefinitions()).any(new Predicate<ActionMethodParamDefinition>() {
-            
-            @Override
-            public boolean apply(ActionMethodParamDefinition apd) {
-                return apd.paramType().equals(HttpServletResponse.class);
-            }
-        });
+        return this.envSpecific.getLifeCycleManager().isResponseProcessedManually(adf);
     }
 
     private ExecutorService es = Executors.newFixedThreadPool(100);
