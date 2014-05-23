@@ -7,8 +7,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.servlet.ServletWebRequest;
 import me.donnior.web.adapter.HttpServletRequestAdapter;
+import me.donnior.web.adapter.ServletWebRequest;
 
 import org.junit.Test;
 

@@ -7,12 +7,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.servlet.http.HttpServletResponse;
 
 import me.donnior.fava.FArrayList;
 import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
-import me.donnior.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
@@ -21,7 +19,6 @@ import me.donnior.sparkle.WebResponse;
 import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethodDefinition;
-import me.donnior.sparkle.core.ActionMethodParamDefinition;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.core.resolver.ApplicationConfigScanner;
 import me.donnior.sparkle.core.resolver.ControllerClassResolver;
@@ -33,7 +30,7 @@ import me.donnior.sparkle.core.route.RouteBuilderResolver;
 import me.donnior.sparkle.core.route.RouterImpl;
 import me.donnior.sparkle.core.route.SimpleRouteBuilderResolver;
 import me.donnior.sparkle.core.view.ViewRender;
-import me.donnior.sparkle.core.view.ViewRendersResovler;
+import me.donnior.sparkle.ext.EnvSpecific;
 import me.donnior.sparkle.http.HTTPStatusCode;
 import me.donnior.sparkle.route.RouteModule;
 
@@ -51,10 +48,12 @@ public class SparkleEngine {
     private RouteBuilderResolver routeBuilderResovler;
     private ControllerClassResolver controllerClassResolver;
     private ActionMethodDefinitionFinder actionMethodResolver;
+    private EnvSpecific envSpecific;
     
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
     
-    public SparkleEngine(){
+    public SparkleEngine(EnvSpecific es){
+        this.envSpecific             = es;
         this.config                  = new ConfigImpl();
         this.viewRenders             = new FArrayList<ViewRender>();
         this.router                  = RouterImpl.getInstance();
@@ -98,7 +97,7 @@ public class SparkleEngine {
     }
 
     private void initViewRenders(ConfigResult config) {
-        this.viewRenders.addAll(new ViewRendersResovler().resovleRegisteredViewRenders(config.getCustomizedViewRenders()));
+        this.viewRenders.addAll(this.envSpecific.getViewRendersResovler().resovleRegisteredViewRenders(config.getCustomizedViewRenders()));
     }
 
     //TODO how to make the controller factory can be customized, for example let user use an
@@ -165,17 +164,17 @@ public class SparkleEngine {
                 c = new Callable<Object>() {
                     @Override
                     public Object call() throws Exception {
-                        return new SparkleActionExecutor().invoke(adf, controller, webRequest);
+                        return new ActionExecutor(envSpecific.getParamsResolverManager()).invoke(adf, controller, webRequest);
                     }
                 };
             } else {
-                c = (Callable)new SparkleActionExecutor().invoke(adf, controller, webRequest);
+                c = (Callable)new ActionExecutor(envSpecific.getParamsResolverManager()).invoke(adf, controller, webRequest);
             }
             startAsyncProcess(c, webRequest);
             return;
         }
         
-        Object result = new SparkleActionExecutor().invoke(adf, controller, webRequest);
+        Object result = new ActionExecutor(envSpecific.getParamsResolverManager()).invoke(adf, controller, webRequest);
         boolean isCallableResult = result instanceof Callable;
         if(isCallableResult){
             startAsyncProcess((Callable<Object>)result, webRequest);
@@ -224,13 +223,7 @@ public class SparkleEngine {
      * @return
      */
     private boolean isResponseProcessedManually(ActionMethodDefinition adf) {
-        return FLists.create(adf.paramDefinitions()).any(new Predicate<ActionMethodParamDefinition>() {
-            
-            @Override
-            public boolean apply(ActionMethodParamDefinition apd) {
-                return apd.paramType().equals(HttpServletResponse.class);
-            }
-        });
+        return this.envSpecific.getLifeCycleManager().isResponseProcessedManually(adf);
     }
 
     private ExecutorService es = Executors.newFixedThreadPool(100);

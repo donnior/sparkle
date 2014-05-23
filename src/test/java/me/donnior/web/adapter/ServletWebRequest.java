@@ -1,4 +1,4 @@
-package me.donnior.sparkle.servlet;
+package me.donnior.web.adapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

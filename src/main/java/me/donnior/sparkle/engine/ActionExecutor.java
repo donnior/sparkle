@@ -9,14 +9,18 @@ import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
-import me.donnior.sparkle.core.resolver.DefaultParamResolversManager;
 import me.donnior.sparkle.core.resolver.ParamResolversManager;
 
-public class SparkleActionExecutor {
+public class ActionExecutor {
+
+    private ParamResolversManager paramResolver ;
+    
+    public ActionExecutor(ParamResolversManager paramResolversManager){
+        this.paramResolver = paramResolversManager;
+    }
     
     //TODO should refactord this params resolver, make it support multi resolvers so programmers can create their own
     // param resolver like param with class type 'Project'; so it should be List<ParamResolver>
-    private ParamResolversManager paramResolver = new DefaultParamResolversManager();
 
     public Object invoke(ActionMethodDefinition adf, Object controller, 
             final WebRequest request) {

@@ -28,14 +28,17 @@ public class ViewRendersResovler {
         });
         
         ensuerDefaultViewRenders(viewRenders);
+        registerCustomViewRenders(viewRenders);
         return viewRenders;
     }
 
     private void ensuerDefaultViewRenders(FList<ViewRender> viewRenders) {
         viewRenders.add(new JSONViewRender());
         viewRenders.add(new TextViewRender());
-        viewRenders.add(new RedirectViewRender());
-        viewRenders.add(new JSPViewRender());
+    }
+    
+    protected void registerCustomViewRenders(List<ViewRender> viewRenders){
+        
     }
     
 }

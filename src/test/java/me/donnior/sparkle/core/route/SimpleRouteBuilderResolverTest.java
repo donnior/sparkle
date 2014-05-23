@@ -3,8 +3,8 @@ package me.donnior.sparkle.core.route;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import me.donnior.sparkle.servlet.ServletWebRequest;
 import me.donnior.web.adapter.GetHttpServletRequest;
+import me.donnior.web.adapter.ServletWebRequest;
 
 import org.junit.Test;
 

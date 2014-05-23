@@ -6,8 +6,6 @@ public interface WebRequest {
     <T> T getOriginalRequest();
     
     <T> T getOriginalResponse();
-    
-//    HttpServletResponse getServletResponse();
 
     String getParameter(String key);
 

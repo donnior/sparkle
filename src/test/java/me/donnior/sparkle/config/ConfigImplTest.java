@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodDefinition;
