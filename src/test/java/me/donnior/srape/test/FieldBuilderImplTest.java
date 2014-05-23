@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import me.donnior.fava.util.FLists;
+import me.donnior.srape.Environment;
 import me.donnior.srape.FieldBuilderImpl;
 import me.donnior.srape.FieldExposer;
 import me.donnior.srape.SrapeEntity;
@@ -119,7 +120,7 @@ public class FieldBuilderImplTest {
 class ExampleEntity implements SrapeEntity<Integer>{
 
     @Override
-    public void config(Integer object, FieldExposer exposer) {
+    public void config(Integer object, FieldExposer exposer, Environment env) {
         // TODO Auto-generated method stub
         
     }

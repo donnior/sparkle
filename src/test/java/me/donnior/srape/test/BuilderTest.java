@@ -2,10 +2,13 @@ package me.donnior.srape.test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import me.donnior.srape.AbstractFieldExposerModule;
+import me.donnior.srape.Environment;
+import me.donnior.srape.Environments;
 import me.donnior.srape.FieldExposerModule;
 import me.donnior.srape.JSONBuilder;
 
@@ -48,9 +51,10 @@ public class BuilderTest {
   public void testStringEscape(){
       final String name = "\"foo\" is not \"bar\". specials: \b\r\n\f\t\\/";
       
+      Environment env = Environments.envFromMap(new HashMap<String, Object>());
       FieldExposerModule module = new AbstractFieldExposerModule() {
           public void config() {
-              expose(name).withName("login");     //string
+              expose(name).withName("login").plusEnv(null);     //string
           }
       };
       

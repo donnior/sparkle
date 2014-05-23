@@ -19,6 +19,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
     private boolean condition;
     private boolean hasConditon;
     private boolean hasName;
+    private Environment env;
     
     public FieldBuilderImpl(Object value) {
         this.value = value;
@@ -39,6 +40,12 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
         this.hasName = false;
         this.clz = entityClass;
         return this;        
+    }
+    
+    @Override
+    public ScopedFieldBuilder plusEnv(Environment env) {
+        this.env = env;
+        return this;
     }
     
     public String getName() {
@@ -210,7 +217,7 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
         try {
             SrapeEntity entity = clz.newInstance();
             FieldsExpositionHolder holder = new FieldsExpositionHolder();
-            entity.config(value, holder);
+            entity.config(value, holder, env);
             return holder.build();
         } catch (InstantiationException e) {
             e.printStackTrace();
