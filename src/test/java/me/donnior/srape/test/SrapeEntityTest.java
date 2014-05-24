@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import me.donnior.srape.AbstractFieldExposerModule;
+import me.donnior.srape.Environment;
+import me.donnior.srape.Environments;
 import me.donnior.srape.FieldExposerModule;
 import me.donnior.srape.JSONBuilder;
 import me.donnior.srape.mapping.DetailedUserEntity;
@@ -17,15 +19,19 @@ import me.donnior.srape.model.User;
 
 import org.junit.Test;
 
+
 public class SrapeEntityTest {
 
     @Test
     public void test_srape_entity_value_1() {
         final User user = domainUser();
-
+        
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("isAdmin", true);
+        final Environment env = Environments.envFromMap(map);
         FieldExposerModule module = new AbstractFieldExposerModule() {
             public void config() {
-                expose(user).withNameAndType("user", SummaryUserEntity.class);
+                expose(user).withNameAndType("user", SummaryUserEntity.class).plusEnv(env);
             }
         };
 

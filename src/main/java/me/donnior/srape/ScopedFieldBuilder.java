@@ -7,5 +7,5 @@ public interface ScopedFieldBuilder extends ConditionalFieldBuilder {
     public ConditionalFieldBuilder withName(String string);
     
     public ConditionalFieldBuilder withType(Class<? extends SrapeEntity> entityClass);
-
+    
 }

@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Date;
 import java.util.List;
 
+import me.donnior.srape.Environment;
 import me.donnior.srape.FieldBuilderImpl;
 import me.donnior.srape.FieldExposer;
 import me.donnior.srape.FieldExposerModule;
@@ -64,7 +65,7 @@ class Account{
 class AccountEntity implements SrapeEntity<Account>{
     
     @Override
-    public void config(Account account, FieldExposer exposer) {
+    public void config(Account account, FieldExposer exposer, Environment env) {
         exposer.expose(account.login).withName("users").when(1 > 76);
         exposer.expose(account.loginAt).withNameAndType("account", AccountEntity.class);
     }
