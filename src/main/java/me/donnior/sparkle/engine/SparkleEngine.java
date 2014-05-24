@@ -135,6 +135,12 @@ public class SparkleEngine {
             response.setStatus(HTTPStatusCode.NOT_FOUND);
             return;
         }
+        
+        Map<String, String> pathVariables = PathVariableDetector.extractPathVariables(rd, webRequest);
+        webRequest.setAttribute(WebRequest.REQ_ATTR_FOR_PATH_VARIABLES, pathVariables);
+        
+        
+        
         String controllerName = rd.getControllerName();
         
         Class<?> controllerClass = controllerClassResolver.getControllerClass(controllerName);

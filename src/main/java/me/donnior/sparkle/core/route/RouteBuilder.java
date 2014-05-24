@@ -1,6 +1,8 @@
 package me.donnior.sparkle.core.route;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import me.donnior.sparkle.HTTPMethod;
@@ -110,6 +112,23 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
         return b;
     }
     
+    //TODO 重构此方法，放至合适的地方
+    public List<String> extractPathVariableValues(String path){
+        List<String> variables = new ArrayList<String>();
+        Pattern pattern = this.matchPatten;
+        Matcher matcher = pattern.matcher(path);
+
+        if (matcher.matches()) {
+            int count = matcher.groupCount();
+            for (int index = 1; index <= count; index++) {
+                String group = matcher.group(index);
+                variables.add(group);
+            }
+        }
+        
+        return variables;
+    }
+    
     @Override
     public ConditionMatchResult matchHeader(WebRequest request){
         if(hasHeaderCondition()){
@@ -167,6 +186,10 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     
     public String getPathPattern() {
         return pathPattern;
+    }
+    
+    public List<String> getPathVariables() {
+        return pathVariables;
     }
     
     @Override

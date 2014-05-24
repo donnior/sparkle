@@ -23,7 +23,7 @@ public class RouteChecker {
         while(m.find()) {
             String matched = m.group(1);
             if(Strings.isCharacterOrDigit(matched)){
-                this.pathVariables .add(matched);
+                this.pathVariables.add(matched);
             } else {
                 throw new SparkleException(matched + " is invalid in " + src);
             }
@@ -48,5 +48,6 @@ public class RouteChecker {
     public List<String> pathVariables() {
         return pathVariables;
     }
-       
+    
+    
 }

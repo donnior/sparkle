@@ -58,5 +58,17 @@ public class WebRequestAdapter implements WebRequest{
         // TODO Auto-generated method stub
         return null;
     }
+    
+    @Override
+    public <T> T getAttribute(String attributeName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public void setAttribute(String name, Object value) {
+        // TODO Auto-generated method stub
+        
+    }
 
 }
