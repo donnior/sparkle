@@ -54,7 +54,7 @@ public class RouteBuilderMatcher {
     }
 
     private boolean isPathMatched() {
-        return builder.matchPath(RoutePathDetector.extractPath(request));
+        return builder.matchPath(request.getPath());
     }
     
     

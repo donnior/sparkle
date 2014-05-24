@@ -10,18 +10,18 @@ import me.donnior.web.adapter.ServletWebRequest;
 
 import org.junit.Test;
 
-public class RoutePathDetectorTest extends RoutePathDetector{
+public class RoutePathDetectorTest{
     
     @Test
     public void test_extract_normal_path(){
         WebRequest request = new ServletWebRequest(normalPathRequest(), null);
-        assertEquals("/pathinfo", RoutePathDetector.extractPath(request));
+        assertEquals("/pathinfo", request.getPath());
     }
     
     @Test
     public void test_extract_wild_path(){
         WebRequest request = new ServletWebRequest(wildPathRequest(), null);
-        assertEquals("/servletPath", RoutePathDetector.extractPath(request));
+        assertEquals("/servletPath", request.getPath());
     }
 
     private HttpServletRequest normalPathRequest() {

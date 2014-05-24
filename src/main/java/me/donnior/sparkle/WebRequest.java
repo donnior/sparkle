@@ -16,10 +16,19 @@ public interface WebRequest {
 
     String getMethod();
 
+    /**
+     * get path from request, without the 'context' path, 
+     * for example, under a servlet container. 
+     * @return
+     */
     String getPath();
 
     String[] getParameterValues(String paramName);
 
+    /**
+     * get context path from request, for servlet container it's the servlet context path
+     * @return
+     */
     String getContextPath();
 
     WebResponse getWebResponse();
