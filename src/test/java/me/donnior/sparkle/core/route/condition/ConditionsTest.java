@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import me.donnior.sparkle.WebRequest;
-import me.donnior.web.adapter.HttpServletRequestAdapter;
 import me.donnior.web.adapter.WebRequestAdapter;
 
 import org.junit.Test;

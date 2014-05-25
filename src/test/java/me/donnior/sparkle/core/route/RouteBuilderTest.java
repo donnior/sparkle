@@ -7,8 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
-import me.donnior.web.adapter.HttpServletRequestAdapter;
-import me.donnior.web.adapter.ServletWebRequest;
+import me.donnior.web.adapter.WebRequestAdapter;
 
 import org.junit.Test;
 
@@ -66,7 +65,7 @@ public class RouteBuilderTest {
         assertTrue(rb.matchPath("/user/donnior"));
         assertFalse(rb.matchPath("/users/1"));
         
-        WebRequest request = new ServletWebRequest(matchedRequest(),null);
+        WebRequest request = matchedRequest();
         assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchConsume(request));
         assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchParam(request));
         assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchHeader(request));
@@ -80,7 +79,7 @@ public class RouteBuilderTest {
         assertEquals("user", rb.getControllerName());
         assertEquals("show", rb.getActionName());
         
-        WebRequest request = new ServletWebRequest(matchedRequest(),null);
+        WebRequest request = matchedRequest();
 //        assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchConsume(request));
         assertEquals(ConditionMatchs.EXPLICIT_SUCCEED, rb.matchParam(request));
         assertEquals(ConditionMatchs.EXPLICIT_SUCCEED, rb.matchHeader(request));
@@ -94,7 +93,7 @@ public class RouteBuilderTest {
         assertEquals("user", rb.getControllerName());
         assertEquals("show", rb.getActionName());
         
-        WebRequest request = new ServletWebRequest(notMatchedRequest(),null);
+        WebRequest request = notMatchedRequest();
 //        assertEquals(ConditionMatchs.DEFAULT_SUCCEED, rb.matchConsume(request));
         assertEquals(ConditionMatchs.FAILED, rb.matchParam(request));
         assertEquals(ConditionMatchs.FAILED, rb.matchHeader(request));
@@ -125,8 +124,8 @@ public class RouteBuilderTest {
         
     }
     
-    private HttpServletRequestAdapter matchedRequest() {
-        return new HttpServletRequestAdapter(){
+    private WebRequest matchedRequest() {
+        return new WebRequestAdapter(){
             @Override
             public String getHeader(String arg0) {
                 if(arg0.equals("token")){
@@ -147,8 +146,8 @@ public class RouteBuilderTest {
         };
     }   
     
-    private HttpServletRequestAdapter notMatchedRequest() {
-        return new HttpServletRequestAdapter(){
+    private WebRequest notMatchedRequest() {
+        return new WebRequestAdapter(){
             @Override
             public String getHeader(String arg0) {
                 if(arg0.equals("token")){

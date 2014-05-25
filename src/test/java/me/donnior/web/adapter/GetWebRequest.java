@@ -1,16 +1,16 @@
 package me.donnior.web.adapter;
 
-public class GetHttpServletRequest extends HttpServletRequestAdapter{
+public class GetWebRequest extends WebRequestAdapter{
 
     private String url;
 
-    public GetHttpServletRequest(String url) {
+    public GetWebRequest(String url) {
         this.url = url;
     }
     
     @Override
-    public String getPathInfo() {
-        return url;
+    public String getPath() {
+        return this.url;
     }
     
     @Override

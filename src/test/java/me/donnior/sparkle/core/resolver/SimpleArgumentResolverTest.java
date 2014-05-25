@@ -9,13 +9,11 @@ import static org.junit.Assert.fail;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
-import javax.servlet.http.HttpServletRequest;
-
+import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
-import me.donnior.web.adapter.HttpServletRequestAdapter;
-import me.donnior.web.adapter.ServletWebRequest;
+import me.donnior.web.adapter.GetWebRequest;
 
 import org.junit.Test;
 
@@ -39,15 +37,20 @@ public class SimpleArgumentResolverTest {
         SimpleArgumentResolver resolver = new SimpleArgumentResolver();
         
         ActionMethodParamDefinition apd = correctSupportedActionParamDefinition(String.class, "userName");
-        HttpServletRequest request = createRequestWithParamNameAndValue("userName", null);
-        Object result = resolver.resovle(apd, new ServletWebRequest(request, null));
+        WebRequest request = new GetWebRequest(null){
+            @Override
+            public String[] getParameterValues(String paramName) {
+                return null;
+            }
+        };
+        
+        Object result = resolver.resovle(apd, request);
         assertNull(result);
 
         apd = correctSupportedActionParamDefinition(int.class, "userName");
-        request = createRequestWithParamNameAndValue("userName", null);
         
         try {
-            result = resolver.resovle(apd, new ServletWebRequest(request,null));
+            result = resolver.resovle(apd, request);
             fail();
         } catch (RuntimeException re) {
             assertEquals("action method argument annotated with @Param not support primitive", re.getMessage());
@@ -60,26 +63,21 @@ public class SimpleArgumentResolverTest {
         SimpleArgumentResolver resolver = new SimpleArgumentResolver();
         
         ActionMethodParamDefinition apd = correctSupportedActionParamDefinition(Integer.class, "page");
-        HttpServletRequest request = createRequestWithParamNameAndValue("page", new String[]{"1"});
-        Object result = resolver.resovle(apd, new ServletWebRequest(request,null));
+        WebRequest request = new GetWebRequest(null){
+            @Override
+            public String[] getParameterValues(String paramName) {
+                if(paramName.equals("page")){
+                    return new String[]{"1"};
+                }
+                return super.getParameterValues(paramName);
+            }
+        };
+        Object result = resolver.resovle(apd, request);
         
         assertEquals(Integer.valueOf(1), (Integer)result);
         
     }    
     
-    private HttpServletRequest createRequestWithParamNameAndValue(
-            final String name, final String[] values) {
-        return new HttpServletRequestAdapter(){
-            
-            @Override
-            public String[] getParameterValues(String arg0) {
-                if(arg0.equals(name)){
-                    return values;
-                }
-                return super.getParameterValues(arg0);
-            }
-        };
-    }
 
     private ActionMethodParamDefinition createActionParamDefinition(
             final Class<?> paramType, final Class<? extends Annotation> annotationType, final String annotationValue) {

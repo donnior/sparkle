@@ -1,13 +1,9 @@
 package me.donnior.sparkle.core.route;
 
 import static org.junit.Assert.assertEquals;
-
-import javax.servlet.http.HttpServletRequest;
-
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
-import me.donnior.web.adapter.HttpServletRequestAdapter;
-import me.donnior.web.adapter.ServletWebRequest;
+import me.donnior.web.adapter.WebRequestAdapter;
 
 import org.junit.Test;
 
@@ -15,20 +11,20 @@ public class RouteMethodDetectorTest extends RouteMethodDetector{
     
     @Test
     public void test_direct_method_detect(){
-        WebRequest request = new ServletWebRequest(getRequest(), null);
+        WebRequest request = getRequest();
         
         assertEquals(HTTPMethod.GET, RouteMethodDetector.detectMethod(request));
         
-        request = new ServletWebRequest(postRequest(), null);
+        request = postRequest();
         assertEquals(HTTPMethod.POST, RouteMethodDetector.detectMethod(request));
         
-        request = new ServletWebRequest(unknownRequest(), null);
+        request = unknownRequest();
         assertEquals(HTTPMethod.GET, RouteMethodDetector.detectMethod(request));
         
     }
 
-    private HttpServletRequest unknownRequest() {
-        return new HttpServletRequestAdapter(){
+    private WebRequest unknownRequest() {
+        return new WebRequestAdapter(){
             @Override
             public String getMethod() {
                 return "unknown";
@@ -36,8 +32,8 @@ public class RouteMethodDetectorTest extends RouteMethodDetector{
         };
     }
 
-    private HttpServletRequest postRequest() {
-        return new HttpServletRequestAdapter(){
+    private WebRequest postRequest() {
+        return new WebRequestAdapter(){
             @Override
             public String getMethod() {
                 return "post";
@@ -45,8 +41,8 @@ public class RouteMethodDetectorTest extends RouteMethodDetector{
         };
     }
 
-    private HttpServletRequest getRequest() {
-        return new HttpServletRequestAdapter(){
+    private WebRequest getRequest() {
+        return new WebRequestAdapter(){
             @Override
             public String getMethod() {
                 return "Get";

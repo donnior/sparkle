@@ -31,14 +31,12 @@ public class WebRequestAdapter implements WebRequest{
 
     @Override
     public String getMethod() {
-        // TODO Auto-generated method stub
-        return null;
+        return "get";
     }
 
     @Override
     public String getPath() {
-        // TODO Auto-generated method stub
-        return null;
+        return "";
     }
 
     @Override

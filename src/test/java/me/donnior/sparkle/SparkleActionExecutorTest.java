@@ -1,11 +1,8 @@
 package me.donnior.sparkle;
 
-import javax.servlet.http.HttpServletRequest;
-
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.engine.ActionExecutor;
-import me.donnior.web.adapter.HttpServletRequestAdapter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,22 +26,7 @@ public class SparkleActionExecutorTest {
         //        assertEquals("sparkle1", result);
     }
     
-    HttpServletRequest mockRequest(){
-        return new HttpServletRequestAdapter(){
-            @Override
-            public String[] getParameterValues(String param) {
-                
-                if(param.equals("name")){
-                    return new String[]{"sparkle"};
-                }
-                if(param.equals("page")){
-                    return new String[]{"1"};
-                }
-                return null;
-            }
-        };
-    }
-    
+        
 }
 
 
