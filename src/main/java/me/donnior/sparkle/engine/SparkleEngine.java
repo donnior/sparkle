@@ -7,7 +7,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
 import me.donnior.fava.FArrayList;
 import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
@@ -32,6 +31,7 @@ import me.donnior.sparkle.core.route.SimpleRouteBuilderResolver;
 import me.donnior.sparkle.core.view.ViewRender;
 import me.donnior.sparkle.ext.EnvSpecific;
 import me.donnior.sparkle.http.HTTPStatusCode;
+import me.donnior.sparkle.interceptor.Interceptor;
 import me.donnior.sparkle.route.RouteModule;
 
 import org.slf4j.Logger;
@@ -42,6 +42,7 @@ import com.google.common.base.Stopwatch;
 public class SparkleEngine {
 
     private FList<ViewRender> viewRenders;
+    private FList<Interceptor> interceptors;
     private RouterImpl router;
     private ConfigImpl config;
     private ControllerFactory controllerFactory;
@@ -56,6 +57,7 @@ public class SparkleEngine {
         this.envSpecific             = es;
         this.config                  = new ConfigImpl();
         this.viewRenders             = new FArrayList<ViewRender>();
+        this.interceptors            = new FArrayList<Interceptor>();
         this.router                  = RouterImpl.getInstance();
         this.controllerFactory       = new GuiceControllerFactory();
         this.routeBuilderResovler    = new SimpleRouteBuilderResolver(this.router);
@@ -94,6 +96,12 @@ public class SparkleEngine {
         
         installRouter();
         
+        initInterceptors(config);
+        
+    }
+
+    private void initInterceptors(ConfigResult config) {
+        this.interceptors.addAll(config.getInterceptors());
     }
 
     private void initViewRenders(ConfigResult config) {
@@ -128,6 +136,14 @@ public class SparkleEngine {
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
 
+        InterceptorExecutionChain ic = new InterceptorExecutionChain(this.interceptors);
+        boolean interceptorPassed = ic.doPreHandle(webRequest);
+        if(!interceptorPassed){
+            
+            ic.doAfterHandle(webRequest);   //unnormal interceptor behaviour, ignore action exection and return after clean interceptors
+            return;
+        }
+        
         RouteBuilder rd = this.routeBuilderResovler.match(webRequest);
         
         if(rd == null){
@@ -214,12 +230,16 @@ public class SparkleEngine {
             logger.debug("Http servlet response has been procceed mannually, ignore view rendering.");
         }
         
+      //TODO maybe should put this in a try-catch-finally clause? We should cleanup interceptors even action execution throws exception
+        if(interceptorPassed){
+            ic.doAfterHandle(webRequest);   
+        }
+        
         long viewTime = stopwatch.stop().elapsedMillis();
         logger.info("completed request within {} ms (Action: {} ms | View: {} ms)", 
                 new Object[]{viewTime + actionTime, actionTime, viewTime });
         
         //TODO set controller's instance varialbles which need to be used in view to the request.
-  
     }
     
     /**

@@ -2,6 +2,7 @@ package me.donnior.sparkle.engine;
 
 import me.donnior.fava.FList;
 import me.donnior.sparkle.core.view.ViewRender;
+import me.donnior.sparkle.interceptor.Interceptor;
 
 public interface ConfigResult {
 
@@ -14,5 +15,7 @@ public interface ConfigResult {
     ControllerFactory getControllerFactory();
     
     Class<? extends ControllerFactory> getControllerFactoryClass();
+
+    FList<Interceptor> getInterceptors();
 
 }

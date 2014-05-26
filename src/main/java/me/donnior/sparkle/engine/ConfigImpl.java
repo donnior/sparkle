@@ -10,6 +10,7 @@ import me.donnior.sparkle.Environment;
 import me.donnior.sparkle.Environment.Mode;
 import me.donnior.sparkle.config.Config;
 import me.donnior.sparkle.core.view.ViewRender;
+import me.donnior.sparkle.interceptor.Interceptor;
 import me.donnior.sparkle.util.Singleton;
 
 @Singleton
@@ -19,6 +20,7 @@ public class ConfigImpl implements Config, ConfigResult {
     private FList<Class<? extends ViewRender>> viewRenders = FLists.newEmptyList();
     private FList<String> controllerPackages = FLists.newEmptyList();
     private String basePackage = "";
+    private FList<Interceptor> interceptors = FLists.newEmptyList();
     
     @Override
     public void registerViewRenderClass(Class<? extends ViewRender> viewRenderClass) {
@@ -71,5 +73,16 @@ public class ConfigImpl implements Config, ConfigResult {
     public Class<? extends ControllerFactory> getControllerFactoryClass() {
         return null;
     }
+    
+    @Override
+    public FList<Interceptor> getInterceptors() {
+        return this.interceptors ;
+    }
+    
+    @Override
+    public void registerInterceptor(Interceptor interceptor) {
+        this.interceptors.add(interceptor);
+    }
+    
 
 }
