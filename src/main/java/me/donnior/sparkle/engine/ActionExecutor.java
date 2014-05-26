@@ -9,14 +9,14 @@ import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
-import me.donnior.sparkle.core.resolver.ParamResolversManager;
+import me.donnior.sparkle.core.resolver.ArgumentResolverManager;
 
 public class ActionExecutor {
 
-    private ParamResolversManager paramResolver ;
+    private ArgumentResolverManager argumentResolverManager ;
     
-    public ActionExecutor(ParamResolversManager paramResolversManager){
-        this.paramResolver = paramResolversManager;
+    public ActionExecutor(ArgumentResolverManager argumentResolverManager){
+        this.argumentResolverManager = argumentResolverManager;
     }
     
     //TODO should refactord this params resolver, make it support multi resolvers so programmers can create their own
@@ -30,7 +30,7 @@ public class ActionExecutor {
         
         Object[] params = FLists.create(apds).collect(new Function<ActionMethodParamDefinition, Object>() {
             public Object apply(ActionMethodParamDefinition apd) {
-                return paramResolver.resolve(apd, request);
+                return argumentResolverManager.resolve(apd, request);
             }
         }).toArray();
         

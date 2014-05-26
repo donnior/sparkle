@@ -1,14 +1,14 @@
 package me.donnior.sparkle.ext;
 
-import me.donnior.sparkle.core.resolver.ParamResolversManager;
-import me.donnior.sparkle.core.view.ViewRendersResovler;
+import me.donnior.sparkle.core.resolver.ArgumentResolverManager;
+import me.donnior.sparkle.core.view.ViewRenderManager;
 import me.donnior.sparkle.engine.RequestLifeCycleManager;
 
 public interface EnvSpecific {
 
-    ViewRendersResovler getViewRendersResovler();
+    ViewRenderManager getViewRendersResovler();
 
-    ParamResolversManager getParamsResolverManager();
+    ArgumentResolverManager getArgumentResolverManager();
     
     RequestLifeCycleManager getLifeCycleManager();
 

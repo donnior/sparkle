@@ -5,7 +5,7 @@ import java.util.List;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
 
-public interface ParamResolversManager {
+public interface ArgumentResolverManager {
     
     Object resolve(ActionMethodParamDefinition paramDefinition, WebRequest request);
     

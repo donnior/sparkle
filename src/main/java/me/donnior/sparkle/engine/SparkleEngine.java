@@ -186,17 +186,17 @@ public class SparkleEngine {
                 c = new Callable<Object>() {
                     @Override
                     public Object call() throws Exception {
-                        return new ActionExecutor(envSpecific.getParamsResolverManager()).invoke(adf, controller, webRequest);
+                        return new ActionExecutor(envSpecific.getArgumentResolverManager()).invoke(adf, controller, webRequest);
                     }
                 };
             } else {
-                c = (Callable)new ActionExecutor(envSpecific.getParamsResolverManager()).invoke(adf, controller, webRequest);
+                c = (Callable)new ActionExecutor(envSpecific.getArgumentResolverManager()).invoke(adf, controller, webRequest);
             }
             startAsyncProcess(c, webRequest);
             return;
         }
         
-        Object result = new ActionExecutor(envSpecific.getParamsResolverManager()).invoke(adf, controller, webRequest);
+        Object result = new ActionExecutor(envSpecific.getArgumentResolverManager()).invoke(adf, controller, webRequest);
         boolean isCallableResult = result instanceof Callable;
         if(isCallableResult){
             startAsyncProcess((Callable<Object>)result, webRequest);

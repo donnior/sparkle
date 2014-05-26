@@ -7,7 +7,7 @@ import me.donnior.fava.Function;
 import me.donnior.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
 
-public class ViewRendersResovler {
+public class ViewRenderManager {
 
     /**
      * Resolve all view renders with the given customized view renders and built-in view renders. 

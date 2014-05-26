@@ -12,7 +12,7 @@ import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
 import me.donnior.sparkle.exception.SparkleException;
 
-public abstract class AbstractParamResolversManager implements ParamResolversManager {
+public abstract class AbstractArgumentResolverManager implements ArgumentResolverManager {
 
     private List<ArgumentResolver> argumentResolvers = Lists.newArrayList();
 
