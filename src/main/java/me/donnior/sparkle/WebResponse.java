@@ -6,7 +6,7 @@ public interface WebResponse {
     
     <T> T getOriginalResponse();
 
-    void setStatus(int notFound);
+    void setStatus(int statusCode);
 
     void write(String build);
     
