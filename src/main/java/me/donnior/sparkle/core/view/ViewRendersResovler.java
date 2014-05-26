@@ -10,12 +10,17 @@ import me.donnior.reflection.ReflectionUtil;
 public class ViewRendersResovler {
 
     /**
-     * Resolve all view renders with the given customized view renders and built-in view renders.
+     * Resolve all view renders with the given customized view renders and built-in view renders. 
+     * 
+     * The Sparkle framework can handle three types view renders: 
+     * <li> User defined view renders in their application (third-party view renders)
+     * <li> Provider defined view renders (such as sparkle-servlet provide view renders for jsp pages)
+     * <li> Sparkle's built-in view renders, like JSON and text view renders;
      * 
      * @param renders
      * @return
      */
-    public List<? extends ViewRender> resovleRegisteredViewRenders(List<Class<? extends ViewRender>> renders){
+    public List<ViewRender> resovleRegisteredViewRenders(List<Class<? extends ViewRender>> renders){
         return initViewRenders(FLists.create(renders));
     }
  
