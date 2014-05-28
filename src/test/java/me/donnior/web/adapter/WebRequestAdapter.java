@@ -68,5 +68,10 @@ public class WebRequestAdapter implements WebRequest{
         // TODO Auto-generated method stub
         
     }
+    
+    @Override
+    public String getBody() {
+        return null;
+    }
 
 }

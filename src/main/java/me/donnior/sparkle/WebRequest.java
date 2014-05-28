@@ -30,6 +30,12 @@ public interface WebRequest {
      * @return
      */
     String getContextPath();
+    
+    /**
+     * get request body, especially for post 
+     */
+    String getBody();
+    
 
     WebResponse getWebResponse();
     

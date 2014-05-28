@@ -11,7 +11,6 @@ public class PathVariableDetector {
 
     public static Map<String, String> extractPathVariables(RouteBuilder rd,
             WebRequest webRequest) {
-        System.out.println("request : " + webRequest);
         List<String> values = rd.extractPathVariableValues(webRequest.getPath());
         List<String> names = rd.getPathVariables();
         Map<String, String> map = new HashMap<String, String>();
