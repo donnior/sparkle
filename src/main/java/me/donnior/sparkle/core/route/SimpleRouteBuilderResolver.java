@@ -35,12 +35,12 @@ public class SimpleRouteBuilderResolver implements RouteBuilderResolver{
         RouteBuilderMatcher rbm = getClosestMatchedRouteBuilder(matched);
         if(rbm != null){
             RouteBuilder rb = rbm.getBuilder();
-    	    logger.debug("Found route builder matched closest {}", rb);
+    	    logger.debug("Found matched route builder: {}", rb);
 //    	    Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getPathPattern(), path);
 //            logger.debug("extracted path variables {}", uriVariables);
             return rb;
         } else {
-            logger.debug("Can't find RoutingBuilder for {}", webRequest);
+            logger.debug("Could not find RoutingBuilder");
             return null;
         }
     }

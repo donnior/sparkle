@@ -132,14 +132,13 @@ public class SparkleEngine {
     public void doService(final WebRequest webRequest, HTTPMethod method){
         WebResponse response = webRequest.getWebResponse();
         
-        logger.info("processing request : {}", webRequest.getPath());
+        logger.info("processing request : {} {}", webRequest.getMethod(), webRequest.getPath());
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.start();
 
         InterceptorExecutionChain ic = new InterceptorExecutionChain(this.interceptors);
         boolean interceptorPassed = ic.doPreHandle(webRequest);
         if(!interceptorPassed){
-            
             ic.doAfterHandle(webRequest);   //unnormal interceptor behaviour, ignore action exection and return after clean interceptors
             return;
         }
@@ -147,7 +146,7 @@ public class SparkleEngine {
         RouteBuilder rd = this.routeBuilderResovler.match(webRequest);
         
         if(rd == null){
-            System.out.println("not found route");
+            logger.info("Counld not found matched route.\n");
             response.setStatus(HTTPStatusCode.NOT_FOUND);
             return;
         }
@@ -236,7 +235,7 @@ public class SparkleEngine {
         }
         
         long viewTime = stopwatch.stop().elapsedMillis();
-        logger.info("completed request within {} ms (Action: {} ms | View: {} ms)", 
+        logger.info("completed request within {} ms (Action: {} ms | View: {} ms)\n", 
                 new Object[]{viewTime + actionTime, actionTime, viewTime });
         
         //TODO set controller's instance varialbles which need to be used in view to the request.

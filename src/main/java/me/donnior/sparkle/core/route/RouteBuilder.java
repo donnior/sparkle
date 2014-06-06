@@ -29,6 +29,7 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     private AbstractCondition paramCondition;
     private AbstractCondition headerCondition;
     private AbstractCondition consumeCondition;
+    private String to;
     
     //the rules for 'to' of the route: the controller can't be empty, only one '#' or zero, the action can be ommit
     private final static String toRegex = "\\w+#{0,1}\\w*";
@@ -93,6 +94,7 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     
     @Override
     public void to(String route){
+        this.to = route;
         // TODO check route is correct, it should not empty and contains only one #
         if(route == null || !route.matches(toRegex)){
             throw new SparkleException("route's 'to' part '" + route + "' is illegal, it must be 'controller#action' or just 'controller'");
@@ -196,11 +198,12 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("RouteBuilder:[");
-        sb.append("path=>"+this.pathPattern);
-        sb.append(","+"method=>"+this.httpMethod);
+        sb.append("path => "+this.pathPattern);
+        sb.append(","+"method => "+this.httpMethod);
         if(this.hasParamCondition()){
             sb.append(","+"params=>"+this.paramCondition.toString());
         }
+        sb.append(", to => " + this.to);
         sb.append("]");
         return sb.toString();
     }
