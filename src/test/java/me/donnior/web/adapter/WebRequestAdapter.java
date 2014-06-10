@@ -1,5 +1,8 @@
 package me.donnior.web.adapter;
 
+import java.util.List;
+
+import me.donnior.sparkle.Multipart;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.WebResponse;
 
@@ -74,4 +77,10 @@ public class WebRequestAdapter implements WebRequest{
         return null;
     }
 
+    @Override
+    public List<Multipart> getMultiparts() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
 }

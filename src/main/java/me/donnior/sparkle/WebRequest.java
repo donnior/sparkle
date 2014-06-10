@@ -1,5 +1,7 @@
 package me.donnior.sparkle;
 
+import java.util.List;
+
 
 
 public interface WebRequest {
@@ -42,4 +44,6 @@ public interface WebRequest {
     <T> T getAttribute(String attributeName);
 
     void setAttribute(String name, Object value);
+    
+    List<Multipart> getMultiparts();
 }
