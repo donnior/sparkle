@@ -34,6 +34,27 @@ public class RouteBuilderTest {
     }
     
     @Test
+    public void test_create_root(){
+        System.out.println("test for root");
+        RouteBuilder rb = new RouteBuilder("/");
+
+        assertEquals(HTTPMethod.GET, rb.getHttpMethod());
+        assertTrue(rb.matchMethod(HTTPMethod.GET));
+        assertNull(rb.getControllerName());
+        assertNull(rb.getActionName());
+        assertEquals("/", rb.getPathPattern());
+        
+        assertEquals("/", rb.getMatchPatten().pattern());
+        
+        assertTrue(rb.matchPath("/"));
+        assertFalse(rb.matchPath("/users"));
+        
+        rb = rb.withGet();
+        assertEquals(HTTPMethod.GET, rb.getHttpMethod());
+        
+    }
+    
+    @Test
     public void test_get_path_variables(){
         RouteBuilder rb = new RouteBuilder("/user/{id}/profile/{module}");
 

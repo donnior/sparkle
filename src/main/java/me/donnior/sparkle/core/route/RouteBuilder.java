@@ -106,11 +106,13 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     @Override
     public boolean matchPath(String path){
         //TODO how about introducing a pattern-path-match cache? reduce the cost creating a matcher every time
-        if(path.endsWith("/")){
+        if(path.endsWith("/") && path.length()>1){
             path = path.substring(0, path.length()-1);
         }
+        //IDEA 也许我们可以直接使用path和pathPattern进行字符串的equals比较，但是仅限于当前路由定义中不包含正则部分
+        //比如我们定义了一个不需要正则的RouteBuilder("/users/home")或者("/"),则可直接对请求的path进行equals判断，加快速度 
         boolean b = this.matchPatten.matcher(path).matches();
-//        logger.debug("match uri {} using pattern {} {}", new Object[]{path, this.matchPatten.pattern(), b?" success":" failed"});
+        logger.debug("match uri {} using pattern {} {}", new Object[]{path, this.matchPatten.pattern(), b?" success":" failed"});
         return b;
     }
     
