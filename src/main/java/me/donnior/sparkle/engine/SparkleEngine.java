@@ -281,7 +281,11 @@ public class SparkleEngine {
         return this.viewRenders.find(new Predicate<ViewRender>() {
             @Override
             public boolean apply(ViewRender viewRender) {
-                return viewRender.supportActionMethod(adf, result);
+                boolean isViewRenderSupportResult = viewRender.supportActionMethod(adf, result);
+                logger.debug("{} match action result [{}] : {}", 
+                        viewRender.getClass().getName(), result.getClass().getName(), isViewRenderSupportResult);
+
+                return isViewRenderSupportResult;
             }
         });
     }
