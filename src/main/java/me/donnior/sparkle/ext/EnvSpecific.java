@@ -6,7 +6,7 @@ import me.donnior.sparkle.engine.RequestLifeCycleManager;
 
 public interface EnvSpecific {
 
-    ViewRenderManager getViewRendersResovler();
+    ViewRenderManager getViewRendersManager();
 
     ArgumentResolverManager getArgumentResolverManager();
     
