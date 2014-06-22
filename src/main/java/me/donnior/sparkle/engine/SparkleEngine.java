@@ -9,7 +9,6 @@ import java.util.concurrent.Executors;
 
 import me.donnior.fava.FArrayList;
 import me.donnior.fava.FList;
-import me.donnior.fava.Predicate;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
@@ -24,10 +23,12 @@ import me.donnior.sparkle.core.resolver.ControllerClassResolver;
 import me.donnior.sparkle.core.resolver.ControllerScanner;
 import me.donnior.sparkle.core.resolver.ControllersHolder;
 import me.donnior.sparkle.core.resolver.RouteModuleScanner;
+import me.donnior.sparkle.core.resolver.ViewRenderResolver;
 import me.donnior.sparkle.core.route.RouteBuilder;
 import me.donnior.sparkle.core.route.RouteBuilderResolver;
 import me.donnior.sparkle.core.route.RouterImpl;
 import me.donnior.sparkle.core.route.SimpleRouteBuilderResolver;
+import me.donnior.sparkle.core.view.SimpleViewRenderResolver;
 import me.donnior.sparkle.core.view.ViewRender;
 import me.donnior.sparkle.ext.EnvSpecific;
 import me.donnior.sparkle.http.HTTPStatusCode;
@@ -41,7 +42,6 @@ import com.google.common.base.Stopwatch;
 
 public class SparkleEngine {
 
-    private FList<ViewRender> viewRenders;
     private FList<Interceptor> interceptors;
     private RouterImpl router;
     private ConfigImpl config;
@@ -49,6 +49,7 @@ public class SparkleEngine {
     private RouteBuilderResolver routeBuilderResovler;
     private ControllerClassResolver controllerClassResolver;
     private ActionMethodDefinitionFinder actionMethodResolver;
+    private ViewRenderResolver viewRenderResolver;
     private EnvSpecific envSpecific;
     
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
@@ -56,7 +57,6 @@ public class SparkleEngine {
     public SparkleEngine(EnvSpecific es){
         this.envSpecific             = es;
         this.config                  = new ConfigImpl();
-        this.viewRenders             = new FArrayList<ViewRender>();
         this.interceptors            = new FArrayList<Interceptor>();
         this.router                  = RouterImpl.getInstance();
         this.controllerFactory       = new GuiceControllerFactory();
@@ -105,7 +105,8 @@ public class SparkleEngine {
     }
 
     private void initViewRenders(ConfigResult config) {
-        this.viewRenders.addAll(this.envSpecific.getViewRendersResovler().resovleRegisteredViewRenders(config.getCustomizedViewRenders()));
+        List<ViewRender> viewRenders = this.envSpecific.getViewRendersResovler().resovleRegisteredViewRenders(config.getCustomizedViewRenders());
+        this.viewRenderResolver = new SimpleViewRenderResolver(viewRenders);
     }
 
     //TODO how to make the controller factory can be customized, for example let user use an
@@ -213,7 +214,7 @@ public class SparkleEngine {
             //get matched viewRender from all viewRenders, based on ActionMethodDefinition and result type
             // if found any matched viewRender, render view using it, pass 'controller instantance, result, request, response' as arguments
             // else use default viewRender(jsp view render to render result)
-            ViewRender viewRender = findMatchedViewRender(adf, result);
+            ViewRender viewRender = this.viewRenderResolver.resolveViewRender(adf, result);
             if(viewRender != null){
                 try {
 //                    Map<String, Object> valueToExpose = null;
@@ -277,18 +278,7 @@ public class SparkleEngine {
         return adf.hasAnnotation(Async.class);
     }
 
-    private ViewRender findMatchedViewRender(final ActionMethodDefinition adf, final Object result) {
-        return this.viewRenders.find(new Predicate<ViewRender>() {
-            @Override
-            public boolean apply(ViewRender viewRender) {
-                boolean isViewRenderSupportResult = viewRender.supportActionMethod(adf, result);
-                logger.debug("{} match action result [{}] : {}", 
-                        viewRender.getClass().getName(), result.getClass().getName(), isViewRenderSupportResult);
-
-                return isViewRenderSupportResult;
-            }
-        });
-    }
+    
     
     private void installRouter() {
         String routePackage = "";
