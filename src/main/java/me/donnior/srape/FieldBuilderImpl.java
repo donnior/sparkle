@@ -63,7 +63,8 @@ public class FieldBuilderImpl implements ScopedFieldBuilder{
      * @return
      */
     public boolean hasEntityType(){
-        return this.clz != null && !this.isMapValue();
+//        return this.clz != null && !this.isMapValue();
+        return this.clz != null;
     }
 
     public boolean isMapValue(){
