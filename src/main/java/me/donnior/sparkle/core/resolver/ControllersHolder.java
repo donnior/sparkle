@@ -7,11 +7,16 @@ import me.donnior.fava.FHashMap;
 import me.donnior.fava.MConsumer;
 import me.donnior.sparkle.exception.SparkleException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ControllersHolder implements ControllerClassResolver{
     
     private final static ControllersHolder instance = new ControllersHolder();
     
     private Map<String, Class<?>> controllers = new HashMap<String, Class<?>>();
+    
+    private final static Logger logger = LoggerFactory.getLogger(ControllersHolder.class);
     
     public Map<String, Class<?>> namedControllers(){
         return this.controllers;
@@ -39,6 +44,7 @@ public class ControllersHolder implements ControllerClassResolver{
                     throw new SparkleException("Controller with name " + controllerName + " was duplicated");
                 }
                 controllers.put(controllerName, controllerClass);
+                logger.info("found controller [{} : {}]", controllerName, controllerClass.getName());
             }
         });
     }
