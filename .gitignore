@@ -28,10 +28,3 @@ sparkle.iml
 
 src/test/java/me/donnior/eset/Snippet.java
 
-src/main/java/me/donnior/eset/ParamValue.java
-
-src/main/java/me/donnior/eset/StringValue.java
-
-src/main/java/me/donnior/eset/WrappedParsedParams.java
-
-src/test/java/me/donnior/eset/WrappedParsedParamsTest.java
