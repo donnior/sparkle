@@ -44,7 +44,7 @@ public class PathVariableArgumentResolver implements ArgumentResolver {
           return new ParamResolveUtil().convertValue(values, paramType);
       }
       
-      //TODO add class cast for supported type like String, int; but exceptioin for customized type.
+      //TODO add class cast for supported type like String, int; but exception for customized type.
     }
 
     private Object nullValueForType(Class<?> type) {

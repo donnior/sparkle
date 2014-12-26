@@ -4,7 +4,13 @@ Sparkle is an lightweight web framework.
 
 ### Zero Configuration
 
-Sparkle is developend based on Servlet 3.0 specification, so it don't need `web.xml` anymore. Just include sparkle.jar in your project's classpath, start your server, it will be ready.
+Sparkle is a tiny web framework for java. With proper plugin it can be running under Netty or a Servlet container.
+
+* Sparkle-Servlet
+It's based on Servlet 3.0 specification, so it don't need `web.xml` anymore. Just include sparkle-servlet.jar in your project's classpath, start your server, it will be ready.
+
+* Sparkle-Netty
+With this plugin, the sparkle framework can be running on Netty 4.x.
 
 ### Rails Like Route
 
@@ -17,14 +23,14 @@ Sparkle provide a Rails-like style route definition. You don't need config route
 
 ### Built-in JSON support.
 
-Sparkle use a json library called `srape`. It's a smart json build library which can write same object to different json object in different scenes. Unlike Gson's annotation, it use a entity-mapping solution.
+Sparkle use a json library called `jsonty`. It's a smart json build library which can write same object to different json object in different scenes. Unlike Gson's annotation, it use a entity-mapping solution.
 
 ```java
 
     final Account account = ...;
     final int status = 20;
     
-    new FieldExposerModule() {
+    new JSONModel() {
         @Override
         public void config(FieldExposer exposer) {
             exposer.expose(status).withName("status");

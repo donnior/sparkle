@@ -15,6 +15,7 @@ import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.route.ConditionalRoutingBuilder;
 import me.donnior.sparkle.route.HttpScoppedRoutingBuilder;
 
+import me.donnior.sparkle.route.LinkedRoutingBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +66,19 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
         this.httpMethod = HTTPMethod.POST ;
         return this;
     }
-    
+
+    @Override
+    public LinkedRoutingBuilder withPut() {
+        this.httpMethod = HTTPMethod.PUT;
+        return this;
+    }
+
+    @Override
+    public LinkedRoutingBuilder withDelete() {
+        this.httpMethod = HTTPMethod.DELETE;
+        return this;
+    }
+
     @Override
     public ConditionalRoutingBuilder matchParams(String... params) {
         //TODO how to deal this method called many times
