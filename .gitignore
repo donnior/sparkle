@@ -28,3 +28,9 @@ sparkle.iml
 
 src/test/java/me/donnior/eset/Snippet.java
 
+
+sparkle-core.iml
+
+sparkle-core.ipr
+
+sparkle-core.iws
