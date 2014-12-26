@@ -6,10 +6,11 @@ import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.WebResponse;
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.core.ActionMethodDefinition;
-import me.donnior.srape.FieldExposerModule;
-import me.donnior.srape.JSONBuilder;
+
 
 import com.google.gson.Gson;
+import org.agilej.jsonty.JSONBuilder;
+import org.agilej.jsonty.JSONModel;
 
 public class JSONViewRender implements ViewRender {
     
@@ -19,8 +20,8 @@ public class JSONViewRender implements ViewRender {
         
         response.setContentType("application/json; charset=UTF-8");
         
-        if(result instanceof FieldExposerModule){
-            response.write(new JSONBuilder((FieldExposerModule)result).build());
+        if(result instanceof JSONModel){
+            response.write(new JSONBuilder((JSONModel)result).build());
         } else {
             response.write(new Gson().toJson(result));
         }
@@ -28,7 +29,7 @@ public class JSONViewRender implements ViewRender {
 
     @Override
     public boolean supportActionMethod(ActionMethodDefinition adf, Object actionMethodResult) {
-        return adf.hasAnnotation(Json.class) || actionMethodResult instanceof FieldExposerModule;
+        return adf.hasAnnotation(Json.class) || actionMethodResult instanceof JSONModel;
     }
 
 }
