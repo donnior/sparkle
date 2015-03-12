@@ -6,12 +6,16 @@ import java.util.List;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.interceptor.Interceptor;
 
+/**
+ * interceptor execution context for every request, because you should remember which interceptors are executed,
+ * and make sure those executed interceptor must finish <pre><code>doAfterHandle</code></pre>
+ */
 public class InterceptorExecutionChain {
 
     private List<Interceptor> interceptors;
     private int interceptorIndex = -1;
     
-    public InterceptorExecutionChain(List<Interceptor> interceptors){
+    public InterceptorExecutionChain(List<? extends Interceptor> interceptors){
         this.interceptors = new ArrayList<Interceptor>();
         if(interceptors != null){
             this.interceptors.addAll(interceptors);
