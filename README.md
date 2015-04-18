@@ -23,7 +23,7 @@ Sparkle provide a Rails-like style route definition. You don't need config route
 
 ### Built-in JSON support.
 
-Sparkle use a json library called `jsonty`. It's a smart json build library which can write same object to different json object in different scenes. Unlike Gson's annotation, it use a entity-mapping solution.
+Sparkle use a json library called [Jsonty][jsonty]. It's a smart json build library which can write same object to different json object in different scenes. Unlike Gson's annotation, it use a entity-mapping solution.
 
 ```java
 
@@ -43,10 +43,9 @@ Where `AccountEntity` defined `account`'s fields will exposed to json result.
 
 ## Sample App
 
-* Checkout Sparkle and execute `mvn install` to install it. 
-* Change directory to `sample`, execute `mvn jetty:run`
+Checkout [sample][sparkle-sample]
 
-
-
+[sparkle-sample]: https://github.com/donnior/sparkle-sample  "Sparkle sample project"
+[jsonty]: https://github.com/agilej/jsonty  "Jsonty lib"
 
 
