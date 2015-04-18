@@ -147,7 +147,7 @@ public class SparkleEngine {
         RouteBuilder rd = this.routeBuilderResovler.match(webRequest);
         
         if(rd == null){
-            logger.info("Counld not found matched route.\n");
+            logger.info("Could not found matched route.\n");
             response.setStatus(HTTPStatusCode.NOT_FOUND);
             return;
         }
