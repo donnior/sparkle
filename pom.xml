@@ -20,6 +20,7 @@
       <version>4.0</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
          <groupId>me.donnior</groupId>
          <artifactId>fava</artifactId>
@@ -109,8 +110,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                     <verbose>false</verbose>
                 </configuration>
             </plugin>
@@ -153,6 +154,4 @@
       </plugin>
     </plugins>
   </reporting>
-    
-    
 </project>
