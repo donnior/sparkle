@@ -100,7 +100,7 @@ public class ActionMethodDefinitionFinder {
             throw new SparkleException("can't find any action with name : " + actionName);
         }
         if(methods.size() > 1){
-            throw new SparkleException("find more than one actions with same name " + actionName);
+            throw new SparkleException("find more than one actions with same name : " + actionName);
         }
         final Method method = methods.iterator().next();
         ActionMethodDefinition result = new DefaultActionMethodDefinition(method, actionName);
