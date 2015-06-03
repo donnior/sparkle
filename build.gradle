@@ -27,6 +27,15 @@ dependencies {
     compile 'com.thoughtworks.paranamer:paranamer:2.5.2'
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
+
+compileJava {
+    options.incremental = true
+}
+
+
 task installToLocal(dependsOn: build) << {
     println 'Hello world!'
 }
