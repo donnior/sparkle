@@ -1,5 +1,6 @@
 package me.donnior.sparkle;
 
+import java.io.Writer;
 
 //TODO should be introduced?
 public interface WebResponse {
@@ -13,4 +14,6 @@ public interface WebResponse {
     void setHeader(String name, String value);
     
     void setContentType(String type);
+
+    Writer getWriter();
 }
