@@ -21,6 +21,8 @@ public class JSONViewRender implements ViewRender {
         response.setContentType("application/json; charset=UTF-8");
         
         if(result instanceof JSONModel){
+            // new JSONBuilder((JSONModel)result).build(response.getWriter());
+            // response.getWriter().flush();
             response.write(new JSONBuilder((JSONModel)result).build());
         } else {
             response.write(new Gson().toJson(result));
