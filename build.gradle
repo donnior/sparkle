@@ -1,57 +1,40 @@
+group = 'com.sparkle'
+version = '1.0-SNAPSHOT'
+
 repositories {  
-    mavenCentral()
     mavenLocal()
+    mavenCentral()
 }
 
 apply plugin: 'java'
-apply plugin: 'war'
-apply plugin: 'pmd'
-apply plugin: 'jdepend'
-apply plugin: 'findbugs'
-apply plugin: 'jetty'
-apply plugin: 'project-report'
+apply plugin: 'maven'
 
-jettyRun.contextPath = '/'
-jettyVersion = "8.1.8.v20121106"
-
-configurations {
-    jetty8
-}
-
-dependencies {
-    jetty8 "org.mortbay.jetty:jetty-runner:$jettyVersion"
-}
-
-tasks.withType(JDepend) {
-    reports {
-        xml.enabled = false
-        text.enabled = true
-    }
- }
-
-task runJetty8(type: JavaExec) {
-    main = "org.mortbay.jetty.runner.Runner"
-    args = [war.archivePath]
-    classpath configurations.jetty8
-}
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 dependencies {
     testCompile 'junit:junit:4.0'
 
-//    compile 'com.google.guava:guava:r09'
-
-    compile 'javax.servlet:javax.servlet-api:3.0.1'
-    compile 'javax.servlet.jsp:jsp-api:2.2'
-    compile 'javax.servlet:jstl:1.2'
+    compile 'org.agilej:jsonty:1.0-SNAPSHOT'
  
     compile 'me.donnior:fava:1.1'
     compile 'com.google.code.gson:gson:2.2.3'
     compile 'com.google.inject:guice:3.0'
             
-    compile 'org.slf4j:slf4j-api:1.6.4'
-    compile 'org.slf4j:slf4j-log4j12:1.6.4'
+    compile 'org.slf4j:slf4j-api:1.7.5'
      
     compile 'org.reflections:reflections:0.9.8'
     compile 'com.thoughtworks.paranamer:paranamer:2.5.2'
+}
 
+task installToLocal(dependsOn: build) << {
+    println 'Hello world!'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs '~/.m2/repository/'
+       }
+    }
 }
