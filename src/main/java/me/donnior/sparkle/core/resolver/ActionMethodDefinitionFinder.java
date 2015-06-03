@@ -84,31 +84,6 @@ public class ActionMethodDefinitionFinder {
         
     }
     
-//    private static class ActionMethodKey {
-//        
-//        private Class clz;
-//        private String actionName;
-//
-//        public ActionMethodKey(Class clz, String actionName) {
-//            this.clz = clz;
-//            this.actionName = actionName;
-//        }
-//        
-//        @Override
-//        public int hashCode() {
-//            return Objects.hashCode(this.clz, this.actionName);
-//        }
-//        
-//        @Override
-//        public boolean equals(Object obj) {
-//            if(obj == null) { return false;}
-//            if(!(obj instanceof ActionMethodKey)){ return false; }
-//            ActionMethodKey other = (ActionMethodKey)obj;
-//            return this.clz.equals(other.clz) && this.actionName.equals(other.actionName);
-//        }
-//        
-//    }
-    
     //TODO remove static, make this ActionMethodDefinitionFinder singleton in SparkleEngin
     private final Map<Tuple2<Class, String>, ActionMethodDefinition> cache =
             new ConcurrentHashMap<Tuple2<Class, String>, ActionMethodDefinition>(); 
@@ -122,10 +97,10 @@ public class ActionMethodDefinitionFinder {
         Set<Method> methods = ReflectionUtils.getAllMethods(clz, 
                 Predicates.and(ReflectionUtils.withModifier(Modifier.PUBLIC),ReflectionUtils.withName(actionName)));
         if(methods.isEmpty()){
-            throw new SparkleException("can't find any action matched " + actionName);
+            throw new SparkleException("can't find any action with name : " + actionName);
         }
         if(methods.size() > 1){
-            throw new SparkleException("find more than actions with same name " + actionName);
+            throw new SparkleException("find more than one actions with same name " + actionName);
         }
         final Method method = methods.iterator().next();
         ActionMethodDefinition result = new DefaultActionMethodDefinition(method, actionName);
