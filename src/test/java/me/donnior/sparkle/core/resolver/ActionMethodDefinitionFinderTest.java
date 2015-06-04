@@ -23,8 +23,8 @@ public class ActionMethodDefinitionFinderTest {
         
         assertEquals("index", amd.actionName());
         assertTrue(amd.hasAnnotation(Json.class));
-        assertEquals(1, amd.annotions().size());
-        assertEquals(Json.class, amd.annotions().get(0).annotationType());
+        assertEquals(1, amd.annotations().size());
+        assertEquals(Json.class, amd.annotations().get(0).annotationType());
         
         List<ActionMethodParamDefinition> apds = amd.paramDefinitions();
         assertEquals(2, apds.size());
@@ -32,7 +32,7 @@ public class ActionMethodDefinitionFinderTest {
         ActionMethodParamDefinition apd1 = apds.get(0);
         assertEquals(String.class, apd1.paramType());
         assertFalse(apd1.hasAnnotation(Param.class));
-        assertEquals(0, apd1.annotions().size());
+        assertEquals(0, apd1.annotations().size());
         try{
             apd1.paramName();
             fail();
@@ -44,7 +44,7 @@ public class ActionMethodDefinitionFinderTest {
         assertEquals(int.class, apd2.paramType());
         assertTrue(apd2.hasAnnotation(Param.class));
         assertFalse(apd2.hasAnnotation(Json.class));
-        assertEquals(1, apd2.annotions().size());
+        assertEquals(1, apd2.annotations().size());
         assertEquals("ActionParamDefinition:[type=>int]", apd2.toString());
         
     }

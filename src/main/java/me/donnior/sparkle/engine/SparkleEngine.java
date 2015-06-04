@@ -105,7 +105,7 @@ public class SparkleEngine {
     }
 
     private void initViewRenders(ConfigResult config) {
-        List<ViewRender> viewRenders = this.envSpecific.getViewRendersManager().resovleRegisteredViewRenders(config.getCustomizedViewRenders());
+        List<ViewRender> viewRenders = this.envSpecific.getViewRendersManager().resolveRegisteredViewRenders(config.getCustomizedViewRenders());
         this.viewRenderResolver = new SimpleViewRenderResolver(viewRenders);
     }
 

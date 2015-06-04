@@ -13,11 +13,11 @@ import com.google.common.collect.Lists;
 public class DefaultActionParamDefinition implements ActionMethodParamDefinition{
     
     private Class<?> paramType;
-    private FList<Annotation> annotaions;
+    private FList<Annotation> annotations;
 
     public DefaultActionParamDefinition(Class<?> paramType, List<Annotation> annotations){
         this.paramType = paramType;
-        this.annotaions = FLists.create(annotations);
+        this.annotations = FLists.create(annotations);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class DefaultActionParamDefinition implements ActionMethodParamDefinition
     
     @Override
     public boolean hasAnnotation(final Class<?> annotationType) {
-        return this.annotaions.any(new Predicate<Annotation>() {
+        return this.annotations.any(new Predicate<Annotation>() {
             public boolean apply(Annotation a) {
                 return a.annotationType().equals(annotationType);
             }
@@ -40,7 +40,7 @@ public class DefaultActionParamDefinition implements ActionMethodParamDefinition
 
     @Override
     public Annotation getAnnotation(final Class<?> annotationType){
-        return this.annotaions.find(new Predicate<Annotation>() {
+        return this.annotations.find(new Predicate<Annotation>() {
             @Override
             public boolean apply(Annotation e) {
                 return e.annotationType().equals(annotationType);
@@ -49,8 +49,8 @@ public class DefaultActionParamDefinition implements ActionMethodParamDefinition
     }
 
     @Override
-    public List<Annotation> annotions() {
-        return Lists.newArrayList(annotaions);
+    public List<Annotation> annotations() {
+        return Lists.newArrayList(annotations);
     }
     
     public String toString() {

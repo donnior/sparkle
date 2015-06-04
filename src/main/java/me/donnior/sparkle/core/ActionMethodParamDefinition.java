@@ -9,7 +9,7 @@ public interface ActionMethodParamDefinition {
     
     Class<?> paramType();
     
-    List<Annotation> annotions();
+    List<Annotation> annotations();
     
     boolean hasAnnotation(Class<?> annotationType);
 

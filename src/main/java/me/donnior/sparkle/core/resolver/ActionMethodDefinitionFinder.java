@@ -42,8 +42,8 @@ public class ActionMethodDefinitionFinder {
             List<ActionMethodParamDefinition> apds = Lists.newArrayList();
             for(int i=0; i<paramTypes.length; i++){
                 final Class<?> type = paramTypes[i];
-                final Annotation[] annotaions = ans[i];
-                ActionMethodParamDefinition apd = new DefaultActionParamDefinition(type, Arrays.asList(annotaions));
+                final Annotation[] annotations = ans[i];
+                ActionMethodParamDefinition apd = new DefaultActionParamDefinition(type, Arrays.asList(annotations));
                 apds.add(apd);
             }
             
@@ -67,7 +67,7 @@ public class ActionMethodDefinitionFinder {
         }
 
         @Override
-        public List<Annotation> annotions() {
+        public List<Annotation> annotations() {
             return Arrays.asList(this.method().getAnnotations());
         }
 

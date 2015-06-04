@@ -12,7 +12,7 @@ public interface ActionMethodDefinition {
     
     List<ActionMethodParamDefinition> paramDefinitions();
     
-    List<Annotation> annotions();
+    List<Annotation> annotations();
     
     boolean hasAnnotation(Class<?> annotationType);
     

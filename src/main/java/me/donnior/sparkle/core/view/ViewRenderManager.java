@@ -24,7 +24,7 @@ public class ViewRenderManager {
     private FList<ViewRender> allRegisteredViewRenders = FLists.newEmptyList();
     
     public ViewRenderManager() {
-        ensuerDefaultViewRenders(allRegisteredViewRenders);
+        ensureDefaultViewRenders(allRegisteredViewRenders);
 //        registerCustomViewRenders(allRegisteredViewRenders);
     }
     
@@ -39,7 +39,7 @@ public class ViewRenderManager {
      * @param renders
      * @return
      */
-    public List<ViewRender> resovleRegisteredViewRenders(List<Class<? extends ViewRender>> renders){
+    public List<ViewRender> resolveRegisteredViewRenders(List<Class<? extends ViewRender>> renders){
         return initViewRenders(FLists.create(renders));
     }
  
@@ -52,14 +52,14 @@ public class ViewRenderManager {
             }
         });
         
-//        ensuerDefaultViewRenders(viewRenders);
+//        ensureDefaultViewRenders(viewRenders);
         allRegisteredViewRenders.addAll(viewRenders);
         registerCustomViewRenders(allRegisteredViewRenders);
         
         return allRegisteredViewRenders;
     }
 
-    private void ensuerDefaultViewRenders(FList<ViewRender> viewRenders) {
+    private void ensureDefaultViewRenders(FList<ViewRender> viewRenders) {
         viewRenders.add(new JSONViewRender());
         viewRenders.add(new TextViewRender());
     }
