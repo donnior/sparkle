@@ -43,7 +43,7 @@ public class ActionMethodDefinitionFinder {
             for(int i=0; i<paramTypes.length; i++){
                 final Class<?> type = paramTypes[i];
                 final Annotation[] annotaions = ans[i];
-                ActionMethodParamDefinition apd = new DefaulActionParamDefinition(type, Arrays.asList(annotaions));
+                ActionMethodParamDefinition apd = new DefaultActionParamDefinition(type, Arrays.asList(annotaions));
                 apds.add(apd);
             }
             

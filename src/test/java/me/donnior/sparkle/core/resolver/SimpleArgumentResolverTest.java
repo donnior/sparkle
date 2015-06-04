@@ -93,7 +93,7 @@ public class SimpleArgumentResolverTest {
             }
         };
         
-        return new DefaulActionParamDefinition(paramType, Arrays.asList(an));
+        return new DefaultActionParamDefinition(paramType, Arrays.asList(an));
     }
 
     private ActionMethodParamDefinition correctSupportedActionParamDefinition(Class<?> paramType, final String annotationValue) {
@@ -110,7 +110,7 @@ public class SimpleArgumentResolverTest {
             }
         };
         
-        return new DefaulActionParamDefinition(paramType, Arrays.asList(userNameAnnotation));
+        return new DefaultActionParamDefinition(paramType, Arrays.asList(userNameAnnotation));
     }
 
     

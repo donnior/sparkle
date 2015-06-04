@@ -10,12 +10,12 @@ import me.donnior.sparkle.core.ActionMethodParamDefinition;
 
 import com.google.common.collect.Lists;
 
-public class DefaulActionParamDefinition implements ActionMethodParamDefinition{
+public class DefaultActionParamDefinition implements ActionMethodParamDefinition{
     
     private Class<?> paramType;
     private FList<Annotation> annotaions;
 
-    public DefaulActionParamDefinition(Class<?> paramType, List<Annotation> annotations){
+    public DefaultActionParamDefinition(Class<?> paramType, List<Annotation> annotations){
         this.paramType = paramType;
         this.annotaions = FLists.create(annotations);
     }
