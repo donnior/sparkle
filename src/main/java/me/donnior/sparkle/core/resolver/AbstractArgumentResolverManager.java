@@ -27,7 +27,7 @@ public abstract class AbstractArgumentResolverManager implements ArgumentResolve
         if (matchedArgumentResolver == null) {
             throw new SparkleException("can't find proper argument resolver for " + actionParamDefinition);
         }
-        return matchedArgumentResolver.resovle(actionParamDefinition, request);
+        return matchedArgumentResolver.resolve(actionParamDefinition, request);
     }
 
     @Override

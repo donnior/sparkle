@@ -38,6 +38,6 @@ public interface ArgumentResolver {
      * @param request
      * @return
      */
-    Object resovle(ActionMethodParamDefinition actionParamDefinition, WebRequest request);
+    Object resolve(ActionMethodParamDefinition actionParamDefinition, WebRequest request);
     
 }

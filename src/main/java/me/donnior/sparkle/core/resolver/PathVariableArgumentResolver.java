@@ -24,7 +24,7 @@ public class PathVariableArgumentResolver implements ArgumentResolver {
     }
 
     @Override
-    public Object resovle(ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
+    public Object resolve(ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
       FList<Annotation> ans =  FLists.create(actionParamDefinition.annotions());
       Annotation a = ans.find(new Predicate<Annotation>() {
           @Override

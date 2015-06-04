@@ -44,13 +44,13 @@ public class SimpleArgumentResolverTest {
             }
         };
         
-        Object result = resolver.resovle(apd, request);
+        Object result = resolver.resolve(apd, request);
         assertNull(result);
 
         apd = correctSupportedActionParamDefinition(int.class, "userName");
         
         try {
-            result = resolver.resovle(apd, request);
+            result = resolver.resolve(apd, request);
             fail();
         } catch (RuntimeException re) {
             assertEquals("action method argument annotated with @Param not support primitive", re.getMessage());
@@ -72,7 +72,7 @@ public class SimpleArgumentResolverTest {
                 return super.getParameterValues(paramName);
             }
         };
-        Object result = resolver.resovle(apd, request);
+        Object result = resolver.resolve(apd, request);
         
         assertEquals(Integer.valueOf(1), (Integer)result);
         

@@ -4,7 +4,7 @@ import java.lang.reflect.Array;
 
 public class ParamResolveUtil {
     
-    public Object convertValue(String[] values, Class expectedType){
+    public static Object convertValue(String[] values, Class expectedType){
         if(values == null){
             throw new RuntimeException("the values to be converted can't be null");
         }
@@ -38,7 +38,7 @@ public class ParamResolveUtil {
         }
     }
 
-    private Object convertSingleVaule(String string, Class<?> componentType) {
+    private static Object convertSingleVaule(String string, Class<?> componentType) {
         if(componentType.equals(String.class)){
             return string;
         }

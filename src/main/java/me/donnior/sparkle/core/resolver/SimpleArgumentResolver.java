@@ -23,14 +23,15 @@ public class SimpleArgumentResolver implements ArgumentResolver {
     }
 
     @Override
-    public Object resovle(ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
-      FList<Annotation> ans =  FLists.create(actionParamDefinition.annotions());
-      Annotation a = ans.find(new Predicate<Annotation>() {
-          @Override
-          public boolean apply(Annotation e) {
-              return e.annotationType().equals(Param.class);
-          }
-      });
+    public Object resolve(ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
+//      FList<Annotation> ans =  FLists.create(actionParamDefinition.annotions());
+//      Annotation a = ans.find(new Predicate<Annotation>() {
+//          @Override
+//          public boolean apply(Annotation e) {
+//              return e.annotationType().equals(Param.class);
+//          }
+//      });
+      Annotation a = actionParamDefinition.getAnnotation(Param.class);
       String paramName = ((Param)a).value();
       Class<?> paramType = actionParamDefinition.paramType();
       
@@ -38,7 +39,7 @@ public class SimpleArgumentResolver implements ArgumentResolver {
       if(values == null){
           return nullValueForType(paramType);
       } else {
-          return new ParamResolveUtil().convertValue(values, paramType);
+          return ParamResolveUtil.convertValue(values, paramType);
       }
       
       //TODO add class cast for supported type like String, int; but exceptioin for customized type.

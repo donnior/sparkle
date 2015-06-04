@@ -37,7 +37,17 @@ public class DefaulActionParamDefinition implements ActionMethodParamDefinition{
             }
         });
     }
-    
+
+    @Override
+    public Annotation getAnnotation(final Class<?> annotationType){
+        return this.annotaions.find(new Predicate<Annotation>() {
+            @Override
+            public boolean apply(Annotation e) {
+                return e.annotationType().equals(annotationType);
+            }
+        });
+    }
+
     @Override
     public List<Annotation> annotions() {
         return Lists.newArrayList(annotaions);
