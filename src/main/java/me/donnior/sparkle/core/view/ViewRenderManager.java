@@ -22,12 +22,33 @@ import me.donnior.reflection.ReflectionUtil;
 public class ViewRenderManager {
 
     private FList<ViewRender> allRegisteredViewRenders = FLists.newEmptyList();
+    private FList<ViewRender> appScopedViewRenders = FLists.newEmptyList();
     
     public ViewRenderManager() {
         ensureDefaultViewRenders(allRegisteredViewRenders);
 //        registerCustomViewRenders(allRegisteredViewRenders);
     }
-    
+
+    public FList<ViewRender> getAllOrderedViewRenders(){
+        return this.allRegisteredViewRenders;
+    }
+
+    public void setupViewRenders(){
+//        ensureDefaultViewRenders(this.allRegisteredViewRenders);
+        registerCustomViewRenders(this.allRegisteredViewRenders);
+        this.allRegisteredViewRenders.addAll(this.appScopedViewRenders);
+    }
+
+    public void registerAppScopedViewRender(List<Class<? extends ViewRender>> appScopedViewRenders){
+        FList<ViewRender> viewRenders = FLists.create(appScopedViewRenders).collect(new Function<Class<? extends ViewRender>, ViewRender>() {
+            @Override
+            public ViewRender apply(Class<? extends ViewRender> viewRenderClass) {
+                return (ViewRender) ReflectionUtil.initialize(viewRenderClass);
+            }
+        });
+        this.appScopedViewRenders.addAll(viewRenders);
+    }
+
     /**
      * Resolve all view renders with the given customized view renders and built-in view renders. 
      * 
@@ -35,12 +56,25 @@ public class ViewRenderManager {
      * <li> User defined view renders in their application (third-party view renders)
      * <li> Provider defined view renders (such as sparkle-servlet provide view renders for jsp pages)
      * <li> Sparkle's built-in view renders, like JSON and text view renders;
-     * 
+     *
+     * Note. this method will be deprecated, clients should call registerAppScopedViewRenders() and
+     * getAllOrderedViewRenders() these two steps.
+     *
      * @param renders
      * @return
      */
+    @Deprecated
     public List<ViewRender> resolveRegisteredViewRenders(List<Class<? extends ViewRender>> renders){
-        return initViewRenders(FLists.create(renders));
+        FList<ViewRender> viewRenders = FLists.create(renders).collect(new Function<Class<? extends ViewRender>, ViewRender>() {
+            @Override
+            public ViewRender apply(Class<? extends ViewRender> viewRenderClass) {
+                return (ViewRender) ReflectionUtil.initialize(viewRenderClass);
+            }
+        });
+        this.appScopedViewRenders.addAll(viewRenders);
+        this.allRegisteredViewRenders.addAll(this.appScopedViewRenders);
+        this.registerCustomViewRenders(this.allRegisteredViewRenders);
+        return this.allRegisteredViewRenders;
     }
  
     private FList<ViewRender> initViewRenders(FList<Class<? extends ViewRender>> renders) {

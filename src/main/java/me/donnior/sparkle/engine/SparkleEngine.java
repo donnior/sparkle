@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import me.donnior.fava.FArrayList;
 import me.donnior.fava.FList;
@@ -68,8 +69,8 @@ public class SparkleEngine {
     }
 
     protected void startup() {
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.start();
+        Stopwatch stopwatch = Stopwatch.createStarted();
+//        stopwatch.start();
         logger.info("Start initializing sparkle framework.");
 
         Application application = scanApplication();
@@ -79,8 +80,8 @@ public class SparkleEngine {
             logger.debug("not found any ApplicationConfig, will use the default configuration");
         }
         initEngineWithConfig(config);
-        
-        logger.info("sparkle framework started succeed within {} ms", stopwatch.elapsedMillis());
+        stopwatch.stop();
+        logger.info("sparkle framework started succeed within {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
  
@@ -134,8 +135,8 @@ public class SparkleEngine {
         WebResponse response = webRequest.getWebResponse();
         
         logger.info("processing request : {} {}", webRequest.getMethod(), webRequest.getPath());
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.start();
+        Stopwatch stopwatch = Stopwatch.createStarted();
+//        stopwatch.start();
 
         InterceptorExecutionChain ic = new InterceptorExecutionChain(this.interceptors);
         boolean interceptorPassed = ic.doPreHandle(webRequest);
@@ -160,6 +161,9 @@ public class SparkleEngine {
         String controllerName = rd.getControllerName();
         
         Class<?> controllerClass = controllerClassResolver.getControllerClass(controllerName);
+        if (controllerClass == null) {
+            throw new RuntimeException("Can't find any controller class with name : " + controllerName);
+        }
 
         final Object controller = this.controllerFactory.get(controllerName, controllerClass);
         
@@ -202,8 +206,9 @@ public class SparkleEngine {
             startAsyncProcess((Callable<Object>)result, webRequest);
             return;
         }
-        
-        long actionTime = stopwatch.elapsedMillis();
+
+        stopwatch.stop();
+        long actionTime = stopwatch.elapsed(TimeUnit.MILLISECONDS);
         stopwatch.reset();
         stopwatch.start();
 
@@ -235,7 +240,7 @@ public class SparkleEngine {
             ic.doAfterHandle(webRequest);   
         }
         
-        long viewTime = stopwatch.stop().elapsedMillis();
+        long viewTime = stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
         logger.info("completed request within {} ms (Action: {} ms | View: {} ms)\n", 
                 new Object[]{viewTime + actionTime, actionTime, viewTime });
         

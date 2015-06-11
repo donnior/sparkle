@@ -8,9 +8,10 @@ repositories {
 
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'idea'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
     testCompile 'junit:junit:4.0'
@@ -23,7 +24,7 @@ dependencies {
             
     compile 'org.slf4j:slf4j-api:1.7.5'
      
-    compile 'org.reflections:reflections:0.9.8'
+    compile 'org.reflections:reflections:0.9.10'
     compile 'com.thoughtworks.paranamer:paranamer:2.5.2'
 }
 
