@@ -97,10 +97,10 @@ public class ActionMethodDefinitionFinder {
         Set<Method> methods = ReflectionUtils.getAllMethods(clz, 
                 Predicates.and(ReflectionUtils.withModifier(Modifier.PUBLIC),ReflectionUtils.withName(actionName)));
         if(methods.isEmpty()){
-            throw new SparkleException("can't find any action with name : " + actionName);
+            throw new SparkleException("Can't find any action with name : " + actionName + " in class : " + clz);
         }
         if(methods.size() > 1){
-            throw new SparkleException("find more than one actions with same name : " + actionName);
+            throw new SparkleException("Found more than one actions with name : " + actionName + " in class : " + clz);
         }
         final Method method = methods.iterator().next();
         ActionMethodDefinition result = new DefaultActionMethodDefinition(method, actionName);
