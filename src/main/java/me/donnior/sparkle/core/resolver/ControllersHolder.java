@@ -44,7 +44,7 @@ public class ControllersHolder implements ControllerClassResolver{
                     throw new SparkleException("Controller with name " + controllerName + " was duplicated");
                 }
                 controllers.put(controllerName, controllerClass);
-                logger.info("found controller [{} : {}]", controllerName, controllerClass.getName());
+                logger.info("Found controller : {name => {}, class => {}}", controllerName, controllerClass.getName());
             }
         });
     }

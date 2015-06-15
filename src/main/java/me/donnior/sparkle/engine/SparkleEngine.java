@@ -70,7 +70,6 @@ public class SparkleEngine {
 
     protected void startup() {
         Stopwatch stopwatch = Stopwatch.createStarted();
-//        stopwatch.start();
         logger.info("Start initializing sparkle framework.");
 
         Application application = scanApplication();
@@ -81,13 +80,11 @@ public class SparkleEngine {
         }
         initEngineWithConfig(config);
         stopwatch.stop();
-        logger.info("sparkle framework started succeed within {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+        logger.info("Sparkle framework start succeed within {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
  
     private void initEngineWithConfig(ConfigResult config) {
-        
-        //initialize Sparkle framework component
 
         initViewRenders(config);
         
@@ -289,6 +286,9 @@ public class SparkleEngine {
         String routePackage = "";
         List<RouteModule> routeModules = new RouteModuleScanner().scanRouteModule(routePackage);
         this.router.install(routeModules);
+        for(RouteBuilder rb : this.router.getRegisteredRouteBuilders()){
+            logger.info("Registered route : {}", rb.toString());
+        }
     }
 
     private Application scanApplication() {

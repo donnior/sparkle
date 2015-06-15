@@ -212,14 +212,14 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("RouteBuilder:[");
+        sb.append("{ ");
         sb.append("path => "+this.pathPattern);
-        sb.append(","+"method => "+this.httpMethod);
+        sb.append(" , "+"method => "+this.httpMethod);
         if(this.hasParamCondition()){
-            sb.append(","+"params=>"+this.paramCondition.toString());
+            sb.append(" , "+"params=>"+this.paramCondition.toString());
         }
-        sb.append(", to => " + this.to);
-        sb.append("]");
+        sb.append(" , to => " + this.to);
+        sb.append(" }");
         return sb.toString();
     }
 
