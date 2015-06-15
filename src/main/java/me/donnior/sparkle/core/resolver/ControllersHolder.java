@@ -25,9 +25,18 @@ public class ControllersHolder implements ControllerClassResolver{
     public boolean containsController(String controllerName){
         return this.controllers.containsKey(controllerName);
     }
-    
+
+    /**
+     * Must return a controller class or throw exception;
+     * @param controllerName
+     * @return
+     */
     public Class<?> getControllerClass(String controllerName){
-        return this.controllers.get(controllerName);
+        Class controllerClass = this.controllers.get(controllerName);
+        if (controllerClass == null) {
+            throw new RuntimeException("Can't find any controller class with name : " + controllerName);
+        }
+        return controllerClass;
     }
 
     public void registeControllers(Map<String, Class<?>> controllersMap) {
