@@ -46,4 +46,10 @@ public interface WebRequest {
     void setAttribute(String name, Object value);
     
     List<Multipart> getMultiparts();
+
+    void startAsync();
+
+    boolean isAsync();
+
+    void completeAsync();
 }
