@@ -31,7 +31,8 @@ public class JSONViewRender implements ViewRender {
 
     @Override
     public boolean supportActionMethod(ActionMethodDefinition adf, Object actionMethodResult) {
-        return adf.hasAnnotation(Json.class) || actionMethodResult instanceof JSONModel;
+        //TODO how deal with functional route
+        return actionMethodResult instanceof JSONModel || adf.hasAnnotation(Json.class);
     }
 
 }
