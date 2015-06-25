@@ -12,6 +12,7 @@ import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.ActionMethodParamDefinition;
 
+import me.donnior.sparkle.exception.SparkleException;
 import org.junit.Test;
 
 public class ActionMethodDefinitionFinderTest {
@@ -48,31 +49,17 @@ public class ActionMethodDefinitionFinderTest {
         assertEquals("ActionParamDefinition:[type=>int]", apd2.toString());
         
     }
-    
-    @Test
+
+    @Test(expected = SparkleException.class)
     public void test_cannot_find_any_action_method(){
         ActionMethodDefinitionFinder finder = new ActionMethodDefinitionFinder();
-        try{
-            finder.find(SampleContrllerClass.class, "notExistMethod");
-            fail();
-        }catch(RuntimeException re){
-//            String expectedMessage = "can't find any action with name : notExistMethod";
-//            assertEquals(expectedMessage, re.getMessage());
-        }
-        
+        finder.find(SampleContrllerClass.class, "notExistMethod");
     }
     
-    @Test
+    @Test(expected = SparkleException.class)
     public void test_find_more_than_one_action_method_with_same_name(){
         ActionMethodDefinitionFinder finder = new ActionMethodDefinitionFinder();
-        try{
-            finder.find(SampleContrllerClass.class, "show");
-            fail();
-        }catch(RuntimeException re){
-//            String expectedMessage = "find more than one actions with same name : show";
-//            assertEquals(expectedMessage, re.getMessage());
-        }
-        
+        finder.find(SampleContrllerClass.class, "show");
     }    
 
 }
