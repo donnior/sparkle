@@ -134,7 +134,7 @@ public class RouteBuilderTest {
         }
         
         try{
-            rb.to(null);
+            rb.to((String)null);
             fail();
         }catch(RuntimeException re){
             assertEquals(
