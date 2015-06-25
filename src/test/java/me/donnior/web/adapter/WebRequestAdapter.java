@@ -82,5 +82,19 @@ public class WebRequestAdapter implements WebRequest{
         // TODO Auto-generated method stub
         return null;
     }
-    
+
+    @Override
+    public boolean isAsync() {
+        return false;
+    }
+
+    @Override
+    public void startAsync() {
+
+    }
+
+    @Override
+    public void completeAsync() {
+
+    }
 }
