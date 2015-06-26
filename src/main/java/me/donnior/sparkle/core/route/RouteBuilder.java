@@ -2,6 +2,7 @@ package me.donnior.sparkle.core.route;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,6 +17,7 @@ import me.donnior.sparkle.route.ConditionalRoutingBuilder;
 import me.donnior.sparkle.route.HttpScoppedRoutingBuilder;
 
 import me.donnior.sparkle.route.LinkedRoutingBuilder;
+import org.agilej.jsonty.JSONModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +38,8 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
     private final static String toRegex = "\\w+#{0,1}\\w*";
 
     private final static Logger logger = LoggerFactory.getLogger(RouteBuilder.class);
+    private Function<WebRequest, JSONModel> function;
+    private boolean isFunctionMode;
 
     public RouteBuilder(String url){
         RouteChecker checker = new RouteChecker(url);
@@ -115,7 +119,21 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
         this.controllerName = extractController(route);
         this.actionName = extractAction(route);
     }
-    
+
+    @Override
+    public void to(Function<WebRequest, JSONModel> function) {
+        this.function = function;
+        this.isFunctionMode = true;
+    }
+
+    public boolean isFunctionRoute(){
+        return this.isFunctionMode;
+    }
+
+    public Function<WebRequest, JSONModel> getRouteFunction(){
+        return this.function;
+    }
+
     @Override
     public boolean matchPath(String path){
         //TODO how about introducing a pattern-path-match cache? reduce the cost creating a matcher every time

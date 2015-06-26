@@ -1,5 +1,10 @@
 package me.donnior.sparkle.route;
 
+import me.donnior.sparkle.WebRequest;
+import org.agilej.jsonty.JSONModel;
+
+import java.util.function.Function;
+
 public interface LinkedRoutingBuilder {
 
     /**
@@ -11,7 +16,7 @@ public interface LinkedRoutingBuilder {
      * <pre>
      * <code>
      *
-     * {@literal @}Controller("user")
+     * {@literal@}Controller("user")
      * public class UserController{
      *
      * }
@@ -21,6 +26,24 @@ public interface LinkedRoutingBuilder {
      *
      *
      */
-    void to(String controllerAndAction);  
+    void to(String controllerAndAction);
+
+    /**
+     * Define the route rule to a request process function witch only returns a json model.
+     *
+     *
+     * <pre>
+     * <code>
+     *
+     * router.match("/api").to(request -> {
+     *     return e-> e.expose(200).withName("status");
+     * });
+     *
+     * </code>
+     * </pre>
+     *
+     * @param function
+     */
+    void to(Function<WebRequest, JSONModel> function);
 
 }

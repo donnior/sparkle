@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.function.Function;
 
 import me.donnior.fava.FArrayList;
 import me.donnior.fava.FList;
@@ -12,7 +13,6 @@ import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.WebResponse;
-import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.resolver.*;
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Stopwatch;
 
-public class SparkleEngine {
+public class SparkleEngine implements ViewRenderingPhaseExecutor{
 
     private FList<Interceptor> interceptors;
     private RouterImpl router;
@@ -68,9 +68,10 @@ public class SparkleEngine {
         if(application != null){
             application.config(config);
         }else{
-            logger.debug("not found any ApplicationConfig, will use the default configuration");
+            logger.debug("Could not find any ApplicationConfig, Sparkle will use the default configuration");
         }
         initEngineWithConfig(config);
+
         stopwatch.stop();
         logger.info("Sparkle framework start succeed within {} ms \n", stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
@@ -115,20 +116,19 @@ public class SparkleEngine {
 
     private void initControllers(ConfigResult config) {
         //TODO how to deal with multi controller packages
-        Map<String, Class<?>> scanedControllers = new ControllerScanner().scanControllers(this.config.getBasePackage());
-        this.controllerClassResolver.registeControllers(scanedControllers, true);
+        Map<String, Class<?>> scannedControllers = new ControllerScanner().scanControllers(this.config.getBasePackage());
+        this.controllerClassResolver.registeControllers(scannedControllers, true);
     }
 
     private boolean executePreInterceptor(InterceptorExecutionChain interceptorExecutionChain,  WebRequest webRequest){
-        boolean interceptorPassed = interceptorExecutionChain.doPreHandle(webRequest);
-        return interceptorPassed;
+        return interceptorExecutionChain.doPreHandle(webRequest);
     }
 
     private void executeAfterInterceptor(InterceptorExecutionChain interceptorExecutionChain,  WebRequest webRequest){
         interceptorExecutionChain.doAfterHandle(webRequest);
     }
 
-    private Object getControlerInstanceForRoute(RouteBuilder rd){
+    private Object getControllerInstanceForRoute(RouteBuilder rd){
         String controllerName = rd.getControllerName();
         final Class<?> controllerClass = this.controllerClassResolver.getControllerClass(controllerName);
         final Object controller  = this.controllerFactory.get(controllerName, controllerClass);
@@ -139,9 +139,26 @@ public class SparkleEngine {
         return controller;
     }
 
+    // execute after real action result got
+    private void triggerViewRender(Object result, WebRequestExecutionContext ctx, InterceptorExecutionChain ic){
+        Stopwatch stopwatch = ctx.stopwatch().stop();
+        long actionTime = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+
+        stopwatch.reset().start();
+
+        doRenderViewPhase(ctx.webRequest(), null, null, result);
+
+        if(ic.isAllPassed()){
+            ic.doAfterHandle(ctx.webRequest());
+        }
+        long viewTime = stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
+        logger.info("Completed request (route function) within {} ms (Action: {} ms | View: {} ms)\n", new Object[]{viewTime + actionTime, actionTime, viewTime });
+    }
+
     public void doService(final WebRequest webRequest, HTTPMethod method){
         logger.info("Processing request : {} {}", webRequest.getMethod(), webRequest.getPath());
-        Stopwatch stopwatch = Stopwatch.createStarted();
+        WebRequestExecutionContext ctx = new WebRequestExecutionContext(webRequest);
+        Stopwatch stopwatch = ctx.stopwatch().start();
 
         //execute interceptor
         InterceptorExecutionChain ic = new InterceptorExecutionChain(this.interceptors);
@@ -153,34 +170,40 @@ public class SparkleEngine {
         }
         //find router, or will render 404
         RouteBuilder rd = this.routeBuilderResovler.match(webRequest);
-        WebResponse response = webRequest.getWebResponse();
+
         if(rd == null){
             logger.info("Could not find route for request : '{}' \n", webRequest);
+            WebResponse response = webRequest.getWebResponse();
             response.setStatus(HTTPStatusCode.NOT_FOUND);
             return;
         }
 
-        //create controller object
-        final Object controller = getControlerInstanceForRoute(rd);
-        if(controller instanceof ApplicationController){
-            ((ApplicationController)controller).setRequest(webRequest);
-            ((ApplicationController)controller).setResponse(webRequest.getWebResponse());
+
+        if (rd.isFunctionRoute()){
+            Object result = rd.getRouteFunction().apply(webRequest);
+            triggerViewRender(result, ctx, ic);
+//            stopwatch.stop();
+//            long actionTime = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+//            stopwatch.reset().start();
+//            doRenderViewPhase(webRequest, null, null, result);
+//            if(interceptorPassed){
+//                ic.doAfterHandle(webRequest);
+//            }
+//            long viewTime = stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
+//            logger.info("Completed request (route function) within {} ms (Action: {} ms | View: {} ms)\n", new Object[]{viewTime + actionTime, actionTime, viewTime });
+
+            return ;
         }
 
-        //extract path variables
-        setPathVariablesToRequestAttribute(webRequest, rd);
+        //create controller object
+        final Object controller = getControllerInstanceForRoute(rd);
+
+        presetControllerIfNeed(webRequest, controller);
+        setPathVariablesToRequestAttribute(webRequest, rd);  //extract path variables
 
         final ActionMethodDefinition adf = this.actionMethodResolver.find(controller.getClass(), rd.getActionName());
 
-        if(isAsyncActionDefinition(adf)){
-            logger.info("Action is annotated with @Async, start processing as async request");
-            processAsyncRequest(webRequest, controller, this.argumentResolverManager, adf);
-            return;
-        }
-
-        //TODO add a exception hander here, process exception
-        Object result = new ActionExecutor(this.argumentResolverManager).invoke(adf, controller, webRequest);
-
+        Object result = new ControllerExecutor(this.argumentResolverManager).execute(adf, controller, webRequest);
         if(result instanceof Callable){
             startAsyncProcess((Callable<Object>)result, webRequest, controller, adf);
             return;
@@ -194,16 +217,23 @@ public class SparkleEngine {
         if(!isResponseProcessedMannually){
             doRenderViewPhase(webRequest, controller, adf, result);
         } else {
-            logger.debug("Http servlet response has been procceed mannually, ignore view rendering.");
+            logger.debug("Http servlet response has been proceed manually, ignore view rendering.");
         }
         
         //TODO maybe should put this in a try-catch-finally clause? We should cleanup interceptors even action execution throws exception
-        if(interceptorPassed){
-            ic.doAfterHandle(webRequest);   
+        if(ic.isAllPassed()){
+            ic.doAfterHandle(webRequest);
         }
         
         long viewTime = stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
         logger.info("Completed request within {} ms (Action: {} ms | View: {} ms)\n", new Object[]{viewTime + actionTime, actionTime, viewTime });
+    }
+
+    private void presetControllerIfNeed(WebRequest webRequest, Object controller) {
+        if(controller instanceof ApplicationController){
+            ((ApplicationController)controller).setRequest(webRequest);
+            ((ApplicationController)controller).setResponse(webRequest.getWebResponse());
+        }
     }
 
     private void setPathVariablesToRequestAttribute(WebRequest webRequest, RouteBuilder rd) {
@@ -211,11 +241,12 @@ public class SparkleEngine {
         webRequest.setAttribute(WebRequest.REQ_ATTR_FOR_PATH_VARIABLES, pathVariables);
     }
 
-    private void doRenderViewPhase(WebRequest webRequest, Object controller, ActionMethodDefinition adf, Object result) {
+    @Override
+    public void doRenderViewPhase(WebRequest webRequest, Object controller, ActionMethodDefinition adf, Object result) {
 
         //TODO how to resolve view ? not just json or jsp, consider jsp, freemarker, vocility.
         //Reference springmvc's viewResolver
-        logger.debug("Render view for {}#{} with result type {}", controller.getClass().getSimpleName(), adf.actionName(), result.getClass().getSimpleName());
+//        logger.debug("Render view for {}#{} with result type {}", controller.getClass().getSimpleName(), adf.actionName(), result.getClass().getSimpleName());
         ViewRender viewRender = this.viewRenderResolver.resolveViewRender(adf, result);
         if(viewRender != null){
             try {
@@ -224,23 +255,6 @@ public class SparkleEngine {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void processAsyncRequest(final WebRequest webRequest, final Object controller, final ArgumentResolverManager arm, final ActionMethodDefinition adf) {
-        //TODO start process action async, but should check action result type is Callable, if not, wrap the action method in a Callable object
-        boolean isCallableReturnType = adf.getReturnType().getClass().equals(Callable.class);
-        Callable<Object> c = null;
-        if(!isCallableReturnType){
-            c = new Callable<Object>() {
-                @Override
-                public Object call() throws Exception {
-                    return new ActionExecutor(arm).invoke(adf, controller, webRequest);
-                }
-            };
-        } else {
-            c = (Callable)new ActionExecutor(arm).invoke(adf, controller, webRequest);
-        }
-        startAsyncProcess(c, webRequest, controller, adf);
     }
 
     /**
@@ -255,13 +269,13 @@ public class SparkleEngine {
 
     private ExecutorService es = Executors.newCachedThreadPool();//.newFixedThreadPool(100);
     
-    private void startAsyncProcess(Callable<Object> callable, WebRequest webRequest, Object controller, ActionMethodDefinition adf){
+    private void startAsyncProcess(final Callable<Object> callable, final WebRequest webRequest, final Object controller, final ActionMethodDefinition adf){
         webRequest.startAsync();
         Runnable r = new Runnable() {
             @Override
             public void run() {
                 try {
-                    logger.debug("Execute action asynchronously for {}#{}", controller.getClass().getSimpleName(), adf.actionName());
+                    logger.info("Execute action asynchronously for {}#{}", controller.getClass().getSimpleName(), adf.actionName());
                     Object result = callable.call();
                     doRenderViewPhase(webRequest, controller, adf, result);
                     webRequest.completeAsync();
@@ -275,10 +289,6 @@ public class SparkleEngine {
             }
         };
         es.submit(r);
-    }
-    
-    private boolean isAsyncActionDefinition(ActionMethodDefinition adf) {
-        return adf.hasAnnotation(Async.class);
     }
 
     private boolean isCallableActionDefinition(ActionMethodDefinition adf) {

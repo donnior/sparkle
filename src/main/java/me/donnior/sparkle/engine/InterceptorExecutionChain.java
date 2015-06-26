@@ -14,6 +14,7 @@ public class InterceptorExecutionChain {
 
     private List<Interceptor> interceptors;
     private int interceptorIndex = -1;
+    private volatile boolean allPassed = false;
     
     public InterceptorExecutionChain(List<? extends Interceptor> interceptors){
         this.interceptors = new ArrayList<Interceptor>();
@@ -30,6 +31,7 @@ public class InterceptorExecutionChain {
                 return false;
             }
         }
+        this.allPassed = true;
         return true;
     }
     
@@ -40,5 +42,9 @@ public class InterceptorExecutionChain {
             interceptor.afterHandle(request, request.getWebResponse());
         }
     }
-    
+
+    public boolean isAllPassed(){
+        return this.allPassed;
+    }
+
 }
