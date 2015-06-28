@@ -8,10 +8,16 @@ import java.util.concurrent.TimeUnit;
 public class WebRequestExecutionContext {
 
     private final WebRequest webRequest;
+    private final InterceptorExecutionChain interceptorExecutionChain;
     private Stopwatch stopwatch = Stopwatch.createUnstarted();
 
     public WebRequestExecutionContext(WebRequest webRequest){
+        this(webRequest, null);
+    }
+
+    public WebRequestExecutionContext(WebRequest webRequest, InterceptorExecutionChain ic) {
         this.webRequest = webRequest;
+        this.interceptorExecutionChain = ic;
     }
 
     public void startTimer(String timerName){
@@ -31,4 +37,9 @@ public class WebRequestExecutionContext {
     public WebRequest webRequest() {
         return this.webRequest;
     }
+
+    public InterceptorExecutionChain interceptorExecutionChain(){
+        return this.interceptorExecutionChain;
+    }
+
 }

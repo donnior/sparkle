@@ -9,7 +9,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Callable;
 
-
+/**
+ * Execute controller action, if the action is asynchronous it will not call the real action and
+ * return a callable object for further async processing
+ */
 public class ControllerExecutor {
 
     private final ArgumentResolverManager argumentResolverManager;
@@ -20,7 +23,16 @@ public class ControllerExecutor {
         this.argumentResolverManager = argumentResolverManager;
     }
 
-
+    /**
+     *
+     * execute controller's action. If the action need be execute asynchronously, returns a callable object;
+     * otherwise will return a realy result.
+     *
+     * @param adf
+     * @param controller
+     * @param webRequest
+     * @return
+     */
     public Object execute(ActionMethodDefinition adf, Object controller, WebRequest webRequest) {
         if(isAsyncActionDefinition(adf)){
             logger.info("Action is annotated with @Async, start processing as async request");

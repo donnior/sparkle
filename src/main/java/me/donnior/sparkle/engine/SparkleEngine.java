@@ -12,7 +12,6 @@ import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.WebResponse;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethodDefinition;
 import me.donnior.sparkle.core.resolver.*;
@@ -140,14 +139,19 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     }
 
     // execute after real action result got
-    private void triggerViewRender(Object result, WebRequestExecutionContext ctx, InterceptorExecutionChain ic){
+    private void triggerViewRender(Object result, WebRequestExecutionContext ctx, boolean needRender){
         Stopwatch stopwatch = ctx.stopwatch().stop();
         long actionTime = stopwatch.elapsed(TimeUnit.MILLISECONDS);
 
         stopwatch.reset().start();
 
-        doRenderViewPhase(ctx.webRequest(), null, null, result);
+        if (needRender){
+            doRenderViewPhase(ctx.webRequest(), null, null, result);
+        } else {
+            logger.debug("Http servlet response has been proceed manually, ignore view rendering.");
+        }
 
+        InterceptorExecutionChain ic = ctx.interceptorExecutionChain();
         if(ic.isAllPassed()){
             ic.doAfterHandle(ctx.webRequest());
         }
@@ -157,14 +161,17 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
 
     public void doService(final WebRequest webRequest, HTTPMethod method){
         logger.info("Processing request : {} {}", webRequest.getMethod(), webRequest.getPath());
-        WebRequestExecutionContext ctx = new WebRequestExecutionContext(webRequest);
+
+        InterceptorExecutionChain ic = new InterceptorExecutionChain(this.interceptors);
+        WebRequestExecutionContext ctx = new WebRequestExecutionContext(webRequest, ic);
+
         Stopwatch stopwatch = ctx.stopwatch().start();
 
         //execute interceptor
-        InterceptorExecutionChain ic = new InterceptorExecutionChain(this.interceptors);
+
         boolean interceptorPassed = executePreInterceptor(ic, webRequest);
         if(!interceptorPassed){
-            logger.info("Interceptor execute failed");
+            logger.info("Interceptor execute failed, request processing ignored.");
             executeAfterInterceptor(ic, webRequest);
             return;
         }
@@ -173,25 +180,13 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
 
         if(rd == null){
             logger.info("Could not find route for request : '{}' \n", webRequest);
-            WebResponse response = webRequest.getWebResponse();
-            response.setStatus(HTTPStatusCode.NOT_FOUND);
+            webRequest.getWebResponse().setStatus(HTTPStatusCode.NOT_FOUND);
             return;
         }
 
-
         if (rd.isFunctionRoute()){
             Object result = rd.getRouteFunction().apply(webRequest);
-            triggerViewRender(result, ctx, ic);
-//            stopwatch.stop();
-//            long actionTime = stopwatch.elapsed(TimeUnit.MILLISECONDS);
-//            stopwatch.reset().start();
-//            doRenderViewPhase(webRequest, null, null, result);
-//            if(interceptorPassed){
-//                ic.doAfterHandle(webRequest);
-//            }
-//            long viewTime = stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
-//            logger.info("Completed request (route function) within {} ms (Action: {} ms | View: {} ms)\n", new Object[]{viewTime + actionTime, actionTime, viewTime });
-
+            triggerViewRender(result, ctx, true);
             return ;
         }
 
@@ -205,28 +200,12 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
 
         Object result = new ControllerExecutor(this.argumentResolverManager).execute(adf, controller, webRequest);
         if(result instanceof Callable){
-            startAsyncProcess((Callable<Object>)result, webRequest, controller, adf);
+            startAsyncProcess((Callable<Object>)result, ctx, controller, adf);
             return;
         }
 
-        stopwatch.stop();
-        long actionTime = stopwatch.elapsed(TimeUnit.MILLISECONDS);
-        stopwatch.reset().start();
-
-        boolean isResponseProcessedMannually = isResponseProcessedManually(adf);
-        if(!isResponseProcessedMannually){
-            doRenderViewPhase(webRequest, controller, adf, result);
-        } else {
-            logger.debug("Http servlet response has been proceed manually, ignore view rendering.");
-        }
-        
-        //TODO maybe should put this in a try-catch-finally clause? We should cleanup interceptors even action execution throws exception
-        if(ic.isAllPassed()){
-            ic.doAfterHandle(webRequest);
-        }
-        
-        long viewTime = stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
-        logger.info("Completed request within {} ms (Action: {} ms | View: {} ms)\n", new Object[]{viewTime + actionTime, actionTime, viewTime });
+        boolean isResponseProcessedManually = isResponseProcessedManually(adf);
+        triggerViewRender(result, ctx, !isResponseProcessedManually);
     }
 
     private void presetControllerIfNeed(WebRequest webRequest, Object controller) {
@@ -244,16 +223,18 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     @Override
     public void doRenderViewPhase(WebRequest webRequest, Object controller, ActionMethodDefinition adf, Object result) {
 
-        //TODO how to resolve view ? not just json or jsp, consider jsp, freemarker, vocility.
-        //Reference springmvc's viewResolver
 //        logger.debug("Render view for {}#{} with result type {}", controller.getClass().getSimpleName(), adf.actionName(), result.getClass().getSimpleName());
         ViewRender viewRender = this.viewRenderResolver.resolveViewRender(adf, result);
         if(viewRender != null){
             try {
                 viewRender.renderView(result, controller, webRequest);
             } catch (IOException e) {
+                //TODO deal with view render exception
                 e.printStackTrace();
             }
+        } else {
+            logger.error("Could not find any view render for request {}. controller#action is {}#{}, result type is {}",
+                    webRequest, controller.getClass().getSimpleName(), adf.actionName(), result.getClass().getSimpleName());
         }
     }
 
@@ -268,27 +249,50 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     }
 
     private ExecutorService es = Executors.newCachedThreadPool();//.newFixedThreadPool(100);
-    
-    private void startAsyncProcess(final Callable<Object> callable, final WebRequest webRequest, final Object controller, final ActionMethodDefinition adf){
-        webRequest.startAsync();
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    logger.info("Execute action asynchronously for {}#{}", controller.getClass().getSimpleName(), adf.actionName());
-                    Object result = callable.call();
-                    doRenderViewPhase(webRequest, controller, adf, result);
-                    webRequest.completeAsync();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        es.submit(r);
+
+
+    private void startAsyncProcess(final Callable<Object> callable, final WebRequestExecutionContext ctx, final Object controller, final ActionMethodDefinition adf){
+        ctx.webRequest().startAsync();
+//        Runnable r = new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    logger.info("Execute action asynchronously for {}#{}", controller.getClass().getSimpleName(), adf.actionName());
+//                    Object result = callable.call();
+////                    doRenderViewPhase(ctx.webRequest(), controller, adf, result);
+//
+//                    //TODO trigger view render with result
+//                    triggerViewRender(result, ctx, !isResponseProcessedManually(adf));
+//
+//                    ctx.webRequest().completeAsync();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        };
+//        es.submit(r);
+
+        //use CompletableFuture,  should check CPU use.
+        CompletableFuture
+                .supplyAsync(() -> {
+                    try {
+                        logger.info("Execute action asynchronously for {}#{}", controller.getClass().getSimpleName(), adf.actionName());
+                        return callable.call();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }, es).whenComplete((result,  ex) -> {
+                    if (ex == null) { // means no error
+                        triggerViewRender(result, ctx, !isResponseProcessedManually(adf));
+                        ctx.webRequest().completeAsync();
+                    } else {
+                        //TODO deal with error
+                    }
+                });
     }
 
     private boolean isCallableActionDefinition(ActionMethodDefinition adf) {
@@ -307,6 +311,10 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     private Application scanApplication() {
         Class<?> clz = new ApplicationConfigScanner().scan("");
         return clz != null ? (Application) ReflectionUtil.initialize(clz) : null;
+    }
+
+    public void shutdown(){
+        es.shutdown();
     }
 
 }
