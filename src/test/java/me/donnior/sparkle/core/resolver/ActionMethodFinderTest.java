@@ -19,7 +19,7 @@ public class ActionMethodFinderTest {
     
     @Test
     public void testFindActionMethodDefinitionSucceed(){
-        ActionMethodDefinitionFinder finder = new ActionMethodDefinitionFinder();
+        ActionMethodFinder finder = new ActionMethodFinder();
         ActionMethod amd = finder.find(SampleContrllerClass.class, "index");
         
         assertEquals("index", amd.actionName());
@@ -40,7 +40,7 @@ public class ActionMethodFinderTest {
         }catch(UnsupportedOperationException uoe){
             assertEquals("currently not allowed to get paramName", uoe.getMessage());
         }
-        
+
         ActionMethodParameter apd2 = apds.get(1);
         assertEquals(int.class, apd2.paramType());
         assertTrue(apd2.hasAnnotation(Param.class));
@@ -52,13 +52,13 @@ public class ActionMethodFinderTest {
 
     @Test(expected = SparkleException.class)
     public void test_cannot_find_any_action_method(){
-        ActionMethodDefinitionFinder finder = new ActionMethodDefinitionFinder();
+        ActionMethodFinder finder = new ActionMethodFinder();
         finder.find(SampleContrllerClass.class, "notExistMethod");
     }
     
     @Test(expected = SparkleException.class)
     public void test_find_more_than_one_action_method_with_same_name(){
-        ActionMethodDefinitionFinder finder = new ActionMethodDefinitionFinder();
+        ActionMethodFinder finder = new ActionMethodFinder();
         finder.find(SampleContrllerClass.class, "show");
     }    
 

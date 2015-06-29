@@ -38,7 +38,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     private ControllerFactory controllerFactory;
     private RouteBuilderResolver routeBuilderResovler;
     private ControllerClassResolver controllerClassResolver;
-    private ActionMethodDefinitionFinder actionMethodResolver;
+    private ActionMethodFinder actionMethodResolver;
     private ViewRenderResolver viewRenderResolver;
     private EnvSpecific envSpecific;
     private ArgumentResolverManager argumentResolverManager;
@@ -52,7 +52,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         this.router                  = RouterImpl.getInstance();
         this.controllerFactory       = new GuiceControllerFactory();
         this.routeBuilderResovler    = new SimpleRouteBuilderResolver(this.router);
-        this.actionMethodResolver    = new ActionMethodDefinitionFinder();
+        this.actionMethodResolver    = new ActionMethodFinder();
         this.controllerClassResolver = ControllersHolder.getInstance();
         this.argumentResolverManager =  this.envSpecific.getArgumentResolverManager();
         this.startup();

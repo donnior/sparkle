@@ -3,6 +3,7 @@ package me.donnior.sparkle.core.resolver;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
 @Singleton
-public class ActionMethodDefinitionFinder {
+public class ActionMethodFinder {
 
     static class ActionMethodImpl implements ActionMethod {
 
@@ -36,17 +37,20 @@ public class ActionMethodDefinitionFinder {
             this.actionName = actionName;
             this.returnType = method.getReturnType();
 
-            final Class<?>[] paramTypes = method.getParameterTypes();
-            final Annotation[][] ans = method.getParameterAnnotations();
-          
             List<ActionMethodParameter> apds = Lists.newArrayList();
-            for(int i=0; i<paramTypes.length; i++){
-                final Class<?> type = paramTypes[i];
-                final Annotation[] annotations = ans[i];
-                ActionMethodParameter apd = new DefaultActionMethodParameter(type, Arrays.asList(annotations));
-                apds.add(apd);
+//            final Class<?>[] paramTypes = method.getParameterTypes();
+//            final Annotation[][] ans = method.getParameterAnnotations();
+//
+//            for(int i=0; i<paramTypes.length; i++){
+//                final Class<?> type = paramTypes[i];
+//                final Annotation[] annotations = ans[i];
+//                ActionMethodParameter apd = new DefaultActionMethodParameter(type, Arrays.asList(annotations));
+//                apds.add(apd);
+//            }
+
+            for (Parameter p : method.getParameters()){
+                apds.add(new DefaultActionMethodParameter(p));
             }
-            
             this.apds = apds;
         }
         
