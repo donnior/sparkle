@@ -20,6 +20,7 @@ import me.donnior.sparkle.core.route.RouterImpl;
 import me.donnior.sparkle.core.route.SimpleRouteBuilderResolver;
 import me.donnior.sparkle.core.view.SimpleViewRenderResolver;
 import me.donnior.sparkle.core.view.ViewRender;
+import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.ext.EnvSpecific;
 import me.donnior.sparkle.http.HTTPStatusCode;
 import me.donnior.sparkle.interceptor.Interceptor;
@@ -138,14 +139,14 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     }
 
     // execute after real action result got
-    private void triggerViewRender(Object result, WebRequestExecutionContext ctx, boolean needRender){
+    private void triggerViewRender(Object result, WebRequestExecutionContext ctx, boolean needRender, Object controller, ActionMethod actionMethod){
         Stopwatch stopwatch = ctx.stopwatch().stop();
         long actionTime = stopwatch.elapsed(TimeUnit.MILLISECONDS);
 
         stopwatch.reset().start();
 
         if (needRender){
-            doRenderViewPhase(ctx.webRequest(), null, null, result);
+            doRenderViewPhase(ctx.webRequest(), controller, actionMethod, result);
         } else {
             logger.debug("Http servlet response has been proceed manually, ignore view rendering.");
         }
@@ -184,8 +185,9 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         }
 
         if (rd.isFunctionRoute()){
+            logger.debug("Execute action for functional route : {}", rd.getRouteFunction());
             Object result = rd.getRouteFunction().apply(webRequest);
-            triggerViewRender(result, ctx, true);
+            triggerViewRender(result, ctx, true, null, null);
             return ;
         }
 
@@ -204,7 +206,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         }
 
         boolean isResponseProcessedManually = isResponseProcessedManually(actionMethod);
-        triggerViewRender(result, ctx, !isResponseProcessedManually);
+        triggerViewRender(result, ctx, !isResponseProcessedManually, controller, actionMethod);
     }
 
     private void presetControllerIfNeed(WebRequest webRequest, Object controller) {
@@ -221,15 +223,19 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
 
     @Override
     public void doRenderViewPhase(WebRequest webRequest, Object controller, ActionMethod actionMethod, Object result) {
+        if (controller != null && actionMethod != null){
+            logger.debug("Try to render view for {}#{} with result type : {}",
+                    controller.getClass().getSimpleName(), actionMethod.actionName(), result.getClass().getSimpleName());
+        } else {  // it's a functional route
+            logger.debug("Try to render view for functional route with result type : {}", result.getClass().getSimpleName());
+        }
 
-//        logger.debug("Render view for {}#{} with result type {}", controller.getClass().getSimpleName(), actionMethod.actionName(), result.getClass().getSimpleName());
         ViewRender viewRender = this.viewRenderResolver.resolveViewRender(actionMethod, result);
         if(viewRender != null){
             try {
                 viewRender.renderView(result, controller, webRequest);
             } catch (IOException e) {
-                //TODO deal with view render exception
-                e.printStackTrace();
+                throw new SparkleException(e.getMessage());
             }
         } else {
             logger.error("Could not find any view render for request {}. controller#action is {}#{}, result type is {}",
@@ -237,12 +243,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         }
     }
 
-    /**
-     * if one action method has a HttpServletResponse argument, 
-     * then suppose user want process response manually, will ignore the view rendering phase.
-     * @param actionMethod
-     * @return
-     */
+
     private boolean isResponseProcessedManually(ActionMethod actionMethod) {
         return this.envSpecific.getLifeCycleManager().isResponseProcessedManually(actionMethod);
     }
@@ -261,7 +262,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
 ////                    doRenderViewPhase(ctx.webRequest(), controller, actionMethod, result);
 //
 //                    //TODO trigger view render with result
-//                    triggerViewRender(result, ctx, !isResponseProcessedManually(actionMethod));
+//                    triggerViewRender(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
 //
 //                    ctx.webRequest().completeAsync();
 //                } catch (InterruptedException e) {
@@ -286,16 +287,12 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
                     }
                 }, es).whenComplete((result,  ex) -> {
                     if (ex == null) { // means no error
-                        triggerViewRender(result, ctx, !isResponseProcessedManually(actionMethod));
+                        triggerViewRender(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
                         ctx.webRequest().completeAsync();
                     } else {
-                        //TODO deal with error
+                        //TODO deal with action call error
                     }
-                });
-    }
-
-    private boolean isCallableActionDefinition(ActionMethod actionMethod) {
-        return actionMethod.getReturnType().equals(Callable.class);
+                });  //TODO need deal with view render exception
     }
 
     private void installRouter() {

@@ -35,7 +35,7 @@ public class ControllerExecutor {
      */
     public Object execute(ActionMethod actionMethod, Object controller, WebRequest webRequest) {
         if(isAsyncActionDefinition(actionMethod)){
-            logger.info("Action is annotated with @Async, start processing as async request");
+            logger.debug("Action is annotated with @Async, start processing as async request");
 
             boolean isCallableReturnType = actionMethod.getReturnType().getClass().equals(Callable.class);
             Callable<Object> c = null;

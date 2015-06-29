@@ -4,7 +4,7 @@ import me.donnior.sparkle.core.ActionMethod;
 import me.donnior.sparkle.core.view.ViewRender;
 
 /**
- * Get the appropriate ViewRender for action result from a ViewRender list the application has.
+ * Get the appropriate ViewRender for action result from the view renders registered in application.
  *
  */
 public interface ViewRenderResolver {
