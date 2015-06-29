@@ -9,28 +9,28 @@ import java.util.List;
 
 import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
-import me.donnior.sparkle.core.ActionMethodDefinition;
-import me.donnior.sparkle.core.ActionMethodParamDefinition;
+import me.donnior.sparkle.core.ActionMethod;
+import me.donnior.sparkle.core.ActionMethodParameter;
 
 import me.donnior.sparkle.exception.SparkleException;
 import org.junit.Test;
 
-public class ActionMethodDefinitionFinderTest {
+public class ActionMethodFinderTest {
     
     @Test
     public void testFindActionMethodDefinitionSucceed(){
         ActionMethodDefinitionFinder finder = new ActionMethodDefinitionFinder();
-        ActionMethodDefinition amd = finder.find(SampleContrllerClass.class, "index");
+        ActionMethod amd = finder.find(SampleContrllerClass.class, "index");
         
         assertEquals("index", amd.actionName());
         assertTrue(amd.hasAnnotation(Json.class));
         assertEquals(1, amd.annotations().size());
         assertEquals(Json.class, amd.annotations().get(0).annotationType());
         
-        List<ActionMethodParamDefinition> apds = amd.paramDefinitions();
+        List<ActionMethodParameter> apds = amd.paramDefinitions();
         assertEquals(2, apds.size());
         
-        ActionMethodParamDefinition apd1 = apds.get(0);
+        ActionMethodParameter apd1 = apds.get(0);
         assertEquals(String.class, apd1.paramType());
         assertFalse(apd1.hasAnnotation(Param.class));
         assertEquals(0, apd1.annotations().size());
@@ -41,12 +41,12 @@ public class ActionMethodDefinitionFinderTest {
             assertEquals("currently not allowed to get paramName", uoe.getMessage());
         }
         
-        ActionMethodParamDefinition apd2 = apds.get(1);
+        ActionMethodParameter apd2 = apds.get(1);
         assertEquals(int.class, apd2.paramType());
         assertTrue(apd2.hasAnnotation(Param.class));
         assertFalse(apd2.hasAnnotation(Json.class));
         assertEquals(1, apd2.annotations().size());
-        assertEquals("ActionParamDefinition:[type=>int]", apd2.toString());
+        assertEquals("ActionMethodParameter:[type=>int]", apd2.toString());
         
     }
 

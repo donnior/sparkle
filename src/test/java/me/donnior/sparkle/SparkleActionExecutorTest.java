@@ -1,6 +1,6 @@
 package me.donnior.sparkle;
 
-import me.donnior.sparkle.core.ActionMethodDefinition;
+import me.donnior.sparkle.core.ActionMethod;
 import me.donnior.sparkle.core.resolver.ActionMethodDefinitionFinder;
 import me.donnior.sparkle.engine.ActionExecutor;
 
@@ -18,11 +18,11 @@ public class SparkleActionExecutorTest {
     
     @Test
     public void testInvoke(){
-        ActionMethodDefinition adf = 
+        ActionMethod actionMethod =
                 new ActionMethodDefinitionFinder().find(ControllerForSparkleActionExecutor.class, "index");
 
         //FIXME
-        //        Object result = executor.invoke(adf, new ControllerForSparkleActionExecutor(),  new ServletWebRequest(mockRequest(), null));
+        //        Object result = executor.invoke(actionMethod, new ControllerForSparkleActionExecutor(),  new ServletWebRequest(mockRequest(), null));
         //        assertEquals("sparkle1", result);
     }
     

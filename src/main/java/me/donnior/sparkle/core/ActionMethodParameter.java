@@ -3,7 +3,7 @@ package me.donnior.sparkle.core;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-public interface ActionMethodParamDefinition {
+public interface ActionMethodParameter {
 
     String paramName();
     

@@ -1,7 +1,7 @@
 package me.donnior.sparkle.core.resolver;
 
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.core.ActionMethodParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParameter;
 
 /**
  * Argument resolver for argument with type {@link WebRequest}
@@ -10,12 +10,12 @@ import me.donnior.sparkle.core.ActionMethodParamDefinition;
 public class WebRequestArgumentResolver implements ArgumentResolver {
 
     @Override
-    public boolean support(ActionMethodParamDefinition actionParamDefinition) {
+    public boolean support(ActionMethodParameter actionParamDefinition) {
         return WebRequest.class.equals(actionParamDefinition.paramType());
     }
 
     @Override
-    public Object resolve(ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
+    public Object resolve(ActionMethodParameter actionParamDefinition, WebRequest request) {
         return request;
     }
 

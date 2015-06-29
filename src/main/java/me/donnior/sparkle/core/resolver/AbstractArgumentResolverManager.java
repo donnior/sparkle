@@ -9,7 +9,7 @@ import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.core.ActionMethodParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParameter;
 import me.donnior.sparkle.exception.SparkleException;
 
 public abstract class AbstractArgumentResolverManager implements ArgumentResolverManager {
@@ -17,7 +17,7 @@ public abstract class AbstractArgumentResolverManager implements ArgumentResolve
     private List<ArgumentResolver> argumentResolvers = Lists.newArrayList();
 
     @Override
-    public Object resolve(final ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
+    public Object resolve(final ActionMethodParameter actionParamDefinition, WebRequest request) {
         FList<ArgumentResolver> list = FLists.create(argumentResolvers);
         ArgumentResolver matchedArgumentResolver = list.find(new Predicate<ArgumentResolver>() {
             public boolean apply(ArgumentResolver e) {
@@ -25,7 +25,7 @@ public abstract class AbstractArgumentResolverManager implements ArgumentResolve
             }
         });
         if (matchedArgumentResolver == null) {
-            throw new SparkleException("can't find proper argument resolver for " + actionParamDefinition);
+            throw new SparkleException("Can't find proper argument resolver for " + actionParamDefinition);
         }
         return matchedArgumentResolver.resolve(actionParamDefinition, request);
     }

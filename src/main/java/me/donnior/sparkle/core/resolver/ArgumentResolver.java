@@ -1,7 +1,7 @@
 package me.donnior.sparkle.core.resolver;
 
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.core.ActionMethodParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParameter;
 
 /**
  * ArgumentResolver is used to parse and set argument to controller's action method. For example an
@@ -28,7 +28,7 @@ public interface ArgumentResolver {
      * @param actionParamDefinition
      * @return
      */
-    boolean support(ActionMethodParamDefinition actionParamDefinition);
+    boolean support(ActionMethodParameter actionParamDefinition);
     
     /**
      * 
@@ -38,6 +38,6 @@ public interface ArgumentResolver {
      * @param request
      * @return
      */
-    Object resolve(ActionMethodParamDefinition actionParamDefinition, WebRequest request);
+    Object resolve(ActionMethodParameter actionParamDefinition, WebRequest request);
     
 }

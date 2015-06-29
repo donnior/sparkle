@@ -1,21 +1,22 @@
 package me.donnior.sparkle.core.resolver;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.List;
 
 import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
-import me.donnior.sparkle.core.ActionMethodParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParameter;
 
 import com.google.common.collect.Lists;
 
-public class DefaultActionParamDefinition implements ActionMethodParamDefinition{
+public class DefaultActionMethodParameter implements ActionMethodParameter {
     
     private Class<?> paramType;
     private FList<Annotation> annotations;
 
-    public DefaultActionParamDefinition(Class<?> paramType, List<Annotation> annotations){
+    public DefaultActionMethodParameter(Class<?> paramType, List<Annotation> annotations){
         this.paramType = paramType;
         this.annotations = FLists.create(annotations);
     }
@@ -54,7 +55,7 @@ public class DefaultActionParamDefinition implements ActionMethodParamDefinition
     }
     
     public String toString() {
-        return "ActionParamDefinition:[type=>"+this.paramType()+"]";
+        return "ActionMethodParameter:[type=>"+this.paramType()+"]";
     }
 
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
-import java.util.function.Function;
 
 import me.donnior.fava.FArrayList;
 import me.donnior.fava.FList;
@@ -13,7 +12,7 @@ import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.config.Application;
-import me.donnior.sparkle.core.ActionMethodDefinition;
+import me.donnior.sparkle.core.ActionMethod;
 import me.donnior.sparkle.core.resolver.*;
 import me.donnior.sparkle.core.route.RouteBuilder;
 import me.donnior.sparkle.core.route.RouteBuilderResolver;
@@ -196,15 +195,15 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         presetControllerIfNeed(webRequest, controller);
         setPathVariablesToRequestAttribute(webRequest, rd);  //extract path variables
 
-        final ActionMethodDefinition adf = this.actionMethodResolver.find(controller.getClass(), rd.getActionName());
+        final ActionMethod actionMethod = this.actionMethodResolver.find(controller.getClass(), rd.getActionName());
 
-        Object result = new ControllerExecutor(this.argumentResolverManager).execute(adf, controller, webRequest);
+        Object result = new ControllerExecutor(this.argumentResolverManager).execute(actionMethod, controller, webRequest);
         if(result instanceof Callable){
-            startAsyncProcess((Callable<Object>)result, ctx, controller, adf);
+            startAsyncProcess((Callable<Object>)result, ctx, controller, actionMethod);
             return;
         }
 
-        boolean isResponseProcessedManually = isResponseProcessedManually(adf);
+        boolean isResponseProcessedManually = isResponseProcessedManually(actionMethod);
         triggerViewRender(result, ctx, !isResponseProcessedManually);
     }
 
@@ -221,10 +220,10 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     }
 
     @Override
-    public void doRenderViewPhase(WebRequest webRequest, Object controller, ActionMethodDefinition adf, Object result) {
+    public void doRenderViewPhase(WebRequest webRequest, Object controller, ActionMethod actionMethod, Object result) {
 
-//        logger.debug("Render view for {}#{} with result type {}", controller.getClass().getSimpleName(), adf.actionName(), result.getClass().getSimpleName());
-        ViewRender viewRender = this.viewRenderResolver.resolveViewRender(adf, result);
+//        logger.debug("Render view for {}#{} with result type {}", controller.getClass().getSimpleName(), actionMethod.actionName(), result.getClass().getSimpleName());
+        ViewRender viewRender = this.viewRenderResolver.resolveViewRender(actionMethod, result);
         if(viewRender != null){
             try {
                 viewRender.renderView(result, controller, webRequest);
@@ -234,35 +233,35 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
             }
         } else {
             logger.error("Could not find any view render for request {}. controller#action is {}#{}, result type is {}",
-                    webRequest, controller.getClass().getSimpleName(), adf.actionName(), result.getClass().getSimpleName());
+                    webRequest, controller.getClass().getSimpleName(), actionMethod.actionName(), result.getClass().getSimpleName());
         }
     }
 
     /**
      * if one action method has a HttpServletResponse argument, 
      * then suppose user want process response manually, will ignore the view rendering phase.
-     * @param adf
+     * @param actionMethod
      * @return
      */
-    private boolean isResponseProcessedManually(ActionMethodDefinition adf) {
-        return this.envSpecific.getLifeCycleManager().isResponseProcessedManually(adf);
+    private boolean isResponseProcessedManually(ActionMethod actionMethod) {
+        return this.envSpecific.getLifeCycleManager().isResponseProcessedManually(actionMethod);
     }
 
     private ExecutorService es = Executors.newCachedThreadPool();//.newFixedThreadPool(100);
 
 
-    private void startAsyncProcess(final Callable<Object> callable, final WebRequestExecutionContext ctx, final Object controller, final ActionMethodDefinition adf){
+    private void startAsyncProcess(final Callable<Object> callable, final WebRequestExecutionContext ctx, final Object controller, final ActionMethod actionMethod){
         ctx.webRequest().startAsync();
 //        Runnable r = new Runnable() {
 //            @Override
 //            public void run() {
 //                try {
-//                    logger.info("Execute action asynchronously for {}#{}", controller.getClass().getSimpleName(), adf.actionName());
+//                    logger.info("Execute action asynchronously for {}#{}", controller.getClass().getSimpleName(), actionMethod.actionName());
 //                    Object result = callable.call();
-////                    doRenderViewPhase(ctx.webRequest(), controller, adf, result);
+////                    doRenderViewPhase(ctx.webRequest(), controller, actionMethod, result);
 //
 //                    //TODO trigger view render with result
-//                    triggerViewRender(result, ctx, !isResponseProcessedManually(adf));
+//                    triggerViewRender(result, ctx, !isResponseProcessedManually(actionMethod));
 //
 //                    ctx.webRequest().completeAsync();
 //                } catch (InterruptedException e) {
@@ -280,14 +279,14 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         CompletableFuture
                 .supplyAsync(() -> {
                     try {
-                        logger.info("Execute action asynchronously for {}#{}", controller.getClass().getSimpleName(), adf.actionName());
+                        logger.info("Execute action asynchronously for {}#{}", controller.getClass().getSimpleName(), actionMethod.actionName());
                         return callable.call();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 }, es).whenComplete((result,  ex) -> {
                     if (ex == null) { // means no error
-                        triggerViewRender(result, ctx, !isResponseProcessedManually(adf));
+                        triggerViewRender(result, ctx, !isResponseProcessedManually(actionMethod));
                         ctx.webRequest().completeAsync();
                     } else {
                         //TODO deal with error
@@ -295,8 +294,8 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
                 });
     }
 
-    private boolean isCallableActionDefinition(ActionMethodDefinition adf) {
-        return adf.getReturnType().equals(Callable.class);
+    private boolean isCallableActionDefinition(ActionMethod actionMethod) {
+        return actionMethod.getReturnType().equals(Callable.class);
     }
 
     private void installRouter() {

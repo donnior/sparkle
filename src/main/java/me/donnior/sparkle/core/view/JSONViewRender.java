@@ -5,7 +5,7 @@ import java.io.IOException;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.WebResponse;
 import me.donnior.sparkle.annotation.Json;
-import me.donnior.sparkle.core.ActionMethodDefinition;
+import me.donnior.sparkle.core.ActionMethod;
 
 
 import com.google.gson.Gson;
@@ -30,9 +30,9 @@ public class JSONViewRender implements ViewRender {
     }
 
     @Override
-    public boolean supportActionMethod(ActionMethodDefinition adf, Object actionMethodResult) {
+    public boolean supportActionMethod(ActionMethod actionMethod, Object actionMethodResult) {
         //TODO how deal with functional route
-        return actionMethodResult instanceof JSONModel || adf.hasAnnotation(Json.class);
+        return actionMethodResult instanceof JSONModel || actionMethod.hasAnnotation(Json.class);
     }
 
 }

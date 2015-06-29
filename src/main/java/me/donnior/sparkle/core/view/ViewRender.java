@@ -3,7 +3,7 @@ package me.donnior.sparkle.core.view;
 import java.io.IOException;
 
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.core.ActionMethodDefinition;
+import me.donnior.sparkle.core.ActionMethod;
 
 /**
  *  ViewRender takes charge of rendering response as views. Such as a page or a json response. 
@@ -39,7 +39,7 @@ import me.donnior.sparkle.core.ActionMethodDefinition;
  */
 public interface ViewRender {
 
-    boolean supportActionMethod(ActionMethodDefinition adf, Object actionMethodResult);
+    boolean supportActionMethod(ActionMethod actionMethod, Object actionMethodResult);
     
     void renderView(Object result, Object controller, WebRequest request) throws IOException;
 

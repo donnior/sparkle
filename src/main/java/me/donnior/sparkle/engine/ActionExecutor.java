@@ -7,8 +7,8 @@ import me.donnior.fava.Function;
 import me.donnior.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.core.ActionMethodDefinition;
-import me.donnior.sparkle.core.ActionMethodParamDefinition;
+import me.donnior.sparkle.core.ActionMethod;
+import me.donnior.sparkle.core.ActionMethodParameter;
 import me.donnior.sparkle.core.resolver.ArgumentResolverManager;
 
 public class ActionExecutor {
@@ -22,14 +22,14 @@ public class ActionExecutor {
     //TODO should refactord this params resolver, make it support multi resolvers so programmers can create their own
     // param resolver like param with class type 'Project'; so it should be List<ParamResolver>
 
-    public Object invoke(ActionMethodDefinition adf, Object controller, 
+    public Object invoke(ActionMethod actionMethod, Object controller,
             final WebRequest request) {
         
-        Method method = adf.method();
-        List<ActionMethodParamDefinition> apds = adf.paramDefinitions();
+        Method method = actionMethod.method();
+        List<ActionMethodParameter> apds = actionMethod.paramDefinitions();
         
-        Object[] params = FLists.create(apds).collect(new Function<ActionMethodParamDefinition, Object>() {
-            public Object apply(ActionMethodParamDefinition apd) {
+        Object[] params = FLists.create(apds).collect(new Function<ActionMethodParameter, Object>() {
+            public Object apply(ActionMethodParameter apd) {
                 return argumentResolverManager.resolve(apd, request);
             }
         }).toArray();

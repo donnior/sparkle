@@ -5,7 +5,7 @@ import java.util.List;
 import me.donnior.fava.FList;
 import me.donnior.fava.Predicate;
 import me.donnior.fava.util.FLists;
-import me.donnior.sparkle.core.ActionMethodDefinition;
+import me.donnior.sparkle.core.ActionMethod;
 import me.donnior.sparkle.core.resolver.ViewRenderResolver;
 
 import org.slf4j.Logger;
@@ -23,11 +23,11 @@ public class SimpleViewRenderResolver implements ViewRenderResolver{
     }
     
     @Override
-    public ViewRender resolveViewRender(final ActionMethodDefinition adf, final Object result) {
+    public ViewRender resolveViewRender(final ActionMethod actionMethod, final Object result) {
         return this.viewRenders.find(new Predicate<ViewRender>() {
             @Override
             public boolean apply(ViewRender viewRender) {
-                boolean isViewRenderSupportResult = viewRender.supportActionMethod(adf, result);
+                boolean isViewRenderSupportResult = viewRender.supportActionMethod(actionMethod, result);
                 logger.debug("{} match action result [{}] : {}", 
                         viewRender.getClass().getName(), result.getClass().getName(), isViewRenderSupportResult);
 

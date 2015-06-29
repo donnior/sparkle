@@ -1,6 +1,6 @@
 package me.donnior.sparkle.core.resolver;
 
-import me.donnior.sparkle.core.ActionMethodDefinition;
+import me.donnior.sparkle.core.ActionMethod;
 import me.donnior.sparkle.core.view.ViewRender;
 
 /**
@@ -9,6 +9,6 @@ import me.donnior.sparkle.core.view.ViewRender;
  */
 public interface ViewRenderResolver {
 
-    ViewRender resolveViewRender(ActionMethodDefinition adf, Object result);
+    ViewRender resolveViewRender(ActionMethod actionMethod, Object result);
     
 }

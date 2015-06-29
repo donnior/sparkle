@@ -2,12 +2,9 @@ package me.donnior.sparkle.core.resolver;
 
 import java.lang.annotation.Annotation;
 
-import me.donnior.fava.FList;
-import me.donnior.fava.Predicate;
-import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.annotation.Param;
-import me.donnior.sparkle.core.ActionMethodParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParameter;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.util.ParamResolveUtil;
 
@@ -18,12 +15,12 @@ import me.donnior.sparkle.util.ParamResolveUtil;
 public class SimpleArgumentResolver implements ArgumentResolver {
 
     @Override
-    public boolean support(ActionMethodParamDefinition actionParamDefinition) {
+    public boolean support(ActionMethodParameter actionParamDefinition) {
         return actionParamDefinition.hasAnnotation(Param.class);
     }
 
     @Override
-    public Object resolve(ActionMethodParamDefinition actionParamDefinition, WebRequest request) {
+    public Object resolve(ActionMethodParameter actionParamDefinition, WebRequest request) {
 //      FList<Annotation> ans =  FLists.create(actionParamDefinition.annotations());
 //      Annotation a = ans.find(new Predicate<Annotation>() {
 //          @Override

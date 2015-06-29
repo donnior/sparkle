@@ -6,7 +6,7 @@ import java.io.IOException;
 
 
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.core.ActionMethodDefinition;
+import me.donnior.sparkle.core.ActionMethod;
 import me.donnior.sparkle.core.view.ViewRender;
 import me.donnior.sparkle.engine.ConfigImpl;
 
@@ -62,7 +62,7 @@ public class ConfigImplTest {
 class DemoViewRenderForConfig implements ViewRender{
 
     @Override
-    public boolean supportActionMethod(ActionMethodDefinition adf,
+    public boolean supportActionMethod(ActionMethod actionMethod,
             Object actionMethodResult) {
         return false;
     }

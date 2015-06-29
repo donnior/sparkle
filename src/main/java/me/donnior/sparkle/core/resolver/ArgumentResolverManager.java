@@ -3,11 +3,11 @@ package me.donnior.sparkle.core.resolver;
 import java.util.List;
 
 import me.donnior.sparkle.WebRequest;
-import me.donnior.sparkle.core.ActionMethodParamDefinition;
+import me.donnior.sparkle.core.ActionMethodParameter;
 
 public interface ArgumentResolverManager {
     
-    Object resolve(ActionMethodParamDefinition paramDefinition, WebRequest request);
+    Object resolve(ActionMethodParameter paramDefinition, WebRequest request);
     
     List<ArgumentResolver> registeredResolvers();
 

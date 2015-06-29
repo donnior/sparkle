@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import me.donnior.sparkle.core.ActionMethodDefinition;
-import me.donnior.sparkle.core.ActionMethodParamDefinition;
+import me.donnior.sparkle.core.ActionMethod;
+import me.donnior.sparkle.core.ActionMethodParameter;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.util.Singleton;
 import me.donnior.sparkle.util.Tuple;
@@ -24,26 +24,26 @@ import com.google.common.collect.Lists;
 @Singleton
 public class ActionMethodDefinitionFinder {
 
-    static class DefaultActionMethodDefinition implements ActionMethodDefinition{
+    static class ActionMethodImpl implements ActionMethod {
 
         private final Method method;
         private final String actionName;
-        private final List<ActionMethodParamDefinition> apds;
+        private final List<ActionMethodParameter> apds;
         private final Class<?> returnType;
 
-        public DefaultActionMethodDefinition(Method method, String actionName){
+        public ActionMethodImpl(Method method, String actionName){
             this.method = method;
             this.actionName = actionName;
             this.returnType = method.getReturnType();
-            
+
             final Class<?>[] paramTypes = method.getParameterTypes();
             final Annotation[][] ans = method.getParameterAnnotations();
           
-            List<ActionMethodParamDefinition> apds = Lists.newArrayList();
+            List<ActionMethodParameter> apds = Lists.newArrayList();
             for(int i=0; i<paramTypes.length; i++){
                 final Class<?> type = paramTypes[i];
                 final Annotation[] annotations = ans[i];
-                ActionMethodParamDefinition apd = new DefaultActionParamDefinition(type, Arrays.asList(annotations));
+                ActionMethodParameter apd = new DefaultActionMethodParameter(type, Arrays.asList(annotations));
                 apds.add(apd);
             }
             
@@ -61,7 +61,7 @@ public class ActionMethodDefinitionFinder {
         }
 
         @Override
-        public List<ActionMethodParamDefinition> paramDefinitions() {
+        public List<ActionMethodParameter> paramDefinitions() {
             return this.apds;
         }
 
@@ -83,10 +83,10 @@ public class ActionMethodDefinitionFinder {
         
     }
 
-    private final Map<Tuple2<Class, String>, ActionMethodDefinition> cache =
-            new ConcurrentHashMap<Tuple2<Class, String>, ActionMethodDefinition>(); 
+    private final Map<Tuple2<Class, String>, ActionMethod> cache =
+            new ConcurrentHashMap<Tuple2<Class, String>, ActionMethod>();
     
-    public ActionMethodDefinition find(Class clz, final String actionName) {
+    public ActionMethod find(Class clz, final String actionName) {
         Tuple2<Class, String> key = Tuple.of(clz, actionName);
         if(isCached(key)){
             return cache.get(key);
@@ -101,7 +101,7 @@ public class ActionMethodDefinitionFinder {
             throw new SparkleException("Found more than one actions with name : " + actionName + " in class : " + clz);
         }
         final Method method = methods.iterator().next();
-        ActionMethodDefinition result = new DefaultActionMethodDefinition(method, actionName);
+        ActionMethod result = new ActionMethodImpl(method, actionName);
         cache.put(key, result);
         return result;
     }

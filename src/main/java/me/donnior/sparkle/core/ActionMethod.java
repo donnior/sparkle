@@ -4,13 +4,13 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
 
-public interface ActionMethodDefinition {
+public interface ActionMethod {
     
     String actionName();
     
     Method method();
     
-    List<ActionMethodParamDefinition> paramDefinitions();
+    List<ActionMethodParameter> paramDefinitions();
     
     List<Annotation> annotations();
     
