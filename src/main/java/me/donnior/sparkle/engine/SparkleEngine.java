@@ -50,11 +50,14 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         this.envSpecific             = es;
         this.config                  = new ConfigImpl();
         this.interceptors            = new FArrayList<Interceptor>();
+
         this.router                  = RouterImpl.getInstance();
-        this.controllerFactory       = new GuiceControllerFactory();
         this.routeBuilderResovler    = new SimpleRouteBuilderResolver(this.router);
-        this.actionMethodResolver    = new ActionMethodFinder();
+
         this.controllerClassResolver = ControllersHolder.getInstance();
+        this.controllerFactory       = new GuiceControllerFactory();
+        this.actionMethodResolver    = new ActionMethodFinder();
+
         this.argumentResolverManager =  this.envSpecific.getArgumentResolverManager();
         this.startup();
     }
@@ -67,27 +70,20 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         if(application != null){
             application.config(config);
         }else{
-            logger.debug("Could not find any ApplicationConfig, Sparkle will use the default configuration");
+            logger.info("Could not find any ApplicationConfig, Sparkle will use the default configuration");
         }
         initEngineWithConfig(config);
 
         stopwatch.stop();
         logger.info("Sparkle framework start succeed within {} ms \n", stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
-
  
     private void initEngineWithConfig(ConfigResult config) {
-
         initViewRenders(config);
-        
         initControllers(config);
-        
         initControllerFactory(config);
-        
         installRouter();
-        
         initInterceptors(config);
-        
     }
 
     private void initInterceptors(ConfigResult config) {
@@ -138,27 +134,6 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         return controller;
     }
 
-    // execute after real action result got
-    private void triggerViewRender(Object result, WebRequestExecutionContext ctx, boolean needRender, Object controller, ActionMethod actionMethod){
-        Stopwatch stopwatch = ctx.stopwatch().stop();
-        long actionTime = stopwatch.elapsed(TimeUnit.MILLISECONDS);
-
-        stopwatch.reset().start();
-
-        if (needRender){
-            doRenderViewPhase(ctx.webRequest(), controller, actionMethod, result);
-        } else {
-            logger.debug("Http servlet response has been proceed manually, ignore view rendering.");
-        }
-
-        InterceptorExecutionChain ic = ctx.interceptorExecutionChain();
-        if(ic.isAllPassed()){
-            ic.doAfterHandle(ctx.webRequest());
-        }
-        long viewTime = stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
-        logger.info("Completed request (route function) within {} ms (Action: {} ms | View: {} ms)\n", new Object[]{viewTime + actionTime, actionTime, viewTime });
-    }
-
     public void doService(final WebRequest webRequest, HTTPMethod method){
         logger.info("Processing request : {} {}", webRequest.getMethod(), webRequest.getPath());
 
@@ -175,7 +150,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
             executeAfterInterceptor(ic, webRequest);
             return;
         }
-        //find router, or will render 404
+
         RouteBuilder rd = this.routeBuilderResovler.match(webRequest);
 
         if(rd == null){
@@ -209,18 +184,6 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         triggerViewRender(result, ctx, !isResponseProcessedManually, controller, actionMethod);
     }
 
-    private void presetControllerIfNeed(WebRequest webRequest, Object controller) {
-        if(controller instanceof ApplicationController){
-            ((ApplicationController)controller).setRequest(webRequest);
-            ((ApplicationController)controller).setResponse(webRequest.getWebResponse());
-        }
-    }
-
-    private void setPathVariablesToRequestAttribute(WebRequest webRequest, RouteBuilder rd) {
-        Map<String, String> pathVariables = PathVariableDetector.extractPathVariables(rd, webRequest);
-        webRequest.setAttribute(WebRequest.REQ_ATTR_FOR_PATH_VARIABLES, pathVariables);
-    }
-
     @Override
     public void doRenderViewPhase(WebRequest webRequest, Object controller, ActionMethod actionMethod, Object result) {
         if (controller != null && actionMethod != null){
@@ -238,9 +201,32 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
                 throw new SparkleException(e.getMessage());
             }
         } else {
-            logger.error("Could not find any view render for request {}. controller#action is {}#{}, result type is {}",
+            logger.error("Could not find any view render for request {}, controller#action is {}#{}, result type is {}",
                     webRequest, controller.getClass().getSimpleName(), actionMethod.actionName(), result.getClass().getSimpleName());
         }
+    }
+
+    // execute after real action result got
+    private void triggerViewRender(Object result, WebRequestExecutionContext ctx,
+                                   boolean needRender, Object controller, ActionMethod actionMethod){
+        Stopwatch stopwatch = ctx.stopwatch().stop();
+        long actionTime = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+
+        stopwatch.reset().start();
+
+        if (needRender){
+            doRenderViewPhase(ctx.webRequest(), controller, actionMethod, result);
+        } else {
+            logger.debug("Http servlet response has been proceed manually, ignore view rendering.");
+        }
+
+        InterceptorExecutionChain ic = ctx.interceptorExecutionChain();
+        if(ic.isAllPassed()){
+            ic.doAfterHandle(ctx.webRequest());
+        }
+        long viewTime = stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
+        logger.info("Completed request (route function) within {} ms (Action: {} ms | View: {} ms)\n",
+                new Object[]{viewTime + actionTime, actionTime, viewTime });
     }
 
 
@@ -251,13 +237,15 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     private ExecutorService es = Executors.newCachedThreadPool();//.newFixedThreadPool(100);
 
 
-    private void startAsyncProcess(final Callable<Object> callable, final WebRequestExecutionContext ctx, final Object controller, final ActionMethod actionMethod){
+    private void startAsyncProcess(final Callable<Object> callable, final WebRequestExecutionContext ctx,
+                                   final Object controller, final ActionMethod actionMethod){
         ctx.webRequest().startAsync();
 //        Runnable r = new Runnable() {
 //            @Override
 //            public void run() {
 //                try {
-//                    logger.info("Execute action asynchronously for {}#{}", controller.getClass().getSimpleName(), actionMethod.actionName());
+//                    logger.info("Execute action asynchronously for {}#{}",
+//                              controller.getClass().getSimpleName(), actionMethod.actionName());
 //                    Object result = callable.call();
 ////                    doRenderViewPhase(ctx.webRequest(), controller, actionMethod, result);
 //
@@ -280,7 +268,8 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         CompletableFuture
                 .supplyAsync(() -> {
                     try {
-                        logger.info("Execute action asynchronously for {}#{}", controller.getClass().getSimpleName(), actionMethod.actionName());
+                        logger.info("Execute action asynchronously for {}#{}",
+                                controller.getClass().getSimpleName(), actionMethod.actionName());
                         return callable.call();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -308,6 +297,19 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         Class<?> clz = new ApplicationConfigScanner().scan("");
         return clz != null ? (Application) ReflectionUtil.initialize(clz) : null;
     }
+
+    private void presetControllerIfNeed(WebRequest webRequest, Object controller) {
+        if(controller instanceof ApplicationController){
+            ((ApplicationController)controller).setRequest(webRequest);
+            ((ApplicationController)controller).setResponse(webRequest.getWebResponse());
+        }
+    }
+
+    private void setPathVariablesToRequestAttribute(WebRequest webRequest, RouteBuilder rd) {
+        Map<String, String> pathVariables = PathVariableDetector.extractPathVariables(rd, webRequest);
+        webRequest.setAttribute(WebRequest.REQ_ATTR_FOR_PATH_VARIABLES, pathVariables);
+    }
+
 
     public void shutdown(){
         es.shutdown();

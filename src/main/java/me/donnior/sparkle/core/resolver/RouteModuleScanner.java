@@ -27,8 +27,8 @@ public class RouteModuleScanner {
             if(Modifier.isAbstract(clz.getModifiers())){
                 continue;
             }
+            logger.debug("Found route module : {} ",clz.getName());
             routeModuleInstances.add((RouteModule)ReflectionUtil.initialize(clz));
-            logger.debug("Created route module with class {} ",clz.getName());
         }
         return routeModuleInstances;
     }

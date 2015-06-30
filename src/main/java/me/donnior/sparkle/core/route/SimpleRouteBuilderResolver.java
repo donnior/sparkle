@@ -40,7 +40,7 @@ public class SimpleRouteBuilderResolver implements RouteBuilderResolver{
 //            logger.debug("extracted path variables {}", uriVariables);
             return rb;
         } else {
-            logger.debug("Could not find RoutingBuilder");
+            logger.debug("Could not find RoutingBuilder for request {} {}", webRequest.getMethod(), webRequest.getPath());
             return null;
         }
     }

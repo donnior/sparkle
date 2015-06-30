@@ -26,7 +26,7 @@ public class ControllerScanner {
         for(Class<?> clz : annotated){
             Controller controller = (Controller)clz.getAnnotation(Controller.class);
             this.controllers.put(controller.value(), clz);
-            logger.debug("Found annotated controller [name: {} class: {}]", controller.value(), clz.getName());
+            logger.debug("Found annotated controller {name => {} , class => {}}", controller.value(), clz.getName());
         }
         
         Set<Class<? extends ApplicationController>> inherited = reflections.getSubTypesOf(ApplicationController.class);
@@ -37,7 +37,7 @@ public class ControllerScanner {
             }
             String controllerName = clz.getSimpleName();
             this.controllers.put(controllerName, clz);
-            logger.debug("Found inherited controller [name: {} class: {}]", clz.getSimpleName(), clz.getName());
+            logger.debug("Found inherited controller {name => {} , class => {}}", clz.getSimpleName(), clz.getName());
         }
         
         return this.controllers;

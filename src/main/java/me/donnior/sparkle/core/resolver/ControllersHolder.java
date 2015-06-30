@@ -50,10 +50,10 @@ public class ControllersHolder implements ControllerClassResolver{
         new FHashMap<String, Class<?>>(controllersMap).each(new MConsumer<String, Class<?>>() {
             public void apply(String controllerName, Class<?> controllerClass) {
                 if(containsController(controllerName)){
-                    throw new SparkleException("Controller with name " + controllerName + " was duplicated");
+                    throw new SparkleException("Controller with name '" + controllerName + "' was duplicated");
                 }
                 controllers.put(controllerName, controllerClass);
-                logger.info("Found controller : {name => {}, class => {}}", controllerName, controllerClass.getName());
+//                logger.info("Found controller : {name => {}, class => {}}", controllerName, controllerClass.getName());
             }
         });
     }

@@ -234,9 +234,20 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
         sb.append("path => "+this.pathPattern);
         sb.append(" , "+"method => "+this.httpMethod);
         if(this.hasParamCondition()){
-            sb.append(" , "+"params=>"+this.paramCondition.toString());
+            sb.append(" , "+"params => "+this.paramCondition.toString());
         }
-        sb.append(" , to => " + this.to);
+        if (this.hasHeaderCondition()){
+            sb.append(" , "+"header => "+this.headerCondition.toString());
+        }
+        if (this.hasConsumeCondition()){
+            sb.append(" , "+"consumes => "+this.consumeCondition.toString());
+        }
+        sb.append(" , to => ");
+        if (this.isFunctionRoute()){
+            sb.append("request -> {...}");
+        } else {
+            sb.append(this. to);
+        }
         sb.append(" }");
         return sb.toString();
     }
