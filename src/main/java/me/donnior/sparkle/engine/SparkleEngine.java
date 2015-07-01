@@ -159,6 +159,8 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
             return;
         }
 
+        setPathVariablesToRequestAttribute(webRequest, rd);  //extract path variables
+
         if (rd.isFunctionRoute()){
             logger.debug("Execute action for functional route : {}", rd.getRouteFunction());
             Object result = rd.getRouteFunction().apply(webRequest);
@@ -170,7 +172,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         final Object controller = getControllerInstanceForRoute(rd);
 
         presetControllerIfNeed(webRequest, controller);
-        setPathVariablesToRequestAttribute(webRequest, rd);  //extract path variables
+
 
         final ActionMethod actionMethod = this.actionMethodResolver.find(controller.getClass(), rd.getActionName());
 
@@ -225,7 +227,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
             ic.doAfterHandle(ctx.webRequest());
         }
         long viewTime = stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
-        logger.info("Completed request (route function) within {} ms (Action: {} ms | View: {} ms)\n",
+        logger.info("Completed request within {} ms (Action: {} ms | View: {} ms)\n",
                 new Object[]{viewTime + actionTime, actionTime, viewTime });
     }
 

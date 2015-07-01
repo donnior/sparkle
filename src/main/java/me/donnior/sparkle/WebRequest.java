@@ -1,7 +1,7 @@
 package me.donnior.sparkle;
 
 import java.util.List;
-
+import java.util.Map;
 
 
 public interface WebRequest {
@@ -52,4 +52,9 @@ public interface WebRequest {
     boolean isAsync();
 
     void completeAsync();
+
+    default String pathVariable(String name){
+        Map<String, String> map = getAttribute(WebRequest.REQ_ATTR_FOR_PATH_VARIABLES);
+        return map.get(name);
+    }
 }

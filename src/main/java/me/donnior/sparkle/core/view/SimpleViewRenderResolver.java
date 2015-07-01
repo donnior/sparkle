@@ -29,8 +29,8 @@ public class SimpleViewRenderResolver implements ViewRenderResolver{
             public boolean apply(ViewRender viewRender) {
                 boolean isViewRenderSupportResult = viewRender.supportActionMethod(actionMethod, result);
                 logger.debug("{} match action result [{}] : {}", 
-                        viewRender.getClass().getName(), result.getClass().getName(), isViewRenderSupportResult);
-
+                        viewRender.getClass().getSimpleName(), result.getClass().getName(),
+                        isViewRenderSupportResult ? "succeed" : "failed");
                 return isViewRenderSupportResult;
             }
         });
