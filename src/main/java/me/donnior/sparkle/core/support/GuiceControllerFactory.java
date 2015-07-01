@@ -4,6 +4,9 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import me.donnior.sparkle.core.ControllerFactory;
 
+/**
+ * controller factory which use google guice as ioc container
+ */
 public class GuiceControllerFactory implements ControllerFactory {
 
     Injector injector;

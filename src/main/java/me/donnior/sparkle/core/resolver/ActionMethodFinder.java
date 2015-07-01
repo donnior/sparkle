@@ -65,7 +65,7 @@ public class ActionMethodFinder {
         }
 
         @Override
-        public List<ActionMethodParameter> paramDefinitions() {
+        public List<ActionMethodParameter> parameters() {
             return this.apds;
         }
 

@@ -1,5 +1,8 @@
 package me.donnior.sparkle.core;
 
+/**
+ * factory for controller instance
+ */
 public interface ControllerFactory {
 
     /**

@@ -24,7 +24,7 @@ public class SimpleViewRenderResolver implements ViewRenderResolver{
     
     @Override
     public ViewRender resolveViewRender(final ActionMethod actionMethod, final Object result) {
-        return this.viewRenders.find(new Predicate<ViewRender>() {
+        return this.viewRenders.find(new Predicate<ViewRender> () {
             @Override
             public boolean apply(ViewRender viewRender) {
                 boolean isViewRenderSupportResult = viewRender.supportActionMethod(actionMethod, result);

@@ -30,7 +30,7 @@ public class ActionExecutor {
 
         logger.debug("Execute real action method {}#{}", controller.getClass().getSimpleName(), actionMethod.actionName());
         Method method = actionMethod.method();
-        List<ActionMethodParameter> apds = actionMethod.paramDefinitions();
+        List<ActionMethodParameter> apds = actionMethod.parameters();
         
         Object[] params = FLists.create(apds).collect(new Function<ActionMethodParameter, Object>() {
             public Object apply(ActionMethodParameter apd) {

@@ -27,7 +27,7 @@ public class ActionMethodFinderTest {
         assertEquals(1, amd.annotations().size());
         assertEquals(Json.class, amd.annotations().get(0).annotationType());
         
-        List<ActionMethodParameter> apds = amd.paramDefinitions();
+        List<ActionMethodParameter> apds = amd.parameters();
         assertEquals(2, apds.size());
         
         ActionMethodParameter apd1 = apds.get(0);
