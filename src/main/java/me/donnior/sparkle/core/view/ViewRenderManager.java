@@ -10,13 +10,12 @@ import me.donnior.reflection.ReflectionUtil;
 /**
  * Holder for all supported ViewRenders with different priority.
  * 
- *  <li> Sparkle's built-in view renders have highest priority, 
- *  including {@link JSONViewRender} and {@link TextViewRender}
- *  
- *  <li> Application's customized view renders have the second priority.
- *  
- *  <li> The Sparkle's runtime provider's view renders have the lowest priority, 
- *  such as Servlet's Jsp page
+ *  <li> Sparkle's built-in view renders have highest priority, including {@link JSONViewRender} and {@link TextViewRender}
+ *
+ *  <li> Sparkle vendor's view renders have the second priority, *  such as Servlet's Jsp
+ *
+ *  <li> Application's customized view renders have the lowest priority
+ *
  *
  */
 public class ViewRenderManager {
@@ -29,6 +28,11 @@ public class ViewRenderManager {
         registerVendorViewRenders(allRegisteredViewRenders);
     }
 
+    /**
+     * get the all and ordered view renders
+     *
+     * @return
+     */
     public FList<ViewRender> getAllOrderedViewRenders(){
         return this.allRegisteredViewRenders;
     }
@@ -66,11 +70,19 @@ public class ViewRenderManager {
         viewRenders.add(new TextViewRender());
     }
 
-
+    /**
+     * for Sparkle's runtime vendor to register it's view renders, for example servlet jsp view
+     * @param viewRenders
+     */
     protected void registerVendorViewRenders(List<ViewRender> viewRenders){
         
     }
 
+    /**
+     *
+     * register the application scoped view renders to sparkle
+     *
+     */
     public void registerAppScopedViewRender(List<Class<? extends ViewRender>> appScopedViewRenders){
         FList<ViewRender> viewRenders = FLists.create(appScopedViewRenders).collect(new Function<Class<? extends ViewRender>, ViewRender>() {
             @Override

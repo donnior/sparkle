@@ -1,9 +1,10 @@
-package me.donnior.sparkle.engine;
+package me.donnior.sparkle.core.support;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import me.donnior.sparkle.core.ControllerFactory;
 
-public class GuiceControllerFactory implements ControllerFactory{
+public class GuiceControllerFactory implements ControllerFactory {
 
     Injector injector;
     

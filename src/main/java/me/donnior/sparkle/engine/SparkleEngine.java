@@ -13,11 +13,14 @@ import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethod;
+import me.donnior.sparkle.core.ConfigResult;
+import me.donnior.sparkle.core.ControllerFactory;
 import me.donnior.sparkle.core.resolver.*;
 import me.donnior.sparkle.core.route.RouteBuilder;
 import me.donnior.sparkle.core.route.RouteBuilderResolver;
 import me.donnior.sparkle.core.route.RouterImpl;
 import me.donnior.sparkle.core.route.SimpleRouteBuilderResolver;
+import me.donnior.sparkle.core.support.SimpleControllerFactoryResolver;
 import me.donnior.sparkle.core.view.SimpleViewRenderResolver;
 import me.donnior.sparkle.core.view.ViewRender;
 import me.donnior.sparkle.exception.SparkleException;
@@ -47,6 +50,11 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
     
     public SparkleEngine(EnvSpecific es){
+
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        logger.info("Start initializing sparkle framework.");
+
+
         this.envSpecific             = es;
         this.config                  = new ConfigImpl();
         this.interceptors            = new FArrayList<Interceptor>();
@@ -55,18 +63,18 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         this.routeBuilderResovler    = new SimpleRouteBuilderResolver(this.router);
 
         this.controllerClassResolver = ControllersHolder.getInstance();
-        this.controllerFactory       = new GuiceControllerFactory();
+        this.controllerFactory       = new SimpleControllerFactoryResolver().get(this.config);
         this.actionMethodResolver    = new ActionMethodFinder();
 
         this.argumentResolverManager =  this.envSpecific.getArgumentResolverManager();
 
         this.startup();
+
+        stopwatch.stop();
+        logger.info("Sparkle framework start succeed within {} ms \n", stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
     protected void startup() {
-        Stopwatch stopwatch = Stopwatch.createStarted();
-        logger.info("Start initializing sparkle framework.");
-
         Application application = scanApplication();
         if(application != null){
             application.config(config);
@@ -74,15 +82,12 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
             logger.info("Could not find any ApplicationConfig, Sparkle will use the default configuration");
         }
         initEngineWithConfig(config);
-
-        stopwatch.stop();
-        logger.info("Sparkle framework start succeed within {} ms \n", stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
  
     private void initEngineWithConfig(ConfigResult config) {
         initViewRenders(config);
         initControllers(config);
-        initControllerFactory(config);
+//        initControllerFactory(config);
         installRouter();
         initInterceptors(config);
     }
@@ -133,7 +138,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         final Object controller  = this.controllerFactory.get(controllerName, controllerClass);
         if(controller == null){
             logger.error("Can't get controller instance with name : {} and class : {}", controllerName, controllerClass);
-            throw new RuntimeException("Can't get controller instance with name : " + controllerName + " and class : "+ controllerClass);
+            throw new SparkleException("Can't get controller instance with name : " + controllerName + " and class : "+ controllerClass);
         }
         return controller;
     }

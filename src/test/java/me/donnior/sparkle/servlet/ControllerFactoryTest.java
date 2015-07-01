@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.donnior.sparkle.core.resolver.ControllersHolder;
-import me.donnior.sparkle.engine.SimpleControllerFactory;
+import me.donnior.sparkle.core.support.SimpleControllerFactory;
 
 import org.junit.Before;
 import org.junit.Test;
