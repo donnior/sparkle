@@ -25,28 +25,12 @@ public class ViewRenderManager {
     private FList<ViewRender> appScopedViewRenders = FLists.newEmptyList();
     
     public ViewRenderManager() {
-        ensureDefaultViewRenders(allRegisteredViewRenders);
-//        registerCustomViewRenders(allRegisteredViewRenders);
+        registerBuiltInViewRenders(allRegisteredViewRenders);
+        registerVendorViewRenders(allRegisteredViewRenders);
     }
 
     public FList<ViewRender> getAllOrderedViewRenders(){
         return this.allRegisteredViewRenders;
-    }
-
-    public void setupViewRenders(){
-//        ensureDefaultViewRenders(this.allRegisteredViewRenders);
-        registerCustomViewRenders(this.allRegisteredViewRenders);
-        this.allRegisteredViewRenders.addAll(this.appScopedViewRenders);
-    }
-
-    public void registerAppScopedViewRender(List<Class<? extends ViewRender>> appScopedViewRenders){
-        FList<ViewRender> viewRenders = FLists.create(appScopedViewRenders).collect(new Function<Class<? extends ViewRender>, ViewRender>() {
-            @Override
-            public ViewRender apply(Class<? extends ViewRender> viewRenderClass) {
-                return (ViewRender) ReflectionUtil.initialize(viewRenderClass);
-            }
-        });
-        this.appScopedViewRenders.addAll(viewRenders);
     }
 
     /**
@@ -64,7 +48,7 @@ public class ViewRenderManager {
      * @return
      */
     @Deprecated
-    public List<ViewRender> resolveRegisteredViewRenders(List<Class<? extends ViewRender>> renders){
+    private List<ViewRender> resolveRegisteredViewRenders(List<Class<? extends ViewRender>> renders){
         FList<ViewRender> viewRenders = FLists.create(renders).collect(new Function<Class<? extends ViewRender>, ViewRender>() {
             @Override
             public ViewRender apply(Class<? extends ViewRender> viewRenderClass) {
@@ -73,33 +57,28 @@ public class ViewRenderManager {
         });
         this.appScopedViewRenders.addAll(viewRenders);
         this.allRegisteredViewRenders.addAll(this.appScopedViewRenders);
-        this.registerCustomViewRenders(this.allRegisteredViewRenders);
+        this.registerVendorViewRenders(this.allRegisteredViewRenders);
         return this.allRegisteredViewRenders;
     }
- 
-    private FList<ViewRender> initViewRenders(FList<Class<? extends ViewRender>> renders) {
-        
-        FList<ViewRender> viewRenders = renders.collect(new Function<Class<? extends ViewRender>, ViewRender>() {
-            @Override
-            public ViewRender apply(Class<? extends ViewRender> viewRenderClass) {
-                return (ViewRender)ReflectionUtil.initialize(viewRenderClass);
-            }
-        });
-        
-//        ensureDefaultViewRenders(viewRenders);
-        allRegisteredViewRenders.addAll(viewRenders);
-        registerCustomViewRenders(allRegisteredViewRenders);
-        
-        return allRegisteredViewRenders;
-    }
 
-    private void ensureDefaultViewRenders(FList<ViewRender> viewRenders) {
+    private void registerBuiltInViewRenders(FList<ViewRender> viewRenders) {
         viewRenders.add(new JSONViewRender());
         viewRenders.add(new TextViewRender());
     }
-    
-    protected void registerCustomViewRenders(List<ViewRender> viewRenders){
+
+
+    protected void registerVendorViewRenders(List<ViewRender> viewRenders){
         
     }
-    
+
+    public void registerAppScopedViewRender(List<Class<? extends ViewRender>> appScopedViewRenders){
+        FList<ViewRender> viewRenders = FLists.create(appScopedViewRenders).collect(new Function<Class<? extends ViewRender>, ViewRender>() {
+            @Override
+            public ViewRender apply(Class<? extends ViewRender> viewRenderClass) {
+                return (ViewRender) ReflectionUtil.initialize(viewRenderClass);
+            }
+        });
+        this.appScopedViewRenders.addAll(viewRenders);
+        this.allRegisteredViewRenders.addAll(this.appScopedViewRenders);
+    }
 }

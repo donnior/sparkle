@@ -59,6 +59,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         this.actionMethodResolver    = new ActionMethodFinder();
 
         this.argumentResolverManager =  this.envSpecific.getArgumentResolverManager();
+
         this.startup();
     }
 
@@ -91,9 +92,12 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     }
 
     private void initViewRenders(ConfigResult config) {
-        List<ViewRender> viewRenders = 
-            this.envSpecific.getViewRendersManager().resolveRegisteredViewRenders(config.getCustomizedViewRenders());
-        this.viewRenderResolver = new SimpleViewRenderResolver(viewRenders);
+
+        this.envSpecific.getViewRendersManager().registerAppScopedViewRender(config.getCustomizedViewRenders());
+//        List<ViewRender> viewRenders =
+//            this.envSpecific.getViewRendersManager().resolveRegisteredViewRenders(config.getCustomizedViewRenders());
+        this.viewRenderResolver =
+                new SimpleViewRenderResolver(this.envSpecific.getViewRendersManager().getAllOrderedViewRenders());
     }
 
     //TODO how to make the controller factory can be customized, for example let user use an
