@@ -5,6 +5,9 @@ import me.donnior.sparkle.Params;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodParameter;
 
+/**
+ * Argument resolver for param type with {@link Params}
+ */
 public class ParamsArgumentResolver implements ArgumentResolver{
 
     @Override
