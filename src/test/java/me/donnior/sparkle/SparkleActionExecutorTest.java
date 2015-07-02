@@ -1,8 +1,8 @@
 package me.donnior.sparkle;
 
 import me.donnior.sparkle.core.ActionMethod;
-import me.donnior.sparkle.core.resolver.ActionMethodResolver;
-import me.donnior.sparkle.engine.ActionExecutor;
+import me.donnior.sparkle.core.method.ActionMethodResolver;
+import me.donnior.sparkle.core.method.ActionExecutor;
 
 import org.junit.Before;
 import org.junit.Test;

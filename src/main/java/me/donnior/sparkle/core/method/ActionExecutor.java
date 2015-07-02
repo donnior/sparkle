@@ -1,4 +1,4 @@
-package me.donnior.sparkle.engine;
+package me.donnior.sparkle.core.method;
 
 import java.lang.reflect.Method;
 import java.util.List;

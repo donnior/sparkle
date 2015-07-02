@@ -24,6 +24,6 @@ public interface Router {
      * </code></pre>
      *
      */
-    HttpScoppedRoutingBuilder match(String path);
+    HttpScopedRoutingBuilder match(String path);
     
 }

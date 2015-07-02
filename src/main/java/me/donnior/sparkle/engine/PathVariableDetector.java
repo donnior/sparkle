@@ -7,8 +7,10 @@ import java.util.Map;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.route.RouteBuilder;
 
+@Deprecated
 public class PathVariableDetector {
 
+    @Deprecated
     public static Map<String, String> extractPathVariables(RouteBuilder rd,
             WebRequest webRequest) {
         List<String> values = rd.extractPathVariableValues(webRequest.getPath());

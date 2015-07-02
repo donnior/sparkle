@@ -1,12 +1,12 @@
 package me.donnior.sparkle.data.module;
 
 import me.donnior.sparkle.route.AbstractRouteModule;
-import me.donnior.sparkle.route.HttpScoppedRoutingBuilder;
+import me.donnior.sparkle.route.HttpScopedRoutingBuilder;
 import me.donnior.sparkle.route.LinkedRoutingBuilder;
 
 public class SampleRouteModule extends AbstractRouteModule{
 
-    public HttpScoppedRoutingBuilder matchResult;
+    public HttpScopedRoutingBuilder matchResult;
     public LinkedRoutingBuilder postResult;
     public LinkedRoutingBuilder getResult;
     

@@ -1,4 +1,4 @@
-package me.donnior.sparkle.engine;
+package me.donnior.sparkle.core.method;
 
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.annotation.Async;

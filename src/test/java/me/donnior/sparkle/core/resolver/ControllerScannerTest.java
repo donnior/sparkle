@@ -8,6 +8,7 @@ import java.util.Map;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.annotation.Controller;
 
+import me.donnior.sparkle.core.method.ControllerScanner;
 import org.junit.Test;
 
 public class ControllerScannerTest {

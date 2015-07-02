@@ -12,6 +12,7 @@ import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionMethod;
 import me.donnior.sparkle.core.ActionMethodParameter;
 
+import me.donnior.sparkle.core.method.ActionMethodResolver;
 import me.donnior.sparkle.exception.SparkleException;
 import org.junit.Test;
 

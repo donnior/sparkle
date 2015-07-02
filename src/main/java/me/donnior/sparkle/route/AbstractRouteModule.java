@@ -3,6 +3,28 @@ package me.donnior.sparkle.route;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
+/**
+ *
+ * A support class for {@link RouteModule}s which reduces repetition and results in
+ * a more readable configuration. Simply extend this class and implement {@link
+ * #configure()}, and call the inherited methods which mirror those found in
+ * {@link Router}. For example:
+ *
+ *
+ * <pre>
+ *     {@code
+ *
+ *     class MyRouteModule extends AbstractRouteModule{
+ *         public void configure(){
+ *             get("/item/{id}").to("items#show");
+ *             post("/item/{id}").to("items#update");
+ *         }
+ *     }
+ *
+ *     }
+ * </pre>
+ *
+ */
 public abstract class AbstractRouteModule implements RouteModule {
 
     public Router router;
@@ -26,7 +48,7 @@ public abstract class AbstractRouteModule implements RouteModule {
         return router;
     }
 
-    protected HttpScoppedRoutingBuilder match(String path) {
+    protected HttpScopedRoutingBuilder match(String path) {
         return router().match(path);
     }
     

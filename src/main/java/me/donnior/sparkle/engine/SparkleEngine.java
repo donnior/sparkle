@@ -16,7 +16,7 @@ import me.donnior.sparkle.core.ActionMethod;
 import me.donnior.sparkle.core.ConfigResult;
 import me.donnior.sparkle.core.ControllerFactory;
 import me.donnior.sparkle.core.argument.ArgumentResolverManager;
-import me.donnior.sparkle.core.resolver.*;
+import me.donnior.sparkle.core.method.*;
 import me.donnior.sparkle.core.route.*;
 import me.donnior.sparkle.core.support.SimpleControllerFactoryResolver;
 import me.donnior.sparkle.core.view.SimpleViewRenderResolver;
@@ -316,7 +316,8 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     }
 
     private void setPathVariablesToRequestAttribute(WebRequest webRequest, RouteBuilder rd) {
-        Map<String, String> pathVariables = PathVariableDetector.extractPathVariables(rd, webRequest);
+//        Map<String, String> pathVariables = PathVariableDetector.extractPathVariables(rd, webRequest);
+        Map<String, String> pathVariables = rd.pathVariables(webRequest.getPath());
         webRequest.setAttribute(WebRequest.REQ_ATTR_FOR_PATH_VARIABLES, pathVariables);
     }
 

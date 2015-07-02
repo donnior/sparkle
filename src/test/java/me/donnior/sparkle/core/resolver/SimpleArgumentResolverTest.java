@@ -14,6 +14,7 @@ import me.donnior.sparkle.annotation.Json;
 import me.donnior.sparkle.annotation.Param;
 import me.donnior.sparkle.core.ActionMethodParameter;
 import me.donnior.sparkle.core.argument.SimpleArgumentResolver;
+import me.donnior.sparkle.core.method.DefaultActionMethodParameter;
 import me.donnior.web.adapter.GetWebRequest;
 
 import org.junit.Test;

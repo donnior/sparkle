@@ -1,7 +1,9 @@
 package me.donnior.sparkle.core.route;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,14 +16,14 @@ import me.donnior.sparkle.core.route.condition.HeaderCondition;
 import me.donnior.sparkle.core.route.condition.ParamCondition;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.route.ConditionalRoutingBuilder;
-import me.donnior.sparkle.route.HttpScoppedRoutingBuilder;
+import me.donnior.sparkle.route.HttpScopedRoutingBuilder;
 
 import me.donnior.sparkle.route.LinkedRoutingBuilder;
 import org.agilej.jsonty.JSONModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
+public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules{
     
     private HTTPMethod httpMethod;
     private String actionName;
@@ -254,6 +256,16 @@ public class RouteBuilder implements HttpScoppedRoutingBuilder, RouteMatchRules{
 
     public boolean matchMethod(HTTPMethod method) {
         return this.getHttpMethod().equals(method);
+    }
+
+    public Map<String, String > pathVariables(String path) {
+        List<String> values = this.extractPathVariableValues(path);
+        List<String> names = this.getPathVariables();
+        Map<String, String> map = new HashMap<String, String>();
+        for (int i = 0; i < names.size(); i++) {
+            map.put(names.get(i), values.get(i));
+        }
+        return map;
     }
 
 }

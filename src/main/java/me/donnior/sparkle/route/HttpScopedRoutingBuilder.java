@@ -1,6 +1,6 @@
 package me.donnior.sparkle.route;
 
-public interface HttpScoppedRoutingBuilder extends LinkedRoutingBuilder, ConditionalRoutingBuilder {
+public interface HttpScopedRoutingBuilder extends LinkedRoutingBuilder, ConditionalRoutingBuilder {
 
     /**
      * make the route rule match http method 'GET'

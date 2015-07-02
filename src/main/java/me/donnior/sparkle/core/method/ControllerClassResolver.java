@@ -1,4 +1,4 @@
-package me.donnior.sparkle.core.resolver;
+package me.donnior.sparkle.core.method;
 
 import java.util.Map;
 
