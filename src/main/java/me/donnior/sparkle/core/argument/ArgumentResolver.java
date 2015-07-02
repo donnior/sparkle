@@ -1,4 +1,4 @@
-package me.donnior.sparkle.core.resolver;
+package me.donnior.sparkle.core.argument;
 
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodParameter;
@@ -25,19 +25,19 @@ public interface ArgumentResolver {
 
     /**
      * test whether current ArguentResolver support a argument definition
-     * @param actionParamDefinition
+     * @param actionMethodParameter
      * @return
      */
-    boolean support(ActionMethodParameter actionParamDefinition);
+    boolean support(ActionMethodParameter actionMethodParameter);
     
     /**
      * 
      * resolve the argument value from request.
      * 
-     * @param actionParamDefinition
+     * @param actionMethodParameter
      * @param request
      * @return
      */
-    Object resolve(ActionMethodParameter actionParamDefinition, WebRequest request);
+    Object resolve(ActionMethodParameter actionMethodParameter, WebRequest request);
     
 }

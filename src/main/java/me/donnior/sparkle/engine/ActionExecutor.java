@@ -9,7 +9,7 @@ import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethod;
 import me.donnior.sparkle.core.ActionMethodParameter;
-import me.donnior.sparkle.core.resolver.ArgumentResolverManager;
+import me.donnior.sparkle.core.argument.ArgumentResolverManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

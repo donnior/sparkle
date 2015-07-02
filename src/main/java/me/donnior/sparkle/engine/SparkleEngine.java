@@ -15,14 +15,13 @@ import me.donnior.sparkle.config.Application;
 import me.donnior.sparkle.core.ActionMethod;
 import me.donnior.sparkle.core.ConfigResult;
 import me.donnior.sparkle.core.ControllerFactory;
+import me.donnior.sparkle.core.argument.ArgumentResolverManager;
 import me.donnior.sparkle.core.resolver.*;
-import me.donnior.sparkle.core.route.RouteBuilder;
-import me.donnior.sparkle.core.route.RouteBuilderResolver;
-import me.donnior.sparkle.core.route.RouterImpl;
-import me.donnior.sparkle.core.route.SimpleRouteBuilderResolver;
+import me.donnior.sparkle.core.route.*;
 import me.donnior.sparkle.core.support.SimpleControllerFactoryResolver;
 import me.donnior.sparkle.core.view.SimpleViewRenderResolver;
 import me.donnior.sparkle.core.view.ViewRender;
+import me.donnior.sparkle.core.view.ViewRenderResolver;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.ext.EnvSpecific;
 import me.donnior.sparkle.http.HTTPStatusCode;
@@ -42,7 +41,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     private ControllerFactory controllerFactory;
     private RouteBuilderResolver routeBuilderResovler;
     private ControllerClassResolver controllerClassResolver;
-    private ActionMethodFinder actionMethodResolver;
+    private ActionMethodResolver actionMethodResolver;
     private ViewRenderResolver viewRenderResolver;
     private EnvSpecific envSpecific;
     private ArgumentResolverManager argumentResolverManager;
@@ -64,7 +63,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
 
         this.controllerClassResolver = ControllersHolder.getInstance();
         this.controllerFactory       = new SimpleControllerFactoryResolver().get(this.config);
-        this.actionMethodResolver    = new ActionMethodFinder();
+        this.actionMethodResolver    = new ActionMethodResolver();
 
         this.argumentResolverManager =  this.envSpecific.getArgumentResolverManager();
 

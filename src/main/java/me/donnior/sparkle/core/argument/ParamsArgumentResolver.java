@@ -1,14 +1,15 @@
-package me.donnior.sparkle.core.resolver;
+package me.donnior.sparkle.core.argument;
 
 
 import me.donnior.sparkle.Params;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodParameter;
+import me.donnior.sparkle.core.argument.ArgumentResolver;
 
 /**
  * Argument resolver for param type with {@link Params}
  */
-public class ParamsArgumentResolver implements ArgumentResolver{
+public class ParamsArgumentResolver implements ArgumentResolver {
 
     @Override
     public boolean support(ActionMethodParameter actionMethodParameter) {

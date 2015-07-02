@@ -23,7 +23,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 
 @Singleton
-public class ActionMethodFinder {
+public class ActionMethodResolver {
 
     static class ActionMethodImpl implements ActionMethod {
 

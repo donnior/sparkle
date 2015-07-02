@@ -38,4 +38,12 @@ public abstract class AbstractRouteModule implements RouteModule {
         return router().match(path).withPost();
     }
 
+    protected LinkedRoutingBuilder put(String path) {
+        return router().match(path).withPut();
+    }
+
+    protected LinkedRoutingBuilder delete(String path) {
+        return router().match(path).withDelete();
+    }
+
 }

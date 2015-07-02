@@ -1,4 +1,4 @@
-package me.donnior.sparkle.core.resolver;
+package me.donnior.sparkle.core.route;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;

@@ -15,11 +15,11 @@ import me.donnior.sparkle.core.ActionMethodParameter;
 import me.donnior.sparkle.exception.SparkleException;
 import org.junit.Test;
 
-public class ActionMethodFinderTest {
+public class ActionMethodResolverTest {
     
     @Test
     public void testFindActionMethodDefinitionSucceed(){
-        ActionMethodFinder finder = new ActionMethodFinder();
+        ActionMethodResolver finder = new ActionMethodResolver();
         ActionMethod amd = finder.find(SampleContrllerClass.class, "index");
         
         assertEquals("index", amd.actionName());
@@ -52,13 +52,13 @@ public class ActionMethodFinderTest {
 
     @Test(expected = SparkleException.class)
     public void test_cannot_find_any_action_method(){
-        ActionMethodFinder finder = new ActionMethodFinder();
+        ActionMethodResolver finder = new ActionMethodResolver();
         finder.find(SampleContrllerClass.class, "notExistMethod");
     }
     
     @Test(expected = SparkleException.class)
     public void test_find_more_than_one_action_method_with_same_name(){
-        ActionMethodFinder finder = new ActionMethodFinder();
+        ActionMethodResolver finder = new ActionMethodResolver();
         finder.find(SampleContrllerClass.class, "show");
     }    
 

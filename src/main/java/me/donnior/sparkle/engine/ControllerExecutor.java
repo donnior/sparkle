@@ -3,7 +3,7 @@ package me.donnior.sparkle.engine;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.annotation.Async;
 import me.donnior.sparkle.core.ActionMethod;
-import me.donnior.sparkle.core.resolver.ArgumentResolverManager;
+import me.donnior.sparkle.core.argument.ArgumentResolverManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

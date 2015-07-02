@@ -1,4 +1,4 @@
-package me.donnior.sparkle.core.resolver;
+package me.donnior.sparkle.core.argument;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -9,6 +9,7 @@ import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.annotation.PathVariable;
 import me.donnior.sparkle.core.ActionMethodParameter;
+import me.donnior.sparkle.core.argument.ArgumentResolver;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.util.ParamResolveUtil;
 
@@ -19,13 +20,13 @@ import me.donnior.sparkle.util.ParamResolveUtil;
 public class PathVariableArgumentResolver implements ArgumentResolver {
 
     @Override
-    public boolean support(ActionMethodParameter actionParamDefinition) {
-        return actionParamDefinition.hasAnnotation(PathVariable.class);
+    public boolean support(ActionMethodParameter actionMethodParameter) {
+        return actionMethodParameter.hasAnnotation(PathVariable.class);
     }
 
     @Override
-    public Object resolve(ActionMethodParameter actionParamDefinition, WebRequest request) {
-      FList<Annotation> ans =  FLists.create(actionParamDefinition.annotations());
+    public Object resolve(ActionMethodParameter actionMethodParameter, WebRequest request) {
+      FList<Annotation> ans =  FLists.create(actionMethodParameter.annotations());
       Annotation a = ans.find(new Predicate<Annotation>() {
           @Override
           public boolean apply(Annotation e) {
@@ -33,7 +34,7 @@ public class PathVariableArgumentResolver implements ArgumentResolver {
           }
       });
       String paramName = ((PathVariable)a).value();
-      Class<?> paramType = actionParamDefinition.paramType();
+      Class<?> paramType = actionMethodParameter.paramType();
       
       //TODO how to get path variables with name from current request, 如何从RouteBuider中把解析的path variables传过来？
       Map<String, String> pathVariables = request.getAttribute(WebRequest.REQ_ATTR_FOR_PATH_VARIABLES);

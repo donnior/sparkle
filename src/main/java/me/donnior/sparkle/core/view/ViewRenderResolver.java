@@ -1,4 +1,4 @@
-package me.donnior.sparkle.core.resolver;
+package me.donnior.sparkle.core.view;
 
 import me.donnior.sparkle.core.ActionMethod;
 import me.donnior.sparkle.core.view.ViewRender;

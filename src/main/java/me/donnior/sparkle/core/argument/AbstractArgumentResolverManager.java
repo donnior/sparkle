@@ -1,4 +1,4 @@
-package me.donnior.sparkle.core.resolver;
+package me.donnior.sparkle.core.argument;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,17 +17,17 @@ public abstract class AbstractArgumentResolverManager implements ArgumentResolve
     private List<ArgumentResolver> argumentResolvers = Lists.newArrayList();
 
     @Override
-    public Object resolve(final ActionMethodParameter actionParamDefinition, WebRequest request) {
+    public Object resolve(final ActionMethodParameter parameter, WebRequest request) {
         FList<ArgumentResolver> list = FLists.create(argumentResolvers);
         ArgumentResolver matchedArgumentResolver = list.find(new Predicate<ArgumentResolver>() {
             public boolean apply(ArgumentResolver e) {
-                return e.support(actionParamDefinition);
+                return e.support(parameter);
             }
         });
         if (matchedArgumentResolver == null) {
-            throw new SparkleException("Can't find proper argument resolver for " + actionParamDefinition);
+            throw new SparkleException("Can't find proper argument resolver for " + parameter);
         }
-        return matchedArgumentResolver.resolve(actionParamDefinition, request);
+        return matchedArgumentResolver.resolve(parameter, request);
     }
 
     @Override
