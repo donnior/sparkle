@@ -26,7 +26,7 @@ public class ControllerExecutor {
     /**
      *
      * execute controller's action. If the action need be execute asynchronously, returns a callable object;
-     * otherwise will return a realy result.
+     * otherwise will return a really result.
      *
      * @param actionMethod
      * @param controller

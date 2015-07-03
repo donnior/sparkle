@@ -23,7 +23,7 @@ import org.agilej.jsonty.JSONModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules{
+public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, RouteInfo{
     
     private HTTPMethod httpMethod;
     private String actionName;
@@ -34,14 +34,15 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules{
     private AbstractCondition paramCondition;
     private AbstractCondition headerCondition;
     private AbstractCondition consumeCondition;
+
+    private boolean isFunctionMode;
+    private Function<WebRequest, JSONModel> function;
     private String to;
     
     //the rules for 'to' of the route: the controller can't be empty, only one '#' or zero, the action can be ommit
     private final static String toRegex = "\\w+#{0,1}\\w*";
 
     private final static Logger logger = LoggerFactory.getLogger(RouteBuilder.class);
-    private Function<WebRequest, JSONModel> function;
-    private boolean isFunctionMode;
 
     public RouteBuilder(String url){
         RouteChecker checker = new RouteChecker(url);
@@ -49,8 +50,8 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules{
         this.pathPattern = url;
         this.matchPatten = Pattern.compile(checker.matcherRegexPatten());
         this.httpMethod = HTTPMethod.GET;
-        logger.debug("Create route definition [source={}, pattern={}, pathVariables={}] ",
-                new Object[]{this.pathPattern, this.matchPatten.pattern(), this.pathVariables});
+//        logger.debug("Create route {source => {}, pattern => {}, pathVariables => {}}",
+//                new Object[]{this.pathPattern, this.matchPatten.pattern(), this.pathVariables});
     }
     
     public Pattern getMatchPatten() {
@@ -110,16 +111,18 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules{
         return this;
     }
     
-    
     @Override
     public void to(String route){
-        this.to = route;
         // TODO check route is correct, it should not empty and contains only one #
         if(route == null || !route.matches(toRegex)){
-            throw new SparkleException("route's 'to' part '" + route + "' is illegal, it must be 'controller#action' or just 'controller'");
+            throw new SparkleException(
+                    "Route's 'to' part ['" + route + "'] is illegal, it must be 'controller#action' or just 'controller'");
         }
-        this.controllerName = extractController(route);
-        this.actionName = extractAction(route);
+        this.to = route;
+        String[] split = route.split("#");
+        this.controllerName = split[0];
+        this.actionName = split.length > 1 ? split[1]
+                                          : RestStandard.defaultActionMethodNameForHttpMethod(this.httpMethod);
     }
 
     @Override
@@ -128,10 +131,12 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules{
         this.isFunctionMode = true;
     }
 
+    @Override
     public boolean isFunctionRoute(){
         return this.isFunctionMode;
     }
 
+    @Override
     public Function<WebRequest, JSONModel> getRouteFunction(){
         return this.function;
     }
@@ -202,21 +207,14 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules{
         return this.consumeCondition != null;
     }
 
+    @Override
     public String getActionName() {
         return this.actionName;
     }
-    
+
+    @Override
     public String getControllerName() {
         return this.controllerName;
-    }
-
-    private String extractController(String route) {
-        return route.split("#")[0];
-    }
-
-    private String extractAction(String route) {
-        String[] strs = route.split("#");
-        return strs.length > 1 ? strs[1] : RestStandard.defaultActionMethodNameForHttpMethod(this.httpMethod);
     }
 
     //TODO should it only set default action for GET? 
@@ -224,7 +222,8 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules{
     public String getPathPattern() {
         return pathPattern;
     }
-    
+
+    @Override
     public List<String> getPathVariables() {
         return pathVariables;
     }
@@ -258,6 +257,7 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules{
         return this.getHttpMethod().equals(method);
     }
 
+    @Override
     public Map<String, String > pathVariables(String path) {
         List<String> values = this.extractPathVariableValues(path);
         List<String> names = this.getPathVariables();

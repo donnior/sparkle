@@ -6,6 +6,9 @@ import me.donnior.sparkle.WebRequest;
 
 import com.google.common.collect.Lists;
 
+/**
+ * route matcher for one request and one route builder
+ */
 public class RouteBuilderMatcher {
 
     private WebRequest request;
@@ -56,8 +59,6 @@ public class RouteBuilderMatcher {
     private boolean isPathMatched() {
         return builder.matchPath(request.getPath());
     }
-    
-    
 
     public MatchedCondition[] matchedExplicitConditions() {
         return this.explicitMatchedCondition.toArray(new MatchedCondition[] {});

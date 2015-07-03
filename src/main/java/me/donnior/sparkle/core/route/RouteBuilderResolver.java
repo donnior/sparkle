@@ -3,7 +3,7 @@ package me.donnior.sparkle.core.route;
 import me.donnior.sparkle.WebRequest;
 
 /**
- * resovler for getting the most appropriate RouteBuilder for one request
+ * resolver for getting the most appropriate {@link RouteBuilder} for one request
  * 
  */
 public interface RouteBuilderResolver {
@@ -12,6 +12,6 @@ public interface RouteBuilderResolver {
      * @param request
      * @return
      */
-    RouteBuilder match(final WebRequest webRequest);
+    RouteBuilder match(final WebRequest request);
     
 }

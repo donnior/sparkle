@@ -58,7 +58,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         this.config                  = new ConfigImpl();
         this.interceptors            = new FArrayList<Interceptor>();
 
-        this.router                  = RouterImpl.getInstance();
+        this.router                  = new RouterImpl();
         this.routeBuilderResovler    = new SimpleRouteBuilderResolver(this.router);
 
         this.controllerClassResolver = ControllersHolder.getInstance();
@@ -131,7 +131,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         interceptorExecutionChain.doAfterHandle(webRequest);
     }
 
-    private Object getControllerInstanceForRoute(RouteBuilder rd){
+    private Object getControllerInstanceForRoute(RouteInfo rd){
         String controllerName = rd.getControllerName();
         final Class<?> controllerClass = this.controllerClassResolver.getControllerClass(controllerName);
         final Object controller  = this.controllerFactory.get(controllerName, controllerClass);
@@ -159,7 +159,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
             return;
         }
 
-        RouteBuilder rd = this.routeBuilderResovler.match(webRequest);
+        RouteInfo rd = this.routeBuilderResovler.match(webRequest);
 
         if(rd == null){
             logger.info("Could not find route for request : '{}' \n", webRequest);
@@ -315,7 +315,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         }
     }
 
-    private void setPathVariablesToRequestAttribute(WebRequest webRequest, RouteBuilder rd) {
+    private void setPathVariablesToRequestAttribute(WebRequest webRequest, RouteInfo rd) {
 //        Map<String, String> pathVariables = PathVariableDetector.extractPathVariables(rd, webRequest);
         Map<String, String> pathVariables = rd.pathVariables(webRequest.getPath());
         webRequest.setAttribute(WebRequest.REQ_ATTR_FOR_PATH_VARIABLES, pathVariables);

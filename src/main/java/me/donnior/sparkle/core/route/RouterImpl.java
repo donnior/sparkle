@@ -13,15 +13,9 @@ import org.slf4j.LoggerFactory;
 
 public class RouterImpl implements Router, RouteBuilderHolder, RouteModuleInstallable {
 
-    private static RouterImpl instance = new RouterImpl();
-    
     private List<RouteBuilder> routeBuilders = new ArrayList<RouteBuilder>();
     
     private final static Logger logger = LoggerFactory.getLogger(RouterImpl.class);
-    
-    public static RouterImpl getInstance() {
-        return instance;
-    }
     
     public List<RouteBuilder> getRegisteredRouteBuilders() {
         return Collections.unmodifiableList(this.routeBuilders);
@@ -35,7 +29,7 @@ public class RouterImpl implements Router, RouteBuilderHolder, RouteModuleInstal
     
     @Override
     public void install(RouteModule module) {
-        logger.info("Install route module : {}", module.getClass() );
+        logger.info("Install route module : {}", module.getClass().getName());
         module.config(this);
     }
     
