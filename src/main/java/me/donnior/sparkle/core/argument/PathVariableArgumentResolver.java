@@ -3,15 +3,15 @@ package me.donnior.sparkle.core.argument;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
-import me.donnior.fava.FList;
-import me.donnior.fava.Predicate;
-import me.donnior.fava.util.FLists;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.annotation.PathVariable;
 import me.donnior.sparkle.core.ActionMethodParameter;
 import me.donnior.sparkle.core.argument.ArgumentResolver;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.util.ParamResolveUtil;
+import org.agilej.fava.FList;
+import org.agilej.fava.Predicate;
+import org.agilej.fava.util.FLists;
 
 /**
  * Argument resolver for argument annotated with {@link PathVariable} 

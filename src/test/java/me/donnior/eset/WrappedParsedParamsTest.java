@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.donnior.fava.FHashMap;
-import me.donnior.fava.MConsumer;
+import org.agilej.fava.FHashMap;
+import org.agilej.fava.MConsumer;
 
 import org.junit.Test;
 

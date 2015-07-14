@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import me.donnior.fava.FList;
-import me.donnior.fava.Predicate;
-import me.donnior.fava.util.FLists;
+import org.agilej.fava.FList;
+import org.agilej.fava.Predicate;
+import org.agilej.fava.util.FLists;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethodParameter;
 import me.donnior.sparkle.exception.SparkleException;

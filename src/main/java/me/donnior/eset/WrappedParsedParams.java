@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.donnior.fava.FHashMap;
-import me.donnior.fava.FMap;
-import me.donnior.fava.MConsumer;
+import org.agilej.fava.FHashMap;
+import org.agilej.fava.FMap;
+import org.agilej.fava.MConsumer;
 
 
 public class WrappedParsedParams {

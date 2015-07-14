@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.donnior.fava.Consumer;
-import me.donnior.fava.util.FLists;
+import org.agilej.fava.Consumer;
+import org.agilej.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.annotation.Out;
 

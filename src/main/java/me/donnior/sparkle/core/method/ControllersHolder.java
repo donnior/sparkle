@@ -3,8 +3,8 @@ package me.donnior.sparkle.core.method;
 import java.util.HashMap;
 import java.util.Map;
 
-import me.donnior.fava.FHashMap;
-import me.donnior.fava.MConsumer;
+import org.agilej.fava.FHashMap;
+import org.agilej.fava.MConsumer;
 import me.donnior.sparkle.exception.SparkleException;
 
 import org.slf4j.Logger;

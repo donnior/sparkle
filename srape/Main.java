@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import me.donnior.fava.Consumer;
+import org.agilej.fava.Consumer;
 import me.donnior.srape.AbstractFieldExposerModule;
 import me.donnior.srape.FieldBuilderImpl;
 import me.donnior.srape.FieldExposer;

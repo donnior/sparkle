@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import me.donnior.fava.FList;
-import me.donnior.fava.util.FLists;
+import org.agilej.fava.FList;
+import org.agilej.fava.util.FLists;
 import me.donnior.sparkle.Environment;
 import me.donnior.sparkle.Environment.Mode;
 import me.donnior.sparkle.config.Config;

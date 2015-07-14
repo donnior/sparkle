@@ -2,9 +2,9 @@ package me.donnior.sparkle.core.view;
 
 import java.util.List;
 
-import me.donnior.fava.FList;
-import me.donnior.fava.Function;
-import me.donnior.fava.util.FLists;
+import org.agilej.fava.FList;
+import org.agilej.fava.Function;
+import org.agilej.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
 
 /**

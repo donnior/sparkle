@@ -1,9 +1,5 @@
 package me.donnior.sparkle.core.route;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,22 +9,24 @@ import me.donnior.sparkle.route.RouteModule;
 
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 public class RouterImplTest {
     
     @Test
     public void testConstructor(){
         
-        RouterImpl impl1 = RouterImpl.getInstance();
-        RouterImpl impl2 = RouterImpl.getInstance();
+        RouterImpl impl1 = new RouterImpl();
+        RouterImpl impl2 = new RouterImpl();
         
-        assertSame(impl1, impl2);
+        assertNotSame(impl1, impl2);
         
     }
     
     
     @Test
     public void testMatch(){
-        RouterImpl router = RouterImpl.getInstance();
+        RouterImpl router = new RouterImpl();
         router.clear();
         
         assertEquals(0, router.getRegisteredRouteBuilders().size());

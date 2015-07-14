@@ -1,7 +1,7 @@
 package me.donnior.sparkle.interceptor;
 
 
-import me.donnior.fava.util.FLists;
+import org.agilej.fava.util.FLists;
 import me.donnior.sparkle.engine.InterceptorExecutionChain;
 import me.donnior.web.adapter.GetWebRequest;
 import org.junit.Test;

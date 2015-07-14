@@ -1,8 +1,8 @@
 package me.donnior.sparkle.core.route.condition;
 
-import me.donnior.fava.FList;
-import me.donnior.fava.Predicate;
-import me.donnior.fava.util.FLists;
+import org.agilej.fava.FList;
+import org.agilej.fava.Predicate;
+import org.agilej.fava.util.FLists;
 import me.donnior.sparkle.WebRequest;
 
 import com.google.common.base.Joiner;

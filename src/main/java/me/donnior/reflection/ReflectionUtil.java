@@ -11,8 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import me.donnior.fava.Predicate;
-import me.donnior.fava.util.FLists;
+import org.agilej.fava.Predicate;
+import org.agilej.fava.util.FLists;
 import me.donnior.sparkle.annotation.Out;
 
 public class ReflectionUtil {

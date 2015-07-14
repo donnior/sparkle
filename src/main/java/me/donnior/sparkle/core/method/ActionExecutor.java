@@ -3,8 +3,8 @@ package me.donnior.sparkle.core.method;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import me.donnior.fava.Function;
-import me.donnior.fava.util.FLists;
+import org.agilej.fava.Function;
+import org.agilej.fava.util.FLists;
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.ActionMethod;

@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import me.donnior.eset.type.TypedAccessibleAttributeFactory;
-import me.donnior.fava.Consumer;
-import me.donnior.fava.Function;
-import me.donnior.fava.Predicate;
-import me.donnior.fava.util.FLists;
+import org.agilej.fava.Consumer;
+import org.agilej.fava.Function;
+import org.agilej.fava.Predicate;
+import org.agilej.fava.util.FLists;
 
 public class EntityUpdater {
 

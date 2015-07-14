@@ -1,6 +1,6 @@
 package me.donnior.sparkle.core;
 
-import me.donnior.fava.FList;
+import org.agilej.fava.FList;
 import me.donnior.sparkle.core.ControllerFactory;
 import me.donnior.sparkle.core.view.ViewRender;
 import me.donnior.sparkle.interceptor.Interceptor;
