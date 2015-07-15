@@ -16,4 +16,9 @@ public interface WebResponse {
     void setContentType(String type);
 
     Writer getWriter();
+
+    default void addCookie(Cookie cookie){
+
+    }
+
 }

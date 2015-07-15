@@ -147,4 +147,9 @@ public interface WebRequest {
         Map<String, String> map = getAttribute(WebRequest.REQ_ATTR_FOR_PATH_VARIABLES);
         return map.get(name);
     }
+
+    default Cookie[] cookies(){
+        return new Cookie[]{};
+    }
+
 }

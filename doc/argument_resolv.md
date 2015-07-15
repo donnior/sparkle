@@ -8,7 +8,7 @@ Sparkle support these built-in parameter types
 
 Pass string parameters from request.
 
-__You should use `@Param` or `@PathVarialb` when use `String` as parameter type, because currently we can't get parameter name from java method directly(though java 8 has parameter in reflection, but it's disabled by defaul)__
+__You should use `@Param` or `@PathVariable` when use `String` as parameter type, because currently we can't get parameter name from java method directly(though java 8 has parameter in reflection, but it's disabled by defaul)__
 
 ## Primitive type and wrap type
 
@@ -27,9 +27,13 @@ The sparkle's core interface `WebResponse` can be passed as parameter
 
 `Params` represent all params from current request.
 
+## Cookies
+
+`Cookies` can be used to manage cookies write and read.
+
 # Vendor types
 
-You can also pass some vender supported types as parameter.
+You can also pass some vendor supported types as parameter.
 
 ## HttpServletRequest
 
@@ -41,5 +45,5 @@ If you run sparkle with a servlet container, you can pass `HttpServletResponse` 
 
 ## FullHttpRequest
 
-If you run sparkle with a servlet container, you can pass netty's `FullHttpRequest` as parameter.
+If you run sparkle with a netty container, you can pass netty's `FullHttpRequest` as parameter.
 
