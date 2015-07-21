@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import me.donnior.sparkle.core.request.SessionStore;
 import org.agilej.fava.FList;
 import org.agilej.fava.util.FLists;
 import me.donnior.sparkle.Environment;
@@ -23,7 +24,8 @@ public class ConfigImpl implements Config, ConfigResult {
     private FList<String> controllerPackages = FLists.newEmptyList();
     private String basePackage = "";
     private FList<Interceptor> interceptors = FLists.newEmptyList();
-    
+    private Class<? extends SessionStore> sessionStoreClass;
+
     @Override
     public void registerViewRenderClass(Class<? extends ViewRender> viewRenderClass) {
         if(!this.viewRenders.contains(viewRenderClass)){
@@ -44,7 +46,7 @@ public class ConfigImpl implements Config, ConfigResult {
             this.basePackage = basePackage;
         }
     }
-    
+
     @Override
     public void setMode(Mode mode) {
         Environment.setMode(mode);
@@ -85,6 +87,15 @@ public class ConfigImpl implements Config, ConfigResult {
     public void registerInterceptor(Interceptor interceptor) {
         this.interceptors.add(interceptor);
     }
-    
 
+
+    @Override
+    public void setSessionStoreClass(Class<? extends SessionStore> sessionStoreClass) {
+        this.sessionStoreClass = sessionStoreClass;
+    }
+
+    @Override
+    public Class<? extends SessionStore> getSessionStoreClass() {
+        return sessionStoreClass;
+    }
 }

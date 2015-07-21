@@ -15,6 +15,9 @@ import me.donnior.sparkle.core.ConfigResult;
 import me.donnior.sparkle.core.ControllerFactory;
 import me.donnior.sparkle.core.argument.ArgumentResolverManager;
 import me.donnior.sparkle.core.method.*;
+import me.donnior.sparkle.core.request.SessionStore;
+import me.donnior.sparkle.core.request.SessionStoreHolder;
+import me.donnior.sparkle.core.request.SessionStoreResolver;
 import me.donnior.sparkle.core.route.*;
 import me.donnior.sparkle.core.support.SimpleControllerFactoryResolver;
 import me.donnior.sparkle.core.view.SimpleViewRenderResolver;
@@ -89,6 +92,13 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
 //        initControllerFactory(config);
         installRouter();
         initInterceptors(config);
+        initSessionStore(config);
+    }
+
+    private void initSessionStore(ConfigResult config) {
+        SessionStore sessionStore = new SessionStoreResolver().resolve(config);
+        SessionStoreHolder.set(sessionStore);
+        logger.info("Sparkle's session store is configured to: {}", sessionStore.getClass().getSimpleName());
     }
 
     private void initInterceptors(ConfigResult config) {
