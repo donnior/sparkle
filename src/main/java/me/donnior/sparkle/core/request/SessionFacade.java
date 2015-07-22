@@ -3,7 +3,9 @@ package me.donnior.sparkle.core.request;
 import me.donnior.sparkle.Session;
 import me.donnior.sparkle.WebRequest;
 
-
+/**
+ * a session facade which will delegate session operation to application configured {@link SessionStore}
+ */
 public class SessionFacade implements Session{
 
     private final SessionStore store;
@@ -30,5 +32,12 @@ public class SessionFacade implements Session{
         return (T)this.store.get(this.request, name);
     }
 
+    public SessionStore sessionStore(){
+        return this.store;
+    }
+
+    public WebRequest webRequest(){
+        return this.request;
+    }
 
 }

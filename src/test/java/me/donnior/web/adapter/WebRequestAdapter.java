@@ -5,8 +5,9 @@ import java.util.List;
 import me.donnior.sparkle.Multipart;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.WebResponse;
+import me.donnior.sparkle.core.request.AbstractWebRequest;
 
-public class WebRequestAdapter implements WebRequest{
+public class WebRequestAdapter extends AbstractWebRequest{
 
     @Override
     public <T> T getOriginalRequest() {
