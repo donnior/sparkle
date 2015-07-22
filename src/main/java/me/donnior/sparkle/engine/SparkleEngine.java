@@ -89,7 +89,6 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     private void initEngineWithConfig(ConfigResult config) {
         initViewRenders(config);
         initControllers(config);
-//        initControllerFactory(config);
         installRouter();
         initInterceptors(config);
         initSessionStore(config);
@@ -112,19 +111,6 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
 //            this.envSpecific.getViewRendersManager().resolveRegisteredViewRenders(config.getCustomizedViewRenders());
         this.viewRenderResolver =
                 new SimpleViewRenderResolver(this.envSpecific.getViewRendersManager().getAllOrderedViewRenders());
-    }
-
-    //TODO how to make the controller factory can be customized, for example let user use an
-    //spring container as this factory? Maybe introduce a ControllerFactoryResolver based on ConfigAware is better?
-    private void initControllerFactory(ConfigResult config) {
-        if(config.getControllerFactory() != null){
-            this.controllerFactory = config.getControllerFactory();
-            return;
-        }
-        if(config.getControllerFactoryClass() != null){
-            this.controllerFactory = (ControllerFactory)ReflectionUtil.initialize(config.getControllerFactoryClass());
-            return;
-        }
     }
 
     private void initControllers(ConfigResult config) {

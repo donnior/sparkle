@@ -25,6 +25,8 @@ public class ConfigImpl implements Config, ConfigResult {
     private String basePackage = "";
     private FList<Interceptor> interceptors = FLists.newEmptyList();
     private Class<? extends SessionStore> sessionStoreClass;
+    private ControllerFactory controllerFactory;
+    private Class<? extends ControllerFactory> controllerFactoryClass;
 
     @Override
     public void registerViewRenderClass(Class<? extends ViewRender> viewRenderClass) {
@@ -70,12 +72,22 @@ public class ConfigImpl implements Config, ConfigResult {
     
     @Override
     public ControllerFactory getControllerFactory() {
-        return null;
+        return this.controllerFactory;
     }
-    
+
+    @Override
+    public void setControllerFactory(ControllerFactory controllerFactory) {
+        this.controllerFactory = controllerFactory;
+    }
+
+    @Override
+    public void setControllerFactoryClass(Class<? extends ControllerFactory> controllerFactoryClass) {
+        this.controllerFactoryClass = controllerFactoryClass;
+    }
+
     @Override
     public Class<? extends ControllerFactory> getControllerFactoryClass() {
-        return null;
+        return this.controllerFactoryClass;
     }
     
     @Override
