@@ -3,6 +3,8 @@ package me.donnior.sparkle.core.method;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Predicates;
 import org.agilej.fava.FHashMap;
 import org.agilej.fava.MConsumer;
 import me.donnior.sparkle.exception.SparkleException;
@@ -33,6 +35,7 @@ public class ControllersHolder implements ControllerClassResolver{
      */
     public Class<?> getControllerClass(String controllerName){
         Class controllerClass = this.controllers.get(controllerName);
+//        Preconditions.checkNotNull(controllerClass, "Can't find any controller class with name : %s", controllerName);
         if (controllerClass == null) {
             throw new RuntimeException("Can't find any controller class with name : " + controllerName);
         }
@@ -53,7 +56,6 @@ public class ControllersHolder implements ControllerClassResolver{
                     throw new SparkleException("Controller with name '" + controllerName + "' was duplicated");
                 }
                 controllers.put(controllerName, controllerClass);
-//                logger.info("Found controller : {name => {}, class => {}}", controllerName, controllerClass.getName());
             }
         });
     }

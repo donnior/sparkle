@@ -157,6 +157,16 @@ public interface WebRequest {
         return new Cookie[]{};
     }
 
+    default Cookie cookie(String name){
+        Cookie[] cookies = this.cookies();
+        for (Cookie cookie : cookies){
+            if (cookie.name().equals(name)){
+                return cookie;
+            }
+        }
+        return null;
+    }
+
     /**
      * a session bind to this request
      * @return

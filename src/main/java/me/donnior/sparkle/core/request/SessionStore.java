@@ -17,10 +17,18 @@ public interface SessionStore {
 
     /**
      * get session data with given name from request
-     * @param request the request will
+     * @param request the request will get session data from it
      * @param name session data's name
      * @return session data, null if not exist
      */
     Object get(WebRequest request, String name);
+
+
+    /**
+     * remove session data for given name in request
+     * @param request the request will remove session data from it
+     * @param name the name of data in session
+     */
+    void remove(WebRequest request, String name);
 
 }

@@ -1,9 +1,16 @@
 package me.donnior.sparkle.core.request;
 
+import me.donnior.sparkle.Cookie;
 import me.donnior.sparkle.WebRequest;
+import me.donnior.sparkle.util.AESKeyGenerator;
+import me.donnior.sparkle.util.MessageEncryptor;
+
+import java.security.Key;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Store session values in cookie, use a app-scope configured secret and key_base to encrypt data like Rails.
+ * Store session values in cookie, use a app-scope configured key_base to encrypt data like Rails.
  */
 public class CookieBasedSessionStore implements SessionStore{
 
@@ -13,7 +20,8 @@ public class CookieBasedSessionStore implements SessionStore{
      * construct instance with determined app_secret. {@link #determineAppSecret()}
      */
     public CookieBasedSessionStore(){
-        this.appSecret = determineAppSecret();
+//        this.appSecret = determineAppSecret();
+        this.appSecret = "b14e9b5b720f84fe02307ed16bc1a32ce6f089e10f7948422ccf3349d8ab586869c11958c70f46ab4cfd51f0d41043b7b249a74df7d53c7375d50f187750a0f5";
     }
 
     /**
@@ -26,15 +34,69 @@ public class CookieBasedSessionStore implements SessionStore{
 
     @Override
     public void set(WebRequest request, String name, Object obj) {
-
+        Map<String, Object> sessionData = getSessionData(request);
+        if (obj == null) {
+            sessionData.remove(name);
+        } else {
+            sessionData.put(name, obj);
+        }
+        rewriteSessionToCookie(request, sessionData);
     }
 
     @Override
     public Object get(WebRequest request, String name) {
-        return null;
+        Map<String, Object> sessionData = getSessionData(request);
+        return sessionData.get(name);
     }
 
+    @Override
+    public void remove(WebRequest request, String name) {
+        this.set(request, name, null);
+    }
 
+    private void rewriteSessionToCookie(WebRequest request, Map<String, Object> sessionData){
+        if (sessionData == null || sessionData.isEmpty()) {
+            return ;
+        }
+        //dump session data
+        String dumpedString = "{\"session_id\"=>\"e2c4ca694aa02905ab9d4bcb051fe68c\", \"github_username\"=>\"neerajdotname\"}";
+        Key k = AESKeyGenerator.generateKey(this.appSecret.getBytes());
+
+        MessageEncryptor encryptor = new MessageEncryptor(k);
+        String result = (String) encryptor.encryptAndSign(sessionData);
+        request.getWebResponse().addCookie(new Cookie(cookieNameForSession()).value(result).maxAge(maxAgeForSessionCookie()));
+    }
+
+    private Map<String, Object> getSessionData(WebRequest request){
+        if (request.getAttribute("session_map") != null) {
+            return request.getAttribute("session_map");
+        }
+        Map<String, Object> map = this.extractSessionFromCookie(request);
+        request.setAttribute("session_map", map);
+        return map;
+    }
+
+    private Map<String, Object> extractSessionFromCookie(WebRequest request){
+        Cookie cookie = request.cookie(cookieNameForSession());
+        if (cookie == null){
+            return new HashMap<>();
+        }
+
+        Key k = AESKeyGenerator.generateKey(this.appSecret.getBytes());
+
+        MessageEncryptor encryptor = new MessageEncryptor(k);
+        Object obj = encryptor.decryptAndVerify(cookie.value());
+        //decode session cookie item, construct map
+        return (Map)obj;
+    }
+
+    private String cookieNameForSession(){
+        return "demo2_session";
+    }
+
+    private int maxAgeForSessionCookie(){
+        return Integer.MAX_VALUE;
+    }
     /**
      *
      * Follow these orders to determine app-secret

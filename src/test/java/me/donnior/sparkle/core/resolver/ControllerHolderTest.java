@@ -25,9 +25,16 @@ public class ControllerHolderTest {
         assertTrue(ch.containsController("sampleTwo"));
         
         assertEquals(SampleOne.class, ch.getControllerClass("sampleOne"));
-        
     }
-    
+
+    @Test
+    public void testGettingWithException(){
+        ControllersHolder ch = new ControllersHolder();
+        ch.registeControllers(sampleControllersMap());
+
+        assertEquals(SampleOne.class, ch.getControllerClass("sampleThree"));
+    }
+
     @Test
     public void testAddWithReset(){
         ControllersHolder ch = new ControllersHolder();

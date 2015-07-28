@@ -20,7 +20,7 @@ public class Tuple1<T1> {
         if(obj == null){ return false;}
         if(!(obj instanceof Tuple1)){ return false;}
         Tuple1<Object> other = (Tuple1<Object>)obj;
-        return get1().equals(other.get1());
+        return Objects.equal(get1(), other.get1());
     }
     
     @Override

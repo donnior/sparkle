@@ -28,4 +28,9 @@ public class SimpleMemorySessionStore implements SessionStore{
     public Object get(WebRequest request, String name) {
         return sessionMaps.computeIfAbsent(request.getSessionId(), e -> new HashMap()).get(name);
     }
+
+    @Override
+    public void remove(WebRequest request, String name) {
+        sessionMaps.computeIfAbsent(request.getSessionId(), e -> new HashMap()).remove(name);
+    }
 }
