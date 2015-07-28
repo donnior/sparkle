@@ -27,7 +27,7 @@ public class ControllerHolderTest {
         assertEquals(SampleOne.class, ch.getControllerClass("sampleOne"));
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public void testGettingWithException(){
         ControllersHolder ch = new ControllersHolder();
         ch.registeControllers(sampleControllersMap());
