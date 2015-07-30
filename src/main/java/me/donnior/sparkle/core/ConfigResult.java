@@ -5,6 +5,9 @@ import org.agilej.fava.FList;
 import me.donnior.sparkle.core.view.ViewRender;
 import me.donnior.sparkle.interceptor.Interceptor;
 
+/**
+ * configuration result for {@link me.donnior.sparkle.config.Config}
+ */
 public interface ConfigResult {
 
     String[] getControllerPackages();
@@ -21,5 +24,6 @@ public interface ConfigResult {
 
     Class<? extends SessionStore> getSessionStoreClass();
 
+    String getSecretBase();
 
 }

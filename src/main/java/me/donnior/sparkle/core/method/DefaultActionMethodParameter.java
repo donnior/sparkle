@@ -5,6 +5,7 @@ import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.base.MoreObjects;
 import org.agilej.fava.FList;
 import org.agilej.fava.Predicate;
 import org.agilej.fava.util.FLists;
@@ -70,7 +71,7 @@ public class DefaultActionMethodParameter implements ActionMethodParameter {
     }
     
     public String toString() {
-        return "ActionMethodParameter:[type=>"+this.paramType()+"]";
+        return MoreObjects.toStringHelper(this).add("type", this.paramType()).toString();
     }
 
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.common.base.CaseFormat;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.annotation.Controller;
 
@@ -41,6 +42,15 @@ public class ControllerScanner {
         }
         
         return this.controllers;
+    }
+
+    public static String resolveName(String className){
+        String name = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, className);
+        int index = name.indexOf("controller");
+        if(index > 0){
+            name = name.substring(0, index-1);
+        }
+        return name;
     }
     
 }

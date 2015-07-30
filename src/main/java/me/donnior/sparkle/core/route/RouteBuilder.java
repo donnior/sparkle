@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.base.MoreObjects;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.core.route.condition.AbstractCondition;
@@ -115,14 +116,14 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
     public void to(String route){
         // TODO check route is correct, it should not empty and contains only one #
         if(route == null || !route.matches(toRegex)){
-            throw new SparkleException(
-                    "Route's 'to' part ['" + route + "'] is illegal, it must be 'controller#action' or just 'controller'");
+            SparkleException.raise("Route's 'to' part ['%s'] is illegal, it must be 'controller#action' or just 'controller'", route);
         }
+
         this.to = route;
         String[] split = route.split("#");
         this.controllerName = split[0];
         this.actionName = split.length > 1 ? split[1]
-                                          : RestStandard.defaultActionMethodNameForHttpMethod(this.httpMethod);
+                                           : RestStandard.defaultActionMethodNameForHttpMethod(this.httpMethod);
     }
 
     @Override
@@ -179,7 +180,7 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
         return ConditionMatchs.DEFAULT_SUCCEED;
     }
     
-    private boolean hasHeaderCondition() {
+    public boolean hasHeaderCondition() {
         return this.headerCondition != null;
     }
 
@@ -230,6 +231,17 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
     
     @Override
     public String toString() {
+//        return MoreObjects.toStringHelper(this)
+//                .omitNullValues()
+//                .add("path", this.pathPattern)
+//                .add("method", this.httpMethod)
+//                .add("params", this.paramCondition)
+//                .add("header", this.headerCondition)
+//                .add("consumes", this.consumeCondition)
+//                .add("to", this.isFunctionRoute() ? "request -> {...}" : this.to)
+//                .toString();
+
+
         StringBuilder sb = new StringBuilder();
         sb.append("{ ");
         sb.append("path => "+this.pathPattern);
@@ -247,7 +259,7 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
         if (this.isFunctionRoute()){
             sb.append("request -> {...}");
         } else {
-            sb.append(this. to);
+            sb.append(this.to);
         }
         sb.append(" }");
         return sb.toString();

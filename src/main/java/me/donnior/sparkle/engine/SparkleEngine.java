@@ -95,7 +95,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     }
 
     private void initSessionStore(ConfigResult config) {
-        SessionStore sessionStore = new SessionStoreResolver().resolve(config);
+        SessionStore sessionStore = new SessionStoreResolver(config).resolve();
         SessionStoreHolder.set(sessionStore);
         logger.info("Sparkle's session store is configured to: {}", sessionStore.getClass().getSimpleName());
     }
@@ -133,7 +133,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         final Object controller  = this.controllerFactory.get(controllerName, controllerClass);
         if(controller == null){
             logger.error("Can't get controller instance with name : {} and class : {}", controllerName, controllerClass);
-            throw new SparkleException("Can't get controller instance with name : " + controllerName + " and class : "+ controllerClass);
+            throw new SparkleException("Can't get controller instance with name : %s and class : %s", controllerName, controllerClass);
         }
         return controller;
     }

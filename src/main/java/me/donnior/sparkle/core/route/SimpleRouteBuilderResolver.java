@@ -71,11 +71,15 @@ public class SimpleRouteBuilderResolver implements RouteBuilderResolver{
                 public int compare(RouteBuilderMatcher one, RouteBuilderMatcher two) {
                     MatchedCondition[] mc1 = one.matchedExplicitConditions();
                     MatchedCondition[] mc2 = two.matchedExplicitConditions();
-                    
-                    Set<MatchedCondition> s1 = new HashSet<MatchedCondition>(Arrays.asList(mc1));
-                    Set<MatchedCondition> s2 = new HashSet<MatchedCondition>(Arrays.asList(mc2));
-                    
-                    return s2.size() - s1.size();
+
+
+//                    Set<MatchedCondition> s1 = new HashSet<MatchedCondition>(Arrays.asList(mc1));
+//                    Set<MatchedCondition> s2 = new HashSet<MatchedCondition>(Arrays.asList(mc2));
+//
+//                    return s2.size() - s1.size();
+
+                    //TODO need ensure this refactor
+                    return mc2.length - mc1.length;
                 }
             });
         }

@@ -64,6 +64,10 @@ public class RouteBuilderMatcher {
         return this.explicitMatchedCondition.toArray(new MatchedCondition[] {});
     }
 
+    public List<MatchedCondition> matchedExplicitConditionsList(){
+        return this.explicitMatchedCondition;
+    }
+
     public RouteBuilder getBuilder() {
         return builder;
     }

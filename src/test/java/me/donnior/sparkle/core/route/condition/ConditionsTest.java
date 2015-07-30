@@ -80,14 +80,14 @@ public class ConditionsTest {
         
         result = c.match(new WebRequestAdapter(){
             @Override
-            public String getHeader(String headerKey) {
-                if("a".equals(headerKey)){
+            public String getParameter(String paramName) {
+                if("a".equals(paramName)){
                     return "1";
                 }
-                if("b".equals(headerKey)){
+                if("b".equals(paramName)){
                     return "1";
                 }
-                if("c".endsWith(headerKey)){
+                if("c".endsWith(paramName)){
                     return "anything";
                 }
                 return null;

@@ -1,5 +1,6 @@
 package me.donnior.sparkle.core.route;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import me.donnior.sparkle.WebRequest;
@@ -88,8 +89,13 @@ public class RouteBuilderMatcherTest {
                 return null;
             }
         };
-        
+
+        assertTrue(rb.hasHeaderCondition());
         RouteBuilderMatcher matcher = new RouteBuilderMatcher(rb, request);
         assertTrue(matcher.match());
+
+        MatchedCondition[] matchedConditions = matcher.matchedExplicitConditions();
+        assertEquals(1, matchedConditions.length);
+        assertEquals(ConditionMatchs.EXPLICIT_SUCCEED, matchedConditions[0]);
     }    
 }

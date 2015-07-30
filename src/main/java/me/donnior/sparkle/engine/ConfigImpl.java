@@ -27,6 +27,7 @@ public class ConfigImpl implements Config, ConfigResult {
     private Class<? extends SessionStore> sessionStoreClass;
     private ControllerFactory controllerFactory;
     private Class<? extends ControllerFactory> controllerFactoryClass;
+    private String secretBase;
 
     @Override
     public void registerViewRenderClass(Class<? extends ViewRender> viewRenderClass) {
@@ -109,5 +110,14 @@ public class ConfigImpl implements Config, ConfigResult {
     @Override
     public Class<? extends SessionStore> getSessionStoreClass() {
         return sessionStoreClass;
+    }
+
+    @Override
+    public void setSecrectBase(String secrectBase) {
+        this.secretBase = secrectBase;
+    }
+
+    public String getSecretBase() {
+        return secretBase;
     }
 }

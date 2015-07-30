@@ -14,14 +14,14 @@ import java.util.Map;
  */
 public class CookieBasedSessionStore implements SessionStore{
 
-    private final String appSecret;
+    private String appSecret;
 
     /**
      * construct instance with determined app_secret. {@link #determineAppSecret()}
      */
     public CookieBasedSessionStore(){
-//        this.appSecret = determineAppSecret();
-        this.appSecret = "b14e9b5b720f84fe02307ed16bc1a32ce6f089e10f7948422ccf3349d8ab586869c11958c70f46ab4cfd51f0d41043b7b249a74df7d53c7375d50f187750a0f5";
+        this.appSecret = determineAppSecret();
+//        this.appSecret = "b14e9b5b720f84fe02307ed16bc1a32ce6f089e10f7948422ccf3349d8ab586869c11958c70f46ab4cfd51f0d41043b7b249a74df7d53c7375d50f187750a0f5";
     }
 
     /**
@@ -84,10 +84,15 @@ public class CookieBasedSessionStore implements SessionStore{
 
         Key k = AESKeyGenerator.generateKey(this.appSecret.getBytes());
 
-        MessageEncryptor encryptor = new MessageEncryptor(k);
-        Object obj = encryptor.decryptAndVerify(cookie.value());
-        //decode session cookie item, construct map
-        return (Map)obj;
+        try {
+            MessageEncryptor encryptor = new MessageEncryptor(k);
+            Object obj = encryptor.decryptAndVerify(cookie.value());
+            //decode session cookie item, construct map
+            return (Map) obj;
+        } catch (Exception ex){
+            //TODO add error handler
+            return new HashMap<>();
+        }
     }
 
     private String cookieNameForSession(){
@@ -111,4 +116,11 @@ public class CookieBasedSessionStore implements SessionStore{
         return null;
     }
 
+    public void setSecret(String secretBase) {
+        this.appSecret = secretBase;
+    }
+
+    public String getSecret() {
+        return this.appSecret;
+    }
 }

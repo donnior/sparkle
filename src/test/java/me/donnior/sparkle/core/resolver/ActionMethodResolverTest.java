@@ -47,7 +47,6 @@ public class ActionMethodResolverTest {
         assertTrue(apd2.hasAnnotation(Param.class));
         assertFalse(apd2.hasAnnotation(Json.class));
         assertEquals(1, apd2.annotations().size());
-        assertEquals("ActionMethodParameter:[type=>int]", apd2.toString());
         
     }
 

@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
+import com.google.common.base.CaseFormat;
+import com.google.common.base.CharMatcher;
 import me.donnior.sparkle.ApplicationController;
 import me.donnior.sparkle.annotation.Controller;
 
@@ -23,6 +25,15 @@ public class ControllerScannerTest {
         assertTrue(controllers.containsKey("SampleControllerTwo"));
         assertTrue(controllers.containsKey("sampleFour"));
         assertEquals(SampleControllerFour.class, controllers.get("sampleFour"));
+    }
+
+    @Test
+    public void testNameResolve(){
+        assertEquals("sample", ControllerScanner.resolveName("SampleControllerTwo"));
+        assertEquals("sample", ControllerScanner.resolveName("SampleController"));
+        assertEquals("sample", ControllerScanner.resolveName("Sample"));
+        assertEquals("u_r_l_sample", ControllerScanner.resolveName("URLSampleController"));
+
     }
 }
 

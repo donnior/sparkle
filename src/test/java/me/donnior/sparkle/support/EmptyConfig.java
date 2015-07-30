@@ -43,5 +43,10 @@ public class EmptyConfig implements ConfigResult{
     public Class<? extends SessionStore> getSessionStoreClass() {
         return null;
     }
+
+    @Override
+    public String getSecretBase() {
+        return null;
+    }
 }
 
