@@ -10,21 +10,24 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <p>
- * resolve {@link ControllerFactory} from configuration, will fallback to default {@link GuiceControllerFactory} if not configured.
+ *     Resolve {@link ControllerFactory} from configuration, will fallback to default {@link GuiceControllerFactory} if not configured.
  *
  * <p>
- *     when resolve controller factory from config it follows these steps:
+ *     When resolve controller factory from config it follows these steps:
  *     <ol> Try to get controller factory instance which user set in config
  *     through {@link me.donnior.sparkle.config.Config#setControllerFactory(ControllerFactory)} </ol>
  *     <ol> Try to get controller factory class which user set in config
  *     through {@link me.donnior.sparkle.config.Config#setControllerFactoryClass(Class)}, and initialize it.
  *     </ol>
+ *     <ol> Fallback default {@link GuiceControllerFactory}
+ *     </ol>
+ *
  * </p>
  *
  */
 public class SimpleControllerFactoryResolver implements ControllerFactoryResolver{
 
-    private final static Logger logger = LoggerFactory.getLogger(SimpleControllerFactory.class);
+    private final static Logger logger = LoggerFactory.getLogger(SimpleControllerFactoryResolver.class);
 
     @Override
     public ControllerFactory get(ConfigResult config) {
@@ -44,7 +47,7 @@ public class SimpleControllerFactoryResolver implements ControllerFactoryResolve
 
     /**
      * default controller factory,  which is {@link GuiceControllerFactory}
-     * @return
+     * @return default google guice based controller factory
      */
     public ControllerFactory defaultControllerFactory(){
         return new GuiceControllerFactory();

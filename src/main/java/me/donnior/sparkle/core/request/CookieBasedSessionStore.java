@@ -1,7 +1,9 @@
 package me.donnior.sparkle.core.request;
 
+import com.google.common.base.Strings;
 import me.donnior.sparkle.Cookie;
 import me.donnior.sparkle.WebRequest;
+import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.util.AESKeyGenerator;
 import me.donnior.sparkle.util.MessageEncryptor;
 
@@ -10,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Store session values in cookie, use a app-scope configured key_base to encrypt data like Rails.
+ * Store session values in cookie, use a app-scope configured secret_key_base to encrypt data like Rails.
  */
 public class CookieBasedSessionStore implements SessionStore{
 
@@ -55,9 +57,12 @@ public class CookieBasedSessionStore implements SessionStore{
     }
 
     private void rewriteSessionToCookie(WebRequest request, Map<String, Object> sessionData){
+
         if (sessionData == null || sessionData.isEmpty()) {
             return ;
         }
+        SparkleException.throwIf(Strings.isNullOrEmpty(this.appSecret), "Must specify 'serect_base' for CookieBasedSessionStore");
+
         //dump session data
         String dumpedString = "{\"session_id\"=>\"e2c4ca694aa02905ab9d4bcb051fe68c\", \"github_username\"=>\"neerajdotname\"}";
         Key k = AESKeyGenerator.generateKey(this.appSecret.getBytes());
@@ -82,6 +87,7 @@ public class CookieBasedSessionStore implements SessionStore{
             return new HashMap<>();
         }
 
+        SparkleException.throwIf(Strings.isNullOrEmpty(this.appSecret), "Must specify 'serect_base' for CookieBasedSessionStore");
         Key k = AESKeyGenerator.generateKey(this.appSecret.getBytes());
 
         try {

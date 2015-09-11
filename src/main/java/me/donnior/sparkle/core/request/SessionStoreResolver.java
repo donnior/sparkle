@@ -34,8 +34,9 @@ public class SessionStoreResolver {
      * @return
      */
     public SessionStore defaultSessionStore(){
-        SparkleException.throwIf(Strings.isNullOrEmpty(config.getSecretBase()),
-                "To use CookieBasedSessionStore you must specify the 'secretBase' in applicaiont configuration");
+        //TODO deal with secret_base is null.
+        //SparkleException.throwIf(Strings.isNullOrEmpty(config.getSecretBase()),
+        //        "To use CookieBasedSessionStore you must specify the 'secretBase' in application configuration");
 
         return new CookieBasedSessionStore(config.getSecretBase());
     }

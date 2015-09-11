@@ -18,7 +18,7 @@ public class SessionStoreResolverTest {
 
 
 
-    @Test(expected = SparkleException.class)
+    @Test
     public void testResolveToCookieSessionStoreFailed() {
         ConfigResult config = new EmptyConfig(){};
 

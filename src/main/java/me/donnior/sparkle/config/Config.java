@@ -14,44 +14,44 @@ public interface Config {
     /**
      * Register customized view renders. 
      */
-    void registerViewRenderClass(Class<? extends ViewRender> clz);
+    Config registerViewRenderClass(Class<? extends ViewRender> clz);
 
     /**
      *
      * @param packages
      */
-    void registerControllerPackages(String... packages);
+    Config registerControllerPackages(String... packages);
 
     /**
      *
      * @param basePackage
      */
-    void registerBasePackage(String basePackage);
+    Config registerBasePackage(String basePackage);
 
     /**
      *
      * @param mode
      */
-    void setMode(Environment.Mode mode);
+    Config setMode(Environment.Mode mode);
 
     /**
      *
      * @param interceptor
      */
-    void registerInterceptor(Interceptor interceptor);
+    Config registerInterceptor(Interceptor interceptor);
 
     /**
      * set customized session store strategy
      * @param sessionStoreClass the customized session store class.
      */
-    void setSessionStoreClass(Class<? extends SessionStore> sessionStoreClass);
+    Config setSessionStoreClass(Class<? extends SessionStore> sessionStoreClass);
 
     /**
      * set customized controller factory, the default one will be {@link me.donnior.sparkle.core.support.GuiceControllerFactory}
      * Note if this one is set, {@link #setControllerFactoryClass(Class)} will be ignored.
      * @param controllerFactory
      */
-    void setControllerFactory(ControllerFactory controllerFactory);
+    Config setControllerFactory(ControllerFactory controllerFactory);
 
     /**
      * set customized controller factory class. This configuration will be used if customized controller-factory is not set,
@@ -59,12 +59,12 @@ public interface Config {
      *
      * @param controllerFactoryClass
      */
-    void setControllerFactoryClass(Class<? extends ControllerFactory> controllerFactoryClass);
+    Config setControllerFactoryClass(Class<? extends ControllerFactory> controllerFactoryClass);
 
     /**
      * set secret base for encryption.
-     * @param secrectBase
+     * @param secretBase
      */
-    void setSecrectBase(String secrectBase);
+    Config setSecretBase(String secretBase);
     
 }

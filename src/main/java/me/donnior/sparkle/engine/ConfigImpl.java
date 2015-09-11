@@ -22,37 +22,44 @@ public class ConfigImpl implements Config, ConfigResult {
     //TODO change collection type to Set
     private FList<Class<? extends ViewRender>> viewRenders = FLists.newEmptyList();
     private FList<String> controllerPackages = FLists.newEmptyList();
-    private String basePackage = "";
     private FList<Interceptor> interceptors = FLists.newEmptyList();
+
     private Class<? extends SessionStore> sessionStoreClass;
-    private ControllerFactory controllerFactory;
     private Class<? extends ControllerFactory> controllerFactoryClass;
+
+    private ControllerFactory controllerFactory;
+
+    private String basePackage = "";
     private String secretBase;
 
     @Override
-    public void registerViewRenderClass(Class<? extends ViewRender> viewRenderClass) {
+    public Config registerViewRenderClass(Class<? extends ViewRender> viewRenderClass) {
         if(!this.viewRenders.contains(viewRenderClass)){
             this.viewRenders.add(viewRenderClass);
         }
+        return this;
     }
 
     @Override
-    public void registerControllerPackages(String... packages) {
+    public Config registerControllerPackages(String... packages) {
         if(packages != null){
             this.controllerPackages.addAll(Arrays.asList(packages));
         }
+        return this;
     }
     
     @Override
-    public void registerBasePackage(String basePackage) {
+    public Config registerBasePackage(String basePackage) {
         if(basePackage != null){
             this.basePackage = basePackage;
         }
+        return this;
     }
 
     @Override
-    public void setMode(Mode mode) {
+    public Config setMode(Mode mode) {
         Environment.setMode(mode);
+        return this;
     }
     
     @Override
@@ -77,13 +84,15 @@ public class ConfigImpl implements Config, ConfigResult {
     }
 
     @Override
-    public void setControllerFactory(ControllerFactory controllerFactory) {
+    public Config setControllerFactory(ControllerFactory controllerFactory) {
         this.controllerFactory = controllerFactory;
+        return this;
     }
 
     @Override
-    public void setControllerFactoryClass(Class<? extends ControllerFactory> controllerFactoryClass) {
+    public Config setControllerFactoryClass(Class<? extends ControllerFactory> controllerFactoryClass) {
         this.controllerFactoryClass = controllerFactoryClass;
+        return this;
     }
 
     @Override
@@ -97,14 +106,16 @@ public class ConfigImpl implements Config, ConfigResult {
     }
     
     @Override
-    public void registerInterceptor(Interceptor interceptor) {
+    public Config registerInterceptor(Interceptor interceptor) {
         this.interceptors.add(interceptor);
+        return this;
     }
 
 
     @Override
-    public void setSessionStoreClass(Class<? extends SessionStore> sessionStoreClass) {
+    public Config setSessionStoreClass(Class<? extends SessionStore> sessionStoreClass) {
         this.sessionStoreClass = sessionStoreClass;
+        return this;
     }
 
     @Override
@@ -113,8 +124,9 @@ public class ConfigImpl implements Config, ConfigResult {
     }
 
     @Override
-    public void setSecrectBase(String secrectBase) {
-        this.secretBase = secrectBase;
+    public Config setSecretBase(String secretBase) {
+        this.secretBase = secretBase;
+        return this;
     }
 
     public String getSecretBase() {

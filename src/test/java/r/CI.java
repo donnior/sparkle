@@ -8,4 +8,11 @@ public class CI implements I {
         // TODO Auto-generated method stub
 
     }
+
+    public static CI getOne(){
+        Class clz = sun.reflect.Reflection.getCallerClass(1);
+        System.out.print(clz);
+        return new CI();
+    }
+
 }
