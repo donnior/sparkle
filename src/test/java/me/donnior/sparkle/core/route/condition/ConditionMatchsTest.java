@@ -9,7 +9,7 @@ import org.junit.Test;
 public class ConditionMatchsTest {
 
     @Test
-    public void testConditionMatchs(){
+    public void test_condition_match(){
         
         ConditionMatchs dft = ConditionMatchs.DEFAULT_SUCCEED;
         ConditionMatchs explicit = ConditionMatchs.EXPLICIT_SUCCEED;

@@ -11,7 +11,7 @@ import org.junit.Test;
 public class ConditionsTest {
 
     @Test
-    public void testHeaderCondition() {
+    public void test_header_condition() {
 
         HeaderCondition c = new HeaderCondition(new String[]{"a=1","b!=1", "c"});
         
@@ -55,7 +55,7 @@ public class ConditionsTest {
     }
     
     @Test
-    public void testParamCondition() {
+    public void test_param_condition() {
 
         ParamCondition c = new ParamCondition(new String[]{"a=1","b!=1", "c"});
         
@@ -100,7 +100,7 @@ public class ConditionsTest {
     }
     
     @Test
-    public void testConsumeCondition() {
+    public void test_consume_condition() {
 
         ConsumeCondition c = new ConsumeCondition(new String[]{"a=1","b!=1", "c"});
         try{
@@ -113,7 +113,7 @@ public class ConditionsTest {
     
     
     @Test
-    public void testConditionToString() {
+    public void test_condition_to_string() {
 
         HeaderCondition c = new HeaderCondition(new String[]{"a=1","b!=1", "c"});
         

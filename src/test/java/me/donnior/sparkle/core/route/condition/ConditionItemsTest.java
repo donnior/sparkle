@@ -9,7 +9,7 @@ import org.junit.Test;
 public class ConditionItemsTest {
 
     @Test
-    public void testEqualConditionItem() {
+    public void test_equal_condition_item() {
         EqualConditionItem ci = new EqualConditionItem(new String[]{"a", "1"});
         
         assertEquals("a", ci.getName());
@@ -18,7 +18,7 @@ public class ConditionItemsTest {
     }
     
     @Test
-    public void testNotEqualConditionItem() {
+    public void test_not_equal_condition_item() {
         NotEqualConditionItem ci = new NotEqualConditionItem(new String[]{"a", "1"});
         
         assertEquals("a", ci.getName());
@@ -27,7 +27,7 @@ public class ConditionItemsTest {
     }
 
     @Test
-    public void testNotNullConditionItem() {
+    public void test_not_null_condition_item() {
         NotNullConditionItem ci = new NotNullConditionItem("a");
         
         assertEquals("a", ci.getName());

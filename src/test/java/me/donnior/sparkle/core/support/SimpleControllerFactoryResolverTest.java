@@ -20,13 +20,13 @@ public class SimpleControllerFactoryResolverTest {
     }
 
     @Test
-    public void testDefaultControllerFactory() {
+    public void test_default_controller_factory() {
         ControllerFactory controllerFactory = resolver.defaultControllerFactory();
         assertEquals(GuiceControllerFactory.class, controllerFactory.getClass());
     }
 
     @Test
-    public void testResolveToDefaultControllerFactory() {
+    public void test_resolve_to_default_controller_factory() {
         ConfigResult config = new EmptyConfig();
         ControllerFactory controllerFactory = resolver.get(config);
 
@@ -34,7 +34,7 @@ public class SimpleControllerFactoryResolverTest {
     }
 
     @Test
-    public void testResolveToCustomizeControllerFactoryInstance() {
+    public void test_resolve_to_customize_controller_factory_instance() {
 
         ControllerFactory factory = new ControllerFactory() {
             @Override
@@ -57,7 +57,7 @@ public class SimpleControllerFactoryResolverTest {
 
 
     @Test
-    public void testResolveToCustomizeControllerFactoryClass() {
+    public void test_resolve_to_customize_controller_factory_class() {
 
         ConfigResult config = new EmptyConfig() {
             @Override

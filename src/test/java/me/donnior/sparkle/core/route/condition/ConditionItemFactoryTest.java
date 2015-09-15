@@ -11,7 +11,7 @@ import org.junit.Test;
 public class ConditionItemFactoryTest {
 
     @Test
-    public void testCreateConditionItemFailed() {
+    public void test_create_condition_item_failed() {
         try{
             ConditionItemFactory.createItem(null);
             fail();
@@ -25,7 +25,7 @@ public class ConditionItemFactoryTest {
     }
     
     @Test
-    public void testCreateEqualConditionItemFailed() {
+    public void test_create_equal_condition_item() {
         ConditionItem item = ConditionItemFactory.createItem("a=1");
         
         assertTrue(EqualConditionItem.class.equals(item.getClass()));
@@ -34,7 +34,7 @@ public class ConditionItemFactoryTest {
     }
     
     @Test
-    public void testCreateNotEqualConditionItemFailed() {
+    public void test_create_not_equal_condition_item() {
         ConditionItem item = ConditionItemFactory.createItem("a!=1");
         
         assertTrue(NotEqualConditionItem.class.equals(item.getClass()));
@@ -43,7 +43,7 @@ public class ConditionItemFactoryTest {
     }
     
     @Test
-    public void testCreateNotNullConditionItemFailed() {
+    public void test_create_not_null_condition_item() {
         ConditionItem item = ConditionItemFactory.createItem("a");
         
         assertTrue(NotNullConditionItem.class.equals(item.getClass()));
@@ -52,7 +52,7 @@ public class ConditionItemFactoryTest {
     }
     
     @Test
-    public void testNewConditionFactory(){
+    public void test_new_condition_factory(){
         assertNotNull(new ConditionItemFactory());
     }
        

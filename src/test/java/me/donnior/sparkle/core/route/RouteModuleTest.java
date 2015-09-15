@@ -10,7 +10,7 @@ import org.junit.Test;
 public class RouteModuleTest {
     
     @Test
-    public void testSuccess(){
+    public void test_succeed(){
         SampleRouteModule m = new SampleRouteModule();
         m.config(new RouterImpl());
         assertNull(m.router);
@@ -21,7 +21,7 @@ public class RouteModuleTest {
     }
 
     @Test
-    public void testFail() {
+    public void test_failure() {
         SampleRouteModule m = new SampleRouteModule();
         m.router = new RouterImpl();
         try{

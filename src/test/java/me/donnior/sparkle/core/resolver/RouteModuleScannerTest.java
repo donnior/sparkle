@@ -16,7 +16,7 @@ import org.junit.Test;
 public class RouteModuleScannerTest {
 
     @Test
-    public void testScanRoute(){
+    public void test_scan_route(){
         String pkg = "me.donnior.sparkle.data.module";
         List<RouteModule> modules = new RouteModuleScanner().scanRouteModule(pkg);
         assertEquals(4, modules.size());

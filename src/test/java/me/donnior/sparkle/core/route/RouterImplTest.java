@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 public class RouterImplTest {
     
     @Test
-    public void testConstructor(){
+    public void test_constructor(){
         
         RouterImpl impl1 = new RouterImpl();
         RouterImpl impl2 = new RouterImpl();
@@ -25,7 +25,7 @@ public class RouterImplTest {
     
     
     @Test
-    public void testMatch(){
+    public void test_match(){
         RouterImpl router = new RouterImpl();
         router.clear();
         
@@ -43,10 +43,9 @@ public class RouterImplTest {
     }
 
     @Test
-    public void testGetRegisteredRouteBuilders(){
+    public void test_get_registered_route_builders(){
         RouterImpl router = new RouterImpl();
-        
-        
+
         List<RouteBuilder> rrbs = router.getRegisteredRouteBuilders();
         
         assertEquals(0, rrbs.size());
@@ -59,7 +58,7 @@ public class RouterImplTest {
     }
     
     @Test
-    public void testInstallModule(){
+    public void test_install_module(){
         
         RouterImpl router = new RouterImpl();
         
