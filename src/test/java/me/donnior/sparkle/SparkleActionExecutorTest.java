@@ -17,7 +17,7 @@ public class SparkleActionExecutorTest {
     }
     
     @Test
-    public void testInvoke(){
+    public void test_invoke(){
         ActionMethod actionMethod =
                 new ActionMethodResolver().find(ControllerForSparkleActionExecutor.class, "index");
 

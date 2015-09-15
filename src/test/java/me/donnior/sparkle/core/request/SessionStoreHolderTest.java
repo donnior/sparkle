@@ -17,12 +17,12 @@ public class SessionStoreHolderTest {
     }
 
     @Test(expected = SparkleException.class)
-    public void testGetWhenNotSet(){
+    public void test_get_when_not_set(){
         SessionStoreHolder.get();
     }
 
     @Test
-    public void testGet(){
+    public void test_get(){
         SessionStore sessionStore = new SimpleMemorySessionStore();
         SessionStoreHolder.set(sessionStore);
         assertSame(sessionStore, SessionStoreHolder.get());

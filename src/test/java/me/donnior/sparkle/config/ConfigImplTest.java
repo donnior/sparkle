@@ -23,7 +23,7 @@ public class ConfigImplTest {
     }
     
     @Test
-    public void testRegisterControllerPackage(){
+    public void test_register_controller_package(){
         
         assertEquals(0, config.getControllerPackages().length);
         
@@ -43,7 +43,7 @@ public class ConfigImplTest {
     
 
     @Test
-    public void testRegisterViewRenders(){
+    public void test_register_view_renders(){
         
       assertEquals(0, config.getCustomizedViewRenders().size());
       

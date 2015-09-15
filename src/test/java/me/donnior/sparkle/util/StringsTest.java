@@ -9,7 +9,7 @@ import org.junit.Test;
 public class StringsTest {
 
     @Test
-    public void testCount(){
+    public void test_count(){
         String str = "this is a test string contains @{{ { and } with \t\n";
         assertEquals(3, Strings.count(str, "{"));
         

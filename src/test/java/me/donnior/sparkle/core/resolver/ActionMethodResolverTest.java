@@ -19,7 +19,7 @@ import org.junit.Test;
 public class ActionMethodResolverTest {
     
     @Test
-    public void testFindActionMethodDefinitionSucceed(){
+    public void test_find_action_method_succeed(){
         ActionMethodResolver finder = new ActionMethodResolver();
         ActionMethod amd = finder.find(SampleContrllerClass.class, "index");
         

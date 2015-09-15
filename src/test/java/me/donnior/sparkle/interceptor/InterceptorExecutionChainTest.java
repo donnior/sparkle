@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 public class InterceptorExecutionChainTest {
 
     @Test
-    public void testNormal(){
+    public void test_normal(){
         SuccessInterceptor interceptorOne = new SuccessInterceptor();
         InterceptorExecutionChain iec = new InterceptorExecutionChain(FLists.$(interceptorOne));
         iec.doPreHandle(new GetWebRequest("/url"));
@@ -20,7 +20,7 @@ public class InterceptorExecutionChainTest {
     }
 
     @Test
-    public void testInterceptorsWithOneFail(){
+    public void test_interceptors_with_one_fail(){
         SuccessInterceptor interceptorOne = new SuccessInterceptor();
         FailInterceptor interceptorTwo = new FailInterceptor();
         SuccessInterceptor interceptorThree = new SuccessInterceptor();
@@ -40,7 +40,7 @@ public class InterceptorExecutionChainTest {
     }
 
     @Test
-    public void testInterceptorsWithOneException(){
+    public void test_interceptors_with_one_exception(){
         SuccessInterceptor interceptorOne = new SuccessInterceptor();
         ExceptionInterceptor interceptorTwo = new ExceptionInterceptor();
         SuccessInterceptor interceptorThree = new SuccessInterceptor();

@@ -8,7 +8,7 @@ import org.junit.Test;
 public class TupleTest {
 
     @Test
-    public void testTuple2(){
+    public void test_tuple_2(){
         Tuple2 first = Tuple.of("one", 1);
         assertTrue(String.class.isAssignableFrom(first.get1().getClass()));
         assertTrue(Integer.class.isAssignableFrom(first.get2().getClass()));
@@ -20,12 +20,10 @@ public class TupleTest {
         
         assertTrue(first.hashCode() == new Tuple2("one", 1).hashCode());
         assertFalse(first.hashCode() == new Tuple2("one", 2).hashCode());
-        
-        
     }
     
     @Test
-    public void testTuple1(){
+    public void test_tuple_1(){
         Tuple1 first = Tuple.of("one");
         assertTrue(String.class.isAssignableFrom(first.get1().getClass()));
         
@@ -36,8 +34,7 @@ public class TupleTest {
         
         assertTrue(first.hashCode() == new Tuple1("one").hashCode());
         assertFalse(first.hashCode() == new Tuple1("two").hashCode());
-        
     }
     
     
-    }
+}

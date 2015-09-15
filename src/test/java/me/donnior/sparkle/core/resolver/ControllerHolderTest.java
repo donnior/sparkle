@@ -16,7 +16,7 @@ import com.google.common.collect.Maps;
 public class ControllerHolderTest {
 
     @Test
-    public void testGetting(){
+    public void test_getting(){
         ControllersHolder ch = new ControllersHolder();
         ch.registeControllers(sampleControllersMap());
         
@@ -28,7 +28,7 @@ public class ControllerHolderTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void testGettingWithException(){
+    public void test_getting_with_exception(){
         ControllersHolder ch = new ControllersHolder();
         ch.registeControllers(sampleControllersMap());
 
@@ -36,7 +36,7 @@ public class ControllerHolderTest {
     }
 
     @Test
-    public void testAddWithReset(){
+    public void test_add_with_reset(){
         ControllersHolder ch = new ControllersHolder();
         ch.registeControllers(sampleControllersMap());
         
@@ -48,7 +48,7 @@ public class ControllerHolderTest {
     }
     
     @Test
-    public void testAddWithDuplication(){
+    public void test_add_with_duplication(){
         ControllersHolder ch = new ControllersHolder();
         ch.registeControllers(sampleControllersMap());
         

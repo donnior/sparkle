@@ -16,7 +16,7 @@ import org.junit.Test;
 public class ControllerScannerTest {
 
     @Test
-    public void testScan(){
+    public void test_scan(){
         String pkg = "me.donnior.sparkle.core.resolver";
         Map<String, Class<?>> controllers = new ControllerScanner().scanControllers(pkg);
         
@@ -28,7 +28,7 @@ public class ControllerScannerTest {
     }
 
     @Test
-    public void testNameResolve(){
+    public void test_name_resolve(){
         assertEquals("sample", ControllerScanner.resolveName("SampleControllerTwo"));
         assertEquals("sample", ControllerScanner.resolveName("SampleController"));
         assertEquals("sample", ControllerScanner.resolveName("Sample"));

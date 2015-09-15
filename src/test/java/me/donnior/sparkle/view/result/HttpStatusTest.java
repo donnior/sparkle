@@ -7,7 +7,7 @@ import org.junit.Test;
 public class HttpStatusTest {
 
     @Test
-    public void testHttpStatusResult(){
+    public void test_http_status_result(){
         HttpStatus s1 = new HttpStatus(100, "unknow result");
         assertEquals(100, s1.getCode());
         assertEquals("unknow result", s1.getMessage());

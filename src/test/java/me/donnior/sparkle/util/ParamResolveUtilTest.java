@@ -16,12 +16,12 @@ public class ParamResolveUtilTest {
     }
     
     @Test(expected=RuntimeException.class)
-    public void testConvertNull(){
+    public void test_convert_null(){
         this.util.convertValue(null, String.class);
     }
     
     @Test
-    public void testConvertToIntArray() {
+    public void test_convert_to_int_array() {
         String[] values = {"1", "2", "3"};
         Object result = this.util.convertValue(values, Integer[].class);
         assertEquals(Integer[].class, result.getClass());
@@ -29,7 +29,7 @@ public class ParamResolveUtilTest {
     }
 
     @Test
-    public void testConvertToStringArray() {
+    public void test_convert_to_string_array() {
         String[] values = {"1", "2", "3"};
         Object result = this.util.convertValue(values, String[].class);
         assertEquals(String[].class, result.getClass());
@@ -37,7 +37,7 @@ public class ParamResolveUtilTest {
     }
  
     @Test
-    public void testConvertToInt() {
+    public void test_convert_to_int() {
         String[] values = {"1", "2", "3"};
         
         Object result = this.util.convertValue(values, Integer.class);
@@ -50,7 +50,7 @@ public class ParamResolveUtilTest {
     }
     
     @Test
-    public void testConvertToFloat() {
+    public void test_convert_to_float() {
         String[] values = {"1", "2", "3"};
         
         Object result = this.util.convertValue(values, Float.class);
@@ -63,7 +63,7 @@ public class ParamResolveUtilTest {
     }
  
     @Test
-    public void testConvertToDouble() {
+    public void test_convert_to_double() {
         String[] values = {"1", "2", "3"};
         
         Object result = this.util.convertValue(values, Double.class);
@@ -76,7 +76,7 @@ public class ParamResolveUtilTest {
     }
         
     @Test
-    public void testConvertToString() {
+    public void test_convert_to_string() {
         String[] values = {"1", "2", "3"};
         Object result = this.util.convertValue(values, String.class);
         assertEquals(String.class, result.getClass());
@@ -84,7 +84,7 @@ public class ParamResolveUtilTest {
     }
 
     @Test(expected=RuntimeException.class)
-    public void testConvertToNotSupportedType() {
+    public void test_convert_to_not_supported_type() {
         String[] values = {"1", "2", "3"};
         this.util.convertValue(values, ParamResolveUtilTest.class);
         fail();
@@ -92,7 +92,7 @@ public class ParamResolveUtilTest {
     
     //test empty but not null values
     @Test
-    public void testEmptyConvertToIntArray() {
+    public void test_empty_convert_to_int_array() {
         String[] values = {};
         Object result = this.util.convertValue(values, Integer[].class);
         assertEquals(Integer[].class, result.getClass());
@@ -100,7 +100,7 @@ public class ParamResolveUtilTest {
     }
 
     @Test
-    public void testEmptyConvertToStringArray() {
+    public void test_empty_convert_to_string_array() {
         String[] values = {};
         Object result = this.util.convertValue(values, String[].class);
         assertEquals(String[].class, result.getClass());
@@ -108,14 +108,14 @@ public class ParamResolveUtilTest {
     }
     
     @Test
-    public void testEmptyConvertToInt() {
+    public void test_empty_convert_to_int() {
         String[] values = {};
         Object result = this.util.convertValue(values, Integer.class);
         assertEquals(null, result);
     }
     
     @Test
-    public void testEmptyConvertToString() {
+    public void test_empty_convert_to_string() {
         String[] values = {};
         Object result = this.util.convertValue(values, String.class);
         assertEquals(null, result);

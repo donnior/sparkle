@@ -20,12 +20,12 @@ public class AbstractWebRequestTest {
     }
 
     @Test(expected = RuntimeException.class)
-    public void testGetSessionId(){
+    public void test_get_session_id(){
         request.getSessionId();
     }
 
     @Test
-    public void testGetSession(){
+    public void test_get_session(){
         SessionStoreHolder.set(new CookieBasedSessionStore());
         Session session = request.session();
         assertTrue(SessionFacade.class.equals(session.getClass()));

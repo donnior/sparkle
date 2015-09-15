@@ -24,7 +24,7 @@ public class CookieBasedSessionStoreTest {
 
     @Test
     @Ignore
-    public void testSetSession(){
+    public void test_set_session(){
         WebRequest request = new WebRequestAdapter();
         store.set(request, "name", "value");
 

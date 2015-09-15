@@ -16,10 +16,8 @@ import static org.junit.Assert.assertSame;
 
 public class SessionStoreResolverTest {
 
-
-
     @Test
-    public void testResolveToCookieSessionStoreFailed() {
+    public void test_resolve_to_cookie_session_store_failed() {
         ConfigResult config = new EmptyConfig(){};
 
         SessionStoreResolver resolver = new SessionStoreResolver(config);
@@ -27,7 +25,7 @@ public class SessionStoreResolverTest {
     }
 
     @Test
-    public void testDefaultSessionStore() {
+    public void test_default_session_store() {
         SessionStoreResolver resolver = new SessionStoreResolver(new ConfigImpl(){
             @Override
             public String getSecretBase() {
@@ -40,7 +38,7 @@ public class SessionStoreResolverTest {
     }
 
     @Test
-    public void testResolveToDefaultSessionStore() {
+    public void test_resolve_to_default_session_store() {
         ConfigResult config = new EmptyConfig(){
             @Override
             public Class<? extends SessionStore> getSessionStoreClass() {
@@ -60,7 +58,7 @@ public class SessionStoreResolverTest {
     }
 
     @Test
-    public void testResolveToCustomizeSessionStore() {
+    public void test_resolve_to_customize_session_store() {
         ConfigResult config = new EmptyConfig() {
             @Override
             public Class<? extends SessionStore> getSessionStoreClass() {

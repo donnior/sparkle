@@ -7,7 +7,7 @@ import org.junit.Test;
 public class HTTPStatusCodeTest {
 
     @Test
-    public void testConstant(){
+    public void test_constant(){
         
         assertEquals(201, HTTPStatusCode.CREATED);
         

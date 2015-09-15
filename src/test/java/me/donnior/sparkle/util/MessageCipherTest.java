@@ -11,12 +11,12 @@ import static org.junit.Assert.assertEquals;
 public class MessageCipherTest {
 
 
-    public void testEncrypt(){
+    public void test_encrypt(){
 
     }
 
     @Test
-    public void testDecrypt(){
+    public void test_decrypt(){
         Serializer serializer = new Serializer() {
             @Override
             public byte[] dump(Object obj) {
