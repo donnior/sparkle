@@ -3,7 +3,8 @@ package me.donnior.sparkle.core.request;
 import me.donnior.sparkle.WebRequest;
 
 /**
- * session data store
+ * session data store. For one Sparkle application, it will only hold one SessionStore instance,
+ * so the implementation should thread-safe.
  */
 public interface SessionStore {
 

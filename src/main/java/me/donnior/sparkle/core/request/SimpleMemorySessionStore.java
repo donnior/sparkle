@@ -20,7 +20,6 @@ public class SimpleMemorySessionStore implements SessionStore{
 
     @Override
     public void set(WebRequest request, String name, Object obj) {
-
         sessionMaps.computeIfAbsent(request.getSessionId(), e -> new HashMap<String, Object>()).put(name, obj);
     }
 
