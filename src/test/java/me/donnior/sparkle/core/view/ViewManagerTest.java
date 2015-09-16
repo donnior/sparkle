@@ -1,0 +1,68 @@
+package me.donnior.sparkle.core.view;
+
+import com.google.common.collect.Lists;
+import me.donnior.sparkle.WebRequest;
+import me.donnior.sparkle.core.ActionMethod;
+import org.agilej.fava.util.FLists;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.agilej.fava.util.FStatic.list;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+public class ViewManagerTest {
+
+    @Test
+    public void test_build_in_view_renders(){
+        ViewRenderManager viewRenderManager = new ViewRenderManager();
+        List<ViewRender> viewRenders = viewRenderManager.getAllOrderedViewRenders();
+        assertTrue(2 == viewRenders.size());
+        assertEquals(JSONViewRender.class, viewRenders.get(0).getClass());
+        assertEquals(TextViewRender.class, viewRenders.get(1).getClass());
+    }
+
+
+    @Test
+    public void test_register_app_scoped_view_renders(){
+        ViewRenderManager viewRenderManager = new ViewRenderManager();
+
+        List<Class<? extends ViewRender>> viewRenderClasses = new ArrayList<>();
+        viewRenderClasses.add(TestAppScopedViewRender.class);
+        viewRenderManager.registerAppScopedViewRender(viewRenderClasses);
+
+        List<ViewRender> viewRenders = viewRenderManager.getAllOrderedViewRenders();
+
+        assertTrue(3 == viewRenders.size());
+        assertEquals(TestAppScopedViewRender.class, viewRenders.get(0).getClass());
+    }
+
+    @Test
+    public void test_register_vendor_view_renders(){
+        ViewRenderManager viewRenderManager = new ViewRenderManager();
+
+        List<ViewRender> viewRenderClasses = new ArrayList<>();
+        viewRenderClasses.add(new TestAppScopedViewRender());
+        viewRenderManager.registerVendorViewRenders(viewRenderClasses);
+
+        List<ViewRender> viewRenders = viewRenderManager.getAllOrderedViewRenders();
+
+        assertTrue(3 == viewRenders.size());
+        assertEquals(TestAppScopedViewRender.class, viewRenders.get(2).getClass());
+    }
+
+    public static class TestAppScopedViewRender implements ViewRender{
+
+        @Override
+        public boolean supportActionMethod(ActionMethod actionMethod, Object actionMethodResult) {
+            return false;
+        }
+
+        @Override
+        public void renderView(Object result, Object controller, WebRequest request) throws IOException {
+        }
+    }
+}

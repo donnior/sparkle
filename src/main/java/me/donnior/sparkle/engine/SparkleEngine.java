@@ -22,9 +22,11 @@ import me.donnior.sparkle.core.route.*;
 import me.donnior.sparkle.core.support.SimpleControllerFactoryResolver;
 import me.donnior.sparkle.core.view.SimpleViewRenderResolver;
 import me.donnior.sparkle.core.view.ViewRender;
+import me.donnior.sparkle.core.view.ViewRenderManager;
 import me.donnior.sparkle.core.view.ViewRenderResolver;
 import me.donnior.sparkle.exception.SparkleException;
 import me.donnior.sparkle.ext.EnvSpecific;
+import me.donnior.sparkle.ext.VendorViewRenderProvider;
 import me.donnior.sparkle.http.HTTPStatusCode;
 import me.donnior.sparkle.interceptor.Interceptor;
 import me.donnior.sparkle.route.RouteModule;
@@ -79,6 +81,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     protected void startup() {
         Application application = scanApplication();
         if(application != null){
+            logger.info("Found customized Application Configuration : {}", application.getClass().getSimpleName());
             application.config(config);
         }else{
             logger.info("Could not find any ApplicationConfig, Sparkle will use the default configuration");
@@ -105,12 +108,15 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     }
 
     private void initViewRenders(ConfigResult config) {
+        ViewRenderManager viewRenderManager = new ViewRenderManager();
+        viewRenderManager.registerAppScopedViewRender(config.getCustomizedViewRenders());
 
-        this.envSpecific.getViewRendersManager().registerAppScopedViewRender(config.getCustomizedViewRenders());
-//        List<ViewRender> viewRenders =
-//            this.envSpecific.getViewRendersManager().resolveRegisteredViewRenders(config.getCustomizedViewRenders());
-        this.viewRenderResolver =
-                new SimpleViewRenderResolver(this.envSpecific.getViewRendersManager().getAllOrderedViewRenders());
+        VendorViewRenderProvider vendorViewRenderProvider = this.envSpecific.vendorViewRenderProvider();
+        if (vendorViewRenderProvider != null){
+            viewRenderManager.registerVendorViewRenders(vendorViewRenderProvider.vendorViewRenders());
+        }
+
+        this.viewRenderResolver = new SimpleViewRenderResolver(viewRenderManager.getAllOrderedViewRenders());
     }
 
     private void initControllers(ConfigResult config) {

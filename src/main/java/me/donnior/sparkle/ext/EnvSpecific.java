@@ -5,11 +5,15 @@ import me.donnior.sparkle.core.view.ViewRenderManager;
 import me.donnior.sparkle.engine.RequestLifeCycleManager;
 
 public interface EnvSpecific {
-
-    ViewRenderManager getViewRendersManager();
+//
+//    ViewRenderManager getViewRendersManager();
 
     ArgumentResolverManager getArgumentResolverManager();
     
     RequestLifeCycleManager getLifeCycleManager();
+
+    default VendorViewRenderProvider vendorViewRenderProvider(){
+        return null;
+    }
 
 }

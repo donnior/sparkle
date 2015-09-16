@@ -9,23 +9,29 @@ import me.donnior.reflection.ReflectionUtil;
 
 /**
  * Holder for all supported ViewRenders with different priority.
- * 
- *  <li> Sparkle's built-in view renders have highest priority, including {@link JSONViewRender} and {@link TextViewRender}
  *
- *  <li> Sparkle vendor's view renders have the second priority, *  such as Servlet's Jsp
+ *  <li> Application's customized view renders have the highest priority
  *
- *  <li> Application's customized view renders have the lowest priority
+ *  <li> Sparkle's built-in view renders have the second priority, including {@link JSONViewRender} and {@link TextViewRender}
+ *
+ *  <li> Sparkle vendor's view renders have the lowest priority, *  such as Servlet's Jsp
  *
  *
  */
 public class ViewRenderManager {
 
     private FList<ViewRender> allRegisteredViewRenders = FLists.newEmptyList();
+    private FList<ViewRender> vendorViewRenders = FLists.newEmptyList();
     private FList<ViewRender> appScopedViewRenders = FLists.newEmptyList();
     
     public ViewRenderManager() {
         registerBuiltInViewRenders(allRegisteredViewRenders);
-        registerVendorViewRenders(allRegisteredViewRenders);
+//        registerVendorViewRenders(allRegisteredViewRenders);
+    }
+
+
+    public void setupViewRenders(){
+
     }
 
     /**
@@ -34,7 +40,7 @@ public class ViewRenderManager {
      * @return
      */
     public FList<ViewRender> getAllOrderedViewRenders(){
-        return this.allRegisteredViewRenders;
+        return FLists.$(this.appScopedViewRenders).plus(this.allRegisteredViewRenders).plus(this.vendorViewRenders);
     }
 
     /**
@@ -74,8 +80,8 @@ public class ViewRenderManager {
      * for Sparkle's runtime vendor to register it's view renders, for example servlet jsp view
      * @param viewRenders
      */
-    protected void registerVendorViewRenders(List<ViewRender> viewRenders){
-        
+    public void registerVendorViewRenders(List<ViewRender> viewRenders){
+        this.vendorViewRenders.addAll(viewRenders);
     }
 
     /**
@@ -91,6 +97,6 @@ public class ViewRenderManager {
             }
         });
         this.appScopedViewRenders.addAll(viewRenders);
-        this.allRegisteredViewRenders.addAll(this.appScopedViewRenders);
+//        this.allRegisteredViewRenders.addAll(this.appScopedViewRenders);
     }
 }

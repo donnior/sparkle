@@ -19,6 +19,8 @@ public class SimpleViewRenderResolver implements ViewRenderResolver{
     
     public SimpleViewRenderResolver(List<ViewRender> renders) {
         this.viewRenders.addAll(renders);
+        logger.debug("ViewRenderResolver created with all ordered view renders : {}",
+                this.viewRenders.map(e -> e.getClass().getSimpleName()));
     }
     
     @Override
