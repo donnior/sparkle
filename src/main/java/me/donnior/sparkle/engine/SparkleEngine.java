@@ -7,6 +7,7 @@ import java.util.concurrent.*;
 
 import me.donnior.reflection.ReflectionUtil;
 import me.donnior.sparkle.ApplicationController;
+import me.donnior.sparkle.Env;
 import me.donnior.sparkle.HTTPMethod;
 import me.donnior.sparkle.WebRequest;
 import me.donnior.sparkle.config.Application;
@@ -14,6 +15,7 @@ import me.donnior.sparkle.core.ActionMethod;
 import me.donnior.sparkle.core.ConfigResult;
 import me.donnior.sparkle.core.ControllerFactory;
 import me.donnior.sparkle.core.argument.ArgumentResolverManager;
+import me.donnior.sparkle.core.dev.RouteNotFoundHandler;
 import me.donnior.sparkle.core.method.*;
 import me.donnior.sparkle.core.request.SessionStore;
 import me.donnior.sparkle.core.request.SessionStoreHolder;
@@ -164,8 +166,12 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         RouteInfo rd = this.routeBuilderResovler.match(webRequest);
 
         if(rd == null){
-            logger.info("Could not find route for request : '{}' \n", webRequest);
+            logger.info("Could not find route for request : [{} {}] \n", webRequest.getMethod(), webRequest.getPath());
             webRequest.getWebResponse().setStatus(HTTPStatusCode.NOT_FOUND);
+            if (Env.isDev()){
+                new RouteNotFoundHandler(this.router).handle(webRequest);
+            }
+            executeAfterInterceptor(ic, webRequest);
             return;
         }
 

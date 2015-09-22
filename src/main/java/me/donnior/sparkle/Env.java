@@ -19,15 +19,15 @@ public class Env {
     }
     
     public static boolean isDev(){
-        return mode.equals(DEV);
+        return DEV.equals(mode) || mode == null;
     }
     
     public static boolean isProd(){
-        return mode.equals(PROD);
+        return PROD.equals(mode);
     }
     
     public static boolean isTest(){
-        return mode.equals(TEST);
+        return TEST.equals(mode);
     }
     
 }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>@style </style>
+</head>
+
+<body>
+
+    <div class='top'>
+        <header class="exception">
+            <h2><strong></strong><span><%= request_path %></span></h2>
+            <p><%= exception.message %></p>
+        </header>
+    </div>
+
+    <section class="backtrace">
+        <nav class="sidebar">
+            <nav class="tabs">
+                <a href="#" id="application_frames">Application Frames</a>
+                <a href="#" id="all_frames">All Frames</a>
+            </nav>
+            <ul class="frames">
+            </ul>
+        </nav>
+
+
+        <div class="frame_info" id="frame_info_<%= index %>" >@content </div>
+
+    </section>
+</body>
