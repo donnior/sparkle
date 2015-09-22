@@ -85,6 +85,17 @@ public class ViewRenderManager {
     }
 
     /**
+     * for Sparkle's runtime vendor to register it's view renders, for example servlet jsp view
+     * @param viewRender
+     *
+     * @see #registerVendorViewRenders(List)
+     */
+    public void registerVendorViewRender(ViewRender viewRender){
+        this.vendorViewRenders.add(viewRender);
+    }
+
+
+    /**
      *
      * register the application scoped view renders to sparkle
      *
@@ -97,6 +108,5 @@ public class ViewRenderManager {
             }
         });
         this.appScopedViewRenders.addAll(viewRenders);
-//        this.allRegisteredViewRenders.addAll(this.appScopedViewRenders);
     }
 }
