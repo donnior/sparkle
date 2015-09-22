@@ -1,6 +1,6 @@
 package me.donnior.sparkle;
 
-public class Environment {
+public class Env {
 
     public static enum Mode{DEV, PROD, TEST}
     

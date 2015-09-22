@@ -7,8 +7,8 @@ import java.util.Set;
 import me.donnior.sparkle.core.request.SessionStore;
 import org.agilej.fava.FList;
 import org.agilej.fava.util.FLists;
-import me.donnior.sparkle.Environment;
-import me.donnior.sparkle.Environment.Mode;
+import me.donnior.sparkle.Env;
+import me.donnior.sparkle.Env.Mode;
 import me.donnior.sparkle.config.Config;
 import me.donnior.sparkle.core.ConfigResult;
 import me.donnior.sparkle.core.ControllerFactory;
@@ -58,7 +58,7 @@ public class ConfigImpl implements Config, ConfigResult {
 
     @Override
     public Config setMode(Mode mode) {
-        Environment.setMode(mode);
+        Env.setMode(mode);
         return this;
     }
     
