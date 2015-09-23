@@ -8,19 +8,23 @@
 
     <div class='top'>
         <header class="exception">
-            <h2><strong></strong><span><%= request_path %></span></h2>
-            <p><%= exception.message %></p>
+            <h2><strong></strong><span> @request_path </span></h2>
+            <p>@error </p>
         </header>
     </div>
 
     <section class="backtrace">
         <nav class="sidebar">
-            <nav class="tabs">
-                <a href="#" id="application_frames">Application Frames</a>
-                <a href="#" id="all_frames">All Frames</a>
-            </nav>
-            <ul class="frames">
-            </ul>
+            <h2>Request Info</h2>
+            <div>
+                <table class="debug-table">
+                    <tr><th>Path</th><td> @request_path </td></tr>
+                    <tr><th>HTTP Method</th><td> @request_method </td></tr>
+                    <tr><th>Params</th><td> a => 1, b=> 2 @request_params </td></tr>
+                    <tr><th>Headers</th><td> a => 1, b => 2 @request_headers </td></tr>
+                    <tr><th>Others</th><td> @request_extra </td></tr>
+                </table>
+            </div>
         </nav>
 
 

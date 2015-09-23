@@ -92,7 +92,7 @@
     }
 
     nav.sidebar {
-    width: 40%;
+    width: 30%;
     left: 20px;
     top: 115px;
     bottom: 20px;
@@ -100,7 +100,7 @@
 
     .frame_info {
     right: 0;
-    left: 40%;
+    left: 30%;
 
     padding: 20px;
     padding-left: 10px;
@@ -108,6 +108,7 @@
     }
     }
 
+/*
     nav.sidebar {
     background: #d3d3da;
     border-top: solid 3px #a33;
@@ -115,6 +116,7 @@
     border-radius: 4px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.2), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
     }
+    */
 
     /* ---------------------------------------------------------------------
     * Header
@@ -688,4 +690,93 @@
     .inset pre:hover::-webkit-scrollbar-thumb,
     .code:hover::-webkit-scrollbar-thumb {
     background: #888;
+    }
+
+
+   /*
+    table css styles
+    */
+    .debug-table {
+      margin: 1em 0;
+      min-width: 300px;
+    }
+    .debug-table tr {
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+    }
+    .debug-table th {
+      display: none;
+    }
+    .debug-table td {
+      display: block;
+      color: white;
+      word-break: break-word;
+    }
+    .debug-table td:first-child {
+      padding-top: .5em;
+    }
+    .debug-table td:last-child {
+      padding-bottom: .5em;
+    }
+    .debug-table td:before {
+      content: attr(data-th) ": ";
+      font-weight: bold;
+      width: 6.5em;
+      display: inline-block;
+    }
+    @media (min-width: 480px) {
+      .debug-table td:before {
+        display: none;
+      }
+    }
+    .debug-table th, .debug-table td {
+      text-align: left;
+    }
+    @media (min-width: 480px) {
+      .debug-table th, .debug-table td {
+        display: table-cell;
+        padding: .25em .5em;
+      }
+      .debug-table th:first-child, .debug-table td:first-child {
+        padding-left: 0;
+      }
+      .debug-table th:last-child, .debug-table td:last-child {
+        padding-right: 0;
+      }
+    }
+
+    body {
+      padding: 0 2em;
+      font-family: Montserrat, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      color: #444;
+      background: #eee;
+    }
+
+    h1 {
+      font-weight: normal;
+      letter-spacing: -1px;
+      color: #34495E;
+    }
+
+    .debug-table {
+      background: #34495E;
+      color: #fff;
+      border-radius: .4em;
+      overflow: hidden;
+    }
+    .debug-table tr {
+      border-color: #46627f;
+    }
+    .debug-table th, .debug-table td {
+      margin: .5em 1em;
+    }
+    @media (min-width: 480px) {
+      .debug-table th, .debug-table td {
+        padding: 1em !important;
+      }
+    }
+    .debug-table th, .debug-table td:before {
+      color: #dd5;
     }
