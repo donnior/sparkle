@@ -1,4 +1,4 @@
-group = 'com.sparkle'
+group = 'org.agilej'
 version = '1.0-SNAPSHOT'
 
 repositories {  
