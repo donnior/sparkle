@@ -1,3 +1,5 @@
+[![Build Status](https://drone.io/github.com/agilej/sparkle-core/status.png)](https://drone.io/github.com/agilej/sparkle-core/latest)
+
 Sparkle is an lightweight web framework.
 
 ## Features
