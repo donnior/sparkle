@@ -32,8 +32,8 @@ public class SimpleRouteBuilderResolver implements RouteBuilderResolver{
         RouteBuilderMatcher rbm = getClosestMatchedRouteBuilder(matched);
         if(rbm != null){
             RouteBuilder rb = rbm.getBuilder();
-    	    logger.debug("Found matched route builder: {}", rb);
-//    	    Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getPathPattern(), path);
+            logger.debug("Found matched route builder: {}", rb);
+//          Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getPathPattern(), path);
 //            logger.debug("extracted path variables {}", uriVariables);
             return rb;
         } else {
@@ -44,11 +44,11 @@ public class SimpleRouteBuilderResolver implements RouteBuilderResolver{
 
     private FList<RouteBuilderMatcher> findSucceedRouteBuilderMatcher(final WebRequest webRequest, List<RouteBuilder> rbs) {
         FList<RouteBuilderMatcher> rbms = FLists.create(rbs).collect(new Function<RouteBuilder, RouteBuilderMatcher>(){
-			@Override
-			public RouteBuilderMatcher apply(RouteBuilder e) {
-				return new RouteBuilderMatcher(e, webRequest);
-			}
-        	
+            @Override
+            public RouteBuilderMatcher apply(RouteBuilder e) {
+                return new RouteBuilderMatcher(e, webRequest);
+            }
+            
         });
         
         FList<RouteBuilderMatcher> matched = rbms.select(new Predicate<RouteBuilderMatcher>() {
