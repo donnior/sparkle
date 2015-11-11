@@ -1,6 +1,8 @@
 package org.agilej.sparkle;
 
-
+/**
+ * interface for presenting a server side session
+ */
 public interface Session {
 
     /**

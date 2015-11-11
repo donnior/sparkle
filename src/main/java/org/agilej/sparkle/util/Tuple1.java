@@ -17,8 +17,12 @@ public class Tuple1<T1> {
     @Override
     @SuppressWarnings("unchecked")
     public boolean equals(Object obj) {
-        if(obj == null){ return false;}
-        if(!(obj instanceof Tuple1)){ return false;}
+        if(obj == null){
+            return false;
+        }
+        if(!(obj instanceof Tuple1)){
+            return false;
+        }
         Tuple1<Object> other = (Tuple1<Object>)obj;
         return Objects.equal(get1(), other.get1());
     }

@@ -3,7 +3,9 @@ package org.agilej.sparkle;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * interface for presenting a web request
+ */
 public interface WebRequest {
     
     public static final String REQ_ATTR_FOR_PATH_VARIABLES = "REQ_ATTR_FOR_PATH_VARIABLES";
@@ -12,7 +14,7 @@ public interface WebRequest {
      *
      * raw request
      * @param <T>
-     * @return
+     * @return the raw request object provided by runtime container, such as a servlet request or netty request
      */
     <T> T getOriginalRequest();
 
@@ -21,7 +23,7 @@ public interface WebRequest {
      * raw response
      *
      * @param <T>
-     * @return
+     * @return the raw response object provided by runtime container, such as a servlet response or netty response
      */
     <T> T getOriginalResponse();
 

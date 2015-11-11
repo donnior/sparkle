@@ -59,7 +59,8 @@ public class ViewRenderManager {
      */
     @Deprecated
     private List<ViewRender> resolveRegisteredViewRenders(List<Class<? extends ViewRender>> renders){
-        FList<ViewRender> viewRenders = FLists.create(renders).collect(new Function<Class<? extends ViewRender>, ViewRender>() {
+        FList<ViewRender> viewRenders = FLists.create(renders)
+                                              .collect(new Function<Class<? extends ViewRender>, ViewRender>() {
             @Override
             public ViewRender apply(Class<? extends ViewRender> viewRenderClass) {
                 return (ViewRender) ReflectionUtil.initialize(viewRenderClass);
@@ -101,7 +102,8 @@ public class ViewRenderManager {
      *
      */
     public void registerAppScopedViewRender(List<Class<? extends ViewRender>> appScopedViewRenders){
-        FList<ViewRender> viewRenders = FLists.create(appScopedViewRenders).collect(new Function<Class<? extends ViewRender>, ViewRender>() {
+        FList<ViewRender> viewRenders = FLists.create(appScopedViewRenders)
+                                              .collect(new Function<Class<? extends ViewRender>, ViewRender>() {
             @Override
             public ViewRender apply(Class<? extends ViewRender> viewRenderClass) {
                 return (ViewRender) ReflectionUtil.initialize(viewRenderClass);

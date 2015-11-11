@@ -35,7 +35,7 @@ public class PathVariableArgumentResolver implements ArgumentResolver {
       String paramName = ((PathVariable)a).value();
       Class<?> paramType = actionMethodParameter.paramType();
       
-      //TODO how to get path variables with name from current request, 如何从RouteBuider中把解析的path variables传过来？
+      //TODO how to get path variables with name from current request
       Map<String, String> pathVariables = request.getAttribute(WebRequest.REQ_ATTR_FOR_PATH_VARIABLES);
       String[] values = new String[]{pathVariables.get(paramName)};
       if(values == null){
@@ -49,7 +49,8 @@ public class PathVariableArgumentResolver implements ArgumentResolver {
 
     private Object nullValueForType(Class<?> type) {
         if(type.isPrimitive()){
-            throw new SparkleException("action method argument annotated with @Param not support primitive");
+            throw new SparkleException(
+                    "action method argument annotated with @Param not support primitive");
         }
         return null;
     }

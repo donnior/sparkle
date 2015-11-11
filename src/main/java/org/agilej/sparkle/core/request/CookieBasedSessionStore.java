@@ -23,7 +23,7 @@ public class CookieBasedSessionStore implements SessionStore{
      */
     public CookieBasedSessionStore(){
         this.appSecret = determineAppSecret();
-//        this.appSecret = "b14e9b5b720f84fe02307ed16bc1a32ce6f089e10f7948422ccf3349d8ab586869c11958c70f46ab4cfd51f0d41043b7b249a74df7d53c7375d50f187750a0f5";
+//        this.appSecret = "xxxxx";
     }
 
     /**
@@ -61,15 +61,15 @@ public class CookieBasedSessionStore implements SessionStore{
         if (sessionData == null || sessionData.isEmpty()) {
             return ;
         }
-        SparkleException.throwIf(Strings.isNullOrEmpty(this.appSecret), "Must specify 'serect_base' for CookieBasedSessionStore");
+        SparkleException.throwIf(Strings.isNullOrEmpty(this.appSecret),
+                "Must specify 'serect_base' for CookieBasedSessionStore");
 
-        //dump session data
-        String dumpedString = "{\"session_id\"=>\"e2c4ca694aa02905ab9d4bcb051fe68c\", \"github_username\"=>\"neerajdotname\"}";
         Key k = AESKeyGenerator.generateKey(this.appSecret.getBytes());
 
         MessageEncryptor encryptor = new MessageEncryptor(k);
         String result = (String) encryptor.encryptAndSign(sessionData);
-        request.getWebResponse().addCookie(new Cookie(cookieNameForSession()).value(result).maxAge(maxAgeForSessionCookie()));
+        request.getWebResponse().addCookie(
+                new Cookie(cookieNameForSession()).value(result).maxAge(maxAgeForSessionCookie()));
     }
 
     private Map<String, Object> getSessionData(WebRequest request){
@@ -87,7 +87,8 @@ public class CookieBasedSessionStore implements SessionStore{
             return new HashMap<>();
         }
 
-        SparkleException.throwIf(Strings.isNullOrEmpty(this.appSecret), "Must specify 'serect_base' for CookieBasedSessionStore");
+        SparkleException.throwIf(
+                Strings.isNullOrEmpty(this.appSecret), "Must specify 'serect_base' for CookieBasedSessionStore");
         Key k = AESKeyGenerator.generateKey(this.appSecret.getBytes());
 
         try {

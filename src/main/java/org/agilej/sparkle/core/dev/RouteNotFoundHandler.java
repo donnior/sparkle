@@ -15,7 +15,9 @@ public class RouteNotFoundHandler extends DevelopmentErrorHandler{
 
     public String doHandle(WebRequest webRequest) {
         StringBuilder sb = new StringBuilder("<div><h2>All Available  Routes</h2>");
-        sb.append("<table class=\"debug-table\"><thead><tr><th>HTTP Verb</th><th>Path</th><th>Controller#Action</th></tr></thead></tbody>");
+        sb.append("<table class=\"debug-table\">")
+          .append("<thead><tr><th>HTTP Verb</th><th>Path</th><th>Controller#Action</th></tr></thead>")
+          .append("</tbody>");
         for (RouteBuilder rb : this.routes.getRegisteredRouteBuilders()){
             sb.append(liForRouteBuilder(rb));
         }
@@ -25,7 +27,8 @@ public class RouteNotFoundHandler extends DevelopmentErrorHandler{
 
     private String liForRouteBuilder(RouteBuilder rb) {
         String result = "<tr><td>" + rb.getHttpMethod() + "</td><td>" + rb.getPathPattern() + "</td><td>" ;
-        String to     = rb.isFunctionRoute() ? "(req, res) -> {.....}" : rb.getControllerName() + "#" + rb.getActionName();
+        String to     = rb.isFunctionRoute() ? "(req, res) -> {.....}"
+                                             : rb.getControllerName() + "#" + rb.getActionName();
         return result + to + "</td></tr>";
     }
 }

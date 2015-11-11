@@ -99,8 +99,10 @@ public class ActionMethodResolver {
         Set<Method> methods = ReflectionUtils.getAllMethods(clz, 
                 Predicates.and(ReflectionUtils.withModifier(Modifier.PUBLIC),ReflectionUtils.withName(actionName)));
 
-        SparkleException.throwIf(methods.isEmpty(), "Can't find any action with name [%s] in class [%s]", actionName, clz.getSimpleName());
-        SparkleException.throwIf(methods.size() > 1, "Found more than one actions with name [%s] in class [%s]", actionName, clz.getSimpleName());
+        SparkleException.throwIf(methods.isEmpty(),
+                "Can't find any action with name [%s] in class [%s]", actionName, clz.getSimpleName());
+        SparkleException.throwIf(methods.size() > 1,
+                "Found more than one actions with name [%s] in class [%s]", actionName, clz.getSimpleName());
 
         final Method method = methods.iterator().next();
         ActionMethod result = new ActionMethodImpl(method, actionName);

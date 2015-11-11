@@ -1,7 +1,7 @@
 package org.agilej.sparkle;
 
 
-public class ApplicationController {
+public abstract class ApplicationController {
     
     protected WebRequest request;
     protected WebResponse response;
