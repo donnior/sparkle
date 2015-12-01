@@ -233,4 +233,17 @@ public interface WebRequest {
         throw new RuntimeException("not implemented yet");
     }
 
+    default String host() {
+        throw new RuntimeException("not implemented yet");
+    }
+
+    default int ip() {
+        throw new RuntimeException("not implemented yet");
+    }
+
+    default String scheme() {
+        throw new RuntimeException("not implemented yet");
+    }
+
+
 }
