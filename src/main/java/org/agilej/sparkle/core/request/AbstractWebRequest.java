@@ -4,6 +4,8 @@ import org.agilej.sparkle.Session;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.config.Config;
 
+import java.util.Locale;
+
 public abstract class AbstractWebRequest implements WebRequest {
 
     /**
@@ -28,6 +30,20 @@ public abstract class AbstractWebRequest implements WebRequest {
      */
     protected SessionStore sessionStore(){
         return SessionStoreHolder.get();
+    }
+
+    @Override
+    public Locale locale() {
+        return localeResolver().resolveLocale(this);
+    }
+
+    /**
+     * return application scoped {@link LocaleResolver}, if not configured in {@link Config},
+     * must return a default one.
+     * @return application scoped localeResolver
+     */
+    protected LocaleResolver localeResolver() {
+        return LocaleResolverHolder.get();
     }
 
 }

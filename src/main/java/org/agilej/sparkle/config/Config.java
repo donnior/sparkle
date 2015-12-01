@@ -2,6 +2,7 @@ package org.agilej.sparkle.config;
 
 import org.agilej.sparkle.Env;
 import org.agilej.sparkle.core.ControllerFactory;
+import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
 import org.agilej.sparkle.core.view.ViewRender;
 import org.agilej.sparkle.interceptor.Interceptor;
@@ -84,5 +85,12 @@ public interface Config {
      * @param secretBase
      */
     Config setSecretBase(String secretBase);
+
+    /**
+     * set customized locale resolver.
+     * @param localeResolverClass
+     * @return
+     */
+    Config setLocaleResolver(Class<? extends LocaleResolver> localeResolverClass);
     
 }

@@ -1,6 +1,7 @@
 package org.agilej.sparkle.core;
 
 import org.agilej.sparkle.config.Config;
+import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
 import org.agilej.fava.FList;
 import org.agilej.sparkle.core.view.ViewRender;
@@ -24,6 +25,8 @@ public interface ConfigResult {
     FList<Interceptor> getInterceptors();
 
     Class<? extends SessionStore> getSessionStoreClass();
+
+    Class<? extends LocaleResolver> getLocaleResolverClass();
 
     String getSecretBase();
 

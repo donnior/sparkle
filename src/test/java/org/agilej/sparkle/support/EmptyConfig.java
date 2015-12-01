@@ -2,6 +2,7 @@ package org.agilej.sparkle.support;
 
 import org.agilej.sparkle.core.ConfigResult;
 import org.agilej.sparkle.core.ControllerFactory;
+import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
 import org.agilej.sparkle.core.view.ViewRender;
 import org.agilej.sparkle.interceptor.Interceptor;
@@ -46,6 +47,11 @@ public class EmptyConfig implements ConfigResult {
 
     @Override
     public String getSecretBase() {
+        return null;
+    }
+
+    @Override
+    public Class<? extends LocaleResolver> getLocaleResolverClass() {
         return null;
     }
 }

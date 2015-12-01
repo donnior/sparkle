@@ -1,6 +1,7 @@
 package org.agilej.sparkle;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -88,12 +89,13 @@ public interface WebRequest {
     String getContextPath();
     
     /**
-     * get request body, especially for post 
+     * get request body as string, especially for post
      */
     String getBody();
 
     /**
-     * get request body, especially for post
+     * alias method for {@link #getBody()}
+     * @see #getBody()
      */
     default String body(){
         return getBody();
@@ -107,6 +109,11 @@ public interface WebRequest {
      */
     <T> T getAttribute(String attributeName);
 
+    /**
+     * alias method for {@link #getAttribute(String)}
+     *
+     * @see #getAttribute(String)
+     */
     default <T> T attr(String attributeName){
         return getAttribute(attributeName);
     }
@@ -118,6 +125,11 @@ public interface WebRequest {
      */
     void setAttribute(String name, Object value);
 
+    /**
+     * alias method for {@link #setAttribute(String, Object)}
+     *
+     * @see #setAttribute(String, Object)
+     */
     default void attr(String name, Object value){
         setAttribute(name, value);
     }
@@ -159,6 +171,11 @@ public interface WebRequest {
         return new Cookie[]{};
     }
 
+    /**
+     * get cookie with given name
+     * @param name
+     * @return
+     */
     default Cookie cookie(String name){
         Cookie[] cookies = this.cookies();
         for (Cookie cookie : cookies){
@@ -204,5 +221,16 @@ public interface WebRequest {
         throw new RuntimeException("not implemented yet");
     }
 
+    /**
+     * resolve current request's locale by using {@link org.agilej.sparkle.core.request.LocaleResolver}.
+     * The default is {@link org.agilej.sparkle.core.request.AcceptHeaderLocaleResolver}
+     * <br />
+     * Note if you directly use Servlet API to get locale you may be get different result if the
+     * LocaleResolver is not configured to AcceptHeaderLocaleResolver.
+     * @return
+     */
+    default Locale locale() {
+        throw new RuntimeException("not implemented yet");
+    }
 
 }

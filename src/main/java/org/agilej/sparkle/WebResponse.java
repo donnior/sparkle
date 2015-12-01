@@ -34,6 +34,15 @@ public interface WebResponse {
      * @param value
      */
     void setHeader(String name, String value);
+
+    /**
+     * alias for @{}
+     * @param name
+     * @param value
+     */
+    default void header(String name, String value) {
+        setHeader(name, value);
+    }
     
     void setContentType(String type);
 

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
 import org.agilej.fava.FList;
 import org.agilej.fava.util.FLists;
@@ -25,6 +26,7 @@ public class ConfigImpl implements Config, ConfigResult {
 
     private Class<? extends SessionStore> sessionStoreClass;
     private Class<? extends ControllerFactory> controllerFactoryClass;
+    private Class<? extends LocaleResolver> localeResolverClass;
 
     private ControllerFactory controllerFactory;
 
@@ -46,7 +48,7 @@ public class ConfigImpl implements Config, ConfigResult {
         }
         return this;
     }
-    
+
     @Override
     public Config registerBasePackage(String basePackage) {
         if(basePackage != null){
@@ -60,7 +62,7 @@ public class ConfigImpl implements Config, ConfigResult {
         Env.setMode(mode);
         return this;
     }
-    
+
     @Override
     public FList<Class<? extends ViewRender>> getCustomizedViewRenders() {
         return this.viewRenders.compact();
@@ -71,12 +73,12 @@ public class ConfigImpl implements Config, ConfigResult {
         Set<String> set = new HashSet<String>(this.controllerPackages.compact());
         return set.toArray(new String[set.size()]);
     }
-    
+
     @Override
     public String getBasePackage() {
         return this.basePackage;
     }
-    
+
     @Override
     public ControllerFactory getControllerFactory() {
         return this.controllerFactory;
@@ -98,12 +100,12 @@ public class ConfigImpl implements Config, ConfigResult {
     public Class<? extends ControllerFactory> getControllerFactoryClass() {
         return this.controllerFactoryClass;
     }
-    
+
     @Override
     public FList<Interceptor> getInterceptors() {
         return this.interceptors ;
     }
-    
+
     @Override
     public Config registerInterceptor(Interceptor interceptor) {
         this.interceptors.add(interceptor);
@@ -131,4 +133,17 @@ public class ConfigImpl implements Config, ConfigResult {
     public String getSecretBase() {
         return secretBase;
     }
+
+    @Override
+    public Config setLocaleResolver(Class<? extends LocaleResolver> localeResolverClass) {
+        this.localeResolverClass = localeResolverClass;
+        return this;
+    }
+
+    @Override
+    public Class<? extends LocaleResolver> getLocaleResolverClass() {
+        return this.localeResolverClass;
+    }
+
+
 }

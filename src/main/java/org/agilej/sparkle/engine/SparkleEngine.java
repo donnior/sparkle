@@ -16,9 +16,7 @@ import org.agilej.sparkle.core.ConfigResult;
 import org.agilej.sparkle.core.ControllerFactory;
 import org.agilej.sparkle.core.argument.ArgumentResolverManager;
 import org.agilej.sparkle.core.dev.RouteNotFoundHandler;
-import org.agilej.sparkle.core.request.SessionStore;
-import org.agilej.sparkle.core.request.SessionStoreHolder;
-import org.agilej.sparkle.core.request.SessionStoreResolver;
+import org.agilej.sparkle.core.request.*;
 import org.agilej.sparkle.core.support.SimpleControllerFactoryResolver;
 import org.agilej.sparkle.core.view.SimpleViewRenderResolver;
 import org.agilej.sparkle.core.view.ViewRender;
@@ -97,6 +95,13 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         installRouter();
         initInterceptors(config);
         initSessionStore(config);
+        initLocaleResolver(config);
+    }
+
+    private void initLocaleResolver(ConfigResult config) {
+        LocaleResolver localeResolver = new LocaleResolverResolver(config).resolve();
+        LocaleResolverHolder.set(localeResolver);
+        logger.info("Sparkle's locale resolver is configured to: {}", localeResolver.getClass().getSimpleName());
     }
 
     private void initSessionStore(ConfigResult config) {
