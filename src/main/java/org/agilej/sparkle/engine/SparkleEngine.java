@@ -16,6 +16,7 @@ import org.agilej.sparkle.core.ActionMethod;
 import org.agilej.sparkle.core.ConfigResult;
 import org.agilej.sparkle.core.ControllerFactory;
 import org.agilej.sparkle.core.argument.ArgumentResolverManager;
+import org.agilej.sparkle.core.dev.ExceptionHandler;
 import org.agilej.sparkle.core.dev.RouteNotFoundHandler;
 import org.agilej.sparkle.core.request.*;
 import org.agilej.sparkle.core.support.SimpleControllerFactoryResolver;
@@ -273,30 +274,6 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
     private void startAsyncProcess(final Callable<Object> callable, final WebRequestExecutionContext ctx,
                                    final Object controller, final ActionMethod actionMethod){
         ctx.webRequest().startAsync();
-//        Runnable r = new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    logger.info("Execute action asynchronously for {}#{}",
-//                              controller.getClass().getSimpleName(), actionMethod.actionName());
-//                    Object result = callable.call();
-////                    doRenderViewPhase(ctx.webRequest(), controller, actionMethod, result);
-//
-//                    //TODO trigger view render with result
-//                    processViewAndAfterInteceptors(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
-//
-//                    ctx.webRequest().completeAsync();
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                } catch (ExecutionException e) {
-//                    e.printStackTrace();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        };
-//        es.submit(r);
-
         //use CompletableFuture,  should check CPU use.
         CompletableFuture
                 .supplyAsync(() -> {
@@ -306,7 +283,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
                         return callable.call();
                     } catch (Exception e) {
                         logger.error("Error occurred while executing asynchronously action : {}", e);
-                        throw new RuntimeException(e);
+                        throw new RuntimeException("Execute async action failed", e);
                     }
                 }, es).whenComplete((result,  ex) -> {
                     if (ex == null) { // means no error
@@ -316,10 +293,9 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
                         logger.error("Error occurred while executing asynchronously action : {}", ex);
                         ctx.webRequest().getWebResponse().setStatus(500);
                         if (Env.isDev()){
-//                            new RouteNotFoundHandler(this.router).handle(webRequest);
+                            new ExceptionHandler(ex.getCause()).handle(ctx.webRequest());
                         }
                         ctx.webRequest().completeAsync();
-                        //TODO deal with action call error
                     }
                 });  //TODO need deal with view render exception
     }
