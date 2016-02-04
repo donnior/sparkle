@@ -273,8 +273,8 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
 
     private void startAsyncProcess(final Callable<Object> callable, final WebRequestExecutionContext ctx,
                                    final Object controller, final ActionMethod actionMethod){
+        
         ctx.webRequest().startAsync();
-        //use CompletableFuture,  should check CPU use.
         CompletableFuture
                 .supplyAsync(() -> {
                     try {
