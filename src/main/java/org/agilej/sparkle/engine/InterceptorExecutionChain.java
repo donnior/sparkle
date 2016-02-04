@@ -32,7 +32,7 @@ public class InterceptorExecutionChain {
             }
         }
         this.allPassed = true;
-        return true;
+        return this.allPassed;
     }
     
     

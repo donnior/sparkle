@@ -6,6 +6,8 @@ import org.agilej.sparkle.engine.InterceptorExecutionChain;
 import org.agilej.web.adapter.GetWebRequest;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -59,6 +61,13 @@ public class InterceptorExecutionChainTest {
         assertTrue(interceptorOne.isCleaned());
         assertTrue(interceptorTwo.isCleaned());
         assertFalse(interceptorThree.isCleaned());
+    }
+
+    @Test
+    public void test_empty_interceptors() {
+        InterceptorExecutionChain iec = new InterceptorExecutionChain(new ArrayList<>());
+        iec.doPreHandle(new GetWebRequest("/url"));
+        assertTrue(iec.isAllPassed());
     }
 
 }
