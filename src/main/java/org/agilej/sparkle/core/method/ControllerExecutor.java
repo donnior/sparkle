@@ -40,18 +40,23 @@ public class ControllerExecutor {
             boolean isCallableReturnType = actionMethod.getReturnType().equals(Callable.class);
             if(!isCallableReturnType){
                 logger.debug("Async action is not wrapped in Callable, so wrap it first");
-                return new Callable<Object>() {
-                    @Override
-                    public Object call() throws Exception {
-                        return new ActionExecutor(argumentResolverManager).invoke(actionMethod, controller, webRequest);
-                    }
-                };
+                return callableWrap(actionMethod, controller, webRequest);
             } else {
                 return (Callable)new ActionExecutor(argumentResolverManager).invoke(actionMethod, controller, webRequest);
             }
         }
 
         return new ActionExecutor(this.argumentResolverManager).invoke(actionMethod, controller, webRequest);
+    }
+
+    private Callable<Object> callableWrap(final ActionMethod actionMethod, final Object controller,
+                                          final WebRequest webRequest) {
+        return new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                return new ActionExecutor(argumentResolverManager).invoke(actionMethod, controller, webRequest);
+            }
+        };
     }
 
     private boolean isAsyncActionDefinition(ActionMethod actionMethod) {

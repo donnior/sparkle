@@ -23,7 +23,7 @@ public class ActionExecutor {
         this.argumentResolverManager = argumentResolverManager;
     }
     
-    //TODO should refactord this params resolver, make it support multi resolvers so programmers can create their own
+    //TODO should refactored this params resolver, make it support multi resolvers so programmers can create their own
     // param resolver like param with class type 'Project'; so it should be List<ParamResolver>
 
     public Object invoke(ActionMethod actionMethod, Object controller, final WebRequest request) {
