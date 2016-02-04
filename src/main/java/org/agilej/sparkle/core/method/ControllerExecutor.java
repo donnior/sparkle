@@ -37,9 +37,9 @@ public class ControllerExecutor {
         if(isAsyncActionDefinition(actionMethod)){
             logger.debug("Action is annotated with @Async, start processing as async request");
 
-            boolean isCallableReturnType = actionMethod.getReturnType().getClass().equals(Callable.class);
-            Callable<Object> c = null;
+            boolean isCallableReturnType = actionMethod.getReturnType().equals(Callable.class);
             if(!isCallableReturnType){
+                logger.debug("Async action is not wrapped in Callable, so wrap it first");
                 return new Callable<Object>() {
                     @Override
                     public Object call() throws Exception {

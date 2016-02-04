@@ -10,6 +10,7 @@ import org.agilej.sparkle.ApplicationController;
 import org.agilej.sparkle.Env;
 import org.agilej.sparkle.HTTPMethod;
 import org.agilej.sparkle.WebRequest;
+import org.agilej.sparkle.async.DeferredResult;
 import org.agilej.sparkle.config.Application;
 import org.agilej.sparkle.core.ActionMethod;
 import org.agilej.sparkle.core.ConfigResult;
@@ -38,7 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Stopwatch;
 
-public class SparkleEngine implements ViewRenderingPhaseExecutor{
+public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult.DeferredResultHandler{
 
     private FList<Interceptor> interceptors;
     private RouterImpl router;
@@ -66,7 +67,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
         this.router                  = new RouterImpl();
         this.routeBuilderResovler    = new SimpleRouteBuilderResolver(this.router);
 
-        this.controllerClassResolver = ControllersHolder.getInstance();
+        this.controllerClassResolver = new ControllersHolder();
         this.controllerFactory       = new SimpleControllerFactoryResolver().get(this.config);
         this.actionMethodResolver    = new ActionMethodResolver();
 
@@ -198,12 +199,23 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
 
         Object result = new ControllerExecutor(this.argumentResolverManager).execute(actionMethod, controller, webRequest);
         if(result instanceof Callable){
+            logger.debug("action result is Callable, will execute asynchronously");
             startAsyncProcess((Callable<Object>)result, ctx, controller, actionMethod);
             return;
         }
-
+        if (result instanceof DeferredResult) {
+            webRequest.startAsync();
+            ((DeferredResult) result).setResultHandler(this);
+        }
         boolean isResponseProcessedManually = isResponseProcessedManually(actionMethod);
         triggerViewRender(result, ctx, !isResponseProcessedManually, controller, actionMethod);
+    }
+
+    @Override
+    public void handleResult(Object result) {
+//        triggerViewRender(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
+//        ctx.webRequest().completeAsync();
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
@@ -294,6 +306,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
                                 controller.getClass().getSimpleName(), actionMethod.actionName());
                         return callable.call();
                     } catch (Exception e) {
+                        logger.error("Error occurred while executing asynchronously action : {}", e);
                         throw new RuntimeException(e);
                     }
                 }, es).whenComplete((result,  ex) -> {
@@ -301,6 +314,12 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
                         triggerViewRender(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
                         ctx.webRequest().completeAsync();
                     } else {
+                        logger.error("Error occurred while executing asynchronously action : {}", ex);
+                        ctx.webRequest().getWebResponse().setStatus(500);
+                        if (Env.isDev()){
+//                            new RouteNotFoundHandler(this.router).handle(webRequest);
+                        }
+                        ctx.webRequest().completeAsync();
                         //TODO deal with action call error
                     }
                 });  //TODO need deal with view render exception

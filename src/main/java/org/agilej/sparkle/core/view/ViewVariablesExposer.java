@@ -12,7 +12,8 @@ import org.agilej.reflection.ReflectionUtil;
 import org.agilej.sparkle.annotation.Out;
 
 /**
- * Get all variables need expose to view layer to a values map from one controller object. 
+ * Get all variables need expose to view layer to a values map from one controller object. Any variable need expose
+ * should annotated with {@link Out}
  * 
  */
 public class ViewVariablesExposer {

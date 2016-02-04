@@ -10,7 +10,10 @@ import org.agilej.sparkle.core.ActionMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+/**
+ * The default {@link ViewRenderResolver} which will iterate all registered {@link ViewRender} and find the first one
+ * can process the result.
+ */
 public class SimpleViewRenderResolver implements ViewRenderResolver{
 
     private FList<ViewRender> viewRenders = FLists.newEmptyList();
@@ -30,7 +33,8 @@ public class SimpleViewRenderResolver implements ViewRenderResolver{
             public boolean apply(ViewRender viewRender) {
                 boolean isViewRenderSupportResult = viewRender.supportActionMethod(actionMethod, result);
                 logger.debug("{} match action result [{}] : {}", 
-                        viewRender.getClass().getSimpleName(), result.getClass().getName(),
+                        viewRender.getClass().getSimpleName(),
+                        result.getClass().getName(),
                         isViewRenderSupportResult ? "succeed" : "failed");
                 return isViewRenderSupportResult;
             }

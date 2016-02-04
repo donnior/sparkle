@@ -12,6 +12,11 @@ import com.google.gson.Gson;
 import org.agilej.jsonty.JSONBuilder;
 import org.agilej.jsonty.JSONModel;
 
+/**
+ * View render for render json result, support the action method annotated with {@link Json} or the return type is
+ * {@link JSONModel}. If the return type is {@link JSONModel}, this view render will use Jsonty to generate the result,
+ * if the return type is not {@link JSONModel}, this view render will use google Gson to generate the result.
+ */
 public class JSONViewRender implements ViewRender {
     
     @Override
@@ -31,7 +36,6 @@ public class JSONViewRender implements ViewRender {
 
     @Override
     public boolean supportActionMethod(ActionMethod actionMethod, Object actionMethodResult) {
-        //TODO how deal with functional route
         return actionMethodResult instanceof JSONModel || actionMethod.hasAnnotation(Json.class);
     }
 

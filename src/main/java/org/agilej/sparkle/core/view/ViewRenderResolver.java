@@ -3,8 +3,9 @@ package org.agilej.sparkle.core.view;
 import org.agilej.sparkle.core.ActionMethod;
 
 /**
- * Get the appropriate ViewRender for action result from the view renders registered in application.
+ * Get the appropriate ViewRender for action result.
  *
+ * @see {@link SimpleViewRenderResolver}
  */
 public interface ViewRenderResolver {
 

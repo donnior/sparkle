@@ -58,6 +58,7 @@ public class ControllersHolder implements ControllerClassResolver{
         });
     }
 
+    @Deprecated
     public static ControllersHolder getInstance() {
         return instance;
     }

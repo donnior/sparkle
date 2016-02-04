@@ -5,7 +5,6 @@ import java.io.Writer;
 /**
  * interface for presenting a web response
  */
-//TODO should be introduced?
 public interface WebResponse {
 
     /**
@@ -36,7 +35,8 @@ public interface WebResponse {
     void setHeader(String name, String value);
 
     /**
-     * alias for @{}
+     * alias for {@link #setHeader(String, String)}
+     * @see #setHeader(String, String)
      * @param name
      * @param value
      */
@@ -46,6 +46,15 @@ public interface WebResponse {
     
     void setContentType(String type);
 
+    /**
+     * alias for {@link #setContentType(String)}
+     *
+     * @see  #setContentType(String)
+     * @param type
+     */
+    default void contentType(String type) {
+        this.setContentType(type);
+    }
     /**
      * return associated writer to this response
      * @return

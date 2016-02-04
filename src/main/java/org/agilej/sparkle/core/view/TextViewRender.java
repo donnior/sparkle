@@ -7,6 +7,9 @@ import org.agilej.sparkle.WebResponse;
 import org.agilej.sparkle.annotation.Text;
 import org.agilej.sparkle.core.ActionMethod;
 
+/**
+ * ViewRender for process action annotated with {@link Text}
+ */
 public class TextViewRender implements ViewRender {
     
     @Override
