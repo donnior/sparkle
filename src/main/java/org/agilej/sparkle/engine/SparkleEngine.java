@@ -160,15 +160,6 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
 
         Stopwatch stopwatch = ctx.stopwatch().start();
 
-        //execute interceptor
-
-        boolean interceptorPassed = executePreInterceptor(ic, webRequest);
-        if(!interceptorPassed){
-            logger.info("Interceptor execute failed, request processing ignored.");
-            executeAfterInterceptor(ic, webRequest);
-            return;
-        }
-
         RouteInfo rd = this.routeBuilderResovler.match(webRequest);
 
         if(rd == null){
@@ -177,6 +168,14 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
             if (Env.isDev()){
                 new RouteNotFoundHandler(this.router).handle(webRequest);
             }
+//            executeAfterInterceptor(ic, webRequest);
+            return;
+        }
+
+        //execute interceptor
+        boolean interceptorPassed = executePreInterceptor(ic, webRequest);
+        if(!interceptorPassed){
+            logger.info("Interceptor execute failed, request processing ignored.");
             executeAfterInterceptor(ic, webRequest);
             return;
         }
@@ -186,7 +185,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
         if (rd.isFunctionRoute()){
             logger.debug("Execute action for functional route : {}", rd.getRouteFunction());
             Object result = rd.getRouteFunction().apply(webRequest);
-            triggerViewRender(result, ctx, true, null, null);
+            processViewAndAfterInteceptors(result, ctx, true, null, null);
             return ;
         }
 
@@ -208,12 +207,12 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
             ((DeferredResult) result).setResultHandler(this);
         }
         boolean isResponseProcessedManually = isResponseProcessedManually(actionMethod);
-        triggerViewRender(result, ctx, !isResponseProcessedManually, controller, actionMethod);
+        processViewAndAfterInteceptors(result, ctx, !isResponseProcessedManually, controller, actionMethod);
     }
 
     @Override
     public void handleResult(Object result) {
-//        triggerViewRender(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
+//        processViewAndAfterInteceptors(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
 //        ctx.webRequest().completeAsync();
         throw new RuntimeException("Not implemented yet");
     }
@@ -241,8 +240,8 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
     }
 
     // execute after real action result got
-    private void triggerViewRender(Object result, WebRequestExecutionContext ctx,
-                                   boolean needRender, Object controller, ActionMethod actionMethod){
+    private void processViewAndAfterInteceptors(Object result, WebRequestExecutionContext ctx,
+                                                boolean needRender, Object controller, ActionMethod actionMethod){
         Stopwatch stopwatch = ctx.stopwatch().stop();
         long actionTime = stopwatch.elapsed(TimeUnit.MILLISECONDS);
 
@@ -284,7 +283,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
 ////                    doRenderViewPhase(ctx.webRequest(), controller, actionMethod, result);
 //
 //                    //TODO trigger view render with result
-//                    triggerViewRender(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
+//                    processViewAndAfterInteceptors(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
 //
 //                    ctx.webRequest().completeAsync();
 //                } catch (InterruptedException e) {
@@ -311,7 +310,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
                     }
                 }, es).whenComplete((result,  ex) -> {
                     if (ex == null) { // means no error
-                        triggerViewRender(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
+                        processViewAndAfterInteceptors(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
                         ctx.webRequest().completeAsync();
                     } else {
                         logger.error("Error occurred while executing asynchronously action : {}", ex);
