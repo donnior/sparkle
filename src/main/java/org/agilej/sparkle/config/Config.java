@@ -4,9 +4,9 @@ import org.agilej.sparkle.Env;
 import org.agilej.sparkle.core.ControllerFactory;
 import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
+import org.agilej.sparkle.core.view.JSONSerializerFactory;
 import org.agilej.sparkle.core.view.ViewRender;
 import org.agilej.sparkle.interceptor.Interceptor;
-import org.agilej.sparkle.core.support.GuiceControllerFactory;
 
 /**
  * interface for customize application's setting.
@@ -62,7 +62,7 @@ public interface Config {
 
     /**
      * set customized controller factory,
-     * the default one will be {@link GuiceControllerFactory}
+     * the default one will be {@link org.agilej.sparkle.core.support.GuiceControllerFactory}
      *
      * Note if this one is set, {@link #setControllerFactoryClass(Class)} will be ignored.
      *
@@ -92,5 +92,12 @@ public interface Config {
      * @return
      */
     Config setLocaleResolver(Class<? extends LocaleResolver> localeResolverClass);
-    
+
+    /**
+     * set customized json view render's serializer
+     *
+     * @param jsonViewSerializerFactory
+     */
+    void setJsonViewSerializerFactory(JSONSerializerFactory jsonViewSerializerFactory);
+
 }

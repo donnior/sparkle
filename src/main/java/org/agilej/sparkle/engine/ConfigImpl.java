@@ -12,6 +12,7 @@ import org.agilej.sparkle.Env;
 import org.agilej.sparkle.config.Config;
 import org.agilej.sparkle.core.ConfigResult;
 import org.agilej.sparkle.core.ControllerFactory;
+import org.agilej.sparkle.core.view.JSONSerializerFactory;
 import org.agilej.sparkle.core.view.ViewRender;
 import org.agilej.sparkle.interceptor.Interceptor;
 import org.agilej.sparkle.util.Singleton;
@@ -32,6 +33,7 @@ public class ConfigImpl implements Config, ConfigResult {
 
     private String basePackage = "";
     private String secretBase;
+    private JSONSerializerFactory jsonViewSerializerFactory;
 
     @Override
     public Config registerViewRenderClass(Class<? extends ViewRender> viewRenderClass) {
@@ -145,5 +147,13 @@ public class ConfigImpl implements Config, ConfigResult {
         return this.localeResolverClass;
     }
 
+    @Override
+    public JSONSerializerFactory jsonViewSerializerFactory() {
+        return this.jsonViewSerializerFactory;
+    }
 
+    @Override
+    public void setJsonViewSerializerFactory(JSONSerializerFactory jsonViewSerializerFactory) {
+        this.jsonViewSerializerFactory = jsonViewSerializerFactory;
+    }
 }

@@ -2,7 +2,7 @@ package org.agilej.sparkle.core.request;
 
 import org.agilej.sparkle.Session;
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.config.Config;
+//import org.agilej.sparkle.config.Config;
 
 import java.util.Locale;
 
@@ -24,7 +24,7 @@ public abstract class AbstractWebRequest implements WebRequest {
     }
 
     /**
-     * return application scoped {@link SessionStore}, if not configured in {@link Config},
+     * return application scoped {@link SessionStore}, if not configured in {@link org.agilej.sparkle.config.Config},
      * must return a default one.
      * @return application scoped sessionStore
      */
@@ -38,7 +38,7 @@ public abstract class AbstractWebRequest implements WebRequest {
     }
 
     /**
-     * return application scoped {@link LocaleResolver}, if not configured in {@link Config},
+     * return application scoped {@link LocaleResolver}, if not configured in {@link org.agilej.sparkle.config.Config},
      * must return a default one.
      * @return application scoped localeResolver
      */

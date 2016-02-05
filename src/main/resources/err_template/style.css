@@ -26,7 +26,7 @@
     font-family: helvetica neue, lucida grande, sans-serif;
     line-height: 1.5;
     color: #333;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+    /*text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);*/
     }
 
     html {
@@ -779,4 +779,11 @@
     }
     .debug-table th, .debug-table td:before {
       color: #dd5;
+    }
+
+    .code_block{
+        background-color: #34495E;
+        color: white;
+        margin: 1em 0;
+        border-radius: 5px;
     }

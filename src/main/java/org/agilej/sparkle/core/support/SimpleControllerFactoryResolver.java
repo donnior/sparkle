@@ -1,7 +1,6 @@
 package org.agilej.sparkle.core.support;
 
 import org.agilej.reflection.ReflectionUtil;
-import org.agilej.sparkle.config.Config;
 import org.agilej.sparkle.core.ConfigResult;
 import org.agilej.sparkle.core.ControllerFactory;
 import org.agilej.sparkle.core.ControllerFactoryResolver;
@@ -15,14 +14,16 @@ import org.slf4j.LoggerFactory;
  * <p>
  *     When resolve controller factory from config it follows these steps:
  *     <ol> Try to get controller factory instance which user set in config
- *     through {@link Config#setControllerFactory(ControllerFactory)} </ol>
+ *     through {@link org.agilej.sparkle.config.Config#setControllerFactory(ControllerFactory)} </ol>
  *     <ol> Try to get controller factory class which user set in config
- *     through {@link Config#setControllerFactoryClass(Class)}, and initialize it.
+ *     through {@link org.agilej.sparkle.config.Config#setControllerFactoryClass(Class)}, and initialize it.
  *     </ol>
  *     <ol> Fallback default {@link GuiceControllerFactory}
  *     </ol>
  *
  * </p>
+ *
+ * @see org.agilej.sparkle.config.Config
  *
  */
 public class SimpleControllerFactoryResolver implements ControllerFactoryResolver{

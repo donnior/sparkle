@@ -18,7 +18,17 @@ import org.agilej.jsonty.JSONModel;
  * if the return type is not {@link JSONModel}, this view render will use google Gson to generate the result.
  */
 public class JSONViewRender implements ViewRender {
-    
+
+    private JSONSerializer serializer;
+
+    public JSONViewRender() {
+        this(new GsonSerializer());
+    }
+
+    public JSONViewRender(JSONSerializer serializer) {
+        this.serializer = serializer;
+    }
+
     @Override
     public void renderView(Object result, Object controller, WebRequest webRequest) throws IOException {
         WebResponse response = webRequest.getWebResponse();
@@ -30,7 +40,7 @@ public class JSONViewRender implements ViewRender {
             // response.getWriter().flush();
             response.write(new JSONBuilder((JSONModel)result).build());
         } else {
-            response.write(new Gson().toJson(result));
+            response.write(this.serializer.toJson(result));
         }
     }
 

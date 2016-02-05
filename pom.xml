@@ -89,6 +89,21 @@
                     <verbose>false</verbose>
                 </configuration>
             </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-checkstyle-plugin</artifactId>
+              <version>2.16</version>
+              <configuration>
+                <configLocation>http://192.168.81.5/demo/dev/ndct_checkstyle.xml</configLocation>
+              </configuration>
+              <dependencies>
+                <dependency>
+                  <groupId>com.puppycrawl.tools</groupId>
+                  <artifactId>checkstyle</artifactId>
+                  <version>6.5</version>
+                </dependency>
+              </dependencies>
+            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>

@@ -4,6 +4,7 @@ import org.agilej.sparkle.config.Config;
 import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
 import org.agilej.fava.FList;
+import org.agilej.sparkle.core.view.JSONSerializerFactory;
 import org.agilej.sparkle.core.view.ViewRender;
 import org.agilej.sparkle.interceptor.Interceptor;
 
@@ -29,5 +30,7 @@ public interface ConfigResult {
     Class<? extends LocaleResolver> getLocaleResolverClass();
 
     String getSecretBase();
+
+    JSONSerializerFactory jsonViewSerializerFactory();
 
 }

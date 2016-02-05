@@ -4,6 +4,7 @@ import org.agilej.sparkle.core.ConfigResult;
 import org.agilej.sparkle.core.ControllerFactory;
 import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
+import org.agilej.sparkle.core.view.JSONSerializerFactory;
 import org.agilej.sparkle.core.view.ViewRender;
 import org.agilej.sparkle.interceptor.Interceptor;
 import org.agilej.fava.FList;
@@ -52,6 +53,11 @@ public class EmptyConfig implements ConfigResult {
 
     @Override
     public Class<? extends LocaleResolver> getLocaleResolverClass() {
+        return null;
+    }
+
+    @Override
+    public JSONSerializerFactory jsonViewSerializerFactory() {
         return null;
     }
 }

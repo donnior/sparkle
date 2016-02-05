@@ -1,9 +1,11 @@
 package org.agilej.sparkle.engine;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.function.Consumer;
 
 import org.agilej.reflection.ReflectionUtil;
 import org.agilej.sparkle.ApplicationController;
@@ -31,8 +33,6 @@ import org.agilej.sparkle.http.HTTPStatusCode;
 import org.agilej.sparkle.interceptor.Interceptor;
 import org.agilej.sparkle.route.RouteModule;
 
-import org.agilej.fava.FArrayList;
-import org.agilej.fava.FList;
 import org.agilej.sparkle.core.method.*;
 import org.agilej.sparkle.core.route.*;
 import org.slf4j.Logger;
@@ -40,39 +40,43 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Stopwatch;
 
-public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult.DeferredResultHandler{
+public class SparkleEngine implements ViewRenderingPhaseExecutor{
 
-    private FList<Interceptor> interceptors;
+    private List<Interceptor> interceptors;
+
     private RouterImpl router;
     private ConfigImpl config;
     private ControllerFactory controllerFactory;
-    private RouteBuilderResolver routeBuilderResovler;
+    private RouteBuilderResolver routeBuilderResolver;
     private ControllerClassResolver controllerClassResolver;
     private ActionMethodResolver actionMethodResolver;
     private ViewRenderResolver viewRenderResolver;
-    private EnvSpecific envSpecific;
     private ArgumentResolverManager argumentResolverManager;
+
+    private EnvSpecific envSpecific;
+
+    private ExecutorService asyncTaskExecutorService = Executors.newCachedThreadPool(); //.newFixedThreadPool(100);
 
     private final static Logger logger = LoggerFactory.getLogger(SparkleEngine.class);
     
-    public SparkleEngine(EnvSpecific es){
+    public SparkleEngine(EnvSpecific envSpecific){
+
+        logger.info("Start initializing Sparkle framework.");
 
         Stopwatch stopwatch = Stopwatch.createStarted();
-        logger.info("Start initializing sparkle framework.");
 
-
-        this.envSpecific             = es;
+        this.envSpecific             = envSpecific;
         this.config                  = new ConfigImpl();
-        this.interceptors            = new FArrayList<Interceptor>();
+        this.interceptors            = new ArrayList<Interceptor>();
 
         this.router                  = new RouterImpl();
-        this.routeBuilderResovler    = new SimpleRouteBuilderResolver(this.router);
+        this.routeBuilderResolver    = new SimpleRouteBuilderResolver(this.router);
 
         this.controllerClassResolver = new ControllersHolder();
         this.controllerFactory       = new SimpleControllerFactoryResolver().get(this.config);
         this.actionMethodResolver    = new ActionMethodResolver();
 
-        this.argumentResolverManager =  this.envSpecific.getArgumentResolverManager();
+        this.argumentResolverManager = this.envSpecific.getArgumentResolverManager();
 
         this.startup();
 
@@ -83,10 +87,10 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
     protected void startup() {
         Application application = scanApplication();
         if(application != null){
-            logger.info("Found customized Application Configuration : {}", application.getClass().getSimpleName());
+            logger.info("Found customized application config : {}", application.getClass().getSimpleName());
             application.config(config);
         }else{
-            logger.info("Could not find any ApplicationConfig, Sparkle will use the default configuration");
+            logger.info("Could not find any application config, Sparkle will use the default configuration");
         }
         initEngineWithConfig(config);
     }
@@ -124,7 +128,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
         if (vendorViewRenderProvider != null){
             viewRenderManager.registerVendorViewRenders(vendorViewRenderProvider.vendorViewRenders());
         }
-
+        //TODO remove ViewRenderManager, inject Config to SimpleViewRenderResolver directly and resolve all renders
         this.viewRenderResolver = new SimpleViewRenderResolver(viewRenderManager.getAllOrderedViewRenders());
     }
 
@@ -148,7 +152,8 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
         final Object controller  = this.controllerFactory.get(controllerName, controllerClass);
         if(controller == null){
             logger.error("Can't get controller instance with name : {} and class : {}", controllerName, controllerClass);
-            throw new SparkleException("Can't get controller instance with name : %s and class : %s", controllerName, controllerClass);
+            throw new SparkleException("Can't get controller instance with name : %s and class : %s",
+                    controllerName, controllerClass);
         }
         return controller;
     }
@@ -161,7 +166,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
 
         Stopwatch stopwatch = ctx.stopwatch().start();
 
-        RouteInfo rd = this.routeBuilderResovler.match(webRequest);
+        RouteInfo rd = this.routeBuilderResolver.match(webRequest);
 
         if(rd == null){
             logger.info("Could not find route for request : [{} {}] \n", webRequest.getMethod(), webRequest.getPath());
@@ -169,7 +174,6 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
             if (Env.isDev()){
                 new RouteNotFoundHandler(this.router).handle(webRequest);
             }
-//            executeAfterInterceptor(ic, webRequest);
             return;
         }
 
@@ -183,39 +187,60 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
 
         setPathVariablesToRequestAttribute(webRequest, rd);  //extract path variables
 
+        Object tempResult = null;
+        Object controller = null;
+        ActionMethod actionMethod = null;
+
         if (rd.isFunctionRoute()){
             logger.debug("Execute action for functional route : {}", rd.getRouteFunction());
-            Object result = rd.getRouteFunction().apply(webRequest);
-            processViewAndAfterInteceptors(result, ctx, true, null, null);
-            return ;
+            tempResult = rd.getRouteFunction().apply(webRequest);
+        } else {
+            controller = getControllerInstanceForRoute(rd);
+            presetControllerIfNeed(webRequest, controller);
+            actionMethod = this.actionMethodResolver.find(controller.getClass(), rd.getActionName());
+            tempResult = new ControllerExecutor(this.argumentResolverManager).execute(actionMethod, controller, webRequest);
         }
 
-        //create controller object
-        final Object controller = getControllerInstanceForRoute(rd);
+        final Object _controller = controller;
+        final ActionMethod _actionMethod = actionMethod;
 
-        presetControllerIfNeed(webRequest, controller);
+        if(tempResult instanceof Callable){                            //self-organized async processing
+            logger.debug("Execute action asynchronously for {}#{}",
+                    controller.getClass().getSimpleName(), actionMethod.actionName());
 
-        final ActionMethod actionMethod = this.actionMethodResolver.find(controller.getClass(), rd.getActionName());
+            startAsyncProcess((Callable<Object>)tempResult, ctx, result->{
+                processViewResult(result,ctx,true,_controller, _actionMethod);
+                executeAfterInterceptor(ctx.interceptorExecutionChain(), webRequest);
+            }, error -> {
+                logger.error("Error occurred while executing asynchronously action : {}", error);
 
-        Object result = new ControllerExecutor(this.argumentResolverManager).execute(actionMethod, controller, webRequest);
-        if(result instanceof Callable){
-            logger.debug("action result is Callable, will execute asynchronously");
-            startAsyncProcess((Callable<Object>)result, ctx, controller, actionMethod);
+                ctx.webRequest().getWebResponse().setStatus(500);
+                if (Env.isDev()){
+                    new ExceptionHandler(error).handle(ctx.webRequest());
+                }
+            });
             return;
         }
-        if (result instanceof DeferredResult) {
-            webRequest.startAsync();
-            ((DeferredResult) result).setResultHandler(this);
-        }
-        boolean isResponseProcessedManually = isResponseProcessedManually(actionMethod);
-        processViewAndAfterInteceptors(result, ctx, !isResponseProcessedManually, controller, actionMethod);
-    }
 
-    @Override
-    public void handleResult(Object result) {
-//        processViewAndAfterInteceptors(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
-//        ctx.webRequest().completeAsync();
-        throw new RuntimeException("Not implemented yet");
+        if (tempResult instanceof DeferredResult) {                     //delegated async processing
+            webRequest.startAsync();
+            ((DeferredResult) tempResult).setResultHandler(new DeferredResult.DeferredResultHandler() {
+                @Override
+                public void handleResult(Object result) {
+                    processViewResult(result,ctx,true,_controller, _actionMethod);
+                    webRequest.completeAsync();
+                    executeAfterInterceptor(ctx.interceptorExecutionChain(), webRequest);
+                }
+            });
+        }
+
+        boolean isResponseProcessedManually = isResponseProcessedManually(actionMethod);
+        if (isResponseProcessedManually) {
+            //TODO
+        } else {
+            processViewResult(tempResult, ctx, true, controller, actionMethod);
+            executeAfterInterceptor(ctx.interceptorExecutionChain(), webRequest);
+        }
     }
 
     @Override
@@ -235,14 +260,13 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
                 throw new SparkleException(e.getMessage());
             }
         } else {
-            logger.error("Could not find any view render for request {}, controller#action is {}#{}, result type is {}",
-                    webRequest, controller.getClass().getSimpleName(), actionMethod.actionName(), result.getClass().getSimpleName());
+            logger.error("Could not find any view render for request {}, result type is {}",
+                    webRequest, result.getClass().getSimpleName());
         }
     }
 
-    // execute after real action result got
-    private void processViewAndAfterInteceptors(Object result, WebRequestExecutionContext ctx,
-                                                boolean needRender, Object controller, ActionMethod actionMethod){
+    private void processViewResult(Object result, WebRequestExecutionContext ctx,
+                                                 boolean needRender, Object controller, ActionMethod actionMethod){
         Stopwatch stopwatch = ctx.stopwatch().stop();
         long actionTime = stopwatch.elapsed(TimeUnit.MILLISECONDS);
 
@@ -254,10 +278,6 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
             logger.debug("Http servlet response has been proceed manually, ignore view rendering.");
         }
 
-        InterceptorExecutionChain ic = ctx.interceptorExecutionChain();
-        if(ic.isAllPassed()){
-            ic.doAfterHandle(ctx.webRequest());
-        }
         long viewTime = stopwatch.stop().elapsed(TimeUnit.MILLISECONDS);
         logger.info("Completed request within {} ms (Action: {} ms | View: {} ms)\n",
                 new Object[]{viewTime + actionTime, actionTime, viewTime });
@@ -268,36 +288,31 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
         return this.envSpecific.getLifeCycleManager().isResponseProcessedManually(actionMethod);
     }
 
-    private ExecutorService es = Executors.newCachedThreadPool();//.newFixedThreadPool(100);
 
 
-    private void startAsyncProcess(final Callable<Object> callable, final WebRequestExecutionContext ctx,
-                                   final Object controller, final ActionMethod actionMethod){
-        
+
+    private void startAsyncProcess(final Callable<Object> callable,
+                                   final WebRequestExecutionContext ctx,
+                                   final Consumer succeedConsumer,
+                                   final Consumer<Throwable> errorConsumer){
+
         ctx.webRequest().startAsync();
         CompletableFuture
                 .supplyAsync(() -> {
-                    try {
-                        logger.info("Execute action asynchronously for {}#{}",
-                                controller.getClass().getSimpleName(), actionMethod.actionName());
-                        return callable.call();
-                    } catch (Exception e) {
-                        logger.error("Error occurred while executing asynchronously action : {}", e);
-                        throw new RuntimeException("Execute async action failed", e);
-                    }
-                }, es).whenComplete((result,  ex) -> {
-                    if (ex == null) { // means no error
-                        processViewAndAfterInteceptors(result, ctx, !isResponseProcessedManually(actionMethod), controller, actionMethod);
-                        ctx.webRequest().completeAsync();
-                    } else {
-                        logger.error("Error occurred while executing asynchronously action : {}", ex);
-                        ctx.webRequest().getWebResponse().setStatus(500);
-                        if (Env.isDev()){
-                            new ExceptionHandler(ex.getCause()).handle(ctx.webRequest());
+                        try {
+                            return callable.call();
+                        } catch (Exception e) {
+                            throw new RuntimeException("Execute async action failed with : ", e);
                         }
-                        ctx.webRequest().completeAsync();
+                    }, asyncTaskExecutorService)
+                .whenComplete((result, ex) -> {
+                    if (ex == null) {
+                        succeedConsumer.accept(result);
+                    } else {
+                        errorConsumer.accept(ex.getCause());
                     }
-                });  //TODO need deal with view render exception
+                    ctx.webRequest().completeAsync();
+                });  //TODO deal the order completeAsync and execute after filters
     }
 
     private void installRouter() {
@@ -322,14 +337,12 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor, DeferredResult
     }
 
     private void setPathVariablesToRequestAttribute(WebRequest webRequest, RouteInfo rd) {
-//        Map<String, String> pathVariables = PathVariableDetector.extractPathVariables(rd, webRequest);
         Map<String, String> pathVariables = rd.pathVariables(webRequest.getPath());
         webRequest.setAttribute(WebRequest.REQ_ATTR_FOR_PATH_VARIABLES, pathVariables);
     }
 
-
     public void shutdown(){
-        es.shutdown();
+        asyncTaskExecutorService.shutdown();
     }
 
 }
