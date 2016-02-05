@@ -1,4 +1,4 @@
-package org.agilej.sparkle.config;
+package org.agilej.sparkle.core.config;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,7 +8,7 @@ import java.io.IOException;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.core.action.ActionMethod;
 import org.agilej.sparkle.core.view.ViewRender;
-import org.agilej.sparkle.engine.ConfigImpl;
+import org.agilej.sparkle.core.engine.ConfigImpl;
 
 import org.junit.Before;
 import org.junit.Test;

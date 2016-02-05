@@ -1,4 +1,4 @@
-package org.agilej.sparkle.engine;
+package org.agilej.sparkle.core.engine;
 
 import com.google.common.base.Stopwatch;
 import org.agilej.sparkle.WebRequest;

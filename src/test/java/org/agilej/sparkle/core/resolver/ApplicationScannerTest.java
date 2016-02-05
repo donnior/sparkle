@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import org.agilej.sparkle.engine.ApplicationConfigScanner;
+import org.agilej.sparkle.core.engine.ApplicationConfigScanner;
 import org.agilej.sparkle.exception.SparkleException;
 
 import org.junit.Test;

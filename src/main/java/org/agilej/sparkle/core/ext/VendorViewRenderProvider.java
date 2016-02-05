@@ -1,4 +1,4 @@
-package org.agilej.sparkle.ext;
+package org.agilej.sparkle.core.ext;
 
 import org.agilej.sparkle.core.view.ViewRender;
 

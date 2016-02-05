@@ -1,4 +1,4 @@
-package org.agilej.sparkle.engine;
+package org.agilej.sparkle.core.engine;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,8 +27,8 @@ import org.agilej.sparkle.core.view.ViewRender;
 import org.agilej.sparkle.core.view.ViewRenderManager;
 import org.agilej.sparkle.core.view.ViewRenderResolver;
 import org.agilej.sparkle.exception.SparkleException;
-import org.agilej.sparkle.ext.EnvSpecific;
-import org.agilej.sparkle.ext.VendorViewRenderProvider;
+import org.agilej.sparkle.core.ext.EnvSpecific;
+import org.agilej.sparkle.core.ext.VendorViewRenderProvider;
 import org.agilej.sparkle.http.HTTPStatusCode;
 import org.agilej.sparkle.interceptor.Interceptor;
 import org.agilej.sparkle.route.RouteModule;

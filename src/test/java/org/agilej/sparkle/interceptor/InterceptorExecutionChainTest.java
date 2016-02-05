@@ -2,7 +2,7 @@ package org.agilej.sparkle.interceptor;
 
 
 import org.agilej.fava.util.FLists;
-import org.agilej.sparkle.engine.InterceptorExecutionChain;
+import org.agilej.sparkle.core.engine.InterceptorExecutionChain;
 import org.agilej.web.adapter.GetWebRequest;
 import org.junit.Test;
 
