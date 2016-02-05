@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.annotation.Param;
-import org.agilej.sparkle.core.ActionMethodParameter;
+import org.agilej.sparkle.core.action.ActionMethodParameter;
 import org.agilej.sparkle.exception.SparkleException;
 import org.agilej.sparkle.util.ParamResolveUtil;
 

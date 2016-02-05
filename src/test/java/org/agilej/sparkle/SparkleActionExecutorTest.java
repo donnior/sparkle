@@ -1,6 +1,6 @@
 package org.agilej.sparkle;
 
-import org.agilej.sparkle.core.ActionMethod;
+import org.agilej.sparkle.core.action.ActionMethod;
 import org.agilej.sparkle.core.method.ActionMethodResolver;
 import org.agilej.sparkle.core.method.ActionExecutor;
 

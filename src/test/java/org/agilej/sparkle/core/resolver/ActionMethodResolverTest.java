@@ -9,8 +9,8 @@ import java.util.List;
 
 import org.agilej.sparkle.annotation.Json;
 import org.agilej.sparkle.annotation.Param;
-import org.agilej.sparkle.core.ActionMethod;
-import org.agilej.sparkle.core.ActionMethodParameter;
+import org.agilej.sparkle.core.action.ActionMethod;
+import org.agilej.sparkle.core.action.ActionMethodParameter;
 
 import org.agilej.sparkle.core.method.ActionMethodResolver;
 import org.agilej.sparkle.exception.SparkleException;

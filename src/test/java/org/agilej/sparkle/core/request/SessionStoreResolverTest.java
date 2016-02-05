@@ -1,6 +1,6 @@
 package org.agilej.sparkle.core.request;
 
-import org.agilej.sparkle.core.ConfigResult;
+import org.agilej.sparkle.core.config.ConfigResult;
 import org.agilej.sparkle.engine.ConfigImpl;
 import org.agilej.sparkle.support.EmptyConfig;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package org.agilej.sparkle.core.argument;
 
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.core.ActionMethodParameter;
+import org.agilej.sparkle.core.action.ActionMethodParameter;
 
 /**
  * ArgumentResolver is used to parse and set argument to controller's action method. For example an

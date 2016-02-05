@@ -3,7 +3,7 @@ package org.agilej.sparkle.core.view;
 import java.io.IOException;
 
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.core.ActionMethod;
+import org.agilej.sparkle.core.action.ActionMethod;
 
 /**
  *  ViewRender takes charge of rendering response as views. Such as a page or a json response. 

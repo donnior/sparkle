@@ -5,7 +5,7 @@ import org.agilej.sparkle.Cookie;
 import org.agilej.sparkle.Cookies;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.WebResponse;
-import org.agilej.sparkle.core.ActionMethodParameter;
+import org.agilej.sparkle.core.action.ActionMethodParameter;
 
 /**
  * Argument resolver for param type with {@link Cookies}

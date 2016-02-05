@@ -1,6 +1,6 @@
 package org.agilej.sparkle.core.support;
 
-import org.agilej.sparkle.core.ControllerFactory;
+import org.agilej.sparkle.core.action.ControllerFactory;
 
 public class NullControllerFactory implements ControllerFactory {
     @Override

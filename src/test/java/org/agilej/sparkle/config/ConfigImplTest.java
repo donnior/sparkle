@@ -6,7 +6,7 @@ import java.io.IOException;
 
 
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.core.ActionMethod;
+import org.agilej.sparkle.core.action.ActionMethod;
 import org.agilej.sparkle.core.view.ViewRender;
 import org.agilej.sparkle.engine.ConfigImpl;
 

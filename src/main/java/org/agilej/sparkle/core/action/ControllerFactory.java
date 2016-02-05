@@ -1,4 +1,4 @@
-package org.agilej.sparkle.core;
+package org.agilej.sparkle.core.action;
 
 /**
  * factory for controller instance

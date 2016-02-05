@@ -5,10 +5,9 @@ import java.io.IOException;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.WebResponse;
 import org.agilej.sparkle.annotation.Json;
-import org.agilej.sparkle.core.ActionMethod;
+import org.agilej.sparkle.core.action.ActionMethod;
 
 
-import com.google.gson.Gson;
 import org.agilej.jsonty.JSONBuilder;
 import org.agilej.jsonty.JSONModel;
 

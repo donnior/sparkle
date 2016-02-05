@@ -1,7 +1,7 @@
 package org.agilej.sparkle.support;
 
-import org.agilej.sparkle.core.ConfigResult;
-import org.agilej.sparkle.core.ControllerFactory;
+import org.agilej.sparkle.core.config.ConfigResult;
+import org.agilej.sparkle.core.action.ControllerFactory;
 import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
 import org.agilej.sparkle.core.view.JSONSerializerFactory;

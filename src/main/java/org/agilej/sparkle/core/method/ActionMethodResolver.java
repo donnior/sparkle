@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.agilej.sparkle.core.ActionMethod;
-import org.agilej.sparkle.core.ActionMethodParameter;
+import org.agilej.sparkle.core.action.ActionMethod;
+import org.agilej.sparkle.core.action.ActionMethodParameter;
 import org.agilej.sparkle.exception.SparkleException;
 import org.agilej.sparkle.util.Singleton;
 import org.agilej.sparkle.util.Tuple;

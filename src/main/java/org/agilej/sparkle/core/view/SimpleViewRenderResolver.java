@@ -5,7 +5,7 @@ import java.util.List;
 import org.agilej.fava.FList;
 import org.agilej.fava.Predicate;
 import org.agilej.fava.util.FLists;
-import org.agilej.sparkle.core.ActionMethod;
+import org.agilej.sparkle.core.action.ActionMethod;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

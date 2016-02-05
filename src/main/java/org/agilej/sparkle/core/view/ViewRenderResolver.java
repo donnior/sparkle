@@ -1,6 +1,6 @@
 package org.agilej.sparkle.core.view;
 
-import org.agilej.sparkle.core.ActionMethod;
+import org.agilej.sparkle.core.action.ActionMethod;
 
 /**
  * Get the appropriate ViewRender for action result.

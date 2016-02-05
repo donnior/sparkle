@@ -1,6 +1,7 @@
-package org.agilej.sparkle.core;
+package org.agilej.sparkle.core.config;
 
 import org.agilej.sparkle.config.Config;
+import org.agilej.sparkle.core.action.ControllerFactory;
 import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
 import org.agilej.fava.FList;

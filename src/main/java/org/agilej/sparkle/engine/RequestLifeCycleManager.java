@@ -1,6 +1,6 @@
 package org.agilej.sparkle.engine;
 
-import org.agilej.sparkle.core.ActionMethod;
+import org.agilej.sparkle.core.action.ActionMethod;
 
 public interface RequestLifeCycleManager {
 

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.annotation.PathVariable;
-import org.agilej.sparkle.core.ActionMethodParameter;
+import org.agilej.sparkle.core.action.ActionMethodParameter;
 import org.agilej.sparkle.exception.SparkleException;
 import org.agilej.sparkle.util.ParamResolveUtil;
 import org.agilej.fava.FList;

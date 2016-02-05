@@ -1,9 +1,9 @@
 package org.agilej.sparkle.core.support;
 
 import org.agilej.reflection.ReflectionUtil;
-import org.agilej.sparkle.core.ConfigResult;
-import org.agilej.sparkle.core.ControllerFactory;
-import org.agilej.sparkle.core.ControllerFactoryResolver;
+import org.agilej.sparkle.core.config.ConfigResult;
+import org.agilej.sparkle.core.action.ControllerFactory;
+import org.agilej.sparkle.core.action.ControllerFactoryResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

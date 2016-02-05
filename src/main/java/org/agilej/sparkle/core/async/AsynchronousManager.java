@@ -1,5 +1,7 @@
-package org.agilej.sparkle.core;
+package org.agilej.sparkle.core.async;
 
+
+import org.agilej.sparkle.core.action.ActionMethod;
 
 import java.util.concurrent.Callable;
 

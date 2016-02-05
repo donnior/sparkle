@@ -9,7 +9,7 @@ import org.agilej.fava.FList;
 import org.agilej.fava.Predicate;
 import org.agilej.fava.util.FLists;
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.core.ActionMethodParameter;
+import org.agilej.sparkle.core.action.ActionMethodParameter;
 import org.agilej.sparkle.exception.SparkleException;
 
 public abstract class AbstractArgumentResolverManager implements ArgumentResolverManager {

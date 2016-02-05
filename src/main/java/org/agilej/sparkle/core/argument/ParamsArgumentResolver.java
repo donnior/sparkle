@@ -3,7 +3,7 @@ package org.agilej.sparkle.core.argument;
 
 import org.agilej.sparkle.Params;
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.core.ActionMethodParameter;
+import org.agilej.sparkle.core.action.ActionMethodParameter;
 
 /**
  * Argument resolver for param type with {@link Params}

@@ -2,7 +2,7 @@ package org.agilej.sparkle.core.method;
 
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.annotation.Async;
-import org.agilej.sparkle.core.ActionMethod;
+import org.agilej.sparkle.core.action.ActionMethod;
 import org.agilej.sparkle.core.argument.ArgumentResolverManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

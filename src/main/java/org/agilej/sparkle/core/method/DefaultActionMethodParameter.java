@@ -9,7 +9,7 @@ import com.google.common.base.MoreObjects;
 import org.agilej.fava.FList;
 import org.agilej.fava.Predicate;
 import org.agilej.fava.util.FLists;
-import org.agilej.sparkle.core.ActionMethodParameter;
+import org.agilej.sparkle.core.action.ActionMethodParameter;
 
 import com.google.common.collect.Lists;
 

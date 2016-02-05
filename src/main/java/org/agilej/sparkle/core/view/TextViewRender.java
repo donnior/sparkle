@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.WebResponse;
 import org.agilej.sparkle.annotation.Text;
-import org.agilej.sparkle.core.ActionMethod;
+import org.agilej.sparkle.core.action.ActionMethod;
 
 /**
  * ViewRender for process action annotated with {@link Text}
