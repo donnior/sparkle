@@ -6,8 +6,8 @@ public interface ControllerClassResolver {
     
     Class<?> getControllerClass(String controllerName);
     
-    void registeControllers(Map<String, Class<?>> controllersMap, boolean reset);
+    void registerControllers(Map<String, Class<?>> controllersMap, boolean reset);
     
-    void registeControllers(Map<String, Class<?>> controllersMap);
+    void registerControllers(Map<String, Class<?>> controllersMap);
 
 }

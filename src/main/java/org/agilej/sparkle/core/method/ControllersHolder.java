@@ -40,11 +40,11 @@ public class ControllersHolder implements ControllerClassResolver{
         return controllerClass;
     }
 
-    public void registeControllers(Map<String, Class<?>> controllersMap) {
-        this.registeControllers(controllersMap, false);
+    public void registerControllers(Map<String, Class<?>> controllersMap) {
+        this.registerControllers(controllersMap, false);
     }
     
-    public void registeControllers(Map<String, Class<?>> controllersMap, boolean reset) {
+    public void registerControllers(Map<String, Class<?>> controllersMap, boolean reset) {
         if(reset){
             this.controllers.clear();
         }
@@ -58,9 +58,5 @@ public class ControllersHolder implements ControllerClassResolver{
         });
     }
 
-    @Deprecated
-    public static ControllersHolder getInstance() {
-        return instance;
-    }
     
 }

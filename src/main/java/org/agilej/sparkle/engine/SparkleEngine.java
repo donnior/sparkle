@@ -135,7 +135,7 @@ public class SparkleEngine implements ViewRenderingPhaseExecutor{
     private void initControllers(ConfigResult config) {
         //TODO how to deal with multi controller packages
         Map<String, Class<?>> scannedControllers = new ControllerScanner().scanControllers(this.config.getBasePackage());
-        this.controllerClassResolver.registeControllers(scannedControllers, true);
+        this.controllerClassResolver.registerControllers(scannedControllers, true);
     }
 
     private boolean executePreInterceptor(InterceptorExecutionChain interceptorExecutionChain,  WebRequest webRequest){

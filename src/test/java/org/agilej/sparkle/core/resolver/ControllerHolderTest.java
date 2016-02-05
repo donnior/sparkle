@@ -18,7 +18,7 @@ public class ControllerHolderTest {
     @Test
     public void test_getting(){
         ControllersHolder ch = new ControllersHolder();
-        ch.registeControllers(sampleControllersMap());
+        ch.registerControllers(sampleControllersMap());
         
         assertEquals(2, ch.namedControllers().size());
         assertTrue(ch.containsController("sampleOne"));
@@ -30,7 +30,7 @@ public class ControllerHolderTest {
     @Test(expected = RuntimeException.class)
     public void test_getting_with_exception(){
         ControllersHolder ch = new ControllersHolder();
-        ch.registeControllers(sampleControllersMap());
+        ch.registerControllers(sampleControllersMap());
 
         assertEquals(SampleOne.class, ch.getControllerClass("sampleThree"));
     }
@@ -38,11 +38,11 @@ public class ControllerHolderTest {
     @Test
     public void test_add_with_reset(){
         ControllersHolder ch = new ControllersHolder();
-        ch.registeControllers(sampleControllersMap());
+        ch.registerControllers(sampleControllersMap());
         
         assertEquals(2, ch.namedControllers().size());
         
-        ch.registeControllers(anotherSampleControllersMap(), true);
+        ch.registerControllers(anotherSampleControllersMap(), true);
         
         assertEquals(1, ch.namedControllers().size());
     }
@@ -50,12 +50,12 @@ public class ControllerHolderTest {
     @Test
     public void test_add_with_duplication(){
         ControllersHolder ch = new ControllersHolder();
-        ch.registeControllers(sampleControllersMap());
+        ch.registerControllers(sampleControllersMap());
         
         assertEquals(2, ch.namedControllers().size());
         
         try{
-            ch.registeControllers(duplicatedControllerMap());
+            ch.registerControllers(duplicatedControllerMap());
             fail();
         }catch(SparkleException re){
             
