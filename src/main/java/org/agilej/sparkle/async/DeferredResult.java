@@ -1,6 +1,12 @@
 package org.agilej.sparkle.async;
 
+/**
+ * DeferredResult provides an alternative to using a Callable for asynchronous request processing.
+ * While a Callable is executed concurrently on behalf of the application,
+ * with a DeferredResult the application can produce the result from a thread of its choice.
+ */
 public class DeferredResult {
+
     private Object result;
     private DeferredResultHandler resultHandler;
 

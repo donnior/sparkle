@@ -1,7 +1,8 @@
-package org.agilej.sparkle.view.result;
+package org.agilej.sparkle.util;
 
 import static org.junit.Assert.assertEquals;
 
+import org.agilej.sparkle.util.HttpStatus;
 import org.junit.Test;
 
 public class HttpStatusTest {

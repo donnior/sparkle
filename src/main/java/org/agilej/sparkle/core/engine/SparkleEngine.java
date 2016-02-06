@@ -15,6 +15,7 @@ import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.async.DeferredResult;
 import org.agilej.sparkle.config.Application;
 import org.agilej.sparkle.core.action.ActionMethod;
+import org.agilej.sparkle.core.action.ActionMethodResolver;
 import org.agilej.sparkle.core.config.ConfigResult;
 import org.agilej.sparkle.core.action.ControllerFactory;
 import org.agilej.sparkle.core.argument.ArgumentResolverManager;

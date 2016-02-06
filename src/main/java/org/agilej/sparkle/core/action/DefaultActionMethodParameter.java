@@ -1,4 +1,4 @@
-package org.agilej.sparkle.core.method;
+package org.agilej.sparkle.core.action;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Parameter;

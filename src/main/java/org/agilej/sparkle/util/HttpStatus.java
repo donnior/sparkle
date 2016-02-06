@@ -1,4 +1,4 @@
-package org.agilej.sparkle.view.result;
+package org.agilej.sparkle.util;
 
 public class HttpStatus{
 

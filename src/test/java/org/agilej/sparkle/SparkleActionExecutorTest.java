@@ -1,7 +1,7 @@
 package org.agilej.sparkle;
 
 import org.agilej.sparkle.core.action.ActionMethod;
-import org.agilej.sparkle.core.method.ActionMethodResolver;
+import org.agilej.sparkle.core.action.ActionMethodResolver;
 import org.agilej.sparkle.core.method.ActionExecutor;
 
 import org.junit.Before;

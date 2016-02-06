@@ -14,7 +14,7 @@ import org.agilej.sparkle.annotation.Json;
 import org.agilej.sparkle.annotation.Param;
 import org.agilej.sparkle.core.action.ActionMethodParameter;
 import org.agilej.sparkle.core.argument.SimpleArgumentResolver;
-import org.agilej.sparkle.core.method.DefaultActionMethodParameter;
+import org.agilej.sparkle.core.action.DefaultActionMethodParameter;
 import org.agilej.web.adapter.GetWebRequest;
 
 import org.junit.Test;

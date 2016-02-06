@@ -1,4 +1,4 @@
-package org.agilej.sparkle.core.method;
+package org.agilej.sparkle.core.action;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -10,8 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.agilej.sparkle.core.action.ActionMethod;
-import org.agilej.sparkle.core.action.ActionMethodParameter;
+import org.agilej.fava.util.FLists;
 import org.agilej.sparkle.exception.SparkleException;
 import org.agilej.sparkle.util.Singleton;
 import org.agilej.sparkle.util.Tuple;
@@ -36,22 +35,7 @@ public class ActionMethodResolver {
             this.method = method;
             this.actionName = actionName;
             this.returnType = method.getReturnType();
-
-            List<ActionMethodParameter> apds = Lists.newArrayList();
-//            final Class<?>[] paramTypes = method.getParameterTypes();
-//            final Annotation[][] ans = method.getParameterAnnotations();
-//
-//            for(int i=0; i<paramTypes.length; i++){
-//                final Class<?> type = paramTypes[i];
-//                final Annotation[] annotations = ans[i];
-//                ActionMethodParameter apd = new DefaultActionMethodParameter(type, Arrays.asList(annotations));
-//                apds.add(apd);
-//            }
-
-            for (Parameter p : method.getParameters()){
-                apds.add(new DefaultActionMethodParameter(p));
-            }
-            this.apds = apds;
+            this.apds = FLists.$(method.getParameters()).map(DefaultActionMethodParameter::new);
         }
         
         @Override

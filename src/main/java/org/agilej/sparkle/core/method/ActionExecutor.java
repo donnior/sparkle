@@ -23,18 +23,15 @@ public class ActionExecutor {
         this.argumentResolverManager = argumentResolverManager;
     }
     
-    //TODO should refactored this params resolver, make it support multi resolvers so programmers can create their own
-    // param resolver like param with class type 'Project'; so it should be List<ParamResolver>
-
     public Object invoke(ActionMethod actionMethod, Object controller, final WebRequest request) {
 
         logger.debug("Execute real action method {}#{}", controller.getClass().getSimpleName(), actionMethod.actionName());
         Method method = actionMethod.method();
-        List<ActionMethodParameter> apds = actionMethod.parameters();
+        List<ActionMethodParameter> amps = actionMethod.parameters();
         
-        Object[] params = FLists.create(apds).collect(new Function<ActionMethodParameter, Object>() {
-            public Object apply(ActionMethodParameter apd) {
-                return argumentResolverManager.resolve(apd, request);
+        Object[] params = FLists.create(amps).collect(new Function<ActionMethodParameter, Object>() {
+            public Object apply(ActionMethodParameter amp) {
+                return argumentResolverManager.resolve(amp, request);
             }
         }).toArray();
         
