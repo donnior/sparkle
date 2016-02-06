@@ -8,10 +8,10 @@ Sparkle is an lightweight web framework.
 
 Sparkle is a tiny web framework for java. With proper plugin it can be running under Netty or a Servlet container.
 
-* Sparkle-Servlet
+* [Sparkle-Servlet][sparkle-servlet]
 It's based on Servlet 3.0 specification, so it don't need `web.xml` anymore. Just include sparkle-servlet.jar in your project's classpath, start your server, it will be ready.
 
-* Sparkle-Netty
+* [Sparkle-Netty][sparkle-netty]
 With this plugin, the sparkle framework can be running on Netty 4.x.
 
 ### Rails Like Route
@@ -22,6 +22,16 @@ Sparkle provide a Rails-like style route definition. You don't need config route
     
     router.match("/projects/{name}").withPost().to("controller#action");
 ```
+
+or use callback style with lambda syntax:
+
+```java
+    router.match("/projects/{name}").withPost().to((req, res) -> {
+        ...
+        return "result";
+    });
+```
+
 
 ### Built-in JSON support.
 
@@ -47,6 +57,8 @@ Where `AccountEntity` defined `account`'s fields will exposed to json result.
 
 Checkout [sample][sparkle-sample]
 
+[sparkle-netty]: https://github.com/agilej/sparkle-netty  "Sparkle Netty"
+[sparkle-servlet]: https://github.com/agilej/sparkle-servlet "Sparkle Servlet"
 [sparkle-sample]: https://github.com/donnior/sparkle-sample  "Sparkle sample project"
 [jsonty]: https://github.com/agilej/jsonty  "Jsonty lib"
 
