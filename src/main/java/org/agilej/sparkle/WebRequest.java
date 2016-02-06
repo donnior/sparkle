@@ -245,5 +245,8 @@ public interface WebRequest {
         throw new RuntimeException("not implemented yet");
     }
 
+    default String userAgent() {
+        return getHeader("User-Agent");
+    }
 
 }
