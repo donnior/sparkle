@@ -20,18 +20,12 @@ import org.agilej.reflection.ReflectionUtil;
  */
 public class ViewRenderManager {
 
-    private FList<ViewRender> allRegisteredViewRenders = FLists.newEmptyList();
+    private FList<ViewRender> builtInViewRenders = FLists.newEmptyList();
     private FList<ViewRender> vendorViewRenders = FLists.newEmptyList();
     private FList<ViewRender> appScopedViewRenders = FLists.newEmptyList();
     
     public ViewRenderManager() {
-        registerBuiltInViewRenders(allRegisteredViewRenders);
-//        registerVendorViewRenders(allRegisteredViewRenders);
-    }
-
-
-    public void setupViewRenders(){
-
+        registerBuiltInViewRenders(builtInViewRenders);
     }
 
     /**
@@ -40,36 +34,7 @@ public class ViewRenderManager {
      * @return
      */
     public FList<ViewRender> getAllOrderedViewRenders(){
-        return FLists.$(this.appScopedViewRenders).plus(this.allRegisteredViewRenders).plus(this.vendorViewRenders);
-    }
-
-    /**
-     * Resolve all view renders with the given customized view renders and built-in view renders. 
-     * 
-     * The Sparkle framework can handle three types view renders: 
-     * <li> User defined view renders in their application (third-party view renders)
-     * <li> Provider defined view renders (such as sparkle-servlet provide view renders for jsp pages)
-     * <li> Sparkle's built-in view renders, like JSON and text view renders;
-     *
-     * Note. this method will be deprecated, clients should call registerAppScopedViewRenders() and
-     * getAllOrderedViewRenders() these two steps.
-     *
-     * @param renders
-     * @return
-     */
-    @Deprecated
-    private List<ViewRender> resolveRegisteredViewRenders(List<Class<? extends ViewRender>> renders){
-        FList<ViewRender> viewRenders = FLists.create(renders)
-                                              .collect(new Function<Class<? extends ViewRender>, ViewRender>() {
-            @Override
-            public ViewRender apply(Class<? extends ViewRender> viewRenderClass) {
-                return (ViewRender) ReflectionUtil.initialize(viewRenderClass);
-            }
-        });
-        this.appScopedViewRenders.addAll(viewRenders);
-        this.allRegisteredViewRenders.addAll(this.appScopedViewRenders);
-        this.registerVendorViewRenders(this.allRegisteredViewRenders);
-        return this.allRegisteredViewRenders;
+        return FLists.$(this.appScopedViewRenders).plus(this.builtInViewRenders).plus(this.vendorViewRenders);
     }
 
     private void registerBuiltInViewRenders(FList<ViewRender> viewRenders) {
@@ -94,7 +59,6 @@ public class ViewRenderManager {
     public void registerVendorViewRender(ViewRender viewRender){
         this.vendorViewRenders.add(viewRender);
     }
-
 
     /**
      *

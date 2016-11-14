@@ -1,6 +1,7 @@
 package org.agilej.sparkle.core.request;
 
 import org.agilej.sparkle.WebRequest;
+import org.agilej.sparkle.core.annotation.UserConfigurable;
 
 import java.util.Locale;
 
@@ -18,6 +19,7 @@ import java.util.Locale;
  * </ul>
  *
  */
+@UserConfigurable
 public interface LocaleResolver {
 
     Locale resolveLocale(WebRequest request);

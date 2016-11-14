@@ -1,8 +1,13 @@
 package org.agilej.sparkle.core.action;
 
+import org.agilej.sparkle.core.annotation.Singleton;
+import org.agilej.sparkle.core.annotation.UserConfigurable;
+
 /**
  * factory for controller instance
  */
+@UserConfigurable
+@Singleton
 public interface ControllerFactory {
 
     /**

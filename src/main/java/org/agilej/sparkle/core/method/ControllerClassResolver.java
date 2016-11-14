@@ -1,7 +1,10 @@
 package org.agilej.sparkle.core.method;
 
+import org.agilej.sparkle.core.annotation.Singleton;
+
 import java.util.Map;
 
+@Singleton
 public interface ControllerClassResolver {
     
     Class<?> getControllerClass(String controllerName);

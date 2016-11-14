@@ -26,7 +26,7 @@ public class ApplicationScannerTest {
             app = acs.scan("org.agilej.sparkle.data.exception");
             fail();
         }catch(SparkleException se){
-            assertEquals("found more than one ApplicationConfig class", se.getMessage());
+            assertEquals("found more than one Application classes", se.getMessage());
         }
         
     }

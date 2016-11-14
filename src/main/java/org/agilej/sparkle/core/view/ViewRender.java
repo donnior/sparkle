@@ -3,6 +3,7 @@ package org.agilej.sparkle.core.view;
 import java.io.IOException;
 
 import org.agilej.sparkle.WebRequest;
+import org.agilej.sparkle.core.annotation.UserConfigurable;
 import org.agilej.sparkle.core.action.ActionMethod;
 
 /**
@@ -37,6 +38,7 @@ import org.agilej.sparkle.core.action.ActionMethod;
  *    
  *
  */
+@UserConfigurable
 public interface ViewRender {
 
     boolean supportActionMethod(ActionMethod actionMethod, Object actionMethodResult);

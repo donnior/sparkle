@@ -1,11 +1,13 @@
 package org.agilej.sparkle.core.request;
 
 import org.agilej.sparkle.WebRequest;
+import org.agilej.sparkle.core.annotation.UserConfigurable;
 
 /**
  * session data store. For one Sparkle application, it will only hold one SessionStore instance,
  * so the implementation should thread-safe.
  */
+@UserConfigurable
 public interface SessionStore {
 
     /**

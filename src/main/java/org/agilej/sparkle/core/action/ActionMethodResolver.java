@@ -3,7 +3,6 @@ package org.agilej.sparkle.core.action;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -11,15 +10,14 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.agilej.fava.util.FLists;
+import org.agilej.sparkle.core.annotation.Singleton;
 import org.agilej.sparkle.exception.SparkleException;
-import org.agilej.sparkle.util.Singleton;
 import org.agilej.sparkle.util.Tuple;
 import org.agilej.sparkle.util.Tuple2;
 
 import org.reflections.ReflectionUtils;
 
 import com.google.common.base.Predicates;
-import com.google.common.collect.Lists;
 
 @Singleton
 public class ActionMethodResolver {

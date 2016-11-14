@@ -25,7 +25,7 @@ public class ActionExecutor {
     
     public Object invoke(ActionMethod actionMethod, Object controller, final WebRequest request) {
 
-        logger.debug("Execute real action method {}#{}", controller.getClass().getSimpleName(), actionMethod.actionName());
+        logger.debug("Execute action method {}#{}", controller.getClass().getSimpleName(), actionMethod.actionName());
         Method method = actionMethod.method();
         List<ActionMethodParameter> amps = actionMethod.parameters();
         

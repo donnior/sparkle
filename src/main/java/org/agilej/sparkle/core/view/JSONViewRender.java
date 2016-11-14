@@ -20,24 +20,25 @@ public class JSONViewRender implements ViewRender {
 
     private JSONSerializer serializer;
 
+    private JSONBuilder jsontyJSONBuilder;
+
     public JSONViewRender() {
         this(new GsonSerializer());
     }
 
     public JSONViewRender(JSONSerializer serializer) {
         this.serializer = serializer;
+        this.jsontyJSONBuilder = new JSONBuilder();
     }
 
     @Override
     public void renderView(Object result, Object controller, WebRequest webRequest) throws IOException {
         WebResponse response = webRequest.getWebResponse();
-        
         response.setContentType("application/json; charset=UTF-8");
         
         if(result instanceof JSONModel){
-            // new JSONBuilder((JSONModel)result).build(response.getWriter());
-            // response.getWriter().flush();
-            response.write(new JSONBuilder((JSONModel)result).build());
+            //TODO use writer directly
+            response.write(jsontyJSONBuilder.build((JSONModel)result));
         } else {
             response.write(this.serializer.toJson(result));
         }

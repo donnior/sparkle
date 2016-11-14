@@ -9,8 +9,8 @@ import org.agilej.fava.Function;
 import org.agilej.fava.Predicate;
 import org.agilej.fava.util.FLists;
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.util.Singleton;
 
+import org.agilej.sparkle.core.annotation.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

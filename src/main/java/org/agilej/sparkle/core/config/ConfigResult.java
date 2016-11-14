@@ -16,9 +16,9 @@ public interface ConfigResult {
 
     String[] getControllerPackages();
 
-    FList<Class<? extends ViewRender>> getCustomizedViewRenders();
-    
     String getBasePackage();
+
+    FList<Class<? extends ViewRender>> getCustomizedViewRenders();
 
     ControllerFactory getControllerFactory();
     

@@ -11,7 +11,7 @@ import org.agilej.sparkle.route.Router;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RouterImpl implements Router, RouteBuilderHolder, RouteModuleInstallable {
+public class RouterImpl implements Router, RouteBuilderHolder, RouteModuleInstaller {
 
     private List<RouteBuilder> routeBuilders = new ArrayList<RouteBuilder>();
     

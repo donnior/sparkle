@@ -30,7 +30,6 @@ public abstract class AbstractArgumentResolverManager implements ArgumentResolve
         return matchedArgumentResolver.resolve(parameter, request);
     }
 
-    @Override
     public List<ArgumentResolver> registeredResolvers() {
         return Collections.unmodifiableList(this.argumentResolvers);
     }

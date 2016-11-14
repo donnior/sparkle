@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.agilej.sparkle.route.RouteModule;
 
 
-public interface RouteModuleInstallable {
+public interface RouteModuleInstaller {
     
     void install(RouteModule module);
     

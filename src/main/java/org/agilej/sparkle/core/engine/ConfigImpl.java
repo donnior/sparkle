@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.agilej.sparkle.core.annotation.Singleton;
 import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
 import org.agilej.fava.FList;
@@ -15,7 +16,6 @@ import org.agilej.sparkle.core.action.ControllerFactory;
 import org.agilej.sparkle.core.view.JSONSerializerFactory;
 import org.agilej.sparkle.core.view.ViewRender;
 import org.agilej.sparkle.interceptor.Interceptor;
-import org.agilej.sparkle.util.Singleton;
 
 @Singleton
 public class ConfigImpl implements Config, ConfigResult {
