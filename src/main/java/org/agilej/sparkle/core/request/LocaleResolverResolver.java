@@ -1,16 +1,16 @@
 package org.agilej.sparkle.core.request;
 
 import org.agilej.reflection.ReflectionUtil;
-import org.agilej.sparkle.core.config.ConfigResult;
+import org.agilej.sparkle.core.config.LocaleResolverConfiguration;
 
 /**
  * resolver for {@link LocaleResolver}, will fallback to a default locale resolver if user not config it.
  */
 public class LocaleResolverResolver {
 
-    private ConfigResult config;
+    private LocaleResolverConfiguration config;
 
-    public LocaleResolverResolver(ConfigResult config){
+    public LocaleResolverResolver(LocaleResolverConfiguration config){
         this.config = config;
     }
 

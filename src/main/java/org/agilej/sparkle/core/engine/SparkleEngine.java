@@ -10,16 +10,19 @@ import org.agilej.sparkle.core.action.ActionMethodResolver;
 import org.agilej.sparkle.core.action.ControllerFactory;
 import org.agilej.sparkle.core.action.SimpleControllerFactoryResolver;
 import org.agilej.sparkle.core.argument.ArgumentResolverManager;
+import org.agilej.sparkle.core.argument.ArgumentResolverRegistration;
+import org.agilej.sparkle.core.argument.SimpleArgumentResolverManager;
 import org.agilej.sparkle.core.config.ConfigResult;
 import org.agilej.sparkle.core.execute.PhaseHandlerChain;
 import org.agilej.sparkle.core.execute.PhaseHandlerChainFactory;
 import org.agilej.sparkle.core.ext.EnvSpecific;
+import org.agilej.sparkle.core.ext.VendorArgumentResolverProvider;
 import org.agilej.sparkle.core.ext.VendorViewRenderProvider;
 import org.agilej.sparkle.core.method.*;
 import org.agilej.sparkle.core.request.*;
 import org.agilej.sparkle.core.route.*;
 import org.agilej.sparkle.core.view.SimpleViewRenderResolver;
-import org.agilej.sparkle.core.view.ViewRenderManager;
+import org.agilej.sparkle.core.view.ViewRenderRegistration;
 import org.agilej.sparkle.core.view.ViewRenderResolver;
 import org.agilej.sparkle.interceptor.Interceptor;
 import org.agilej.sparkle.route.RouteModule;
@@ -92,51 +95,61 @@ public class SparkleEngine implements CoreComponent{
     }
  
     private void initEngineWithConfig(ConfigResult config) {
-        initViewRenders(config);
-        initArgumentResolvers(config);
-        initControllers(config);
-        installRouter();
-        initInterceptors(config);
-        initSessionStore(config);
-        initLocaleResolver(config);
+        initViewRenderComponent(config);
+        initArgumentResolverComponent(config);
+        initControllerResolverComponent(config);
+        installRouterComponent();
+        initInterceptorComponent(config);
+        initSessionStoreComponent(config);
+        initLocaleResolverComponent(config);
     }
 
-    private void initLocaleResolver(ConfigResult config) {
+    private void initLocaleResolverComponent(ConfigResult config) {
         LocaleResolver localeResolver = new LocaleResolverResolver(config).resolve();
         LocaleResolverHolder.set(localeResolver);
         logger.info("Sparkle's locale resolver is configured to: {}", localeResolver.getClass().getSimpleName());
     }
 
-    private void initSessionStore(ConfigResult config) {
+    private void initSessionStoreComponent(ConfigResult config) {
         SessionStore sessionStore = new SessionStoreResolver(config).resolve();
         SessionStoreHolder.set(sessionStore);
         logger.info("Sparkle's session store is configured to: {}", sessionStore.getClass().getSimpleName());
     }
 
-    private void initInterceptors(ConfigResult config) {
+    private void initInterceptorComponent(ConfigResult config) {
         this.interceptors.addAll(config.getInterceptors());
     }
 
-    private void initArgumentResolvers(ConfigResult config){
-        //TODO add user argument resolver and vendor argument resolver, just like view renders
-        this.argumentResolverManager = this.envSpecific.getArgumentResolverManager();
+    private void initArgumentResolverComponent(ConfigResult config){
+        ArgumentResolverRegistration registration = new ArgumentResolverRegistration();
+        registration.registerAppScopedArgumentResolver(config.getCustomizedArgumentResolvers());
+
+        VendorArgumentResolverProvider vendorArgumentResolverProvider = this.envSpecific.vendorArgumentResolverProvider();
+        if (vendorArgumentResolverProvider != null) {
+            registration.registerVendorArgumentResolvers(vendorArgumentResolverProvider.vendorArgumentResolvers());
+        }
+
+        SimpleArgumentResolverManager argumentResolverManager = new SimpleArgumentResolverManager();
+        argumentResolverManager.registerArgumentResolvers(registration.getAllOrderedArgumentResolvers());
+
+        this.argumentResolverManager = argumentResolverManager;
 
     }
-    private void initViewRenders(ConfigResult config) {
-        ViewRenderManager viewRenderManager = new ViewRenderManager();
-        viewRenderManager.registerAppScopedViewRender(config.getCustomizedViewRenders());
+    private void initViewRenderComponent(ConfigResult config) {
+        ViewRenderRegistration viewRenderRegistration = new ViewRenderRegistration();
+        viewRenderRegistration.registerAppScopedViewRender(config.getCustomizedViewRenders());
 
         VendorViewRenderProvider vendorViewRenderProvider = this.envSpecific.vendorViewRenderProvider();
         if (vendorViewRenderProvider != null){
-            viewRenderManager.registerVendorViewRenders(vendorViewRenderProvider.vendorViewRenders());
+            viewRenderRegistration.registerVendorViewRenders(vendorViewRenderProvider.vendorViewRenders());
         }
         //TODO remove ViewRenderManager, inject Config to SimpleViewRenderResolver directly and resolve all renders
-        this.viewRenderResolver = new SimpleViewRenderResolver(viewRenderManager.getAllOrderedViewRenders());
+        this.viewRenderResolver = new SimpleViewRenderResolver(viewRenderRegistration.getAllOrderedViewRenders());
     }
 
-    private void initControllers(ConfigResult config) {
+    private void initControllerResolverComponent(ConfigResult config) {
         //TODO how to deal with multi controller packages
-        Map<String, Class<?>> scannedControllers = new ControllerScanner().scanControllers(this.config.getBasePackage());
+        Map<String, Class<?>> scannedControllers = new ControllerClassScanner().scanControllers(this.config.getBasePackage());
 
         ControllerClassResolver controllerClassResolver = new ControllersHolder();
         controllerClassResolver.registerControllers(scannedControllers, true);
@@ -147,7 +160,7 @@ public class SparkleEngine implements CoreComponent{
         this.controllerInstanceResolver = simpleControllerInstanceResolver;
     }
 
-    private void installRouter() {
+    private void installRouterComponent() {
         String routePackage = "";
         List<RouteModule> routeModules = new RouteModuleScanner().scanRouteModule(routePackage);
         this.router.install(routeModules);

@@ -26,7 +26,7 @@ public class ViewRenderPhaseHandler extends AbstractPhaseHandler {
 
         boolean needRenderView = true; // need render view or proceed manually
         if (needRenderView) {
-            processViewResult(context.getControllerActionResult(), context, context.getController(), context.getActionMethod());
+            processViewResult(context.getActionResult(), context, context.getController(), context.getActionMethod());
         } else {
             logger.debug("Http servlet response has been proceed manually, ignore view rendering.");
         }

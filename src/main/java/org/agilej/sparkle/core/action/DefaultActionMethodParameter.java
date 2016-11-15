@@ -30,7 +30,6 @@ public class DefaultActionMethodParameter implements ActionMethodParameter {
         this.annotations = FLists.create(annotations);
     }
 
-
     public DefaultActionMethodParameter(Parameter parameter){
         this(parameter.getName(), parameter.getType(), Arrays.asList(parameter.getAnnotations()));
 //        this.parameter = parameter;

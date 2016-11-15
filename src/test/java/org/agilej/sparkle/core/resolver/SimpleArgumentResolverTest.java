@@ -13,7 +13,7 @@ import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.annotation.Json;
 import org.agilej.sparkle.annotation.Param;
 import org.agilej.sparkle.core.action.ActionMethodParameter;
-import org.agilej.sparkle.core.argument.SimpleArgumentResolver;
+import org.agilej.sparkle.core.argument.ParamAnnotationArgumentResolver;
 import org.agilej.sparkle.core.action.DefaultActionMethodParameter;
 import org.agilej.web.adapter.GetWebRequest;
 
@@ -23,7 +23,7 @@ public class SimpleArgumentResolverTest {
 
     @Test
     public void test_support_ability(){
-        SimpleArgumentResolver resolver = new SimpleArgumentResolver();
+        ParamAnnotationArgumentResolver resolver = new ParamAnnotationArgumentResolver();
         
         ActionMethodParameter apd = correctSupportedActionParamDefinition(String.class, "userName");
         
@@ -31,12 +31,11 @@ public class SimpleArgumentResolverTest {
         
         apd = createActionParamDefinition(String.class, Json.class, "userName");
         assertFalse(resolver.support(apd));
-        
     }
     
     @Test
     public void test_null_value_with_paramname(){
-        SimpleArgumentResolver resolver = new SimpleArgumentResolver();
+        ParamAnnotationArgumentResolver resolver = new ParamAnnotationArgumentResolver();
         
         ActionMethodParameter apd = correctSupportedActionParamDefinition(String.class, "userName");
         WebRequest request = new GetWebRequest(null){
@@ -57,12 +56,11 @@ public class SimpleArgumentResolverTest {
         } catch (RuntimeException re) {
             assertEquals("action method argument annotated with @Param not support primitive", re.getMessage());
         }
-
     }
     
     @Test
     public void test_normal_value_with_paramname(){
-        SimpleArgumentResolver resolver = new SimpleArgumentResolver();
+        ParamAnnotationArgumentResolver resolver = new ParamAnnotationArgumentResolver();
         
         ActionMethodParameter apd = correctSupportedActionParamDefinition(Integer.class, "page");
         WebRequest request = new GetWebRequest(null){
@@ -77,9 +75,7 @@ public class SimpleArgumentResolverTest {
         Object result = resolver.resolve(apd, request);
         
         assertEquals(Integer.valueOf(1), (Integer)result);
-        
-    }    
-    
+    }
 
     private ActionMethodParameter createActionParamDefinition(
             final Class<?> paramType, final Class<? extends Annotation> annotationType, final String annotationValue) {

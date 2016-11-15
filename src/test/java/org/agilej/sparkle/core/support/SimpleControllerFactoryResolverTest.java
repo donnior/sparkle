@@ -2,8 +2,8 @@ package org.agilej.sparkle.core.support;
 
 
 import org.agilej.sparkle.core.action.SimpleControllerFactoryResolver;
-import org.agilej.sparkle.core.config.ConfigResult;
 import org.agilej.sparkle.core.action.ControllerFactory;
+import org.agilej.sparkle.core.config.ControllerFactoryConfiguration;
 import org.agilej.sparkle.support.EmptyConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class SimpleControllerFactoryResolverTest {
 
     @Test
     public void test_resolve_to_default_controller_factory() {
-        ConfigResult config = new EmptyConfig();
+        ControllerFactoryConfiguration config = new EmptyConfig();
         ControllerFactory controllerFactory = resolver.get(config);
 
         assertEquals(GuiceControllerFactory.class, controllerFactory.getClass());
@@ -44,7 +44,7 @@ public class SimpleControllerFactoryResolverTest {
             }
         };
 
-        ConfigResult config = new EmptyConfig() {
+        ControllerFactoryConfiguration config = new EmptyConfig() {
             @Override
             public ControllerFactory getControllerFactory() {
                 return factory;
@@ -60,7 +60,7 @@ public class SimpleControllerFactoryResolverTest {
     @Test
     public void test_resolve_to_customize_controller_factory_class() {
 
-        ConfigResult config = new EmptyConfig() {
+        ControllerFactoryConfiguration config = new EmptyConfig() {
             @Override
             public Class<? extends ControllerFactory> getControllerFactoryClass() {
                 return NullControllerFactory.class;

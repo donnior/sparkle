@@ -1,22 +1,24 @@
 package org.agilej.sparkle.core.method;
 
+import org.agilej.reflection.ReflectionUtil;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.annotation.Async;
 import org.agilej.sparkle.core.action.ActionMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
 /**
  * Execute controller action, if the action is asynchronous it will not call the real action and
  * return (or wrap) a callable object for further async processing
  */
-public class ControllerExecutor {
+public class ControllerActionExecutor {
 
-    private final static Logger logger = LoggerFactory.getLogger(ControllerExecutor.class);
+    private final static Logger logger = LoggerFactory.getLogger(ControllerActionExecutor.class);
 
-    public ControllerExecutor() {}
+    public ControllerActionExecutor() {}
 
     /**
      *
@@ -34,24 +36,32 @@ public class ControllerExecutor {
 
             boolean isCallableReturnType = actionMethod.getReturnType().equals(Callable.class);
             if(!isCallableReturnType){
-                logger.debug("Wrap async action as Callable");
                 return callableWrap(actionMethod, controller, webRequest, params);
             } else {
-                return (Callable)new ActionExecutor().invoke(actionMethod, controller, webRequest, params);
+                return (Callable)this.invoke(actionMethod, controller, webRequest, params);
             }
         }
 
-        return new ActionExecutor().invoke(actionMethod, controller, webRequest, params);
+        return this.invoke(actionMethod, controller, webRequest, params);
     }
 
     private Callable<Object> callableWrap(final ActionMethod actionMethod, final Object controller,
                                           final WebRequest webRequest, final Object[] params) {
+        logger.debug("Wrap async action as Callable");
+
         return new Callable<Object>() {
             @Override
             public Object call() throws Exception {
-                return new ActionExecutor().invoke(actionMethod, controller, webRequest, params);
+                return invoke(actionMethod, controller, webRequest, params);
             }
         };
+    }
+
+    public Object invoke(ActionMethod actionMethod, Object controller, final WebRequest request, Object[] params) {
+        logger.debug("Execute action method {}#{}", controller.getClass().getSimpleName(), actionMethod.actionName());
+
+        Method method = actionMethod.method();
+        return ReflectionUtil.invokeMethod(controller, method, params);
     }
 
     private boolean isAsyncActionDefinition(ActionMethod actionMethod) {

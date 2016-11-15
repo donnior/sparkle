@@ -1,16 +1,16 @@
 package org.agilej.sparkle.core.request;
 
 import org.agilej.reflection.ReflectionUtil;
-import org.agilej.sparkle.core.config.ConfigResult;
+import org.agilej.sparkle.core.config.SessionStoreConfiguration;
 
 /**
  * resolver for {@link SessionStore}, will fallback to a default session store if user not config it.
  */
 public class SessionStoreResolver {
 
-    private ConfigResult config;
+    private SessionStoreConfiguration config;
 
-    public SessionStoreResolver(ConfigResult config){
+    public SessionStoreResolver(SessionStoreConfiguration config){
         this.config = config;
     }
 

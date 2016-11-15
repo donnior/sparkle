@@ -8,7 +8,7 @@ import java.util.Map;
 import org.agilej.sparkle.ApplicationController;
 import org.agilej.sparkle.annotation.Controller;
 
-import org.agilej.sparkle.core.method.ControllerScanner;
+import org.agilej.sparkle.core.method.ControllerClassScanner;
 import org.junit.Test;
 
 public class ControllerScannerTest {
@@ -16,7 +16,7 @@ public class ControllerScannerTest {
     @Test
     public void test_scan(){
         String pkg = "org.agilej.sparkle.core.resolver";
-        Map<String, Class<?>> controllers = new ControllerScanner().scanControllers(pkg);
+        Map<String, Class<?>> controllers = new ControllerClassScanner().scanControllers(pkg);
         
         assertEquals(3, controllers.size());
         assertTrue(controllers.containsKey("sampleOne"));
@@ -27,10 +27,10 @@ public class ControllerScannerTest {
 
     @Test
     public void test_name_resolve(){
-        assertEquals("sample", ControllerScanner.resolveName("SampleControllerTwo"));
-        assertEquals("sample", ControllerScanner.resolveName("SampleController"));
-        assertEquals("sample", ControllerScanner.resolveName("Sample"));
-        assertEquals("u_r_l_sample", ControllerScanner.resolveName("URLSampleController"));
+        assertEquals("sample", ControllerClassScanner.resolveName("SampleControllerTwo"));
+        assertEquals("sample", ControllerClassScanner.resolveName("SampleController"));
+        assertEquals("sample", ControllerClassScanner.resolveName("Sample"));
+        assertEquals("u_r_l_sample", ControllerClassScanner.resolveName("URLSampleController"));
 
     }
 }

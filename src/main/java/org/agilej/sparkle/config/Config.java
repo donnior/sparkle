@@ -2,6 +2,7 @@ package org.agilej.sparkle.config;
 
 import org.agilej.sparkle.Env;
 import org.agilej.sparkle.core.action.ControllerFactory;
+import org.agilej.sparkle.core.argument.ArgumentResolver;
 import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
 import org.agilej.sparkle.core.view.JSONSerializerFactory;
@@ -17,6 +18,8 @@ public interface Config {
      * Register customized view renders. 
      */
     Config registerViewRenderClass(Class<? extends ViewRender> clz);
+
+    Config registerArgumentResolver(ArgumentResolver argumentResolver);
 
     /**
      * Register multi customized view renders.
@@ -98,6 +101,6 @@ public interface Config {
      *
      * @param jsonViewSerializerFactory
      */
-    void setJsonViewSerializerFactory(JSONSerializerFactory jsonViewSerializerFactory);
+    void setJsonSerializerFactory(JSONSerializerFactory jsonViewSerializerFactory);
 
 }

@@ -2,9 +2,12 @@ package org.agilej.sparkle.core.engine;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.agilej.sparkle.core.annotation.Singleton;
+import org.agilej.sparkle.core.argument.ArgumentResolver;
+import org.agilej.sparkle.core.config.ControllerFactoryConfiguration;
 import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
 import org.agilej.fava.FList;
@@ -22,8 +25,9 @@ public class ConfigImpl implements Config, ConfigResult {
 
     //TODO change collection type to Set
     private FList<Class<? extends ViewRender>> viewRenders = FLists.newEmptyList();
+    private FList<ArgumentResolver> argumentResolvers = FLists.newEmptyList();
     private FList<String> controllerPackages = FLists.newEmptyList();
-    private FList<Interceptor> interceptors = FLists.newEmptyList();
+    private FList<Interceptor> interceptors  = FLists.newEmptyList();
 
     private Class<? extends SessionStore> sessionStoreClass;
     private Class<? extends ControllerFactory> controllerFactoryClass;
@@ -33,13 +37,19 @@ public class ConfigImpl implements Config, ConfigResult {
 
     private String basePackage = "";
     private String secretBase;
-    private JSONSerializerFactory jsonViewSerializerFactory;
+    private JSONSerializerFactory jsonSerializerFactory;
 
     @Override
     public Config registerViewRenderClass(Class<? extends ViewRender> viewRenderClass) {
         if(!this.viewRenders.contains(viewRenderClass)){
             this.viewRenders.add(viewRenderClass);
         }
+        return this;
+    }
+
+    @Override
+    public Config registerArgumentResolver(ArgumentResolver argumentResolver) {
+        this.argumentResolvers.add(argumentResolver);
         return this;
     }
 
@@ -148,12 +158,17 @@ public class ConfigImpl implements Config, ConfigResult {
     }
 
     @Override
-    public JSONSerializerFactory jsonViewSerializerFactory() {
-        return this.jsonViewSerializerFactory;
+    public JSONSerializerFactory jsonSerializerFactory() {
+        return this.jsonSerializerFactory;
     }
 
     @Override
-    public void setJsonViewSerializerFactory(JSONSerializerFactory jsonViewSerializerFactory) {
-        this.jsonViewSerializerFactory = jsonViewSerializerFactory;
+    public void setJsonSerializerFactory(JSONSerializerFactory jsonSerializerFactory) {
+        this.jsonSerializerFactory = jsonSerializerFactory;
+    }
+
+    @Override
+    public List<ArgumentResolver> getCustomizedArgumentResolvers() {
+        return argumentResolvers.compact();
     }
 }

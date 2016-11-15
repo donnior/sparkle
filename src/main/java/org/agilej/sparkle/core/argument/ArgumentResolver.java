@@ -24,7 +24,7 @@ import org.agilej.sparkle.core.action.ActionMethodParameter;
 public interface ArgumentResolver {
 
     /**
-     * test whether current ArguentResolver support a argument definition
+     * test whether current ArgumentResolver support a argument definition
      * @param actionMethodParameter
      * @return
      */

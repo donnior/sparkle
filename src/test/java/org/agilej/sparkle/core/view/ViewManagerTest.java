@@ -15,7 +15,7 @@ public class ViewManagerTest {
 
     @Test
     public void test_build_in_view_renders(){
-        ViewRenderManager viewRenderManager = new ViewRenderManager();
+        ViewRenderRegistration viewRenderManager = new ViewRenderRegistration();
         List<ViewRender> viewRenders = viewRenderManager.getAllOrderedViewRenders();
         assertTrue(2 == viewRenders.size());
         assertEquals(JSONViewRender.class, viewRenders.get(0).getClass());
@@ -25,7 +25,7 @@ public class ViewManagerTest {
 
     @Test
     public void test_register_app_scoped_view_renders(){
-        ViewRenderManager viewRenderManager = new ViewRenderManager();
+        ViewRenderRegistration viewRenderManager = new ViewRenderRegistration();
 
         List<Class<? extends ViewRender>> viewRenderClasses = new ArrayList<>();
         viewRenderClasses.add(TestAppScopedViewRender.class);
@@ -39,7 +39,7 @@ public class ViewManagerTest {
 
     @Test
     public void test_register_vendor_view_renders(){
-        ViewRenderManager viewRenderManager = new ViewRenderManager();
+        ViewRenderRegistration viewRenderManager = new ViewRenderRegistration();
 
         List<ViewRender> viewRenderClasses = new ArrayList<>();
         viewRenderClasses.add(new TestAppScopedViewRender());

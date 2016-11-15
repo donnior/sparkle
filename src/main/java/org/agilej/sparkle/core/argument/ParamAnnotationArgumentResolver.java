@@ -10,9 +10,8 @@ import org.agilej.sparkle.util.ParamResolveUtil;
 
 /**
  * Argument resolver for argument annotated with {@link Param}
- *
  */
-public class SimpleArgumentResolver implements ArgumentResolver {
+public class ParamAnnotationArgumentResolver implements ArgumentResolver {
 
     @Override
     public boolean support(ActionMethodParameter actionMethodParameter) {

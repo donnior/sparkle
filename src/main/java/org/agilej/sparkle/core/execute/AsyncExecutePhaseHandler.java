@@ -13,16 +13,16 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
-public class AsyncPhaseHandler extends AbstractPhaseHandler {
+public class AsyncExecutePhaseHandler extends AbstractPhaseHandler {
 
     private ExecutorService asyncTaskExecutorService;
 
-    private final static Logger logger = LoggerFactory.getLogger(AsyncPhaseHandler.class);
+    private final static Logger logger = LoggerFactory.getLogger(AsyncExecutePhaseHandler.class);
 
     @Override
     public void handle(WebRequestExecutionContext context) {
         WebRequest webRequest = context.webRequest();
-        Object tempResult     = context.getControllerActionResult();
+        Object tempResult     = context.getActionResult();
 
         if(tempResult instanceof Callable){
             handleCallableResult(context, (Callable<Object>)tempResult);

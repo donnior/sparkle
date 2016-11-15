@@ -18,9 +18,9 @@ import java.util.List;
 
 public class ArgumentResolvePhaseHandler extends AbstractPhaseHandler {
 
-    private ActionMethodResolver actionMethodResolver;
-    private ArgumentResolverManager argumentResolverManager;
-    private ControllerInstanceResolver controllerInstanceResolver;
+    private ActionMethodResolver        actionMethodResolver;
+    private ArgumentResolverManager     argumentResolverManager;
+    private ControllerInstanceResolver  controllerInstanceResolver;
 
     private final static Logger logger = LoggerFactory.getLogger(ArgumentResolvePhaseHandler.class);
 

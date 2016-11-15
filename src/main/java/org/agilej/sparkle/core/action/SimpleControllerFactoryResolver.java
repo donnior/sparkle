@@ -1,7 +1,7 @@
 package org.agilej.sparkle.core.action;
 
 import org.agilej.reflection.ReflectionUtil;
-import org.agilej.sparkle.core.config.ConfigResult;
+import org.agilej.sparkle.core.config.ControllerFactoryConfiguration;
 import org.agilej.sparkle.core.support.GuiceControllerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class SimpleControllerFactoryResolver implements ControllerFactoryResolve
     private final static Logger logger = LoggerFactory.getLogger(SimpleControllerFactoryResolver.class);
 
     @Override
-    public ControllerFactory get(ConfigResult config) {
+    public ControllerFactory get(ControllerFactoryConfiguration config) {
         ControllerFactory controllerFactory = config.getControllerFactory();
 
         if((controllerFactory == null) && (config.getControllerFactoryClass() != null)){

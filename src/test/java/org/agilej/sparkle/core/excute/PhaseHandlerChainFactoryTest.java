@@ -37,10 +37,10 @@ public class PhaseHandlerChainFactoryTest {
         assertEquals(ArgumentResolvePhaseHandler.class, handler.getClass());
 
         handler = handler.next();
-        assertEquals(FirstAttemptExecutePhaseHandler.class, handler.getClass());
+        assertEquals(SyncExecutePhaseHandler.class, handler.getClass());
 
         handler = handler.next();
-        assertEquals(AsyncPhaseHandler.class, handler.getClass());
+        assertEquals(AsyncExecutePhaseHandler.class, handler.getClass());
 
         handler = handler.next();
         assertEquals(ViewRenderPhaseHandler.class, handler.getClass());

@@ -12,9 +12,14 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ControllerScanner {
+/**
+ * Classpath controller class scanner, will both scan class annotated with {@link Controller} or subclass of
+ * {@link ApplicationController}; after scanning each controller class will have name from {@link Controller}'s value
+ * or get from class name.
+ */
+public class ControllerClassScanner {
     
-    private final static Logger logger = LoggerFactory.getLogger(ControllerScanner.class);
+    private final static Logger logger = LoggerFactory.getLogger(ControllerClassScanner.class);
 
     private Map<String, Class<?>> controllers = new HashMap<String, Class<?>>();
     

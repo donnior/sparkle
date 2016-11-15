@@ -1,7 +1,9 @@
 package org.agilej.sparkle.support;
 
+import org.agilej.sparkle.core.argument.ArgumentResolver;
 import org.agilej.sparkle.core.config.ConfigResult;
 import org.agilej.sparkle.core.action.ControllerFactory;
+import org.agilej.sparkle.core.config.ControllerFactoryConfiguration;
 import org.agilej.sparkle.core.request.LocaleResolver;
 import org.agilej.sparkle.core.request.SessionStore;
 import org.agilej.sparkle.core.view.JSONSerializerFactory;
@@ -9,7 +11,9 @@ import org.agilej.sparkle.core.view.ViewRender;
 import org.agilej.sparkle.interceptor.Interceptor;
 import org.agilej.fava.FList;
 
-public class EmptyConfig implements ConfigResult {
+import java.util.List;
+
+public class EmptyConfig implements ConfigResult, ControllerFactoryConfiguration {
 
     @Override
     public String[] getControllerPackages() {
@@ -57,7 +61,12 @@ public class EmptyConfig implements ConfigResult {
     }
 
     @Override
-    public JSONSerializerFactory jsonViewSerializerFactory() {
+    public JSONSerializerFactory jsonSerializerFactory() {
+        return null;
+    }
+
+    @Override
+    public List<ArgumentResolver> getCustomizedArgumentResolvers() {
         return null;
     }
 }

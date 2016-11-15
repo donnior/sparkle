@@ -11,21 +11,18 @@ import java.util.concurrent.TimeUnit;
 public class WebRequestExecutionContext {
 
     private final WebRequest webRequest;
+
     private InterceptorExecutionChain interceptorExecutionChain;
-    private Stopwatch stopwatch = Stopwatch.createUnstarted();
     private RouteInfo route;
     private Object controller;
-    private Object controllerActionResult;
+    private Object actionResult;
     private ActionMethod actionMethod;
     private Object[] arguments;
 
-    public WebRequestExecutionContext(WebRequest webRequest){
-        this(webRequest, null);
-    }
+    private Stopwatch stopwatch = Stopwatch.createUnstarted();
 
-    public WebRequestExecutionContext(WebRequest webRequest, InterceptorExecutionChain ic) {
+    public WebRequestExecutionContext(WebRequest webRequest){
         this.webRequest = webRequest;
-        this.interceptorExecutionChain = ic;
     }
 
     public void startTimer(){
@@ -62,8 +59,8 @@ public class WebRequestExecutionContext {
         this.controller = controller;
     }
 
-    public void setControllerActionResult(Object controllerActionResult) {
-        this.controllerActionResult = controllerActionResult;
+    public void setActionResult(Object actionResult) {
+        this.actionResult = actionResult;
     }
 
     public Object getController() {
@@ -78,8 +75,8 @@ public class WebRequestExecutionContext {
         this.actionMethod = actionMethod;
     }
 
-    public Object getControllerActionResult() {
-        return controllerActionResult;
+    public Object getActionResult() {
+        return this.actionResult;
     }
 
     public void setInterceptorExecutionChain(InterceptorExecutionChain interceptorExecutionChain) {

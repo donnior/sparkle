@@ -20,7 +20,7 @@ import java.util.List;
  * </pre>
  *
  * Now the 'show' action method has one ActionMethodParameter, its 'paramName' is 'id',
- * 'paramType' is 'String', and has one annotaion called 'PathVariable'
+ * 'paramType' is 'String', and has one annotation called 'PathVariable'
  *
  */
 public interface ActionMethodParameter {

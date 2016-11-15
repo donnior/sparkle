@@ -11,9 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ControllersHolder implements ControllerClassResolver{
-    
-    private final static ControllersHolder instance = new ControllersHolder();
-    
+
     private Map<String, Class<?>> controllers = new HashMap<String, Class<?>>();
     
     private final static Logger logger = LoggerFactory.getLogger(ControllersHolder.class);
@@ -33,7 +31,6 @@ public class ControllersHolder implements ControllerClassResolver{
      */
     public Class<?> getControllerClass(String controllerName){
         Class controllerClass = this.controllers.get(controllerName);
-//        Preconditions.checkNotNull(controllerClass, "Can't find any controller class with name : %s", controllerName);
         if (controllerClass == null) {
             throw new RuntimeException("Can't find any controller class with name : " + controllerName);
         }

@@ -18,13 +18,13 @@ import org.agilej.reflection.ReflectionUtil;
  *
  *
  */
-public class ViewRenderManager {
+public class ViewRenderRegistration {
 
     private FList<ViewRender> builtInViewRenders = FLists.newEmptyList();
     private FList<ViewRender> vendorViewRenders = FLists.newEmptyList();
     private FList<ViewRender> appScopedViewRenders = FLists.newEmptyList();
     
-    public ViewRenderManager() {
+    public ViewRenderRegistration() {
         registerBuiltInViewRenders(builtInViewRenders);
     }
 

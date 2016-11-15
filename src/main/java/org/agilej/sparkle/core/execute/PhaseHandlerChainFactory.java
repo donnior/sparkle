@@ -21,17 +21,17 @@ public class PhaseHandlerChainFactory {
         InterceptorsPhaseHandler interceptorsHandler = interceptorsHandler(component.interceptors());
         RoutingPhaseHandler routingPhaseHandler      = routingPhaseHandler(component.routeBuilderResolver(), component.router());
         PathVariableResolvePhaseHandler pathVariableResolvePhaseHandler = pathVariableResolvePhaseHandler();
-        ArgumentResolvePhaseHandler argumentResolvePhaseHandler = argumentResolvePhaseHandler(component.actionMethodResolver(), component.argumentResolverManager(),
-                component.controllerInstanceResolver());
-        FirstAttemptExecutePhaseHandler firstAttemptExecutePhaseHandler = firstAttemptExecutePhaseHandler();
-        AsyncPhaseHandler asyncHandler = asyncHandler(component.asyncTaskExecutorService());
-        ViewRenderPhaseHandler viewRenderPhaseHandler = viewRenderPhaseHandler(component.viewRenderResolver());
+        ArgumentResolvePhaseHandler argumentResolvePhaseHandler         = argumentResolvePhaseHandler(component.actionMethodResolver(),
+                component.argumentResolverManager(), component.controllerInstanceResolver());
+        SyncExecutePhaseHandler syncExecutePhaseHandler   = syncExecutePhaseHandler();
+        AsyncExecutePhaseHandler asyncExecutePhaseHandler = asyncExecutePhaseHandler(component.asyncTaskExecutorService());
+        ViewRenderPhaseHandler viewRenderPhaseHandler     = viewRenderPhaseHandler(component.viewRenderResolver());
         EndLoopHandler endLoopHandler = endLoopHandler();
 
         AbstractPhaseHandler[] handlers = new AbstractPhaseHandler[]{
                 interceptorsHandler, routingPhaseHandler, pathVariableResolvePhaseHandler,
-                argumentResolvePhaseHandler, firstAttemptExecutePhaseHandler,
-                asyncHandler, viewRenderPhaseHandler, endLoopHandler
+                argumentResolvePhaseHandler, syncExecutePhaseHandler,
+                asyncExecutePhaseHandler, viewRenderPhaseHandler, endLoopHandler
         };
 
         for (int i = 0; i < handlers.length - 1; i++) {
@@ -67,7 +67,6 @@ public class PhaseHandlerChainFactory {
     private ArgumentResolvePhaseHandler argumentResolvePhaseHandler(ActionMethodResolver actionMethodResolver,
                                                                     ArgumentResolverManager argumentResolverManager,
                                                                     ControllerInstanceResolver controllerInstanceResolver){
-
         ArgumentResolvePhaseHandler handler = new ArgumentResolvePhaseHandler();
         handler.setControllerInstanceResolver(controllerInstanceResolver);
         handler.setActionMethodResolver(actionMethodResolver);
@@ -75,15 +74,15 @@ public class PhaseHandlerChainFactory {
         return handler;
     }
 
-    private FirstAttemptExecutePhaseHandler firstAttemptExecutePhaseHandler(){
-        FirstAttemptExecutePhaseHandler firstAttemptExecutePhaseHandler = new FirstAttemptExecutePhaseHandler();
-        return firstAttemptExecutePhaseHandler;
+    private SyncExecutePhaseHandler syncExecutePhaseHandler(){
+        SyncExecutePhaseHandler syncExecutePhaseHandler = new SyncExecutePhaseHandler();
+        return syncExecutePhaseHandler;
     }
 
-    private AsyncPhaseHandler asyncHandler(ExecutorService executorService){
-        AsyncPhaseHandler asyncHandler = new AsyncPhaseHandler();
-        asyncHandler.setAsyncTaskExecutorService(executorService);
-        return asyncHandler;
+    private AsyncExecutePhaseHandler asyncExecutePhaseHandler(ExecutorService executorService){
+        AsyncExecutePhaseHandler asyncExecutePhaseHandler = new AsyncExecutePhaseHandler();
+        asyncExecutePhaseHandler.setAsyncTaskExecutorService(executorService);
+        return asyncExecutePhaseHandler;
     }
 
     private ViewRenderPhaseHandler viewRenderPhaseHandler(ViewRenderResolver viewRenderResolver) {

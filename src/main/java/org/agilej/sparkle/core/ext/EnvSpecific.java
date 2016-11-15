@@ -7,11 +7,15 @@ public interface EnvSpecific {
 //
 //    ViewRenderManager getViewRendersManager();
 
-    ArgumentResolverManager getArgumentResolverManager();
+//    ArgumentResolverManager getArgumentResolverManager();
     
     RequestLifeCycleManager getLifeCycleManager();
 
     default VendorViewRenderProvider vendorViewRenderProvider(){
+        return null;
+    }
+
+    default VendorArgumentResolverProvider vendorArgumentResolverProvider() {
         return null;
     }
 

@@ -2,7 +2,6 @@ package org.agilej.sparkle.core.execute;
 
 import org.agilej.sparkle.core.WebRequestExecutionContext;
 import org.agilej.sparkle.core.annotation.Singleton;
-import org.agilej.sparkle.core.config.ConfigResult;
 
 import java.util.ArrayList;
 import java.util.List;
