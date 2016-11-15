@@ -4,6 +4,7 @@ import org.agilej.sparkle.Env;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.core.dev.RouteNotFoundHandler;
 import org.agilej.sparkle.core.WebRequestExecutionContext;
+import org.agilej.sparkle.core.route.RouteBuilderHolder;
 import org.agilej.sparkle.core.route.RouteBuilderResolver;
 import org.agilej.sparkle.core.route.RouteInfo;
 import org.agilej.sparkle.core.route.RouterImpl;
@@ -14,7 +15,7 @@ import org.slf4j.LoggerFactory;
 public class RoutingPhaseHandler extends AbstractPhaseHandler {
 
     private RouteBuilderResolver routeBuilderResolver;
-    private RouterImpl router;
+    private RouteBuilderHolder router;
 
     private final static Logger logger = LoggerFactory.getLogger(RoutingPhaseHandler.class);
 
@@ -41,7 +42,7 @@ public class RoutingPhaseHandler extends AbstractPhaseHandler {
         this.routeBuilderResolver = routeBuilderResolver;
     }
 
-    public void setRouter(RouterImpl router) {
+    public void setRouter(RouteBuilderHolder router) {
         this.router = router;
     }
 

@@ -84,4 +84,8 @@ public class SimpleRouteBuilderResolver implements RouteBuilderResolver{
         return matched.first();
     }
 
+    @Override
+    public RouteBuilderHolder routeBuilderHolder() {
+        return this.routeBuilderHolder;
+    }
 }

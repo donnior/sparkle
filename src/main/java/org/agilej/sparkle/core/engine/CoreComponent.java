@@ -6,6 +6,7 @@ import org.agilej.sparkle.core.argument.ArgumentResolver;
 import org.agilej.sparkle.core.argument.ArgumentResolverManager;
 import org.agilej.sparkle.core.method.ControllerClassResolver;
 import org.agilej.sparkle.core.method.ControllerInstanceResolver;
+import org.agilej.sparkle.core.route.RouteBuilderHolder;
 import org.agilej.sparkle.core.route.RouteBuilderResolver;
 import org.agilej.sparkle.core.route.RouterImpl;
 import org.agilej.sparkle.core.view.ViewRenderResolver;
@@ -20,7 +21,7 @@ public interface CoreComponent {
 
     RouteBuilderResolver routeBuilderResolver();
 
-    RouterImpl router();
+    RouteBuilderHolder router();
 
     ActionMethodResolver actionMethodResolver();
 

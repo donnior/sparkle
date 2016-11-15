@@ -5,6 +5,7 @@ import org.agilej.sparkle.core.annotation.Singleton;
 import org.agilej.sparkle.core.argument.ArgumentResolverManager;
 import org.agilej.sparkle.core.engine.CoreComponent;
 import org.agilej.sparkle.core.method.ControllerInstanceResolver;
+import org.agilej.sparkle.core.route.RouteBuilderHolder;
 import org.agilej.sparkle.core.route.RouteBuilderResolver;
 import org.agilej.sparkle.core.route.RouterImpl;
 import org.agilej.sparkle.core.view.ViewRenderResolver;
@@ -52,7 +53,7 @@ public class PhaseHandlerChainFactory {
         return interceptorsHandler;
     }
 
-    private RoutingPhaseHandler routingPhaseHandler(RouteBuilderResolver routeBuilderResolver, RouterImpl router){
+    private RoutingPhaseHandler routingPhaseHandler(RouteBuilderResolver routeBuilderResolver, RouteBuilderHolder router){
         RoutingPhaseHandler routingPhaseHandler = new RoutingPhaseHandler();
         routingPhaseHandler.setRouteBuilderResolver(routeBuilderResolver);
         routingPhaseHandler.setRouter(router);

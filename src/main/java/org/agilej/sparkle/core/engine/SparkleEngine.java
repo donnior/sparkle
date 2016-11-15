@@ -7,25 +7,20 @@ import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.config.Application;
 import org.agilej.sparkle.core.WebRequestExecutionContext;
 import org.agilej.sparkle.core.action.ActionMethodResolver;
-import org.agilej.sparkle.core.action.ControllerFactory;
-import org.agilej.sparkle.core.action.SimpleControllerFactoryResolver;
 import org.agilej.sparkle.core.argument.ArgumentResolverManager;
-import org.agilej.sparkle.core.argument.ArgumentResolverRegistration;
-import org.agilej.sparkle.core.argument.SimpleArgumentResolverManager;
 import org.agilej.sparkle.core.config.ConfigResult;
+import org.agilej.sparkle.core.engine.component.ArgumentResolverComponentInitializer;
+import org.agilej.sparkle.core.engine.component.ControllerResolverComponentInitializer;
+import org.agilej.sparkle.core.engine.component.RouterComponentInitializer;
+import org.agilej.sparkle.core.engine.component.ViewRenderResolverComponentInitializer;
 import org.agilej.sparkle.core.execute.PhaseHandlerChain;
 import org.agilej.sparkle.core.execute.PhaseHandlerChainFactory;
 import org.agilej.sparkle.core.ext.EnvSpecific;
-import org.agilej.sparkle.core.ext.VendorArgumentResolverProvider;
-import org.agilej.sparkle.core.ext.VendorViewRenderProvider;
 import org.agilej.sparkle.core.method.*;
 import org.agilej.sparkle.core.request.*;
 import org.agilej.sparkle.core.route.*;
-import org.agilej.sparkle.core.view.SimpleViewRenderResolver;
-import org.agilej.sparkle.core.view.ViewRenderRegistration;
 import org.agilej.sparkle.core.view.ViewRenderResolver;
 import org.agilej.sparkle.interceptor.Interceptor;
-import org.agilej.sparkle.route.RouteModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,17 +35,16 @@ public class SparkleEngine implements CoreComponent{
 
     private List<Interceptor> interceptors;
 
-    private RouterImpl router;
     private ConfigImpl config;
 
-    private ControllerFactory controllerFactory;
     private RouteBuilderResolver routeBuilderResolver;
-
     private ControllerInstanceResolver controllerInstanceResolver;
     private ActionMethodResolver actionMethodResolver;
     private ViewRenderResolver viewRenderResolver;
     private ArgumentResolverManager argumentResolverManager;
     private ExecutorService asyncTaskExecutorService;
+
+    private PhaseHandlerChain phaseHandlerChain;
 
     private EnvSpecific envSpecific;
 
@@ -65,15 +59,6 @@ public class SparkleEngine implements CoreComponent{
         this.envSpecific             = envSpecific;
         this.config                  = new ConfigImpl();
         this.interceptors            = new ArrayList<Interceptor>();
-
-        this.router                  = new RouterImpl();
-        this.routeBuilderResolver    = new SimpleRouteBuilderResolver(this.router);
-
-        this.controllerFactory       = new SimpleControllerFactoryResolver().get(this.config);
-
-        this.actionMethodResolver    = new ActionMethodResolver();
-
-//        this.argumentResolverManager = this.envSpecific.getArgumentResolverManager();
 
         this.asyncTaskExecutorService = Executors.newCachedThreadPool(); //.newFixedThreadPool(100);
 
@@ -98,6 +83,7 @@ public class SparkleEngine implements CoreComponent{
         initViewRenderComponent(config);
         initArgumentResolverComponent(config);
         initControllerResolverComponent(config);
+        initActionMethodResolverComponent(config);
         installRouterComponent();
         initInterceptorComponent(config);
         initSessionStoreComponent(config);
@@ -120,53 +106,26 @@ public class SparkleEngine implements CoreComponent{
         this.interceptors.addAll(config.getInterceptors());
     }
 
+    private void initActionMethodResolverComponent(ConfigResult config) {
+        this.actionMethodResolver = new ActionMethodResolver();
+    }
+
     private void initArgumentResolverComponent(ConfigResult config){
-        ArgumentResolverRegistration registration = new ArgumentResolverRegistration();
-        registration.registerAppScopedArgumentResolver(config.getCustomizedArgumentResolvers());
-
-        VendorArgumentResolverProvider vendorArgumentResolverProvider = this.envSpecific.vendorArgumentResolverProvider();
-        if (vendorArgumentResolverProvider != null) {
-            registration.registerVendorArgumentResolvers(vendorArgumentResolverProvider.vendorArgumentResolvers());
-        }
-
-        SimpleArgumentResolverManager argumentResolverManager = new SimpleArgumentResolverManager();
-        argumentResolverManager.registerArgumentResolvers(registration.getAllOrderedArgumentResolvers());
-
-        this.argumentResolverManager = argumentResolverManager;
-
+        this.argumentResolverManager =
+                new ArgumentResolverComponentInitializer().initializeComponent(config, this.envSpecific);
     }
     private void initViewRenderComponent(ConfigResult config) {
-        ViewRenderRegistration viewRenderRegistration = new ViewRenderRegistration();
-        viewRenderRegistration.registerAppScopedViewRender(config.getCustomizedViewRenders());
-
-        VendorViewRenderProvider vendorViewRenderProvider = this.envSpecific.vendorViewRenderProvider();
-        if (vendorViewRenderProvider != null){
-            viewRenderRegistration.registerVendorViewRenders(vendorViewRenderProvider.vendorViewRenders());
-        }
-        //TODO remove ViewRenderManager, inject Config to SimpleViewRenderResolver directly and resolve all renders
-        this.viewRenderResolver = new SimpleViewRenderResolver(viewRenderRegistration.getAllOrderedViewRenders());
+        this.viewRenderResolver =
+                new ViewRenderResolverComponentInitializer().initializeComponent(config, this.envSpecific);
     }
 
     private void initControllerResolverComponent(ConfigResult config) {
-        //TODO how to deal with multi controller packages
-        Map<String, Class<?>> scannedControllers = new ControllerClassScanner().scanControllers(this.config.getBasePackage());
-
-        ControllerClassResolver controllerClassResolver = new ControllersHolder();
-        controllerClassResolver.registerControllers(scannedControllers, true);
-
-        SimpleControllerInstanceResolver simpleControllerInstanceResolver = new SimpleControllerInstanceResolver();
-        simpleControllerInstanceResolver.setControllerFactory(this.controllerFactory);
-        simpleControllerInstanceResolver.setControllerClassResolver(controllerClassResolver);
-        this.controllerInstanceResolver = simpleControllerInstanceResolver;
+        this.controllerInstanceResolver =
+                new ControllerResolverComponentInitializer().initializeComponent(config, this.envSpecific);
     }
 
     private void installRouterComponent() {
-        String routePackage = "";
-        List<RouteModule> routeModules = new RouteModuleScanner().scanRouteModule(routePackage);
-        this.router.install(routeModules);
-        for(RouteBuilder rb : this.router.getRegisteredRouteBuilders()){
-            logger.info("Registered route : {}", rb.toString());
-        }
+        this.routeBuilderResolver = new RouterComponentInitializer().initializeComponent(config, this.envSpecific);
     }
 
     private Application scanApplication() {
@@ -177,10 +136,15 @@ public class SparkleEngine implements CoreComponent{
     public void doService(final WebRequest webRequest, HTTPMethod method){
         logger.info("Start process request : {} {}", webRequest.getMethod(), webRequest.getPath());
 
-        WebRequestExecutionContext ctx      = new WebRequestExecutionContext(webRequest);
-        PhaseHandlerChain phaseHandlerChain = new PhaseHandlerChainFactory().phaseHandlerChain(this);
+        WebRequestExecutionContext ctx = new WebRequestExecutionContext(webRequest);
+        phaseHandlerChain().startPhaseHandle(ctx);
+    }
 
-        phaseHandlerChain.startPhaseHandle(ctx);
+    private PhaseHandlerChain phaseHandlerChain() {
+        if (this.phaseHandlerChain == null) {
+            this.phaseHandlerChain = new PhaseHandlerChainFactory().phaseHandlerChain(this);
+        }
+        return this.phaseHandlerChain;
     }
 
     public void shutdown(){
@@ -198,8 +162,8 @@ public class SparkleEngine implements CoreComponent{
     }
 
     @Override
-    public RouterImpl router() {
-        return this.router;
+    public RouteBuilderHolder router() {
+        return this.routeBuilderResolver.routeBuilderHolder();
     }
 
     @Override

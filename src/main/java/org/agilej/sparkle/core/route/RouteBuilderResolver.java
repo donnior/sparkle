@@ -13,5 +13,7 @@ public interface RouteBuilderResolver {
      * @return
      */
     RouteBuilder match(final WebRequest request);
+
+    RouteBuilderHolder routeBuilderHolder();
     
 }
