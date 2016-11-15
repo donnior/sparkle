@@ -16,8 +16,8 @@ public class WebRequestExecutionContext {
     private RouteInfo route;
     private Object controller;
     private Object controllerActionResult;
-    private Object viewResult;
     private ActionMethod actionMethod;
+    private Object[] arguments;
 
     public WebRequestExecutionContext(WebRequest webRequest){
         this(webRequest, null);
@@ -28,11 +28,11 @@ public class WebRequestExecutionContext {
         this.interceptorExecutionChain = ic;
     }
 
-    public void startTimer(String timerName){
+    public void startTimer(){
         this.stopwatch.start();
     }
 
-    public void endTimer(String timerName){
+    public void endTimer(){
         this.stopwatch.stop();
         long time = stopwatch.elapsed(TimeUnit.MILLISECONDS);
         stopwatch.reset();
@@ -66,10 +66,6 @@ public class WebRequestExecutionContext {
         this.controllerActionResult = controllerActionResult;
     }
 
-    public Object getViewResult() {
-        return viewResult;
-    }
-
     public Object getController() {
         return controller;
     }
@@ -88,5 +84,13 @@ public class WebRequestExecutionContext {
 
     public void setInterceptorExecutionChain(InterceptorExecutionChain interceptorExecutionChain) {
         this.interceptorExecutionChain = interceptorExecutionChain;
+    }
+
+    public void setArguments(Object[] arguments) {
+        this.arguments = arguments;
+    }
+
+    public Object[] getArguments() {
+        return arguments;
     }
 }

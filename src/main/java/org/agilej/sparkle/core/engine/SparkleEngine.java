@@ -162,9 +162,9 @@ public class SparkleEngine implements CoreComponent{
     }
 
     public void doService(final WebRequest webRequest, HTTPMethod method){
-        logger.info("Processing request : {} {}", webRequest.getMethod(), webRequest.getPath());
-        WebRequestExecutionContext ctx = new WebRequestExecutionContext(webRequest);
+        logger.info("Start process request : {} {}", webRequest.getMethod(), webRequest.getPath());
 
+        WebRequestExecutionContext ctx      = new WebRequestExecutionContext(webRequest);
         PhaseHandlerChain phaseHandlerChain = new PhaseHandlerChainFactory().phaseHandlerChain(this);
 
         phaseHandlerChain.startPhaseHandle(ctx);

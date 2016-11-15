@@ -21,4 +21,8 @@ public class PhaseHandlerChain {
         this.startPhaseHandler.handle(context);
     }
 
+    public PhaseHandler firstHandler() {
+        return this.startPhaseHandler;
+    }
+
 }

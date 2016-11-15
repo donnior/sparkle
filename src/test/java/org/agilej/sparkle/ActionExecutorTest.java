@@ -7,13 +7,13 @@ import org.agilej.sparkle.core.method.ActionExecutor;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SparkleActionExecutorTest {
+public class ActionExecutorTest {
 
     private ActionExecutor executor;
     
     @Before
     public void setup(){
-        this.executor = new ActionExecutor(null);
+        this.executor = new ActionExecutor();
     }
     
     @Test

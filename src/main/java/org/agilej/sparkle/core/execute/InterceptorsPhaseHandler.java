@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class InterceptorsHandler extends AbstractPhaseHandler {
+public class InterceptorsPhaseHandler extends AbstractPhaseHandler {
 
     private List<Interceptor> interceptors;
 
-    private final static Logger logger = LoggerFactory.getLogger(InterceptorsHandler.class);
+    private final static Logger logger = LoggerFactory.getLogger(InterceptorsPhaseHandler.class);
 
     @Override
     public void handle(WebRequestExecutionContext context) {

@@ -3,7 +3,6 @@ package org.agilej.sparkle.core.execute;
 import org.agilej.sparkle.Env;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.async.DeferredResult;
-import org.agilej.sparkle.core.action.ActionMethod;
 import org.agilej.sparkle.core.dev.ExceptionHandler;
 import org.agilej.sparkle.core.WebRequestExecutionContext;
 import org.slf4j.Logger;
@@ -12,14 +11,13 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-public class AsyncHandler extends AbstractPhaseHandler {
+public class AsyncPhaseHandler extends AbstractPhaseHandler {
 
     private ExecutorService asyncTaskExecutorService;
 
-    private final static Logger logger = LoggerFactory.getLogger(AsyncHandler.class);
+    private final static Logger logger = LoggerFactory.getLogger(AsyncPhaseHandler.class);
 
     @Override
     public void handle(WebRequestExecutionContext context) {
