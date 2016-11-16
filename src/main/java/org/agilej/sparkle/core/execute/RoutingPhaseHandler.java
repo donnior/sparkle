@@ -12,6 +12,9 @@ import org.agilej.sparkle.http.HTTPStatusCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * resolve route info for request, if not found render http 404
+ */
 public class RoutingPhaseHandler extends AbstractPhaseHandler {
 
     private RouteBuilderResolver routeBuilderResolver;
