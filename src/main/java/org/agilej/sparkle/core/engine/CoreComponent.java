@@ -1,14 +1,10 @@
 package org.agilej.sparkle.core.engine;
 
 import org.agilej.sparkle.core.action.ActionMethodResolver;
-import org.agilej.sparkle.core.action.ControllerFactory;
-import org.agilej.sparkle.core.argument.ArgumentResolver;
-import org.agilej.sparkle.core.argument.ArgumentResolverManager;
-import org.agilej.sparkle.core.method.ControllerClassResolver;
-import org.agilej.sparkle.core.method.ControllerInstanceResolver;
+import org.agilej.sparkle.core.argument.ArgumentResolverResolver;
+import org.agilej.sparkle.core.method.ControllerResolver;
 import org.agilej.sparkle.core.route.RouteBuilderHolder;
 import org.agilej.sparkle.core.route.RouteBuilderResolver;
-import org.agilej.sparkle.core.route.RouterImpl;
 import org.agilej.sparkle.core.view.ViewRenderResolver;
 import org.agilej.sparkle.interceptor.Interceptor;
 
@@ -25,11 +21,11 @@ public interface CoreComponent {
 
     ActionMethodResolver actionMethodResolver();
 
-    ArgumentResolverManager argumentResolverManager();
+    ArgumentResolverResolver argumentResolverResolver();
 
     ViewRenderResolver viewRenderResolver();
 
-    ControllerInstanceResolver controllerInstanceResolver();
+    ControllerResolver controllerInstanceResolver();
 
     ExecutorService asyncTaskExecutorService();
 

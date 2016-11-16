@@ -8,8 +8,8 @@ import org.agilej.sparkle.core.WebRequestExecutionContext;
 import org.agilej.sparkle.core.action.ActionMethod;
 import org.agilej.sparkle.core.action.ActionMethodParameter;
 import org.agilej.sparkle.core.action.ActionMethodResolver;
-import org.agilej.sparkle.core.argument.ArgumentResolverManager;
-import org.agilej.sparkle.core.method.ControllerInstanceResolver;
+import org.agilej.sparkle.core.argument.ArgumentResolverResolver;
+import org.agilej.sparkle.core.method.ControllerResolver;
 import org.agilej.sparkle.core.route.RouteInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +19,8 @@ import java.util.List;
 public class ArgumentResolvePhaseHandler extends AbstractPhaseHandler {
 
     private ActionMethodResolver        actionMethodResolver;
-    private ArgumentResolverManager     argumentResolverManager;
-    private ControllerInstanceResolver  controllerInstanceResolver;
+    private ArgumentResolverResolver    argumentResolverResolver;
+    private ControllerResolver          controllerInstanceResolver;
 
     private final static Logger logger = LoggerFactory.getLogger(ArgumentResolvePhaseHandler.class);
 
@@ -65,7 +65,7 @@ public class ArgumentResolvePhaseHandler extends AbstractPhaseHandler {
         List<ActionMethodParameter> amps = actionMethod.parameters();
         Object[] params = FLists.create(amps).collect(new Function<ActionMethodParameter, Object>() {
             public Object apply(ActionMethodParameter amp) {
-                return argumentResolverManager.resolve(amp, context.webRequest());
+                return argumentResolverResolver.resolve(amp).resolve(amp, context.webRequest());
             }
         }).toArray();
         return params;
@@ -75,11 +75,11 @@ public class ArgumentResolvePhaseHandler extends AbstractPhaseHandler {
         this.actionMethodResolver = actionMethodResolver;
     }
 
-    public void setArgumentResolverManager(ArgumentResolverManager argumentResolverManager) {
-        this.argumentResolverManager = argumentResolverManager;
+    public void setArgumentResolverResolver(ArgumentResolverResolver argumentResolverResolver) {
+        this.argumentResolverResolver = argumentResolverResolver;
     }
 
-    public void setControllerInstanceResolver(ControllerInstanceResolver controllerInstanceResolver) {
+    public void setControllerInstanceResolver(ControllerResolver controllerInstanceResolver) {
         this.controllerInstanceResolver = controllerInstanceResolver;
     }
 }

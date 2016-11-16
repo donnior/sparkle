@@ -2,12 +2,11 @@ package org.agilej.sparkle.core.execute;
 
 import org.agilej.sparkle.core.action.ActionMethodResolver;
 import org.agilej.sparkle.core.annotation.Singleton;
-import org.agilej.sparkle.core.argument.ArgumentResolverManager;
+import org.agilej.sparkle.core.argument.ArgumentResolverResolver;
 import org.agilej.sparkle.core.engine.CoreComponent;
-import org.agilej.sparkle.core.method.ControllerInstanceResolver;
+import org.agilej.sparkle.core.method.ControllerResolver;
 import org.agilej.sparkle.core.route.RouteBuilderHolder;
 import org.agilej.sparkle.core.route.RouteBuilderResolver;
-import org.agilej.sparkle.core.route.RouterImpl;
 import org.agilej.sparkle.core.view.ViewRenderResolver;
 import org.agilej.sparkle.interceptor.Interceptor;
 
@@ -23,7 +22,7 @@ public class PhaseHandlerChainFactory {
         RoutingPhaseHandler routingPhaseHandler      = routingPhaseHandler(component.routeBuilderResolver(), component.router());
         PathVariableResolvePhaseHandler pathVariableResolvePhaseHandler = pathVariableResolvePhaseHandler();
         ArgumentResolvePhaseHandler argumentResolvePhaseHandler         = argumentResolvePhaseHandler(component.actionMethodResolver(),
-                component.argumentResolverManager(), component.controllerInstanceResolver());
+                component.argumentResolverResolver(), component.controllerInstanceResolver());
         SyncExecutePhaseHandler syncExecutePhaseHandler   = syncExecutePhaseHandler();
         AsyncExecutePhaseHandler asyncExecutePhaseHandler = asyncExecutePhaseHandler(component.asyncTaskExecutorService());
         ViewRenderPhaseHandler viewRenderPhaseHandler     = viewRenderPhaseHandler(component.viewRenderResolver());
@@ -66,12 +65,12 @@ public class PhaseHandlerChainFactory {
     }
 
     private ArgumentResolvePhaseHandler argumentResolvePhaseHandler(ActionMethodResolver actionMethodResolver,
-                                                                    ArgumentResolverManager argumentResolverManager,
-                                                                    ControllerInstanceResolver controllerInstanceResolver){
+                                                                    ArgumentResolverResolver argumentResolverManager,
+                                                                    ControllerResolver controllerInstanceResolver){
         ArgumentResolvePhaseHandler handler = new ArgumentResolvePhaseHandler();
         handler.setControllerInstanceResolver(controllerInstanceResolver);
         handler.setActionMethodResolver(actionMethodResolver);
-        handler.setArgumentResolverManager(argumentResolverManager);
+        handler.setArgumentResolverResolver(argumentResolverManager);
         return handler;
     }
 

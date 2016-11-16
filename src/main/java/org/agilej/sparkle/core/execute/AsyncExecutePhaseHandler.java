@@ -13,6 +13,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
+/**
+ * async action result execution handler internally use a configurable {@link ExecutorService};
+ * if the action result is not asynchronous will directly forward to next phase handler.
+ */
 public class AsyncExecutePhaseHandler extends AbstractPhaseHandler {
 
     private ExecutorService asyncTaskExecutorService;
@@ -84,8 +88,7 @@ public class AsyncExecutePhaseHandler extends AbstractPhaseHandler {
                                    final Consumer succeedConsumer,
                                    final Consumer<Throwable> errorConsumer){
 
-        CompletableFuture
-                .supplyAsync(() -> {
+        CompletableFuture.supplyAsync(() -> {
                     try {
                         return callable.call();
                     } catch (Exception e) {
@@ -98,10 +101,11 @@ public class AsyncExecutePhaseHandler extends AbstractPhaseHandler {
                     } else {
                         errorConsumer.accept(ex.getCause());
                     }
-                });  //TODO deal the order completeAsync and execute after filters
+                });
     }
 
     public void setAsyncTaskExecutorService(ExecutorService asyncTaskExecutorService) {
         this.asyncTaskExecutorService = asyncTaskExecutorService;
     }
+
 }

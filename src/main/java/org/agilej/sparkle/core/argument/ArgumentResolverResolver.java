@@ -6,12 +6,12 @@ import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.core.action.ActionMethodParameter;
 
 /**
- * one argument resolver manager hold lots of argument resolver, and use the match
+ * resolver for argument resolver manager hold lots of argument resolver, and use the match
  * one to resolve argument
  */
-public interface ArgumentResolverManager {
-    
-    Object resolve(ActionMethodParameter parameter, WebRequest request);
+public interface ArgumentResolverResolver {
+
+    ArgumentResolver resolve(ActionMethodParameter parameter);
 
     /*
     List<ArgumentResolver> registeredResolvers();

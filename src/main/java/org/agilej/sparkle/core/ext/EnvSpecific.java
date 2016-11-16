@@ -1,6 +1,5 @@
 package org.agilej.sparkle.core.ext;
 
-import org.agilej.sparkle.core.argument.ArgumentResolverManager;
 import org.agilej.sparkle.core.engine.RequestLifeCycleManager;
 
 public interface EnvSpecific {

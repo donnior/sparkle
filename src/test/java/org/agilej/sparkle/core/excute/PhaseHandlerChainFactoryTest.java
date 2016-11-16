@@ -1,10 +1,10 @@
 package org.agilej.sparkle.core.excute;
 
 import org.agilej.sparkle.core.action.ActionMethodResolver;
-import org.agilej.sparkle.core.argument.ArgumentResolverManager;
+import org.agilej.sparkle.core.argument.ArgumentResolverResolver;
 import org.agilej.sparkle.core.engine.CoreComponent;
 import org.agilej.sparkle.core.execute.*;
-import org.agilej.sparkle.core.method.ControllerInstanceResolver;
+import org.agilej.sparkle.core.method.ControllerResolver;
 import org.agilej.sparkle.core.route.RouteBuilderResolver;
 import org.agilej.sparkle.core.route.RouterImpl;
 import org.agilej.sparkle.core.view.ViewRenderResolver;
@@ -73,7 +73,7 @@ public class PhaseHandlerChainFactoryTest {
             }
 
             @Override
-            public ArgumentResolverManager argumentResolverManager() {
+            public ArgumentResolverResolver argumentResolverResolver() {
                 return null;
             }
 
@@ -83,7 +83,7 @@ public class PhaseHandlerChainFactoryTest {
             }
 
             @Override
-            public ControllerInstanceResolver controllerInstanceResolver() {
+            public ControllerResolver controllerInstanceResolver() {
                 return null;
             }
 

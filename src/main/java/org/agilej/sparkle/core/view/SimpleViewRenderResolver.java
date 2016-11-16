@@ -22,7 +22,7 @@ public class SimpleViewRenderResolver implements ViewRenderResolver{
     
     public SimpleViewRenderResolver(List<ViewRender> renders) {
         this.viewRenders.addAll(renders);
-        logger.debug("ViewRenderResolver created with all ordered view renders : {}",
+        logger.debug("Registered view renders : {}",
                 this.viewRenders.map(e -> e.getClass().getSimpleName()));
     }
     
@@ -32,10 +32,10 @@ public class SimpleViewRenderResolver implements ViewRenderResolver{
             @Override
             public boolean apply(ViewRender viewRender) {
                 boolean isViewRenderSupportResult = viewRender.supportActionMethod(actionMethod, result);
-                logger.debug("{} match action result [{}] : {}", 
-                        viewRender.getClass().getSimpleName(),
-                        result.getClass().getName(),
-                        isViewRenderSupportResult ? "succeed" : "failed");
+                if (isViewRenderSupportResult && logger.isDebugEnabled()) {
+                    logger.debug("Found view render {} for result : {}",
+                            viewRender.getClass().getSimpleName(),  result.getClass().getSimpleName());
+                }
                 return isViewRenderSupportResult;
             }
         });

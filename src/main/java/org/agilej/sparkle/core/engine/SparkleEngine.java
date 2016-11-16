@@ -7,7 +7,7 @@ import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.config.Application;
 import org.agilej.sparkle.core.WebRequestExecutionContext;
 import org.agilej.sparkle.core.action.ActionMethodResolver;
-import org.agilej.sparkle.core.argument.ArgumentResolverManager;
+import org.agilej.sparkle.core.argument.ArgumentResolverResolver;
 import org.agilej.sparkle.core.config.ConfigResult;
 import org.agilej.sparkle.core.engine.component.ArgumentResolverComponentInitializer;
 import org.agilej.sparkle.core.engine.component.ControllerResolverComponentInitializer;
@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -38,10 +37,10 @@ public class SparkleEngine implements CoreComponent{
     private ConfigImpl config;
 
     private RouteBuilderResolver routeBuilderResolver;
-    private ControllerInstanceResolver controllerInstanceResolver;
+    private ControllerResolver controllerResolver;
     private ActionMethodResolver actionMethodResolver;
     private ViewRenderResolver viewRenderResolver;
-    private ArgumentResolverManager argumentResolverManager;
+    private ArgumentResolverResolver argumentResolverResolver;
     private ExecutorService asyncTaskExecutorService;
 
     private PhaseHandlerChain phaseHandlerChain;
@@ -111,7 +110,7 @@ public class SparkleEngine implements CoreComponent{
     }
 
     private void initArgumentResolverComponent(ConfigResult config){
-        this.argumentResolverManager =
+        this.argumentResolverResolver =
                 new ArgumentResolverComponentInitializer().initializeComponent(config, this.envSpecific);
     }
     private void initViewRenderComponent(ConfigResult config) {
@@ -120,7 +119,7 @@ public class SparkleEngine implements CoreComponent{
     }
 
     private void initControllerResolverComponent(ConfigResult config) {
-        this.controllerInstanceResolver =
+        this.controllerResolver =
                 new ControllerResolverComponentInitializer().initializeComponent(config, this.envSpecific);
     }
 
@@ -172,13 +171,13 @@ public class SparkleEngine implements CoreComponent{
     }
 
     @Override
-    public ArgumentResolverManager argumentResolverManager() {
-        return this.argumentResolverManager;
+    public ArgumentResolverResolver argumentResolverResolver() {
+        return this.argumentResolverResolver;
     }
 
     @Override
-    public ControllerInstanceResolver controllerInstanceResolver() {
-        return this.controllerInstanceResolver;
+    public ControllerResolver controllerInstanceResolver() {
+        return this.controllerResolver;
     }
 
     @Override

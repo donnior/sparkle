@@ -1,15 +1,14 @@
 package org.agilej.sparkle.core.method;
 
-import org.agilej.sparkle.annotation.Controller;
 import org.agilej.sparkle.core.action.ControllerFactory;
 import org.agilej.sparkle.core.route.RouteInfo;
 import org.agilej.sparkle.exception.SparkleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SimpleControllerInstanceResolver implements ControllerInstanceResolver {
+public class SimpleControllerResolver implements ControllerResolver {
 
-    private final static Logger logger = LoggerFactory.getLogger(SimpleControllerInstanceResolver.class);
+    private final static Logger logger = LoggerFactory.getLogger(SimpleControllerResolver.class);
 
     private ControllerClassResolver controllerClassResolver;
     private ControllerFactory controllerFactory;

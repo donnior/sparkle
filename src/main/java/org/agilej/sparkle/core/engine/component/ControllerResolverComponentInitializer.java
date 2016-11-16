@@ -8,7 +8,7 @@ import org.agilej.sparkle.core.ext.EnvSpecific;
 import org.agilej.sparkle.core.method.ControllerClassResolver;
 import org.agilej.sparkle.core.method.ControllerClassScanner;
 import org.agilej.sparkle.core.method.ControllersHolder;
-import org.agilej.sparkle.core.method.SimpleControllerInstanceResolver;
+import org.agilej.sparkle.core.method.SimpleControllerResolver;
 
 import java.util.Map;
 
@@ -24,7 +24,7 @@ public class ControllerResolverComponentInitializer implements ComponentInitiali
 
         ControllerFactory controllerFactory = new SimpleControllerFactoryResolver().get(config);
 
-        SimpleControllerInstanceResolver simpleControllerInstanceResolver = new SimpleControllerInstanceResolver();
+        SimpleControllerResolver simpleControllerInstanceResolver = new SimpleControllerResolver();
         simpleControllerInstanceResolver.setControllerFactory(controllerFactory);
         simpleControllerInstanceResolver.setControllerClassResolver(controllerClassResolver);
         return (T) simpleControllerInstanceResolver;

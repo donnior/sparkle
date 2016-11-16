@@ -25,14 +25,13 @@ public class RoutingPhaseHandler extends AbstractPhaseHandler {
         RouteInfo rd = this.routeBuilderResolver.match(webRequest);
 
         if(rd == null){
-            logger.info("Could not find route for request : [{} {}] \n", webRequest.getMethod(), webRequest.getPath());
+            logger.error("Could not find route for request : [{} {}]", webRequest.getMethod(), webRequest.getPath());
             webRequest.getWebResponse().setStatus(HTTPStatusCode.NOT_FOUND);
             if (Env.isDev()){
                 new RouteNotFoundHandler(this.router).handle(webRequest);
             }
             this.postHandle(context);
         } else {
-            logger.debug("Found route for request : [{} {}] \n", webRequest.getMethod(), webRequest.getPath());
             context.setRoute(rd);
             forwardToNext(context);
         }
