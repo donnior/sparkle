@@ -1,6 +1,6 @@
 package org.agilej.sparkle.core.config;
 
-import org.agilej.sparkle.core.request.SessionStore;
+import org.agilej.sparkle.mvc.SessionStore;
 
 public interface SessionStoreConfiguration {
 

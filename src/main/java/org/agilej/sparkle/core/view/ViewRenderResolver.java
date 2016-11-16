@@ -1,9 +1,10 @@
 package org.agilej.sparkle.core.view;
 
-import org.agilej.sparkle.core.action.ActionMethod;
+import org.agilej.sparkle.mvc.ActionMethod;
+import org.agilej.sparkle.mvc.ViewRender;
 
 /**
- * Get the appropriate ViewRender for action result.
+ * Get the appropriate ViewRender for handler result.
  *
  * @see {@link SimpleViewRenderResolver}
  */

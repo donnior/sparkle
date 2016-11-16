@@ -84,7 +84,7 @@ public class ValueConverter {
             return Double.valueOf(string);
         }
         else{
-            throw new RuntimeException("action method argument not support type of " + componentType.getSimpleName());
+            throw new RuntimeException("handler method handler not support type of " + componentType.getSimpleName());
         }
     }
 

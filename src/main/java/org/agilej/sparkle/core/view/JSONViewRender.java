@@ -5,14 +5,15 @@ import java.io.IOException;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.WebResponse;
 import org.agilej.sparkle.annotation.Json;
-import org.agilej.sparkle.core.action.ActionMethod;
+import org.agilej.sparkle.mvc.ActionMethod;
 
 
 import org.agilej.jsonty.JSONBuilder;
 import org.agilej.jsonty.JSONModel;
+import org.agilej.sparkle.mvc.ViewRender;
 
 /**
- * View render for render json result, support the action method annotated with {@link Json} or the return type is
+ * View render for render json result, support the handler method annotated with {@link Json} or the return type is
  * {@link JSONModel}. If the return type is {@link JSONModel}, this view render will use Jsonty to generate the result,
  * if the return type is not {@link JSONModel}, this view render will use google Gson to generate the result.
  */

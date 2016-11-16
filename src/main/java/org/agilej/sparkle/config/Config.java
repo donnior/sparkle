@@ -1,13 +1,13 @@
 package org.agilej.sparkle.config;
 
 import org.agilej.sparkle.Env;
-import org.agilej.sparkle.core.action.ControllerFactory;
-import org.agilej.sparkle.core.argument.ArgumentResolver;
-import org.agilej.sparkle.core.request.LocaleResolver;
-import org.agilej.sparkle.core.request.SessionStore;
+import org.agilej.sparkle.mvc.ControllerFactory;
+import org.agilej.sparkle.mvc.ArgumentResolver;
+import org.agilej.sparkle.mvc.LocaleResolver;
+import org.agilej.sparkle.mvc.SessionStore;
 import org.agilej.sparkle.core.view.JSONSerializerFactory;
-import org.agilej.sparkle.core.view.ViewRender;
-import org.agilej.sparkle.interceptor.Interceptor;
+import org.agilej.sparkle.mvc.ViewRender;
+import org.agilej.sparkle.Interceptor;
 
 /**
  * interface for customize application's setting.

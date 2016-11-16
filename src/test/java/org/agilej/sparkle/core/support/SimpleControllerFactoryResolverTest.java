@@ -1,8 +1,8 @@
 package org.agilej.sparkle.core.support;
 
 
-import org.agilej.sparkle.core.action.SimpleControllerFactoryResolver;
-import org.agilej.sparkle.core.action.ControllerFactory;
+import org.agilej.sparkle.core.handler.SimpleControllerFactoryResolver;
+import org.agilej.sparkle.mvc.ControllerFactory;
 import org.agilej.sparkle.core.config.ControllerFactoryConfiguration;
 import org.agilej.sparkle.support.EmptyConfig;
 import org.junit.Before;

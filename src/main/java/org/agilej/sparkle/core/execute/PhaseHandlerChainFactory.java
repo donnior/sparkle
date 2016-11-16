@@ -1,14 +1,14 @@
 package org.agilej.sparkle.core.execute;
 
-import org.agilej.sparkle.core.action.ActionMethodResolver;
+import org.agilej.sparkle.core.handler.ActionMethodResolver;
 import org.agilej.sparkle.core.annotation.Singleton;
-import org.agilej.sparkle.core.argument.ArgumentResolverResolver;
-import org.agilej.sparkle.core.engine.CoreComponent;
-import org.agilej.sparkle.core.method.ControllerResolver;
+import org.agilej.sparkle.core.handler.ArgumentResolverResolver;
+import org.agilej.sparkle.core.CoreComponent;
+import org.agilej.sparkle.core.handler.ControllerResolver;
 import org.agilej.sparkle.core.route.RouteBuilderHolder;
 import org.agilej.sparkle.core.route.RouteBuilderResolver;
 import org.agilej.sparkle.core.view.ViewRenderResolver;
-import org.agilej.sparkle.interceptor.Interceptor;
+import org.agilej.sparkle.Interceptor;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

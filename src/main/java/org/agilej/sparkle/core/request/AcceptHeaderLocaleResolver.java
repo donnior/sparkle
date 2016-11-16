@@ -1,6 +1,7 @@
 package org.agilej.sparkle.core.request;
 
 import org.agilej.sparkle.WebRequest;
+import org.agilej.sparkle.mvc.LocaleResolver;
 
 import java.util.Locale;
 

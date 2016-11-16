@@ -6,6 +6,7 @@ import org.agilej.fava.FList;
 import org.agilej.fava.Function;
 import org.agilej.fava.util.FLists;
 import org.agilej.reflection.ReflectionUtil;
+import org.agilej.sparkle.mvc.ViewRender;
 
 /**
  * Holder for all supported ViewRenders with different priority.
@@ -43,7 +44,7 @@ public class ViewRenderRegistration {
     }
 
     /**
-     * for Sparkle's runtime vendor to register it's view renders, for example servlet jsp view
+     * for Sparkle's runtime vendor to register it's view renders, for example mvc jsp view
      * @param viewRenders
      */
     public void registerVendorViewRenders(List<ViewRender> viewRenders){
@@ -51,7 +52,7 @@ public class ViewRenderRegistration {
     }
 
     /**
-     * for Sparkle's runtime vendor to register it's view renders, for example servlet jsp view
+     * for Sparkle's runtime vendor to register it's view renders, for example mvc jsp view
      * @param viewRender
      *
      * @see #registerVendorViewRenders(List)

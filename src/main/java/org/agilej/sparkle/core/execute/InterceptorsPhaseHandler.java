@@ -2,7 +2,7 @@ package org.agilej.sparkle.core.execute;
 
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.core.WebRequestExecutionContext;
-import org.agilej.sparkle.interceptor.Interceptor;
+import org.agilej.sparkle.Interceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

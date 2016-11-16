@@ -130,7 +130,7 @@ public class RouteBuilderTest {
             fail();
         }catch(RuntimeException re){
             assertEquals(
-                    "Route's 'to' part ['user#show#id'] is illegal, it must be 'controller#action' or just 'controller'",
+                    "Route's 'to' part ['user#show#id'] is illegal, it must be 'controller#handler' or just 'controller'",
                     re.getMessage());
         }
         
@@ -139,7 +139,7 @@ public class RouteBuilderTest {
             fail();
         }catch(RuntimeException re){
             assertEquals(
-                    "Route's 'to' part ['null'] is illegal, it must be 'controller#action' or just 'controller'",
+                    "Route's 'to' part ['null'] is illegal, it must be 'controller#handler' or just 'controller'",
                     re.getMessage());
         }
         

@@ -38,8 +38,8 @@ import java.util.regex.Pattern;
  * <code>.jsp</code> files in the <code>com</code> directory</li> <li><code>com/&#42;&#42;/test.jsp</code> - matches all
  * <code>test.jsp</code> files underneath the <code>com</code> path</li> <li><code>org/springframework/&#42;&#42;/*.jsp</code>
  * - matches all <code>.jsp</code> files underneath the <code>org/springframework</code> path</li>
- * <li><code>org/&#42;&#42;/servlet/bla.jsp</code> - matches <code>org/springframework/servlet/bla.jsp</code> but also
- * <code>org/springframework/testing/servlet/bla.jsp</code> and <code>org/servlet/bla.jsp</code></li> </ul>
+ * <li><code>org/&#42;&#42;/mvc/bla.jsp</code> - matches <code>org/springframework/mvc/bla.jsp</code> but also
+ * <code>org/springframework/testing/mvc/bla.jsp</code> and <code>org/mvc/bla.jsp</code></li> </ul>
  *
  * @author Alef Arendsen
  * @author Juergen Hoeller

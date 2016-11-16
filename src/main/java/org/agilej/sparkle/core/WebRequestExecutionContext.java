@@ -2,7 +2,7 @@ package org.agilej.sparkle.core;
 
 import com.google.common.base.Stopwatch;
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.core.action.ActionMethod;
+import org.agilej.sparkle.mvc.ActionMethod;
 import org.agilej.sparkle.core.execute.InterceptorExecutionChain;
 import org.agilej.sparkle.core.route.RouteInfo;
 

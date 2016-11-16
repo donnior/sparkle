@@ -5,10 +5,11 @@ import java.io.IOException;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.WebResponse;
 import org.agilej.sparkle.annotation.Text;
-import org.agilej.sparkle.core.action.ActionMethod;
+import org.agilej.sparkle.mvc.ActionMethod;
+import org.agilej.sparkle.mvc.ViewRender;
 
 /**
- * ViewRender for process action annotated with {@link Text}
+ * ViewRender for process handler annotated with {@link Text}
  */
 public class TextViewRender implements ViewRender {
     

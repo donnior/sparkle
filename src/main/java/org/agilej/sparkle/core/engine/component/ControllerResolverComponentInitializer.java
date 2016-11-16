@@ -1,14 +1,14 @@
 package org.agilej.sparkle.core.engine.component;
 
-import org.agilej.sparkle.core.action.ControllerFactory;
-import org.agilej.sparkle.core.action.SimpleControllerFactoryResolver;
+import org.agilej.sparkle.mvc.ControllerFactory;
+import org.agilej.sparkle.core.handler.SimpleControllerFactoryResolver;
 import org.agilej.sparkle.core.config.ConfigResult;
 import org.agilej.sparkle.core.engine.ComponentInitializer;
 import org.agilej.sparkle.core.ext.EnvSpecific;
-import org.agilej.sparkle.core.method.ControllerClassResolver;
-import org.agilej.sparkle.core.method.ControllerClassScanner;
-import org.agilej.sparkle.core.method.ControllersHolder;
-import org.agilej.sparkle.core.method.SimpleControllerResolver;
+import org.agilej.sparkle.core.handler.ControllerClassResolver;
+import org.agilej.sparkle.core.handler.ControllerClassScanner;
+import org.agilej.sparkle.core.handler.ControllersHolder;
+import org.agilej.sparkle.core.handler.SimpleControllerResolver;
 
 import java.util.Map;
 

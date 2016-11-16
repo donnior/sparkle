@@ -1,6 +1,7 @@
 package org.agilej.sparkle.util;
 
 
+import org.agilej.sparkle.core.request.MessageEncryptor;
 import org.agilej.sparkle.core.request.Serializer;
 import org.junit.Test;
 

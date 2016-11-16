@@ -2,9 +2,9 @@ package org.agilej.sparkle.core.execute;
 
 import com.google.common.base.Stopwatch;
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.core.action.ActionMethod;
+import org.agilej.sparkle.mvc.ActionMethod;
 import org.agilej.sparkle.core.WebRequestExecutionContext;
-import org.agilej.sparkle.core.view.ViewRender;
+import org.agilej.sparkle.mvc.ViewRender;
 import org.agilej.sparkle.core.view.ViewRenderResolver;
 import org.agilej.sparkle.exception.SparkleException;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class ViewRenderPhaseHandler extends AbstractPhaseHandler {
         if (needRenderView) {
             processViewResult(context.getActionResult(), context, context.getController(), context.getActionMethod());
         } else {
-            logger.debug("Http servlet response has been proceed manually, ignore view rendering.");
+            logger.debug("Http mvc response has been proceed manually, ignore view rendering.");
         }
 
         forwardToNext(context);

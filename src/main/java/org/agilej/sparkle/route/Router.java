@@ -16,11 +16,11 @@ public interface Router {
      *
      * Make the router match with a uri path. The path can have path variable use '{}', like "/user/{username}"
      *
-     * And the path variable can be accessed as method argument with annotation {@link PathVariable}
+     * And the path variable can be accessed as method handler with annotation {@link PathVariable}
      *
      * <br /><br />
      * <pre><code>
-     * public String action(@PathVariable String username){
+     * public String handler(@PathVariable String username){
      *     //your code
      * }
      * </code></pre>

@@ -1,6 +1,6 @@
 package org.agilej.sparkle.core.ext;
 
-import org.agilej.sparkle.core.view.ViewRender;
+import org.agilej.sparkle.mvc.ViewRender;
 
 import java.util.List;
 

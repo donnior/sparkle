@@ -1,9 +1,9 @@
 package org.agilej.sparkle.core.execute;
 
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.core.action.ActionMethod;
+import org.agilej.sparkle.mvc.ActionMethod;
 import org.agilej.sparkle.core.WebRequestExecutionContext;
-import org.agilej.sparkle.core.method.ControllerActionExecutor;
+import org.agilej.sparkle.core.handler.ControllerActionExecutor;
 import org.agilej.sparkle.core.route.RouteInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class SyncExecutePhaseHandler extends AbstractPhaseHandler {
         RouteInfo rd = context.getRoute();
 
         if (rd.isFunctionRoute()){
-            logger.debug("Execute action for functional route : {}", rd.getRouteFunction());
+            logger.debug("Execute handler for functional route : {}", rd.getRouteFunction());
             tempResult = rd.getRouteFunction().apply(webRequest);
         } else {
             Object controller          = context.getController();

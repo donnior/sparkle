@@ -538,11 +538,11 @@ public class AntPathMatcherTest {
         assertEquals("/hotels/{hotel}", paths.get(1));
         paths.clear();
 
-        comparator = pathMatcher.getPatternComparator("/web/endUser/action/login.html");
+        comparator = pathMatcher.getPatternComparator("/web/endUser/handler/login.html");
         paths.add("/**/login.*");
-        paths.add("/**/endUser/action/login.*");
+        paths.add("/**/endUser/handler/login.*");
         Collections.sort(paths, comparator);
-        assertEquals("/**/endUser/action/login.*", paths.get(0));
+        assertEquals("/**/endUser/handler/login.*", paths.get(0));
         assertEquals("/**/login.*", paths.get(1));
         paths.clear();
     }

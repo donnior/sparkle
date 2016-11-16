@@ -15,7 +15,7 @@ public abstract class AbstractCondition {
     private FList<ConditionItem> conditionItems = FLists.newEmptyList();
 
     public AbstractCondition(String[] params) {
-        checkArgument(params != null, "the params argument could not be null");
+        checkArgument(params != null, "the params handler could not be null");
 
         this.params = params;
         parseParams(params);

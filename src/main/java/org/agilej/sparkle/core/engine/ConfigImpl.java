@@ -6,19 +6,18 @@ import java.util.List;
 import java.util.Set;
 
 import org.agilej.sparkle.core.annotation.Singleton;
-import org.agilej.sparkle.core.argument.ArgumentResolver;
-import org.agilej.sparkle.core.config.ControllerFactoryConfiguration;
-import org.agilej.sparkle.core.request.LocaleResolver;
-import org.agilej.sparkle.core.request.SessionStore;
+import org.agilej.sparkle.mvc.ArgumentResolver;
+import org.agilej.sparkle.mvc.LocaleResolver;
+import org.agilej.sparkle.mvc.SessionStore;
 import org.agilej.fava.FList;
 import org.agilej.fava.util.FLists;
 import org.agilej.sparkle.Env;
 import org.agilej.sparkle.config.Config;
 import org.agilej.sparkle.core.config.ConfigResult;
-import org.agilej.sparkle.core.action.ControllerFactory;
+import org.agilej.sparkle.mvc.ControllerFactory;
 import org.agilej.sparkle.core.view.JSONSerializerFactory;
-import org.agilej.sparkle.core.view.ViewRender;
-import org.agilej.sparkle.interceptor.Interceptor;
+import org.agilej.sparkle.mvc.ViewRender;
+import org.agilej.sparkle.Interceptor;
 
 @Singleton
 public class ConfigImpl implements Config, ConfigResult {

@@ -1,7 +1,7 @@
 package org.agilej.sparkle.core.support;
 
 import org.agilej.reflection.ReflectionUtil;
-import org.agilej.sparkle.core.action.ControllerFactory;
+import org.agilej.sparkle.mvc.ControllerFactory;
 
 /**
  * Simple controller factory which just create controller instance use reflection, don't support IoC.

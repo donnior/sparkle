@@ -2,7 +2,7 @@ package org.agilej.sparkle.core.execute;
 
 import org.agilej.sparkle.Env;
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.async.DeferredResult;
+import org.agilej.sparkle.DeferredResult;
 import org.agilej.sparkle.core.dev.ExceptionHandler;
 import org.agilej.sparkle.core.WebRequestExecutionContext;
 import org.slf4j.Logger;
@@ -14,8 +14,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
 /**
- * async action result execution handler internally use a configurable {@link ExecutorService};
- * if the action result is not asynchronous will directly forward to next phase handler.
+ * async handler result execution handler internally use a configurable {@link ExecutorService};
+ * if the handler result is not asynchronous will directly forward to next phase handler.
  */
 public class AsyncExecutePhaseHandler extends AbstractPhaseHandler {
 
@@ -43,7 +43,7 @@ public class AsyncExecutePhaseHandler extends AbstractPhaseHandler {
     }
 
     private void handleCallableResult(WebRequestExecutionContext context, Callable<Object> tempResult) {
-        logger.debug("Execute action asynchronously for {}#{}",
+        logger.debug("Execute handler asynchronously for {}#{}",
                 context.getController().getClass().getSimpleName(),
                 context.getActionMethod().actionName());
 
@@ -54,7 +54,7 @@ public class AsyncExecutePhaseHandler extends AbstractPhaseHandler {
                     context.webRequest().completeAsync();
                 },
                 error -> {
-                    logger.error("Error occurred while executing asynchronously action : {}", error);
+                    logger.error("Error occurred while executing asynchronously handler : {}", error);
 
                     context.webRequest().getWebResponse().setStatus(500);
                     if (Env.isDev()){
@@ -67,7 +67,7 @@ public class AsyncExecutePhaseHandler extends AbstractPhaseHandler {
     }
 
     private void handleDeferredResult(WebRequestExecutionContext context, Object tempResult) {
-        logger.debug("Execute action asynchronously for {}#{}",
+        logger.debug("Execute handler asynchronously for {}#{}",
                 context.getController().getClass().getSimpleName(),
                 context.getActionMethod().actionName());
 
@@ -92,7 +92,7 @@ public class AsyncExecutePhaseHandler extends AbstractPhaseHandler {
                     try {
                         return callable.call();
                     } catch (Exception e) {
-                        throw new RuntimeException("Execute async action failed with : ", e);
+                        throw new RuntimeException("Execute async handler failed with : ", e);
                     }
                 }, asyncTaskExecutorService)
                 .whenComplete((result, ex) -> {

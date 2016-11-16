@@ -1,6 +1,7 @@
 package org.agilej.sparkle.core.request;
 
 import org.agilej.sparkle.exception.SparkleException;
+import org.agilej.sparkle.mvc.SessionStore;
 import org.junit.Before;
 import org.junit.Test;
 

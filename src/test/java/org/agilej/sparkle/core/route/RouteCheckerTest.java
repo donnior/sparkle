@@ -12,7 +12,7 @@ public class RouteCheckerTest {
 
     @Test
     public void test() {
-        RouteChecker c = new RouteChecker("/{name}/{action}/name");
+        RouteChecker c = new RouteChecker("/{name}/{handler}/name");
         
         List<String> pathVarialbes = c.pathVariables();
         assertTrue(2 == pathVarialbes.size());
@@ -20,25 +20,25 @@ public class RouteCheckerTest {
         
         assertEquals("/([^/]+)/([^/]+)/name", c.matcherRegexPatten());
         
-        c = new RouteChecker("/name/action/name");
+        c = new RouteChecker("/name/handler/name");
         
         pathVarialbes = c.pathVariables();
         assertTrue(0 == pathVarialbes.size());
         
-        assertEquals("/name/action/name", c.matcherRegexPatten());
+        assertEquals("/name/handler/name", c.matcherRegexPatten());
         
         try {
-            new RouteChecker("/{na{me}action}/name");
+            new RouteChecker("/{na{me}handler}/name");
             fail();
         } catch (RuntimeException e) {}
 
         try {
-            c = new RouteChecker("/{name/action}/name");
+            c = new RouteChecker("/{name/handler}/name");
             fail();
         } catch (RuntimeException e) {}
 
         try {
-            c = new RouteChecker("/{name/action/name");
+            c = new RouteChecker("/{name/handler/name");
             fail();
         } catch (RuntimeException e) {}
         

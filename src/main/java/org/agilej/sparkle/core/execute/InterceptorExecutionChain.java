@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.interceptor.Interceptor;
+import org.agilej.sparkle.Interceptor;
 
 /**
  * interceptor execution context for every request, because you should remember which interceptors are executed,

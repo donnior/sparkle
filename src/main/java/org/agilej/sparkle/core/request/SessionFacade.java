@@ -2,6 +2,7 @@ package org.agilej.sparkle.core.request;
 
 import org.agilej.sparkle.Session;
 import org.agilej.sparkle.WebRequest;
+import org.agilej.sparkle.mvc.SessionStore;
 
 /**
  * a session facade which will delegate session operation to application configured {@link SessionStore}

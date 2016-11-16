@@ -2,6 +2,7 @@ package org.agilej.sparkle.core.request;
 
 
 import org.agilej.sparkle.WebRequest;
+import org.agilej.sparkle.mvc.SessionStore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Map;
 /**
  * use a in memory hash map to store session values
  */
-public class SimpleMemorySessionStore implements SessionStore{
+public class SimpleMemorySessionStore implements SessionStore {
 
 
     private final Map<String, Map<String, Object>> sessionMaps;

@@ -1,7 +1,7 @@
 package org.agilej.sparkle.core.config;
 
 import org.agilej.fava.FList;
-import org.agilej.sparkle.core.view.ViewRender;
+import org.agilej.sparkle.mvc.ViewRender;
 
 public interface ViewRenderConfiguration {
 

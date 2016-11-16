@@ -1,7 +1,7 @@
 package org.agilej.sparkle.core.engine.component;
 
-import org.agilej.sparkle.core.argument.ArgumentResolverRegistration;
-import org.agilej.sparkle.core.argument.SimpleArgumentResolverResolver;
+import org.agilej.sparkle.core.handler.ArgumentResolverRegistration;
+import org.agilej.sparkle.core.handler.SimpleArgumentResolverResolver;
 import org.agilej.sparkle.core.config.ConfigResult;
 import org.agilej.sparkle.core.engine.ComponentInitializer;
 import org.agilej.sparkle.core.ext.EnvSpecific;

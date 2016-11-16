@@ -4,8 +4,8 @@ import com.google.common.base.Strings;
 import org.agilej.sparkle.Cookie;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.exception.SparkleException;
+import org.agilej.sparkle.mvc.SessionStore;
 import org.agilej.sparkle.util.AESKeyGenerator;
-import org.agilej.sparkle.util.MessageEncryptor;
 
 import java.security.Key;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Store session values in cookie, use a app-scope configured secret_key_base to encrypt data like Rails.
  */
-public class CookieBasedSessionStore implements SessionStore{
+public class CookieBasedSessionStore implements SessionStore {
 
     private String appSecret;
 
@@ -113,7 +113,7 @@ public class CookieBasedSessionStore implements SessionStore{
      *
      * Follow these orders to determine app-secret
      *
-     * 1. use argument when start jvm
+     * 1. use handler when start jvm
      * 2. use System property
      * 3. use secret.yml config
      *

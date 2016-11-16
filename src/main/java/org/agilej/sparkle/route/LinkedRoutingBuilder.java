@@ -9,7 +9,7 @@ import java.util.function.Function;
 public interface LinkedRoutingBuilder {
 
     /**
-     * Define the route rule to a controller-class's action method. The syntax is "controller#action".
+     * Define the route rule to a controller-class's handler method. The syntax is "controller#handler".
      *
      * The controller means a name for one controller class.
      * you must define it in the annotation {@link Controller}. Like:

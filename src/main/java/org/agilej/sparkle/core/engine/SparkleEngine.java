@@ -5,9 +5,11 @@ import org.agilej.reflection.ReflectionUtil;
 import org.agilej.sparkle.HTTPMethod;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.config.Application;
+import org.agilej.sparkle.core.CoreComponent;
 import org.agilej.sparkle.core.WebRequestExecutionContext;
-import org.agilej.sparkle.core.action.ActionMethodResolver;
-import org.agilej.sparkle.core.argument.ArgumentResolverResolver;
+import org.agilej.sparkle.core.handler.ActionMethodResolver;
+import org.agilej.sparkle.core.handler.ArgumentResolverResolver;
+import org.agilej.sparkle.core.handler.ControllerResolver;
 import org.agilej.sparkle.core.config.ConfigResult;
 import org.agilej.sparkle.core.engine.component.ArgumentResolverComponentInitializer;
 import org.agilej.sparkle.core.engine.component.ControllerResolverComponentInitializer;
@@ -16,11 +18,12 @@ import org.agilej.sparkle.core.engine.component.ViewRenderResolverComponentIniti
 import org.agilej.sparkle.core.execute.PhaseHandlerChain;
 import org.agilej.sparkle.core.execute.PhaseHandlerChainFactory;
 import org.agilej.sparkle.core.ext.EnvSpecific;
-import org.agilej.sparkle.core.method.*;
 import org.agilej.sparkle.core.request.*;
 import org.agilej.sparkle.core.route.*;
 import org.agilej.sparkle.core.view.ViewRenderResolver;
-import org.agilej.sparkle.interceptor.Interceptor;
+import org.agilej.sparkle.Interceptor;
+import org.agilej.sparkle.mvc.LocaleResolver;
+import org.agilej.sparkle.mvc.SessionStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +33,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class SparkleEngine implements CoreComponent{
+public class SparkleEngine implements CoreComponent {
 
     private List<Interceptor> interceptors;
 

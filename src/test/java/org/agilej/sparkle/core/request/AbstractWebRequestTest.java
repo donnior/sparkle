@@ -2,6 +2,7 @@ package org.agilej.sparkle.core.request;
 
 import org.agilej.sparkle.Session;
 import org.agilej.sparkle.WebRequest;
+import org.agilej.sparkle.mvc.SessionStore;
 import org.agilej.web.adapter.WebRequestAdapter;
 import org.junit.Before;
 import org.junit.Test;

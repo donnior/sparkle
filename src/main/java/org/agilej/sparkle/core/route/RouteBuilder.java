@@ -39,7 +39,7 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
     private Function<WebRequest, JSONModel> function;
     private String to;
     
-    //the rules for 'to' of the route: the controller can't be empty, only one '#' or zero, the action can be ommit
+    //the rules for 'to' of the route: the controller can't be empty, only one '#' or zero, the handler can be ommit
     private final static String toRegex = "\\w+#{0,1}\\w*";
 
     private final static Logger logger = LoggerFactory.getLogger(RouteBuilder.class);
@@ -115,7 +115,7 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
     public void to(String route){
         // TODO check route is correct, it should not empty and contains only one #
         if(route == null || !route.matches(toRegex)){
-            SparkleException.raise("Route's 'to' part ['%s'] is illegal, it must be 'controller#action' or just 'controller'", route);
+            SparkleException.raise("Route's 'to' part ['%s'] is illegal, it must be 'controller#handler' or just 'controller'", route);
         }
 
         this.to = route;
@@ -217,7 +217,7 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
         return this.controllerName;
     }
 
-    //TODO should it only set default action for GET? 
+    //TODO should it only set default handler for GET?
     
     public String getPathPattern() {
         return pathPattern;

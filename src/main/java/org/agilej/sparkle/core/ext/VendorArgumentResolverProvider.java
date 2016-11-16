@@ -1,6 +1,6 @@
 package org.agilej.sparkle.core.ext;
 
-import org.agilej.sparkle.core.argument.ArgumentResolver;
+import org.agilej.sparkle.mvc.ArgumentResolver;
 
 import java.util.List;
 

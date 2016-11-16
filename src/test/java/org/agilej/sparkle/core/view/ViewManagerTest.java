@@ -1,7 +1,8 @@
 package org.agilej.sparkle.core.view;
 
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.core.action.ActionMethod;
+import org.agilej.sparkle.mvc.ActionMethod;
+import org.agilej.sparkle.mvc.ViewRender;
 import org.junit.Test;
 
 import java.io.IOException;

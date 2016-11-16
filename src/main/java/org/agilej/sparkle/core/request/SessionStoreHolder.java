@@ -2,6 +2,7 @@ package org.agilej.sparkle.core.request;
 
 
 import org.agilej.sparkle.exception.SparkleException;
+import org.agilej.sparkle.mvc.SessionStore;
 
 /**
  * global session store holder

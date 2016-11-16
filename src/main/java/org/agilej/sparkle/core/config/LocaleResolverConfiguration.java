@@ -1,6 +1,6 @@
 package org.agilej.sparkle.core.config;
 
-import org.agilej.sparkle.core.request.LocaleResolver;
+import org.agilej.sparkle.mvc.LocaleResolver;
 
 public interface LocaleResolverConfiguration {
 

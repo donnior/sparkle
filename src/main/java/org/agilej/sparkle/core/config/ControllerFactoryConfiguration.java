@@ -1,6 +1,6 @@
 package org.agilej.sparkle.core.config;
 
-import org.agilej.sparkle.core.action.ControllerFactory;
+import org.agilej.sparkle.mvc.ControllerFactory;
 
 public interface ControllerFactoryConfiguration {
 

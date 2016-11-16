@@ -2,6 +2,8 @@ package org.agilej.sparkle.core.request;
 
 import org.agilej.sparkle.Session;
 import org.agilej.sparkle.WebRequest;
+import org.agilej.sparkle.mvc.LocaleResolver;
+import org.agilej.sparkle.mvc.SessionStore;
 //import org.agilej.sparkle.config.Config;
 
 import java.util.Locale;
@@ -9,7 +11,7 @@ import java.util.Locale;
 public abstract class AbstractWebRequest implements WebRequest {
 
     /**
-     * generate session id, or delegate to vendor's session id like servlet
+     * generate session id, or delegate to vendor's session id like mvc
      * @return
      */
     @Override

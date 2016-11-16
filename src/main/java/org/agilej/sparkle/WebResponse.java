@@ -11,7 +11,7 @@ public interface WebResponse {
      *
      * raw response
      *
-     * @return the raw response object provided by runtime container, such as a servlet response or netty response
+     * @return the raw response object provided by runtime container, such as a mvc response or netty response
      */
     <T> T getOriginalResponse();
 

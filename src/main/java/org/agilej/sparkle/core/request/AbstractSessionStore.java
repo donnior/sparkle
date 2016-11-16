@@ -1,12 +1,13 @@
 package org.agilej.sparkle.core.request;
 
 
+import org.agilej.sparkle.mvc.SessionStore;
 import org.agilej.sparkle.util.Hex;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public abstract class AbstractSessionStore implements SessionStore{
+public abstract class AbstractSessionStore implements SessionStore {
 
     protected String generateSessionId(){
         try {
