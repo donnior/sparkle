@@ -16,7 +16,7 @@ targetCompatibility = 1.8
 dependencies {
     testCompile 'junit:junit:4.0'
 
-    compile 'org.agilej:jsonty:0.1'
+    compile 'org.agilej:jsonty:0.3'
  
     compile 'org.agilej:fava:0.1'
     compile 'com.google.code.gson:gson:2.2.3'
@@ -30,7 +30,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+    gradleVersion = '3.2'
 }
 
 compileJava {
