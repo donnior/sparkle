@@ -18,9 +18,10 @@ public class ViewManagerTest {
     public void test_build_in_view_renders(){
         ViewRenderRegistration viewRenderManager = new ViewRenderRegistration();
         List<ViewRender> viewRenders = viewRenderManager.getAllOrderedViewRenders();
-        assertTrue(2 == viewRenders.size());
-        assertEquals(JSONViewRender.class, viewRenders.get(0).getClass());
-        assertEquals(TextViewRender.class, viewRenders.get(1).getClass());
+        assertTrue(3 == viewRenders.size());
+        assertEquals(JSONTextViewRender.class, viewRenders.get(0).getClass());
+        assertEquals(JSONViewRender.class, viewRenders.get(1).getClass());
+        assertEquals(TextViewRender.class, viewRenders.get(2).getClass());
     }
 
 
@@ -34,7 +35,7 @@ public class ViewManagerTest {
 
         List<ViewRender> viewRenders = viewRenderManager.getAllOrderedViewRenders();
 
-        assertTrue(3 == viewRenders.size());
+        assertTrue(4 == viewRenders.size());
         assertEquals(TestAppScopedViewRender.class, viewRenders.get(0).getClass());
     }
 
@@ -48,8 +49,8 @@ public class ViewManagerTest {
 
         List<ViewRender> viewRenders = viewRenderManager.getAllOrderedViewRenders();
 
-        assertTrue(3 == viewRenders.size());
-        assertEquals(TestAppScopedViewRender.class, viewRenders.get(2).getClass());
+        assertTrue(4 == viewRenders.size());
+        assertEquals(TestAppScopedViewRender.class, viewRenders.get(3).getClass());
     }
 
     public static class TestAppScopedViewRender implements ViewRender{

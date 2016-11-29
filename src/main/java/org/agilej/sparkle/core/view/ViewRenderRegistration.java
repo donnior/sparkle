@@ -39,6 +39,7 @@ public class ViewRenderRegistration {
     }
 
     private void registerBuiltInViewRenders(FList<ViewRender> viewRenders) {
+        viewRenders.add(new JSONTextViewRender());
         viewRenders.add(new JSONViewRender());
         viewRenders.add(new TextViewRender());
     }
