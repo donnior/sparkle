@@ -13,7 +13,7 @@ public class ConditionsTest {
     @Test
     public void test_header_condition() {
 
-        HeaderCondition c = new HeaderCondition(new String[]{"a=1","b!=1", "c"});
+        HeaderCondition c = new HeaderCondition(new String[]{"a==1","b!=1", "c"});
         
         boolean result = c.match(new WebRequestAdapter(){
             @Override
@@ -57,7 +57,7 @@ public class ConditionsTest {
     @Test
     public void test_param_condition() {
 
-        ParamCondition c = new ParamCondition(new String[]{"a=1","b!=1", "c"});
+        ParamCondition c = new ParamCondition(new String[]{"a==1","b!=1", "c"});
         
         boolean result = c.match(new WebRequestAdapter(){
             @Override
@@ -102,7 +102,7 @@ public class ConditionsTest {
     @Test
     public void test_consume_condition() {
 
-        ConsumeCondition c = new ConsumeCondition(new String[]{"a=1","b!=1", "c"});
+        ConsumeCondition c = new ConsumeCondition(new String[]{"a==1","b!=1", "c"});
         try{
             c.match(null);
             fail();
@@ -115,9 +115,9 @@ public class ConditionsTest {
     @Test
     public void test_condition_to_string() {
 
-        HeaderCondition c = new HeaderCondition(new String[]{"a=1","b!=1", "c"});
+        HeaderCondition c = new HeaderCondition(new String[]{"a==1","b!=1", "c"});
         
-        assertEquals("\"a=1,b!=1,c\"", c.toString());
+        assertEquals("\"a==1,b!=1,c\"", c.toString());
     }
            
 }

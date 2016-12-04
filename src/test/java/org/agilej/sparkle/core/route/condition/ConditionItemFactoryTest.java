@@ -26,7 +26,7 @@ public class ConditionItemFactoryTest {
     
     @Test
     public void test_create_equal_condition_item() {
-        ConditionItem item = ConditionItemFactory.createItem("a=1");
+        ConditionItem item = ConditionItemFactory.createItem("a==1");
         
         assertTrue(EqualConditionItem.class.equals(item.getClass()));
         assertEquals("a", item.getName());

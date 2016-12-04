@@ -43,7 +43,7 @@ public class RouteBuilderMatcherTest {
     @Test
     public void test_match_params_failed(){
         RouteBuilder rb = new RouteBuilder("/user");
-        rb.matchParams("a=1");
+        rb.matchParams("a==1");
         WebRequest request = new GetWebRequest("/user"){
             @Override
             public String getParameter(String name) {
@@ -61,7 +61,7 @@ public class RouteBuilderMatcherTest {
     @Test
     public void test_match_headers_failed(){
         RouteBuilder rb = new RouteBuilder("/user");
-        rb.matchHeaders("a=1");
+        rb.matchHeaders("a==1");
         WebRequest request = new GetWebRequest("/user"){
             @Override
             public String getHeader(String name) {
@@ -79,7 +79,7 @@ public class RouteBuilderMatcherTest {
     @Test
     public void test_all_matched(){
         RouteBuilder rb = new RouteBuilder("/user");
-        rb.matchHeaders("a=1");
+        rb.matchHeaders("a==1");
         WebRequest request = new GetWebRequest("/user"){
             @Override
             public String getHeader(String name) {

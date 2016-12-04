@@ -6,7 +6,7 @@ import org.agilej.sparkle.exception.SparkleException;
 public class ConditionItemFactory {
 
     private static final String NOT_EQUAL_CHARS = "!=";
-    private static final String EQUAL_CHARS = "=";
+    private static final String EQUAL_CHARS = "==";
     
     public static ConditionItem createItem(String param) {
         if(!isValidConditionExpression(param)){

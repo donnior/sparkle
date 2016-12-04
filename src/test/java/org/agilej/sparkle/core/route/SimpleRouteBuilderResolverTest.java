@@ -24,7 +24,7 @@ public class SimpleRouteBuilderResolverTest {
         assertEquals("/user", rb.getPathPattern());
         assertEquals("show", rb.getActionName());
         
-        router.match("/user").matchParams("profile=1").to("user#profile");
+        router.match("/user").matchParams("profile==1").to("user#profile");
         
         rb = matcher.match(new GetWebRequest("/user"){
             @Override

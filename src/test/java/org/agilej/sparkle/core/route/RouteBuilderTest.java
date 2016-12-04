@@ -96,7 +96,7 @@ public class RouteBuilderTest {
     @Test
     public void test_create_with_condition_and_matched(){
         RouteBuilder rb = new RouteBuilder("/user/{id}");
-        rb.matchParams("a=1").matchHeaders("token").matchConsumes("applicationType").to("user#show");
+        rb.matchParams("a==1").matchHeaders("token").matchConsumes("applicationType").to("user#show");
         
         assertEquals("user", rb.getControllerName());
         assertEquals("show", rb.getActionName());
