@@ -29,4 +29,16 @@ public interface Session {
      */
     String id();
 
+    /**
+     * get data from session with given name, if the value is null
+     * will return the default value passed to it
+     * @param name
+     * @param defaultValue
+     * @param <T>
+     * @return
+     */
+    default <T> T get(String name, T defaultValue) {
+        T t = get(name);
+        return t != null ? t : defaultValue;
+    }
 }
