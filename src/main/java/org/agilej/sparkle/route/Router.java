@@ -1,6 +1,10 @@
 package org.agilej.sparkle.route;
 
+import org.agilej.jsonty.JSONModel;
+import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.annotation.PathVariable;
+
+import java.util.function.Function;
 
 /**
  * interface to define your route rule. You can use it as a fluency interface like: <br />
@@ -27,5 +31,36 @@ public interface Router {
      *
      */
     HttpScopedRoutingBuilder match(String path);
-    
+
+    default LinkedRoutingBuilder get(String path) {
+        return this.match(path).withGet();
+    }
+
+    default LinkedRoutingBuilder post(String path) {
+        return this.match(path).withPost();
+    }
+
+    default LinkedRoutingBuilder delete(String path) {
+        return this.match(path).withDelete();
+    }
+
+    default LinkedRoutingBuilder put(String path) {
+        return this.match(path).withPut();
+    }
+
+    default void get(String path, Function<WebRequest, JSONModel> function){
+        this.get(path).to(function);
+    }
+
+    default void post(String path, Function<WebRequest, JSONModel> function){
+        this.post(path).to(function);
+    }
+
+    default void delete(String path, Function<WebRequest, JSONModel> function){
+        this.delete(path).to(function);
+    }
+
+    default void put(String path, Function<WebRequest, JSONModel> function){
+        this.put(path).to(function);
+    }
 }
