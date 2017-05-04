@@ -9,11 +9,11 @@ import com.google.common.base.MoreObjects;
 import org.agilej.fava.FList;
 import org.agilej.fava.Predicate;
 import org.agilej.fava.util.FLists;
-import org.agilej.sparkle.mvc.ActionMethodParameter;
+import org.agilej.sparkle.mvc.ActionMethodArgument;
 
 import com.google.common.collect.Lists;
 
-public class DefaultActionMethodParameter implements ActionMethodParameter {
+public class DefaultActionMethodParameter implements ActionMethodArgument {
 
     private String name;
     private Class<?> paramType;

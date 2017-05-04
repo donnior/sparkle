@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.annotation.Param;
-import org.agilej.sparkle.mvc.ActionMethodParameter;
+import org.agilej.sparkle.mvc.ActionMethodArgument;
 import org.agilej.sparkle.exception.SparkleException;
 import org.agilej.sparkle.mvc.ArgumentResolver;
 import org.agilej.sparkle.util.ParamResolveUtil;
@@ -15,12 +15,12 @@ import org.agilej.sparkle.util.ParamResolveUtil;
 public class ParamAnnotationArgumentResolver implements ArgumentResolver {
 
     @Override
-    public boolean support(ActionMethodParameter actionMethodParameter) {
+    public boolean support(ActionMethodArgument actionMethodParameter) {
         return actionMethodParameter.hasAnnotation(Param.class);
     }
 
     @Override
-    public Object resolve(ActionMethodParameter actionMethodParameter, WebRequest request) {
+    public Object resolve(ActionMethodArgument actionMethodParameter, WebRequest request) {
 //      FList<Annotation> ans =  FLists.create(parameter.annotations());
 //      Annotation a = ans.find(new Predicate<Annotation>() {
 //          @Override

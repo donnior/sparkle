@@ -13,7 +13,7 @@ import org.agilej.fava.util.FLists;
 import org.agilej.sparkle.core.annotation.Singleton;
 import org.agilej.sparkle.exception.SparkleException;
 import org.agilej.sparkle.mvc.ActionMethod;
-import org.agilej.sparkle.mvc.ActionMethodParameter;
+import org.agilej.sparkle.mvc.ActionMethodArgument;
 import org.agilej.sparkle.util.Tuple;
 import org.agilej.sparkle.util.Tuple2;
 
@@ -28,7 +28,7 @@ public class ActionMethodResolver {
 
         private final Method method;
         private final String actionName;
-        private final List<ActionMethodParameter> apds;
+        private final List<ActionMethodArgument> apds;
         private final Class<?> returnType;
 
         public ActionMethodImpl(Method method, String actionName){
@@ -49,7 +49,7 @@ public class ActionMethodResolver {
         }
 
         @Override
-        public List<ActionMethodParameter> parameters() {
+        public List<ActionMethodArgument> parameters() {
             return this.apds;
         }
 

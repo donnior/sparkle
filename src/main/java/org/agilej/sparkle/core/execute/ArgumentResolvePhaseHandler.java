@@ -6,7 +6,7 @@ import org.agilej.sparkle.ApplicationController;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.core.WebRequestExecutionContext;
 import org.agilej.sparkle.mvc.ActionMethod;
-import org.agilej.sparkle.mvc.ActionMethodParameter;
+import org.agilej.sparkle.mvc.ActionMethodArgument;
 import org.agilej.sparkle.core.handler.ActionMethodResolver;
 import org.agilej.sparkle.core.handler.ArgumentResolverResolver;
 import org.agilej.sparkle.core.handler.ControllerResolver;
@@ -62,9 +62,9 @@ public class ArgumentResolvePhaseHandler extends AbstractPhaseHandler {
     }
 
     private Object[] resolvedArguments(ActionMethod actionMethod, WebRequestExecutionContext context){
-        List<ActionMethodParameter> amps = actionMethod.parameters();
-        Object[] params = FLists.create(amps).collect(new Function<ActionMethodParameter, Object>() {
-            public Object apply(ActionMethodParameter amp) {
+        List<ActionMethodArgument> amps = actionMethod.parameters();
+        Object[] params = FLists.create(amps).collect(new Function<ActionMethodArgument, Object>() {
+            public Object apply(ActionMethodArgument amp) {
                 return argumentResolverResolver.resolve(amp).resolve(amp, context.webRequest());
             }
         }).toArray();

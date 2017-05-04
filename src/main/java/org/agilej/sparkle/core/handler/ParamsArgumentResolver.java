@@ -3,7 +3,7 @@ package org.agilej.sparkle.core.handler;
 
 import org.agilej.sparkle.Params;
 import org.agilej.sparkle.WebRequest;
-import org.agilej.sparkle.mvc.ActionMethodParameter;
+import org.agilej.sparkle.mvc.ActionMethodArgument;
 import org.agilej.sparkle.mvc.ArgumentResolver;
 
 /**
@@ -12,12 +12,12 @@ import org.agilej.sparkle.mvc.ArgumentResolver;
 public class ParamsArgumentResolver implements ArgumentResolver {
 
     @Override
-    public boolean support(ActionMethodParameter actionMethodParameter) {
+    public boolean support(ActionMethodArgument actionMethodParameter) {
         return Params.class.equals(actionMethodParameter.paramType());
     }
 
     @Override
-    public Object resolve(ActionMethodParameter actionMethodParameter, WebRequest request) {
+    public Object resolve(ActionMethodArgument actionMethodParameter, WebRequest request) {
         return new SimpleParams(request);
     }
 

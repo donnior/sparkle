@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import org.agilej.fava.FList;
 import org.agilej.fava.Predicate;
 import org.agilej.fava.util.FLists;
-import org.agilej.sparkle.mvc.ActionMethodParameter;
+import org.agilej.sparkle.mvc.ActionMethodArgument;
 import org.agilej.sparkle.exception.SparkleException;
 import org.agilej.sparkle.mvc.ArgumentResolver;
 
@@ -32,7 +32,7 @@ public class SimpleArgumentResolverResolver implements ArgumentResolverResolver 
     }
 
     @Override
-    public ArgumentResolver resolve(final ActionMethodParameter parameter) {
+    public ArgumentResolver resolve(final ActionMethodArgument parameter) {
         FList<ArgumentResolver> list = FLists.create(argumentResolvers);
         ArgumentResolver matchedArgumentResolver = list.find(new Predicate<ArgumentResolver>() {
             public boolean apply(ArgumentResolver e) {

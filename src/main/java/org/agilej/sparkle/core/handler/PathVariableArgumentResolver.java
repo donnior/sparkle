@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.annotation.PathVariable;
-import org.agilej.sparkle.mvc.ActionMethodParameter;
+import org.agilej.sparkle.mvc.ActionMethodArgument;
 import org.agilej.sparkle.exception.SparkleException;
 import org.agilej.sparkle.mvc.ArgumentResolver;
 import org.agilej.sparkle.util.ParamResolveUtil;
@@ -20,12 +20,12 @@ import org.agilej.fava.util.FLists;
 public class PathVariableArgumentResolver implements ArgumentResolver {
 
     @Override
-    public boolean support(ActionMethodParameter actionMethodParameter) {
+    public boolean support(ActionMethodArgument actionMethodParameter) {
         return actionMethodParameter.hasAnnotation(PathVariable.class);
     }
 
     @Override
-    public Object resolve(ActionMethodParameter actionMethodParameter, WebRequest request) {
+    public Object resolve(ActionMethodArgument actionMethodParameter, WebRequest request) {
       FList<Annotation> ans =  FLists.create(actionMethodParameter.annotations());
       Annotation a = ans.find(new Predicate<Annotation>() {
           @Override

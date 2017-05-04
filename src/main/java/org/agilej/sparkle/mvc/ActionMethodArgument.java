@@ -23,7 +23,7 @@ import java.util.List;
  * 'paramType' is 'String', and has one annotation called 'PathVariable'
  *
  */
-public interface ActionMethodParameter {
+public interface ActionMethodArgument {
 
     String paramName();
     

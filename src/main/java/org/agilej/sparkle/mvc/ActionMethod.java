@@ -1,7 +1,5 @@
 package org.agilej.sparkle.mvc;
 
-import org.agilej.sparkle.mvc.ActionMethodParameter;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -30,7 +28,7 @@ import java.util.List;
  * Now the 'show' handler method's name is 'show', the return type is 'String'; and has one
  * ActionMethodParameter for the 'id' handler
  *
- * @see ActionMethodParameter
+ * @see ActionMethodArgument
  */
 public interface ActionMethod {
 
@@ -54,7 +52,7 @@ public interface ActionMethod {
      *
      * @return
      */
-    List<ActionMethodParameter> parameters();
+    List<ActionMethodArgument> parameters();
 
     /**
      * the annotation for this handler method
@@ -75,6 +73,6 @@ public interface ActionMethod {
      *
      * @return
      */
-    public Class<?> getReturnType();
+    Class<?> getReturnType();
 
 }

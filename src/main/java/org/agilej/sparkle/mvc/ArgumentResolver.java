@@ -27,7 +27,7 @@ public interface ArgumentResolver {
      * @param actionMethodParameter
      * @return
      */
-    boolean support(ActionMethodParameter actionMethodParameter);
+    boolean support(ActionMethodArgument actionMethodParameter);
     
     /**
      * 
@@ -37,6 +37,6 @@ public interface ArgumentResolver {
      * @param request
      * @return
      */
-    Object resolve(ActionMethodParameter actionMethodParameter, WebRequest request);
+    Object resolve(ActionMethodArgument actionMethodParameter, WebRequest request);
     
 }

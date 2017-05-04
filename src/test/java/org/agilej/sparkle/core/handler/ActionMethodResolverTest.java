@@ -10,7 +10,7 @@ import java.util.List;
 import org.agilej.sparkle.annotation.Json;
 import org.agilej.sparkle.annotation.Param;
 import org.agilej.sparkle.mvc.ActionMethod;
-import org.agilej.sparkle.mvc.ActionMethodParameter;
+import org.agilej.sparkle.mvc.ActionMethodArgument;
 
 import org.agilej.sparkle.exception.SparkleException;
 import org.junit.Test;
@@ -27,10 +27,10 @@ public class ActionMethodResolverTest {
         assertEquals(1, amd.annotations().size());
         assertEquals(Json.class, amd.annotations().get(0).annotationType());
         
-        List<ActionMethodParameter> apds = amd.parameters();
+        List<ActionMethodArgument> apds = amd.parameters();
         assertEquals(2, apds.size());
         
-        ActionMethodParameter apd1 = apds.get(0);
+        ActionMethodArgument apd1 = apds.get(0);
         assertEquals(String.class, apd1.paramType());
         assertFalse(apd1.hasAnnotation(Param.class));
         assertEquals(0, apd1.annotations().size());
@@ -41,7 +41,7 @@ public class ActionMethodResolverTest {
             assertEquals("currently not allowed to get paramName", uoe.getMessage());
         }
 
-        ActionMethodParameter apd2 = apds.get(1);
+        ActionMethodArgument apd2 = apds.get(1);
         assertEquals(int.class, apd2.paramType());
         assertTrue(apd2.hasAnnotation(Param.class));
         assertFalse(apd2.hasAnnotation(Json.class));

@@ -1,7 +1,7 @@
 package org.agilej.sparkle.core.handler;
 
 import org.agilej.sparkle.Params;
-import org.agilej.sparkle.mvc.ActionMethodParameter;
+import org.agilej.sparkle.mvc.ActionMethodArgument;
 import org.agilej.sparkle.exception.SparkleException;
 import org.agilej.sparkle.mvc.ArgumentResolver;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class SimpleArgumentResolverResolverTest {
         ArgumentResolverRegistration registration = new ArgumentResolverRegistration();
         SimpleArgumentResolverResolver resolver = new SimpleArgumentResolverResolver(registration);
 
-        ArgumentResolver argumentResolver = resolver.resolve(new ActionMethodParameter() {
+        ArgumentResolver argumentResolver = resolver.resolve(new ActionMethodArgument() {
             @Override
             public String paramName() {
                 return "params";
@@ -59,7 +59,7 @@ public class SimpleArgumentResolverResolverTest {
     @Test(expected = SparkleException.class)
     public void test_get_match_resolver_exception(){
         SimpleArgumentResolverResolver resolver = new SimpleArgumentResolverResolver();
-        resolver.resolve(new ActionMethodParameter() {
+        resolver.resolve(new ActionMethodArgument() {
             @Override
             public String paramName() {
                 return "p";

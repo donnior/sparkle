@@ -5,7 +5,7 @@ import org.agilej.sparkle.Cookie;
 import org.agilej.sparkle.Cookies;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.WebResponse;
-import org.agilej.sparkle.mvc.ActionMethodParameter;
+import org.agilej.sparkle.mvc.ActionMethodArgument;
 import org.agilej.sparkle.mvc.ArgumentResolver;
 
 /**
@@ -14,12 +14,12 @@ import org.agilej.sparkle.mvc.ArgumentResolver;
 public class CookiesArgumentResolver implements ArgumentResolver {
 
     @Override
-    public boolean support(ActionMethodParameter actionMethodParameter) {
+    public boolean support(ActionMethodArgument actionMethodParameter) {
         return Cookies.class.equals(actionMethodParameter.paramType());
     }
 
     @Override
-    public Object resolve(ActionMethodParameter actionMethodParameter, WebRequest request) {
+    public Object resolve(ActionMethodArgument actionMethodParameter, WebRequest request) {
         return new SimpleCookieManager(request, request.getWebResponse());
     }
 

@@ -1,6 +1,6 @@
 package org.agilej.sparkle.core.handler;
 
-import org.agilej.sparkle.mvc.ActionMethodParameter;
+import org.agilej.sparkle.mvc.ActionMethodArgument;
 import org.agilej.sparkle.mvc.ArgumentResolver;
 
 /**
@@ -9,7 +9,7 @@ import org.agilej.sparkle.mvc.ArgumentResolver;
  */
 public interface ArgumentResolverResolver {
 
-    ArgumentResolver resolve(ActionMethodParameter parameter);
+    ArgumentResolver resolve(ActionMethodArgument parameter);
 
     /*
     List<ArgumentResolver> registeredResolvers();
