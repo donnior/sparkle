@@ -1,7 +1,6 @@
 package org.agilej.sparkle.core.route;
 
 import org.agilej.sparkle.WebRequest;
-import org.agilej.jsonty.JSONModel;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,7 @@ public interface RouteInfo {
 
     boolean isFunctionRoute();
 
-    Function<WebRequest, JSONModel> getRouteFunction();
+    Function<WebRequest, Object> getRouteFunction();
 
     String getActionName();
 

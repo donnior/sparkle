@@ -33,7 +33,7 @@ public class SimpleRouteBuilderResolver implements RouteBuilderResolver{
         if(rbm != null){
             RouteBuilder rb = rbm.getBuilder();
             logger.debug("Found matched route builder: {}", rb);
-//          Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getPathPattern(), path);
+//          Map<String, String> uriVariables = new AntPathMatcher().extractUriTemplateVariables(rb.getPathTemplate(), path);
 //            logger.debug("extracted path variables {}", uriVariables);
             return rb;
         } else {

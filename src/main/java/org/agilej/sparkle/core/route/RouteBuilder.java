@@ -1,11 +1,9 @@
 package org.agilej.sparkle.core.route;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.regex.Matcher;
+
 import java.util.regex.Pattern;
 
 import org.agilej.sparkle.HTTPMethod;
@@ -19,24 +17,23 @@ import org.agilej.sparkle.route.ConditionalRoutingBuilder;
 import org.agilej.sparkle.route.HttpScopedRoutingBuilder;
 
 import org.agilej.sparkle.route.LinkedRoutingBuilder;
-import org.agilej.jsonty.JSONModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, RouteInfo{
-    
+
+    private final RoutePathDetector pathDetector;
+
     private HTTPMethod httpMethod;
     private String actionName;
     private String controllerName;
-    private String pathPattern;
-    private List<String> pathVariables;
-    private Pattern matchPatten;
+    private String pathTemplate;
+
     private AbstractCondition paramCondition;
     private AbstractCondition headerCondition;
     private AbstractCondition consumeCondition;
 
-    private boolean isFunctionMode;
-    private Function<WebRequest, JSONModel> function;
+    private Function<WebRequest, Object> function;
     private String to;
     
     //the rules for 'to' of the route: the controller can't be empty, only one '#' or zero, the handler can be ommit
@@ -45,17 +42,13 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
     private final static Logger logger = LoggerFactory.getLogger(RouteBuilder.class);
 
     public RouteBuilder(String url){
-        RouteChecker checker = new RouteChecker(url);
-        this.pathVariables = checker.pathVariables();
-        this.pathPattern = url;
-        this.matchPatten = Pattern.compile(checker.matcherRegexPatten());
+        this.pathTemplate = url;
         this.httpMethod = HTTPMethod.GET;
-//        logger.debug("Create route {source => {}, pattern => {}, pathVariables => {}}",
-//                new Object[]{this.pathPattern, this.matchPatten.pattern(), this.pathVariables});
+        this.pathDetector = new RoutePathDetector(url);
     }
     
     public Pattern getMatchPatten() {
-        return matchPatten;
+        return this.pathDetector.matcherPattern();
     }
     
     public HTTPMethod getHttpMethod() {
@@ -126,18 +119,18 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
     }
 
     @Override
-    public void to(Function<WebRequest, JSONModel> function) {
+    public void to(Function<WebRequest, Object> function) {
+        SparkleException.throwIf(function == null, "route function can't be null");
         this.function = function;
-        this.isFunctionMode = true;
     }
 
     @Override
     public boolean isFunctionRoute(){
-        return this.isFunctionMode;
+        return this.function != null;
     }
 
     @Override
-    public Function<WebRequest, JSONModel> getRouteFunction(){
+    public Function<WebRequest, Object> getRouteFunction(){
         return this.function;
     }
 
@@ -149,26 +142,13 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
         }
         //IDEA 也许我们可以直接使用path和pathPattern进行字符串的equals比较，但是仅限于当前路由定义中不包含正则部分
         //比如我们定义了一个不需要正则的RouteBuilder("/users/home")或者("/"),则可直接对请求的path进行equals判断，加快速度 
-        boolean b = this.matchPatten.matcher(path).matches();
-        logger.debug("match uri {} using pattern {} {}", new Object[]{path, this.matchPatten.pattern(), b?" success":" failed"});
+        boolean b = this.pathDetector.matches(path);
+        logger.debug("match uri {} using pattern {} {}", new Object[]{path, this.pathDetector.matcherPattern(), b ? " success" : " failed"});
         return b;
     }
-    
-    //TODO 重构此方法，放至合适的地方
-    public List<String> extractPathVariableValues(String path){
-        List<String> variables = new ArrayList<String>();
-        Pattern pattern = this.matchPatten;
-        Matcher matcher = pattern.matcher(path);
 
-        if (matcher.matches()) {
-            int count = matcher.groupCount();
-            for (int index = 1; index <= count; index++) {
-                String group = matcher.group(index);
-                variables.add(group);
-            }
-        }
-        
-        return variables;
+    public List<String> extractPathVariableValues(String path){
+        return this.pathDetector.extractPathVariableValues(path);
     }
     
     @Override
@@ -219,20 +199,20 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
 
     //TODO should it only set default handler for GET?
     
-    public String getPathPattern() {
-        return pathPattern;
+    public String getPathTemplate() {
+        return pathTemplate;
     }
 
     @Override
     public List<String> getPathVariables() {
-        return pathVariables;
+        return this.pathDetector.pathVariables();
     }
     
     @Override
     public String toString() {
 //        return MoreObjects.toStringHelper(this)
 //                .omitNullValues()
-//                .add("path", this.pathPattern)
+//                .add("path", this.pathTemplate)
 //                .add("method", this.httpMethod)
 //                .add("params", this.paramCondition)
 //                .add("header", this.headerCondition)
@@ -243,7 +223,7 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
 
         StringBuilder sb = new StringBuilder();
         sb.append("{ ");
-        sb.append("path => "+this.pathPattern);
+        sb.append("path => "+this.pathTemplate);
         sb.append(" , "+"method => "+this.httpMethod);
         if(this.hasParamCondition()){
             sb.append(" , "+"params => "+this.paramCondition.toString());
@@ -270,13 +250,7 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
 
     @Override
     public Map<String, String > pathVariables(String path) {
-        List<String> values = this.extractPathVariableValues(path);
-        List<String> names = this.getPathVariables();
-        Map<String, String> map = new HashMap<String, String>();
-        for (int i = 0; i < names.size(); i++) {
-            map.put(names.get(i), values.get(i));
-        }
-        return map;
+        return  this.pathDetector.pathVariables(path);
     }
 
 }

@@ -1,6 +1,5 @@
 package org.agilej.sparkle.route;
 
-import org.agilej.jsonty.JSONModel;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.annotation.PathVariable;
 
@@ -48,19 +47,19 @@ public interface Router {
         return this.match(path).withPut();
     }
 
-    default void get(String path, Function<WebRequest, JSONModel> function){
+    default void get(String path, Function<WebRequest, Object> function){
         this.get(path).to(function);
     }
 
-    default void post(String path, Function<WebRequest, JSONModel> function){
+    default void post(String path, Function<WebRequest, Object> function){
         this.post(path).to(function);
     }
 
-    default void delete(String path, Function<WebRequest, JSONModel> function){
+    default void delete(String path, Function<WebRequest, Object> function){
         this.delete(path).to(function);
     }
 
-    default void put(String path, Function<WebRequest, JSONModel> function){
+    default void put(String path, Function<WebRequest, Object> function){
         this.put(path).to(function);
     }
 }

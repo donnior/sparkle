@@ -26,7 +26,7 @@ public class RouteNotFoundHandler extends DevelopmentErrorHandler{
     }
 
     private String liForRouteBuilder(RouteBuilder rb) {
-        String result = "<tr><td>" + rb.getHttpMethod() + "</td><td>" + rb.getPathPattern() + "</td><td>" ;
+        String result = "<tr><td>" + rb.getHttpMethod() + "</td><td>" + rb.getPathTemplate() + "</td><td>" ;
         String to     = rb.isFunctionRoute() ? "(req, res) -> {.....}"
                                              : rb.getControllerName() + "#" + rb.getActionName();
         return result + to + "</td></tr>";

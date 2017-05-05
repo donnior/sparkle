@@ -4,7 +4,6 @@ import org.agilej.jsonty.JSONBuilder;
 import org.agilej.jsonty.JSONModel;
 import org.agilej.sparkle.WebRequest;
 import org.agilej.sparkle.WebResponse;
-import org.agilej.sparkle.annotation.Json;
 import org.agilej.sparkle.mvc.ActionMethod;
 import org.agilej.sparkle.mvc.ViewRender;
 
@@ -17,10 +16,10 @@ import java.io.IOException;
  */
 public class JSONModelViewRender implements ViewRender {
 
-    private JSONBuilder jsontyJSONBuilder;
+    private JSONBuilder jsonBuilder;
 
     public JSONModelViewRender() {
-        this.jsontyJSONBuilder = new JSONBuilder();
+        this.jsonBuilder = new JSONBuilder();
     }
 
     @Override
@@ -28,7 +27,7 @@ public class JSONModelViewRender implements ViewRender {
         WebResponse response = webRequest.getWebResponse();
         response.setContentType("application/json; charset=UTF-8");
         
-        response.write(jsontyJSONBuilder.build((JSONModel)result));
+        response.write(jsonBuilder.build((JSONModel)result));
     }
 
     @Override

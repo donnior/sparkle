@@ -1,7 +1,6 @@
 package org.agilej.sparkle.route;
 
 import org.agilej.sparkle.WebRequest;
-import org.agilej.jsonty.JSONModel;
 import org.agilej.sparkle.annotation.Controller;
 
 import java.util.function.Function;
@@ -45,6 +44,6 @@ public interface LinkedRoutingBuilder {
      *
      * @param function
      */
-    void to(Function<WebRequest, JSONModel> function);
+    void to(Function<WebRequest, Object> function);
 
 }

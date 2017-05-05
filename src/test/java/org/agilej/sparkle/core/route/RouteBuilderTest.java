@@ -22,7 +22,7 @@ public class RouteBuilderTest {
         assertTrue(rb.matchMethod(HTTPMethod.GET));
         assertNull(rb.getControllerName());
         assertNull(rb.getActionName());
-        assertEquals("/user/{id}", rb.getPathPattern());
+        assertEquals("/user/{id}", rb.getPathTemplate());
         
         assertEquals("/user/([^/]+)", rb.getMatchPatten().pattern());
         
@@ -43,7 +43,7 @@ public class RouteBuilderTest {
         assertTrue(rb.matchMethod(HTTPMethod.GET));
         assertNull(rb.getControllerName());
         assertNull(rb.getActionName());
-        assertEquals("/", rb.getPathPattern());
+        assertEquals("/", rb.getPathTemplate());
         
         assertEquals("/", rb.getMatchPatten().pattern());
         
@@ -63,7 +63,7 @@ public class RouteBuilderTest {
         assertTrue(rb.matchMethod(HTTPMethod.GET));
         assertNull(rb.getControllerName());
         assertNull(rb.getActionName());
-        assertEquals("/user/{id}/profile/{module}", rb.getPathPattern());
+        assertEquals("/user/{id}/profile/{module}", rb.getPathTemplate());
         
         assertEquals("/user/([^/]+)/profile/([^/]+)", rb.getMatchPatten().pattern());
         

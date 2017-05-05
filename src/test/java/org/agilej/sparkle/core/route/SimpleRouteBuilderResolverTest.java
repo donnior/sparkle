@@ -21,7 +21,7 @@ public class SimpleRouteBuilderResolverTest {
         
         rb = matcher.match(new GetWebRequest("/user"));
         assertNotNull(rb);
-        assertEquals("/user", rb.getPathPattern());
+        assertEquals("/user", rb.getPathTemplate());
         assertEquals("show", rb.getActionName());
         
         router.match("/user").matchParams("profile==1").to("user#profile");
@@ -36,7 +36,7 @@ public class SimpleRouteBuilderResolverTest {
             }
         });
         assertNotNull(rb);
-        assertEquals("/user", rb.getPathPattern());
+        assertEquals("/user", rb.getPathTemplate());
         assertEquals("profile", rb.getActionName());
         
     }

@@ -12,17 +12,19 @@ import java.util.regex.Pattern;
 
 public class RoutePathDetector {
 
-    private static final Pattern p = Pattern.compile("\\{(.*?)\\}");
-    private final Pattern matchPatten;
+    private static final Pattern PATH_TEMPLATE_PATTERN = Pattern.compile("\\{(.*?)\\}");
+
+    private final Pattern matcherPatten;
+    private String matcherPattenDescrtiption = null;
 
     private List<String> pathVariables = new ArrayList<String>();
-    private String matcherRegexPatten = null;
+
 
     public RoutePathDetector(String src) {
         if(Strings.count(src, "{") != Strings.count(src, "}")){
             throw new SparkleException("{ and } not match in " + src);
         }
-        Matcher m = p.matcher(src);
+        Matcher m = PATH_TEMPLATE_PATTERN.matcher(src);
         while(m.find()) {
             String matched = m.group(1);
             if(Strings.isCharacterOrDigit(matched)){
@@ -32,7 +34,7 @@ public class RoutePathDetector {
             }
         }
         constructMatcherRegexPattern(src);
-        this.matchPatten = Pattern.compile(this.matcherRegexPatten());
+        this.matcherPatten = Pattern.compile(this.matcherPattenDescrtiption);
     }
     
     private void constructMatcherRegexPattern(String source) {
@@ -41,11 +43,11 @@ public class RoutePathDetector {
         for(String v : this.pathVariables){
             result = result.replaceAll("\\{"+v+"\\}", "([^/]+)");
         }
-        this.matcherRegexPatten = result;
+        this.matcherPattenDescrtiption = result;
     }
 
-    public String matcherRegexPatten() {
-        return matcherRegexPatten;
+    public String matcherPattenDescription() {
+        return matcherPattenDescrtiption;
     }
 
 
@@ -57,7 +59,7 @@ public class RoutePathDetector {
     public List<String> extractPathVariableValues(String path){
         List<String> variables = new ArrayList<String>();
 
-        Matcher matcher = this.matchPatten.matcher(path);
+        Matcher matcher = this.matcherPatten.matcher(path);
 
         if (matcher.matches()) {
             int count = matcher.groupCount();
@@ -79,5 +81,13 @@ public class RoutePathDetector {
             map.put(names.get(i), values.get(i));
         }
         return map;
+    }
+
+    public Pattern matcherPattern() {
+        return this.matcherPatten;
+    }
+
+    public boolean matches(String path) {
+        return this.matcherPatten.matcher(path).matches();
     }
 }
