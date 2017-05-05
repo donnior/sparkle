@@ -16,7 +16,7 @@ public interface RouteInfo {
 
     String getControllerName();
 
-    List<String> getPathVariables();
+    List<String> getPathVariableNames();
 
     Map<String, String > pathVariables(String path);
 }

@@ -10,52 +10,49 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * utility class for detect route path template with constructed pattern, used to match
+ * request path and extract path variables
+ */
 public class RoutePathDetector {
 
     private static final Pattern PATH_TEMPLATE_PATTERN = Pattern.compile("\\{(.*?)\\}");
 
     private final Pattern matcherPatten;
-    private String matcherPattenDescrtiption = null;
+    private String matcherPattenDescription = null;
 
     private List<String> pathVariables = new ArrayList<String>();
 
-
-    public RoutePathDetector(String src) {
-        if(Strings.count(src, "{") != Strings.count(src, "}")){
-            throw new SparkleException("{ and } not match in " + src);
+    /**
+     *
+     * constructor with given path template, the template contains path variables like '/user/{id}',
+     * path variable should only character and embraced by '{}'
+     *
+     * @param pathTemplate
+     */
+    public RoutePathDetector(String pathTemplate) {
+        if(Strings.count(pathTemplate, "{") != Strings.count(pathTemplate, "}")){   //quick fail
+            throw new SparkleException("{ and } not match in " + pathTemplate);
         }
-        Matcher m = PATH_TEMPLATE_PATTERN.matcher(src);
+        Matcher m = PATH_TEMPLATE_PATTERN.matcher(pathTemplate);
         while(m.find()) {
             String matched = m.group(1);
             if(Strings.isCharacterOrDigit(matched)){
                 this.pathVariables.add(matched);
             } else {
-                throw new SparkleException(matched + " is invalid in " + src);
+                throw new SparkleException(matched + " is invalid in " + pathTemplate);
             }
         }
-        constructMatcherRegexPattern(src);
-        this.matcherPatten = Pattern.compile(this.matcherPattenDescrtiption);
-    }
-    
-    private void constructMatcherRegexPattern(String source) {
-        //match to route like "/projects/{id}/members/{name}";
-        String result = source;
-        for(String v : this.pathVariables){
-            result = result.replaceAll("\\{"+v+"\\}", "([^/]+)");
-        }
-        this.matcherPattenDescrtiption = result;
-    }
-
-    public String matcherPattenDescription() {
-        return matcherPattenDescrtiption;
+        this.matcherPattenDescription = constructMatcherRegexPattern(pathTemplate, this.pathVariables);
+        this.matcherPatten = Pattern.compile(this.matcherPattenDescription);
     }
 
 
-    public List<String> pathVariables() {
-        return pathVariables;
+    public boolean matches(String path) {
+        return this.matcherPatten.matcher(path).matches();
     }
 
-    //TODO 重构此方法，放至合适的地方
+
     public List<String> extractPathVariableValues(String path){
         List<String> variables = new ArrayList<String>();
 
@@ -73,9 +70,9 @@ public class RoutePathDetector {
     }
 
 
-    public Map<String, String > pathVariables(String path) {
+    public Map<String, String > pathVariableNames(String path) {
         List<String> values = this.extractPathVariableValues(path);
-        List<String> names = this.pathVariables();
+        List<String> names  = this.pathVariableNames();
         Map<String, String> map = new HashMap<String, String>();
         for (int i = 0; i < names.size(); i++) {
             map.put(names.get(i), values.get(i));
@@ -87,7 +84,20 @@ public class RoutePathDetector {
         return this.matcherPatten;
     }
 
-    public boolean matches(String path) {
-        return this.matcherPatten.matcher(path).matches();
+    public String matcherPattenDescription() {
+        return matcherPattenDescription;
     }
+
+    public List<String> pathVariableNames() {
+        return pathVariables;
+    }
+
+    private String constructMatcherRegexPattern(String source, List<String> pathVariableNames) {
+        String result = source;
+        for(String v : pathVariableNames){
+            result = result.replaceAll("\\{"+v+"\\}", "([^/]+)");
+        }
+        return result;
+    }
+
 }

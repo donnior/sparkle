@@ -15,7 +15,6 @@ import org.agilej.sparkle.core.route.condition.ParamCondition;
 import org.agilej.sparkle.exception.SparkleException;
 import org.agilej.sparkle.route.ConditionalRoutingBuilder;
 import org.agilej.sparkle.route.HttpScopedRoutingBuilder;
-
 import org.agilej.sparkle.route.LinkedRoutingBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -197,17 +196,25 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
         return this.controllerName;
     }
 
-    //TODO should it only set default handler for GET?
-    
     public String getPathTemplate() {
         return pathTemplate;
     }
 
-    @Override
-    public List<String> getPathVariables() {
-        return this.pathDetector.pathVariables();
+    public boolean matchMethod(HTTPMethod method) {
+        return this.getHttpMethod().equals(method);
     }
-    
+
+    @Override
+    public List<String> getPathVariableNames() {
+        return this.pathDetector.pathVariableNames();
+    }
+
+    @Override
+    public Map<String, String > pathVariables(String path) {
+        return  this.pathDetector.pathVariableNames(path);
+    }
+
+
     @Override
     public String toString() {
 //        return MoreObjects.toStringHelper(this)
@@ -244,13 +251,6 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
         return sb.toString();
     }
 
-    public boolean matchMethod(HTTPMethod method) {
-        return this.getHttpMethod().equals(method);
-    }
 
-    @Override
-    public Map<String, String > pathVariables(String path) {
-        return  this.pathDetector.pathVariables(path);
-    }
 
 }

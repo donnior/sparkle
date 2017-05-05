@@ -14,21 +14,21 @@ public class RoutePathDetectorTest {
     public void test() {
         RoutePathDetector c = new RoutePathDetector("/{name}/{handler}/name");
         
-        List<String> pathVarialbes = c.pathVariables();
-        assertTrue(2 == pathVarialbes.size());
-        assertEquals("name", pathVarialbes.get(0));
+        List<String> pathVariableNames = c.pathVariableNames();
+        assertTrue(2 == pathVariableNames.size());
+        assertEquals("name", pathVariableNames.get(0));
         
         assertEquals("/([^/]+)/([^/]+)/name", c.matcherPattenDescription());
         
         c = new RoutePathDetector("/name/handler/name");
         
-        pathVarialbes = c.pathVariables();
-        assertTrue(0 == pathVarialbes.size());
+        pathVariableNames = c.pathVariableNames();
+        assertTrue(0 == pathVariableNames.size());
         
         assertEquals("/name/handler/name", c.matcherPattenDescription());
         
         try {
-            new RouteChecker("/{na{me}handler}/name");
+            new RoutePathDetector("/{na{me}handler}/name");
             fail();
         } catch (RuntimeException e) {}
 
@@ -66,7 +66,7 @@ public class RoutePathDetectorTest {
     public void test_extract_path_variable_values(){
         RoutePathDetector rb = new RoutePathDetector("/user/{id}/profile/{module}");
 
-        Map<String, String> values = rb.pathVariables("/user/donnior/profile/header");
+        Map<String, String> values = rb.pathVariableNames("/user/donnior/profile/header");
 
         assertTrue(values.containsKey("id"));
         assertTrue(values.containsKey("module"));
