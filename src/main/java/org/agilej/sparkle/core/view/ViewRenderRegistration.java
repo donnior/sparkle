@@ -13,7 +13,7 @@ import org.agilej.sparkle.mvc.ViewRender;
  *
  *  <li> Application's customized view renders have the highest priority
  *
- *  <li> Sparkle's built-in view renders have the second priority, including {@link JSONViewRender} and {@link TextViewRender}
+ *  <li> Sparkle's built-in view renders have the second priority, including {@link JSONObjectViewRender} and {@link TextViewRender}
  *
  *  <li> Sparkle vendor's view renders have the lowest priority, *  such as Servlet's Jsp
  *
@@ -41,7 +41,7 @@ public class ViewRenderRegistration {
     private void registerBuiltInViewRenders(FList<ViewRender> viewRenders) {
         viewRenders.add(new JSONTextViewRender());
         viewRenders.add(new JSONModelViewRender());
-        viewRenders.add(new JSONViewRender());
+        viewRenders.add(new JSONObjectViewRender());
         viewRenders.add(new TextViewRender());
     }
 

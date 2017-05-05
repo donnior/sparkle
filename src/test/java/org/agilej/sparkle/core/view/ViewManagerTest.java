@@ -21,7 +21,7 @@ public class ViewManagerTest {
         assertTrue(4 == viewRenders.size());
         assertEquals(JSONTextViewRender.class, viewRenders.get(0).getClass());
         assertEquals(JSONModelViewRender.class, viewRenders.get(1).getClass());
-        assertEquals(JSONViewRender.class, viewRenders.get(2).getClass());
+        assertEquals(JSONObjectViewRender.class, viewRenders.get(2).getClass());
         assertEquals(TextViewRender.class, viewRenders.get(3).getClass());
     }
 

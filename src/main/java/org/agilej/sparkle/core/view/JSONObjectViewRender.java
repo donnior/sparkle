@@ -8,23 +8,21 @@ import org.agilej.sparkle.annotation.Json;
 import org.agilej.sparkle.mvc.ActionMethod;
 
 
-import org.agilej.jsonty.JSONBuilder;
-import org.agilej.jsonty.JSONModel;
 import org.agilej.sparkle.mvc.ViewRender;
 
 /**
  * View render for render json result, support the handler method annotated with {@link Json} .
  * This view render will use google Gson to generate the result.
  */
-public class JSONViewRender implements ViewRender {
+public class JSONObjectViewRender implements ViewRender {
 
     private JSONSerializer serializer;
 
-    public JSONViewRender() {
+    public JSONObjectViewRender() {
         this(new GsonSerializer());
     }
 
-    public JSONViewRender(JSONSerializer serializer) {
+    public JSONObjectViewRender(JSONSerializer serializer) {
         this.serializer = serializer;
     }
 

@@ -18,6 +18,6 @@ public class JSONTextViewRender implements ViewRender {
     public void renderView(Object result, Object controller, WebRequest request) throws IOException {
         WebResponse response = request.getWebResponse();
         response.setContentType("application/json; charset=UTF-8");
-        response.write(((JSONText)request).getContent());
+        response.write(((JSONText)result).getContent());
     }
 }

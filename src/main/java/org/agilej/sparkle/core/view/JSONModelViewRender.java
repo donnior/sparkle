@@ -28,12 +28,7 @@ public class JSONModelViewRender implements ViewRender {
         WebResponse response = webRequest.getWebResponse();
         response.setContentType("application/json; charset=UTF-8");
         
-        if(result instanceof JSONModel){
-            //TODO use writer directly
-            response.write(jsontyJSONBuilder.build((JSONModel)result));
-        } else {
-            throw new RuntimeException("not support " + result.getClass());
-        }
+        response.write(jsontyJSONBuilder.build((JSONModel)result));
     }
 
     @Override
