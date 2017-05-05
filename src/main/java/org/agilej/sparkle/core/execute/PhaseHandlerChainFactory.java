@@ -18,15 +18,16 @@ public class PhaseHandlerChainFactory {
 
     public PhaseHandlerChain phaseHandlerChain(CoreComponent component){
 
-        InterceptorsPhaseHandler interceptorsHandler = interceptorsHandler(component.interceptors());
-        RoutingPhaseHandler routingPhaseHandler      = routingPhaseHandler(component.routeBuilderResolver(), component.router());
-        PathVariableResolvePhaseHandler pathVariableResolvePhaseHandler = pathVariableResolvePhaseHandler();
-        ArgumentResolvePhaseHandler argumentResolvePhaseHandler         = argumentResolvePhaseHandler(component.actionMethodResolver(),
-                component.argumentResolverResolver(), component.controllerInstanceResolver());
-        SyncExecutePhaseHandler syncExecutePhaseHandler   = syncExecutePhaseHandler();
-        AsyncExecutePhaseHandler asyncExecutePhaseHandler = asyncExecutePhaseHandler(component.asyncTaskExecutorService());
-        ViewRenderPhaseHandler viewRenderPhaseHandler     = viewRenderPhaseHandler(component.viewRenderResolver());
-        EndLoopHandler endLoopHandler = endLoopHandler();
+        AbstractPhaseHandler interceptorsHandler    = interceptorsHandler(component.interceptors());
+        AbstractPhaseHandler routingPhaseHandler    = routingPhaseHandler(component.routeBuilderResolver(), component.router());
+        AbstractPhaseHandler pathVariableResolvePhaseHandler = pathVariableResolvePhaseHandler();
+        AbstractPhaseHandler argumentResolvePhaseHandler  =
+                argumentResolvePhaseHandler(component.actionMethodResolver(), component.argumentResolverResolver(),
+                        component.controllerInstanceResolver());
+        AbstractPhaseHandler syncExecutePhaseHandler    = syncExecutePhaseHandler();
+        AbstractPhaseHandler asyncExecutePhaseHandler   = asyncExecutePhaseHandler(component.asyncTaskExecutorService());
+        AbstractPhaseHandler viewRenderPhaseHandler     = viewRenderPhaseHandler(component.viewRenderResolver());
+        AbstractPhaseHandler endLoopHandler             = endLoopHandler();
 
         AbstractPhaseHandler[] handlers = new AbstractPhaseHandler[]{
                 interceptorsHandler, routingPhaseHandler, pathVariableResolvePhaseHandler,

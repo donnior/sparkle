@@ -10,11 +10,11 @@ import org.agilej.sparkle.exception.SparkleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ControllersHolder implements ControllerClassResolver{
+public class ControllerClassHolder implements ControllerClassResolver{
 
     private Map<String, Class<?>> controllers = new HashMap<String, Class<?>>();
     
-    private final static Logger logger = LoggerFactory.getLogger(ControllersHolder.class);
+    private final static Logger logger = LoggerFactory.getLogger(ControllerClassHolder.class);
 
     public Map<String, Class<?>> namedControllers(){
         return this.controllers;

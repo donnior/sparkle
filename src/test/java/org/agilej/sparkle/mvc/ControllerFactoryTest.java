@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.agilej.sparkle.core.handler.ControllersHolder;
+import org.agilej.sparkle.core.handler.ControllerClassHolder;
 import org.agilej.sparkle.core.support.SimpleControllerFactory;
 
 import org.junit.Before;
@@ -18,7 +18,7 @@ public class ControllerFactoryTest extends SimpleControllerFactory{
     public void setup() {
         Map<String, Class<?>> controllers = new HashMap<String, Class<?>>();
         controllers.put("testController", ControllerForControllerFactoryTest.class);
-        new ControllersHolder().registerControllers(controllers,true);
+        new ControllerClassHolder().registerControllers(controllers,true);
     }
     
     

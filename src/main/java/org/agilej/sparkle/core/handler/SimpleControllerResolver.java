@@ -1,7 +1,6 @@
 package org.agilej.sparkle.core.handler;
 
 import org.agilej.sparkle.mvc.ControllerFactory;
-import org.agilej.sparkle.core.route.RouteInfo;
 import org.agilej.sparkle.exception.SparkleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +13,7 @@ public class SimpleControllerResolver implements ControllerResolver {
     private ControllerFactory controllerFactory;
 
     @Override
-    public Object get(RouteInfo routeInfo) {
-        String controllerName = routeInfo.getControllerName();
+    public Object get(String controllerName) {
         final Class<?> controllerClass = this.controllerClassResolver.getControllerClass(controllerName);
         final Object controller  = this.controllerFactory.get(controllerName, controllerClass);
         if(controller == null){

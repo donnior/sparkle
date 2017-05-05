@@ -12,11 +12,11 @@ import org.junit.Test;
 
 import com.google.common.collect.Maps;
 
-public class ControllerHolderTest {
+public class ControllerClassHolderTest {
 
     @Test
     public void test_getting(){
-        ControllersHolder ch = new ControllersHolder();
+        ControllerClassHolder ch = new ControllerClassHolder();
         ch.registerControllers(sampleControllersMap());
         
         assertEquals(2, ch.namedControllers().size());
@@ -28,7 +28,7 @@ public class ControllerHolderTest {
 
     @Test(expected = RuntimeException.class)
     public void test_getting_with_exception(){
-        ControllersHolder ch = new ControllersHolder();
+        ControllerClassHolder ch = new ControllerClassHolder();
         ch.registerControllers(sampleControllersMap());
 
         assertEquals(SampleOne.class, ch.getControllerClass("sampleThree"));
@@ -36,7 +36,7 @@ public class ControllerHolderTest {
 
     @Test
     public void test_add_with_reset(){
-        ControllersHolder ch = new ControllersHolder();
+        ControllerClassHolder ch = new ControllerClassHolder();
         ch.registerControllers(sampleControllersMap());
         
         assertEquals(2, ch.namedControllers().size());
@@ -48,7 +48,7 @@ public class ControllerHolderTest {
     
     @Test
     public void test_add_with_duplication(){
-        ControllersHolder ch = new ControllersHolder();
+        ControllerClassHolder ch = new ControllerClassHolder();
         ch.registerControllers(sampleControllersMap());
         
         assertEquals(2, ch.namedControllers().size());

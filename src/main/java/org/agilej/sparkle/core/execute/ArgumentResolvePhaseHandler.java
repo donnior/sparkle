@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * phase for resolving controller instance and arguments
+ */
 public class ArgumentResolvePhaseHandler extends AbstractPhaseHandler {
 
     private ActionMethodResolver        actionMethodResolver;
@@ -34,7 +37,7 @@ public class ArgumentResolvePhaseHandler extends AbstractPhaseHandler {
             Object controller = resolveController(rd);
             presetControllerIfNeed(webRequest, controller);
 
-            ActionMethod actionMethod = resolveActionMethod(rd, controller);
+            ActionMethod actionMethod = resolveActionMethod(rd, controller.getClass());
 
             Object[] arguments = resolvedArguments(actionMethod, context);
 
@@ -46,12 +49,12 @@ public class ArgumentResolvePhaseHandler extends AbstractPhaseHandler {
         forwardToNext(context);
     }
 
-    private ActionMethod resolveActionMethod(RouteInfo rd, Object controller) {
-        return this.actionMethodResolver.find(controller.getClass(), rd.getActionName());
+    private ActionMethod resolveActionMethod(RouteInfo rd, Class controllerClass) {
+        return this.actionMethodResolver.find(controllerClass, rd.getActionName());
     }
 
     private Object resolveController(RouteInfo routeInfo){
-        return  this.controllerInstanceResolver.get(routeInfo);
+        return  this.controllerInstanceResolver.get(routeInfo.getControllerName());
     }
 
     private void presetControllerIfNeed(WebRequest webRequest, Object controller) {

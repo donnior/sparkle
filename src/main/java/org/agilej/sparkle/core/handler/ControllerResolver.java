@@ -12,9 +12,9 @@ public interface ControllerResolver {
     /**
      * resolve controller instance for given route info, must return object or throw exception, can't be null
      *
-     * @param routeInfo
+     * @param controllerName
      * @return
      */
-    Object get(RouteInfo routeInfo);
+    Object get(String controllerName);
 
 }
