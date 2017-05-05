@@ -4,6 +4,8 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.agilej.reflection.ReflectionUtil;
 import org.agilej.sparkle.route.AbstractRouteModule;
@@ -18,19 +20,22 @@ public class RouteModuleScanner {
     private final static Logger logger = LoggerFactory.getLogger(RouteModuleScanner.class);
 
     public List<RouteModule> scanRouteModule(String pkg) {
-        List<RouteModule> routeModuleInstances = new ArrayList<RouteModule>();
+        List<RouteModule> routeModules = new ArrayList<RouteModule>();
+
         Reflections reflections = new Reflections("");
+
         Set<Class<? extends RouteModule>> fromInterface = reflections.getSubTypesOf(RouteModule.class);
         Set<Class<? extends AbstractRouteModule>> fromAbstracts = reflections.getSubTypesOf(AbstractRouteModule.class);
         fromInterface.addAll(fromAbstracts);
+
         for(Class<?> clz : fromInterface){
             if(Modifier.isAbstract(clz.getModifiers())){
                 continue;
             }
             logger.debug("Found route module : {} ",clz.getName());
-            routeModuleInstances.add((RouteModule)ReflectionUtil.initialize(clz));
+            routeModules.add((RouteModule)ReflectionUtil.initialize(clz));
         }
-        return routeModuleInstances;
+        return routeModules;
     }
 
 }
