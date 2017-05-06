@@ -12,6 +12,8 @@ import org.agilej.web.adapter.WebRequestAdapter;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.List;
+
 public class RouteBuilderTest {
 
     @Test
@@ -23,9 +25,7 @@ public class RouteBuilderTest {
         assertNull(rb.getControllerName());
         assertNull(rb.getActionName());
         assertEquals("/user/{id}", rb.getPathTemplate());
-        
-        assertEquals("/user/([^/]+)", rb.getMatchPatten().pattern());
-        
+
         assertTrue(rb.matchPath("/user/donnior"));
         assertFalse(rb.matchPath("/users/1"));
         
@@ -36,7 +36,7 @@ public class RouteBuilderTest {
     
     @Test
     public void test_create_root(){
-        System.out.println("test for root");
+
         RouteBuilder rb = new RouteBuilder("/");
 
         Assert.assertEquals(HTTPMethod.GET, rb.getHttpMethod());
@@ -45,7 +45,7 @@ public class RouteBuilderTest {
         assertNull(rb.getActionName());
         assertEquals("/", rb.getPathTemplate());
         
-        assertEquals("/", rb.getMatchPatten().pattern());
+
         
         assertTrue(rb.matchPath("/"));
         assertFalse(rb.matchPath("/users"));
@@ -65,13 +65,12 @@ public class RouteBuilderTest {
         assertNull(rb.getActionName());
         assertEquals("/user/{id}/profile/{module}", rb.getPathTemplate());
         
-        assertEquals("/user/([^/]+)/profile/([^/]+)", rb.getMatchPatten().pattern());
-        
+
         assertTrue(rb.matchPath("/user/donnior/profile/header"));
-//        assertFalse(rb.matchPath("/users/1"));
-        
-        
-        System.out.println(rb.extractPathVariableValues("/user/donnior/profile/header"));
+
+        List<String> values = rb.extractPathVariableValues("/user/donnior/profile/header");
+        assertEquals("donnior", values.get(0));
+        assertEquals("header", values.get(1));
     }
 
     @Test

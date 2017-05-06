@@ -11,26 +11,15 @@ import static org.junit.Assert.assertNull;
 public class RoutePathDetectorTest {
 
     @Test
-    public void test() {
+    public void testCreate() {
         RoutePathDetector c = new RoutePathDetector("/{name}/{handler}/name");
-        
-        List<String> pathVariableNames = c.pathVariableNames();
-        assertTrue(2 == pathVariableNames.size());
-        assertEquals("name", pathVariableNames.get(0));
-        
-        assertEquals("/([^/]+)/([^/]+)/name", c.matcherPattenDescription());
-        
-        c = new RoutePathDetector("/name/handler/name");
-        
-        pathVariableNames = c.pathVariableNames();
-        assertTrue(0 == pathVariableNames.size());
-        
-        assertEquals("/name/handler/name", c.matcherPattenDescription());
-        
+
         try {
             new RoutePathDetector("/{na{me}handler}/name");
             fail();
-        } catch (RuntimeException e) {}
+        } catch (RuntimeException e) {
+
+        }
 
         try {
             c = new RoutePathDetector("/{name/handler}/name");
@@ -52,26 +41,61 @@ public class RoutePathDetectorTest {
     }
 
     @Test
-    public void test_matches(){
-        RoutePathDetector rb = new RoutePathDetector("/user/{id}/profile/{module}");
+    public void test_match_path(){
 
-        assertEquals("/user/([^/]+)/profile/([^/]+)", rb.matcherPattenDescription());
+        testMatchTrue("/user/{id}", "/user/1");
+        testMatchTrue("/user/{id}", "/user/1/");
+        testMatchTrue("/user/{ id}", "/user/1/");
+        testMatchTrue("/user/{id  }", "/user/1/");
+        testMatchTrue("/user/{ id }", "/user/1/");
+        testMatchTrue("/user/{1}", "/user/1/");
+        testMatchFalse("/user/{id}", "/user/1/names");
 
-        assertTrue(rb.matches("/user/donnior/profile/header"));
-        assertFalse(rb.matches("/users/1"));
+        testMatchTrue("/user/{id}/profile/{module}", "/user/donnior/profile/header");
+        testMatchFalse("/user/{id}/profile/{module}", "/users/1");
 
+        testMatchTrue("/", "/");
+    }
+
+    private void testMatchTrue(String template, String path) {
+        assertTrue(new RoutePathDetector(template).matches(path));
+    }
+
+    private void testMatchFalse(String template, String path) {
+        assertFalse(new RoutePathDetector(template).matches(path));
+    }
+
+    @Test
+    public void test_extract_path_variable_names(){
+        RoutePathDetector rb = new RoutePathDetector("/user/{ id }/profile/{ module }");
+
+        List<String> names = rb.pathVariableNames();
+        assertTrue(2 == names.size());
+        assertEquals("id", names.get(0));
+        assertEquals("module", names.get(1));
+
+        assertTrue(0 == new RoutePathDetector("/home").pathVariableNames().size());
     }
 
     @Test
     public void test_extract_path_variable_values(){
-        RoutePathDetector rb = new RoutePathDetector("/user/{id}/profile/{module}");
+        RoutePathDetector rb = new RoutePathDetector("/user/{ id }/profile/{ module }");
 
-        Map<String, String> values = rb.pathVariableNames("/user/donnior/profile/header");
+        Map<String, String> values = rb.pathVariables("/user/donnior/profile/header");
 
         assertTrue(values.containsKey("id"));
         assertTrue(values.containsKey("module"));
 
         assertEquals("donnior", values.get("id"));
         assertEquals("header", values.get("module"));
+    }
+
+    @Test
+    public void test_pattern_description() {
+        RoutePathDetector c = new RoutePathDetector("/{name}/{handler}/name");
+        assertEquals("^/([^/]+?)/([^/]+?)/name/?$", c.matcherPattenDescription());
+
+        c = new RoutePathDetector("/user/dashboard");
+        assertEquals("^/user/dashboard/?$", c.matcherPattenDescription());
     }
 }

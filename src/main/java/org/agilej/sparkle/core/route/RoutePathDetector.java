@@ -34,6 +34,9 @@ public class RoutePathDetector {
         if(Strings.count(pathTemplate, "{") != Strings.count(pathTemplate, "}")){   //quick fail
             throw new SparkleException("{ and } not match in " + pathTemplate);
         }
+
+        pathTemplate = pathTemplate.replaceAll("\\s", "");  //remove blankspace
+
         Matcher m = PATH_TEMPLATE_PATTERN.matcher(pathTemplate);
         while(m.find()) {
             String matched = m.group(1);
@@ -70,7 +73,7 @@ public class RoutePathDetector {
     }
 
 
-    public Map<String, String > pathVariableNames(String path) {
+    public Map<String, String > pathVariables(String path) {
         List<String> values = this.extractPathVariableValues(path);
         List<String> names  = this.pathVariableNames();
         Map<String, String> map = new HashMap<String, String>();
@@ -95,8 +98,9 @@ public class RoutePathDetector {
     private String constructMatcherRegexPattern(String source, List<String> pathVariableNames) {
         String result = source;
         for(String v : pathVariableNames){
-            result = result.replaceAll("\\{"+v+"\\}", "([^/]+)");
+            result = result.replaceAll("\\{"+v+"\\}", "([^/]+?)");
         }
+        result = "^" + result + "/?$";
         return result;
     }
 

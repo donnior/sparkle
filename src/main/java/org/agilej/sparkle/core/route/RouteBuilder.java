@@ -211,7 +211,7 @@ public class RouteBuilder implements HttpScopedRoutingBuilder, RouteMatchRules, 
 
     @Override
     public Map<String, String > pathVariables(String path) {
-        return  this.pathDetector.pathVariableNames(path);
+        return  this.pathDetector.pathVariables(path);
     }
 
 
